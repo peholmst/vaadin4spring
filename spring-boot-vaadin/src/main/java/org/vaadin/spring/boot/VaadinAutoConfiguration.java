@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.vaadin.spring.internal.EnableVaadin;
+import org.vaadin.spring.EnableVaadin;
 import org.vaadin.spring.internal.SpringAwareVaadinServlet;
 import org.vaadin.spring.internal.VaadinUIScope;
 
@@ -17,7 +17,7 @@ import org.vaadin.spring.internal.VaadinUIScope;
  *
  * @author petter@vaadin.com
  * @author Josh Long (josh@joshlong.com)
- * @see org.vaadin.spring.internal.EnableVaadin
+ * @see org.vaadin.spring.EnableVaadin
  */
 @Configuration
 @ConditionalOnClass(VaadinUIScope.class)

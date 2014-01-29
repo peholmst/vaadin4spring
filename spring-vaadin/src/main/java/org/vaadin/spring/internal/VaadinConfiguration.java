@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author Josh Long (josh@joshlong.com)
  * @author Petter Holmström (petter@vaadin.com)
- * @see EnableVaadin
+ * @see org.vaadin.spring.EnableVaadin
  */
 @Configuration
-class VaadinConfiguration {
+public class VaadinConfiguration {
 
     @Bean
     static VaadinUIScope uiScope() {

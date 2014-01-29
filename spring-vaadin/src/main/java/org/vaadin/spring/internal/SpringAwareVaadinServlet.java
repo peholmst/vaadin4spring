@@ -29,7 +29,7 @@ public class SpringAwareVaadinServlet extends VaadinServlet {
             @Override
             public void sessionInit(SessionInitEvent sessionInitEvent) throws ServiceException {
                 WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-                UIScopedAwareUiProvider uiProvider = new UIScopedAwareUiProvider(webApplicationContext);
+                UIScopeAwareUIProvider uiProvider = new UIScopeAwareUIProvider(webApplicationContext);
                 sessionInitEvent.getSession().addUIProvider(uiProvider);
             }
         });
@@ -39,13 +39,13 @@ public class SpringAwareVaadinServlet extends VaadinServlet {
      * Vaadin {@link UIProvider} that looks up UI classes from the application context. The UI
      * classes must be annotated with {@link VaadinUI}.
      */
-    static class UIScopedAwareUiProvider extends UIProvider {
+    static class UIScopeAwareUIProvider extends UIProvider {
 
         private final Log logger = LogFactory.getLog(getClass());
         private final WebApplicationContext webApplicationContext;
         private final Map<String, Class<? extends UI>> pathToUIMap = new ConcurrentHashMap<>();
 
-        public UIScopedAwareUiProvider(WebApplicationContext webApplicationContext) {
+        public UIScopeAwareUIProvider(WebApplicationContext webApplicationContext) {
             this.webApplicationContext = webApplicationContext;
             detectUIs();
         }
