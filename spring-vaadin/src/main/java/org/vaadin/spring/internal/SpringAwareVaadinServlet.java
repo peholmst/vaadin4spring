@@ -14,11 +14,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Subclass of the standard Vaadin {@link com.vaadin.server.VaadinServlet vaadinServlet} that registers information
+ * Subclass of the standard {@link com.vaadin.server.VaadinServlet Vaadin servlet} that registers information
  * about the current Vaadin {@link com.vaadin.ui.UI} in a thread-local
  * for the custom {@link org.vaadin.spring.internal.VaadinUIScope scope}.
  *
- * @author petter@vaadin.com
+ * @author Petter Holmström (petter@vaadin.com)
  * @author Josh Long (josh@joshlong.com)
  */
 public class SpringAwareVaadinServlet extends VaadinServlet {
@@ -35,6 +35,10 @@ public class SpringAwareVaadinServlet extends VaadinServlet {
         });
     }
 
+    /**
+     * Vaadin {@link UIProvider} that looks up UI classes from the application context. The UI
+     * classes must be annotated with {@link VaadinUI}.
+     */
     static class UIScopedAwareUiProvider extends UIProvider {
 
         private final Log logger = LogFactory.getLog(getClass());
@@ -52,12 +56,13 @@ public class SpringAwareVaadinServlet extends VaadinServlet {
             for (String uiBeanName : uiBeanNames) {
                 Class<?> beanType = webApplicationContext.getType(uiBeanName);
                 if (UI.class.isAssignableFrom(beanType)) {
-                    logger.info("Found Vaadin UI [" + beanType.getCanonicalName() + "]");
+                    logger.info(String.format("Found Vaadin UI [%s]", beanType.getCanonicalName()));
                     final String path = beanType.getAnnotation(VaadinUI.class).path();
                     Class<? extends UI> existingBeanType = pathToUIMap.get(path);
                     if (existingBeanType != null) {
-                        throw new IllegalStateException("[" + existingBeanType.getCanonicalName() + "] is already mapped to the path [" + path + "]");
+                        throw new IllegalStateException(String.format("[%s] is already mapped to the path [%s]", existingBeanType.getCanonicalName(), path));
                     }
+                    logger.debug("Mapping Vaadin UI [" + beanType.getCanonicalName() + "] to path [" + path + "]");
                     pathToUIMap.put(path, (Class<? extends UI>) beanType);
                 }
             }
@@ -94,7 +99,7 @@ public class SpringAwareVaadinServlet extends VaadinServlet {
             final VaadinUIIdentifier identifier = new VaadinUIIdentifier(event);
             CurrentInstance.set(key, identifier);
             try {
-                logger.debug("Creating a new UI bean of class [" + event.getUIClass().getCanonicalName() + "] with identifier [" + identifier + "]");
+                logger.debug(String.format("Creating a new UI bean of class [%s] with identifier [%s]", event.getUIClass().getCanonicalName(), identifier));
                 return webApplicationContext.getBean(event.getUIClass());
             } finally {
                 CurrentInstance.set(key, null);

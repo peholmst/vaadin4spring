@@ -6,9 +6,9 @@ import com.vaadin.ui.UI;
 import java.io.Serializable;
 
 /**
- * Uniquely identifies a UI instance for a given window/tab (basically a wrapper for {@link com.vaadin.ui.UI#getUIId()}).
+ * Uniquely identifies a UI instance for a given window/tab and session.
  *
- * @author petter@vaadin.com
+ * @author Petter Holmström (petter@vaadin.com)
  * @author Josh Long (josh@joshlong.com)
  */
 class VaadinUIIdentifier implements Serializable {
@@ -55,6 +55,6 @@ class VaadinUIIdentifier implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s(%s:%d)", VaadinUIIdentifier.class.getSimpleName(), sessionId, uiId);
+        return String.format("UI:%s:%d", sessionId, uiId);
     }
 }
