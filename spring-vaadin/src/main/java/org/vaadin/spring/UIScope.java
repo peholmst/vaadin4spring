@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Scope;
 import java.lang.annotation.*;
 
 /**
- * Stereotype annotation for Spring's {@code \@Scope("ui")}.
+ * Stereotype annotation for Spring's {@code @Scope("ui")}.
  *
- * @author petter@vaadin.com
+ * @author Petter Holmström (petter@vaadin.com)
  * @author Josh Long (josh@joshlong.com)
  */
 @Scope("ui")

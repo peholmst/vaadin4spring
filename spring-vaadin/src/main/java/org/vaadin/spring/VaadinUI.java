@@ -5,9 +5,28 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * TODO Document me!
+ * Annotation to be put on {@link com.vaadin.ui.UI}-subclasses that are to be automatically detected and configured
+ * by Spring. Use it like this:
+ * <code>
+ * <pre>
+ *     &#64;VaadinUI
+ *     public class MyRootUI extends UI {
+ *         // ...
+ *     }
+ *     </pre>
+ * </code>
+ * Or like this, if you want to map your UI to another URL (for example if you are having multilpe UI subclasses in your application):
+ * <code>
+ * <pre>
+ *     &#64;VaadinUI(path = "/myPath")
+ *     public class MyUI extends UI {
+ *         // ...
+ *     }
+ *     </pre>
+ * </code>
+ * The annotated UI will automatically be placed in the {@link UIScope}, so there is no need to add that annotation explicitly.
  *
- * @author petter@vaadin.com
+ * @author Petter Holmström (petter@vaadin.com)
  */
 @Target({java.lang.annotation.ElementType.TYPE})
 @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
@@ -17,7 +36,9 @@ import java.lang.annotation.Target;
 public @interface VaadinUI {
 
     /**
-     * @return
+     * The path to witch the UI will be bound. For example, a value of {@code "/myUI"} would be mapped to
+     * {@code "/myContextPath/myVaadinServletPath/myUI"}. An empty string (the default) will map the UI to the root of the servlet.
+     * Within a web application, there must not be multiple UI sub classes with the same path.
      */
     String path() default "";
 }
