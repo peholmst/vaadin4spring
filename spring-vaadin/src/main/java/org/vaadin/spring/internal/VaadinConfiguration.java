@@ -17,9 +17,11 @@ package org.vaadin.spring.internal;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.vaadin.spring.navigator.SpringViewProvider;
 
 /**
- * Spring configuration for registering the custom Vaadin {@link VaadinUIScope scope}.
+ * Spring configuration for registering the custom Vaadin {@link VaadinUIScope scope}
+ * and the {@link SpringViewProvider view provider}.
  *
  * @author Josh Long (josh@joshlong.com)
  * @author Petter Holmström (petter@vaadin.com)
@@ -31,5 +33,10 @@ public class VaadinConfiguration {
     @Bean
     static VaadinUIScope uiScope() {
         return new VaadinUIScope();
+    }
+
+    @Bean
+    SpringViewProvider viewProvider() {
+        return new SpringViewProvider();
     }
 }
