@@ -12,8 +12,6 @@ import org.vaadin.spring.internal.SpringAwareVaadinServlet;
 import org.vaadin.spring.internal.VaadinUIScope;
 
 /**
- * TODO support the *Configurer pattern to permit parameterization of things \
- * TODO like the {@link org.vaadin.spring.internal.SpringAwareVaadinServlet registration}.
  *
  * @author petter@vaadin.com
  * @author Josh Long (josh@joshlong.com)
@@ -25,9 +23,9 @@ public class VaadinAutoConfiguration {
 
     private static Log logger = LogFactory.getLog(VaadinAutoConfiguration.class);
 
-    /*
+    /**
      * If the outer {@code \@Configuration} class is enabled (e.g., the
-     * {@link VaadinUiScope UI scope} implementation is on the CLASSPATH),
+     * {@link org.vaadin.spring.internal.VaadinUIScope UI scope} implementation is on the CLASSPATH),
      * _then_ we let Spring import the configuration class.
      */
     @Configuration
