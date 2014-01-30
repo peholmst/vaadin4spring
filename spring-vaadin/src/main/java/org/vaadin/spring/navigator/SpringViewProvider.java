@@ -36,6 +36,24 @@ import java.util.concurrent.ConcurrentSkipListSet;
 /**
  * A Vaadin {@link ViewProvider} that fetches the views from the Spring application context. The views
  * must implement the {@link View} interface and be annotated with the {@link VaadinView} annotation.
+ * <p/>
+ * Use like this:
+ * <code>
+ *     <pre>
+ *         &#64;VaadinUI
+ *         public class MyUI extends UI {
+ *
+ *              &#64;Autowired SpringViewProvider viewProvider;
+ *
+ *              protected void init(VaadinRequest vaadinRequest) {
+ *                  Navigator navigator = new Navigator(this, this);
+ *                  navigator.addProvider(viewProvider);
+ *                  setNavigator(navigator);
+ *                  // ...
+ *              }
+ *         }
+ *     </pre>
+ * </code>
  *
  * @author Petter Holmström (petter@vaadin.com)
  * @see VaadinView
