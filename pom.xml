@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Vaadin Spring Integration (Parent POM)</name>
+    <name>Vaadin Support for Spring and Spring Boot (Parent POM)</name>
 
     <licenses>
         <license>
