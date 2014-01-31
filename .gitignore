@@ -2,3 +2,4 @@ target/
 *.iml
 .idea/
 
+spring-boot-sample/src/main/resources/VAADIN/widgetsets

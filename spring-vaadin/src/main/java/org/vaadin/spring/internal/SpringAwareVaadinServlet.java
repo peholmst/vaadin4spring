@@ -18,6 +18,7 @@ package org.vaadin.spring.internal;
 import com.vaadin.server.*;
 import com.vaadin.ui.UI;
 import com.vaadin.util.CurrentInstance;
+import java.io.IOException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.WebApplicationContext;
@@ -27,6 +28,8 @@ import org.vaadin.spring.VaadinUI;
 import javax.servlet.ServletException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Subclass of the standard {@link com.vaadin.server.VaadinServlet Vaadin servlet} that registers information
@@ -37,7 +40,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Josh Long (josh@joshlong.com)
  */
 public class SpringAwareVaadinServlet extends VaadinServlet {
-
+	
     @Override
     protected void servletInitialized() throws ServletException {
         getService().addSessionInitListener(new SessionInitListener() {
@@ -48,6 +51,9 @@ public class SpringAwareVaadinServlet extends VaadinServlet {
                 sessionInitEvent.getSession().addUIProvider(uiProvider);
             }
         });
+        
+        
+                
     }
 
     /**
@@ -120,5 +126,7 @@ public class SpringAwareVaadinServlet extends VaadinServlet {
                 CurrentInstance.set(key, null);
             }
         }
+        
+        
     }
 }
