@@ -64,7 +64,7 @@ public class VaadinAutoConfiguration {
             logger.debug("registering vaadinServlet()");
 
             String registrationMappingParameterValue =
-                    this.environment.getProperty( vaadinServletRegistrationParameterName, "/ui/*" ) ;
+                    this.environment.getProperty( vaadinServletRegistrationParameterName, "/*" ) ;
 
             // TODO Must be possible to parameterize servlet URL mappings and init parameters
             // todo you can easily use application.properties to parameterize this: vaadin.servlet.mapping=/*
