@@ -78,7 +78,8 @@
                 <configuration>
                     <extraJvmArgs>-Xmx1g -Xss1024k</extraJvmArgs>
                     
-                    <!-- We are doing "inplace" but into subdir VAADIN/widgetsets -->
+                    <!-- We are doing "inplace" gwt compilation
+                         but into subdir VAADIN/widgetsets -->
                     <webappDirectory>${basedir}/src/main/public/VAADIN/widgetsets
                     </webappDirectory>
                     <hostedWebapp>${basedir}/src/main/public/VAADIN/widgetsets
