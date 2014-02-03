@@ -79,7 +79,7 @@
                     <extraJvmArgs>-Xmx1g -Xss1024k</extraJvmArgs>
                     
                     <!-- We are doing "inplace" gwt compilation
-                         but into subdir VAADIN/widgetsets -->
+                    but into subdir VAADIN/widgetsets -->
                     <webappDirectory>${basedir}/src/main/public/VAADIN/widgetsets
                     </webappDirectory>
                     <hostedWebapp>${basedir}/src/main/public/VAADIN/widgetsets
@@ -104,11 +104,32 @@
                         <goals>
                             <goal>clean</goal>
                             <goal>resources</goal>
+                            <!-- These are non functional currently with spring boot directory structure
                             <goal>update-theme</goal>
-                            <goal>update-widgetset</goal>
+                            <goal>update-widgetset</goal>-->
                             <goal>compile-theme</goal>
                             <goal>compile</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>com.vaadin.sass.SassCompiler</mainClass>
+                            <arguments>
+                                <argument>${basedir}/src/main/resources/VAADIN/themes/sample/styles.scss</argument>
+                                <argument>${basedir}/src/main/resources/VAADIN/themes/sample/styles.css</argument>
+                            </arguments>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -121,6 +142,12 @@
                     <filesets>
                         <fileset>
                             <directory>${basedir}/src/main/public/VAADIN/widgetsets</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>src/main/resources/VAADIN/themes/sample/</directory>
+                            <includes>
+                                <include>*.css</include>
+                            </includes>
                         </fileset>
                     </filesets>
                 </configuration>
@@ -138,10 +165,10 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/classes/VAADIN/widgetsets</outputDirectory>
+                            <outputDirectory>${basedir}/target/classes/VAADIN</outputDirectory>
                             <resources>          
                                 <resource>
-                                    <directory>${basedir}/src/main/public/VAADIN/widgetsets</directory>
+                                    <directory>${basedir}/src/main/public/VAADIN</directory>
                                 </resource>
                             </resources>
                         </configuration>            
