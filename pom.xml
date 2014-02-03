@@ -35,7 +35,7 @@
         <project.build.target>1.7</project.build.target>
         <project.build.source>1.7</project.build.source>
         <vaadin.version>7.1.10</vaadin.version>
-        <spring.version>4.0.0.RELEASE</spring.version>
+        <spring.version>4.0.1.RELEASE</spring.version>
         <spring-boot.version>1.0.0.RC1</spring-boot.version>
     </properties>
 
@@ -65,6 +65,12 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
                 <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.vaadin</groupId>
