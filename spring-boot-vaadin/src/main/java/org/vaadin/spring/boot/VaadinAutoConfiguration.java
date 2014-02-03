@@ -71,6 +71,7 @@ public class VaadinAutoConfiguration {
             ServletRegistrationBean registrationBean = new ServletRegistrationBean(
                     new SpringAwareVaadinServlet(), registrationMappingParameterValue, "/VAADIN/*");
             registrationBean.addInitParameter("heartbeatInterval", "10"); // In order to test that orphaned UIs are detached properly
+            registrationBean.addInitParameter("productionMode", this.environment.getProperty("vaadin.productionMode", "false"));
             return registrationBean;
         }
     }
