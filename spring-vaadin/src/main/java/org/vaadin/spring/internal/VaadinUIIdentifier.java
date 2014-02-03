@@ -17,35 +17,27 @@ package org.vaadin.spring.internal;
 
 import com.vaadin.server.UICreateEvent;
 import com.vaadin.ui.UI;
+import org.springframework.util.Assert;
 
 import java.io.Serializable;
 
 /**
- * Uniquely identifies a UI instance for a given window/tab and session.
+ * Uniquely identifies a UI instance for a given window/tab inside a session.
+ * This is basically a wrapper for {@link com.vaadin.ui.UI#getUIId()}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  * @author Josh Long (josh@joshlong.com)
  */
 class VaadinUIIdentifier implements Serializable {
     private final int uiId;
-    private final String sessionId;
 
     public VaadinUIIdentifier(UICreateEvent createEvent) {
         this.uiId = createEvent.getUiId();
-        this.sessionId = createEvent.getRequest().getWrappedSession().getId();
     }
 
     public VaadinUIIdentifier(UI ui) {
+        Assert.notNull(ui, "ui must not be null");
         this.uiId = ui.getUIId();
-        this.sessionId = ui.getSession().getSession().getId();
-    }
-
-    public int getUIId() {
-        return uiId;
-    }
-
-    public String getSessionId() {
-        return sessionId;
     }
 
     @Override
@@ -56,20 +48,17 @@ class VaadinUIIdentifier implements Serializable {
         VaadinUIIdentifier that = (VaadinUIIdentifier) o;
 
         if (uiId != that.uiId) return false;
-        if (!sessionId.equals(that.sessionId)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = uiId;
-        result = 31 * result + sessionId.hashCode();
-        return result;
+        return uiId;
     }
 
     @Override
     public String toString() {
-        return String.format("UI:%s:%d", sessionId, uiId);
+        return String.format("UI:%d", uiId);
     }
 }
