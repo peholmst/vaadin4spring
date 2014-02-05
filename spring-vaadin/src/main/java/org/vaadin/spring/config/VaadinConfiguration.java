@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.internal;
+package org.vaadin.spring.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.vaadin.spring.internal.VaadinUIScope;
 import org.vaadin.spring.navigator.SpringViewProvider;
 
 /**
- * Spring configuration for registering the custom Vaadin {@link VaadinUIScope scope}
+ * Spring configuration for registering the custom Vaadin {@link org.vaadin.spring.internal.VaadinUIScope scope}
  * and the {@link SpringViewProvider view provider}.
  *
  * @author Josh Long (josh@joshlong.com)

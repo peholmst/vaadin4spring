@@ -28,7 +28,7 @@ import java.io.Serializable;
  * @author Petter Holmström (petter@vaadin.com)
  * @author Josh Long (josh@joshlong.com)
  */
-class VaadinUIIdentifier implements Serializable {
+public class VaadinUIIdentifier implements Serializable {
     private final int uiId;
 
     public VaadinUIIdentifier(UICreateEvent createEvent) {
