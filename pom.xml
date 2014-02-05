@@ -37,6 +37,7 @@
         <vaadin.version>7.1.10</vaadin.version>
         <spring.version>4.0.1.RELEASE</spring.version>
         <spring-boot.version>1.0.0.RC1</spring-boot.version>
+        <spring-security.version>3.2.0.RELEASE</spring-security.version>
     </properties>
 
     <dependencyManagement>
@@ -70,7 +71,21 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
                 <version>${spring.version}</version>
-                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${spring-security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${spring-security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring-security.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.vaadin</groupId>
@@ -117,5 +132,6 @@
         <module>spring-boot-sample</module>
         <module>spring-boot-vaadin</module>
         <module>spring-vaadin</module>
+        <module>spring-boot-sample-security</module>
     </modules>
 </project>
