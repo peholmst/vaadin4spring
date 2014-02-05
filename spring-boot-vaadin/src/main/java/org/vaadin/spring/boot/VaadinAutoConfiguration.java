@@ -26,8 +26,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.vaadin.spring.EnableVaadin;
-import org.vaadin.spring.internal.SpringAwareVaadinServlet;
 import org.vaadin.spring.internal.VaadinUIScope;
+import org.vaadin.spring.servlet.SpringAwareVaadinServlet;
 
 import java.lang.reflect.Method;
 
