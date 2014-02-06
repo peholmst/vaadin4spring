@@ -39,7 +39,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
  * <p/>
  * Use like this:
  * <code>
- *     <pre>
+ * <pre>
  *         &#64;VaadinUI
  *         public class MyUI extends UI {
  *
@@ -54,6 +54,8 @@ import java.util.concurrent.ConcurrentSkipListSet;
  *         }
  *     </pre>
  * </code>
+ *
+ * View-based security can be provided by creating a Spring bean that implements the {@link org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate} interface.
  *
  * @author Petter Holmström (petter@vaadin.com)
  * @see VaadinView
@@ -151,6 +153,14 @@ public class SpringViewProvider implements ViewProvider {
 
         Assert.notNull(annotation, "class did not have a VaadinView annotation");
 
+        final Map<String, ViewProviderAccessDelegate> accessDelegates = applicationContext.getBeansOfType(ViewProviderAccessDelegate.class);
+        for (ViewProviderAccessDelegate accessDelegate : accessDelegates.values()) {
+            if (!accessDelegate.isAccessGranted(viewClass, currentUI)) {
+                logger.debug(String.format("Access delegate [%s] denied access to view class [%s]", accessDelegate, viewClass.getCanonicalName()));
+                return false;
+            }
+        }
+
         if (annotation.ui().length == 0) {
             logger.debug(String.format("View class [%s] with view name [%s] is available for all UI subclasses", viewClass.getCanonicalName(), annotation.name()));
             return true;
@@ -177,5 +187,22 @@ public class SpringViewProvider implements ViewProvider {
         }
         logger.warn(String.format("Found no view with name [%s]", viewName));
         return null;
+    }
+
+    /**
+     * Interface to be implemented by Spring beans that will be consulted before the Spring View provider
+     * provides a view. If any of the view providers deny access, the view provider will act like no such
+     * view ever existed.
+     */
+    public interface ViewProviderAccessDelegate {
+
+        /**
+         * Checks if the current user has access to the specified view and UI.
+         *
+         * @param viewClass the view class, never {@code null}.
+         * @param ui        the UI, never {@code null}.
+         * @return true if access is granted, false if access is denied.
+         */
+        boolean isAccessGranted(Class<? extends View> viewClass, UI ui);
     }
 }
