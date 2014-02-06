@@ -15,32 +15,44 @@
  */
 package org.vaadin.spring.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-
-import java.io.Serializable;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.Assert;
 
 /**
- * Convenience interface that provides the Spring Security operations that are most commonly required in a Vaadin application.
+ * Convenience class that provides the Spring Security operations that are most commonly required in a Vaadin application.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-public interface Security extends Serializable {
+public class Security {
+
+    @Autowired
+    AuthenticationManager authenticationManager;
 
     /**
      * Checks if the current user is authenticated or not.
      */
-    boolean isAuthenticated();
+    public boolean isAuthenticated() {
+        Authentication authentication = getAuthentication();
+        return authentication != null && authentication.isAuthenticated();
+    }
 
     /**
      * Tries to login using the specified authentication object. If authentication succeeds, this method
      * will return without exceptions.
      *
      * @param authentication the authentication object to authenticate, must not be {@code null}.
-     * @throws AuthenticationException if authentication failed.
+     * @throws org.springframework.security.core.AuthenticationException if authentication failed.
      */
-    void login(Authentication authentication) throws AuthenticationException;
+    public void login(Authentication authentication) throws AuthenticationException {
+        throw new UnsupportedOperationException("Not implemented yet"); // TODO Implement me!
+    }
 
     /**
      * Convenience method that invokes {@link #login(org.springframework.security.core.Authentication)} with a
@@ -50,29 +62,84 @@ public interface Security extends Serializable {
      * @param password the password to use, must not be {@code null}.
      * @throws AuthenticationException if authentication failed.
      */
-    void login(String username, String password) throws AuthenticationException;
+    public void login(String username, String password) throws AuthenticationException {
+        login(new UsernamePasswordAuthenticationToken(username, password));
+    }
 
     /**
      * Logs the user out, clearing the {@link org.springframework.security.core.context.SecurityContext} without
      * invalidating the session.
      */
-    void logout();
+    public void logout() {
+        throw new UnsupportedOperationException("Not implemented yet"); // TODO Implement me!
+    }
+
+    /**
+     * @param authority
+     * @return
+     */
+    public boolean hasAuthority(String authority) {
+        throw new UnsupportedOperationException("Not implemented yet"); // TODO Implement me!
+    }
+
+    /**
+     * @return
+     */
+    public Authentication getAuthentication() {
+        final SecurityContext securityContext = SecurityContextHolder.getContext();
+        final Authentication authentication = securityContext.getAuthentication();
+        return authentication;
+    }
 
     /**
      * Checks if the current user is authorized based on the specified security configuration attributes. The attributes
      * can be roles or Spring EL expressions (basically anything you can specify as values of the {@link org.springframework.security.access.annotation.Secured} annotation).
      *
+     * @param securedObject                   the secured object.
      * @param securityConfigurationAttributes the security configuration attributes.
      * @return true if the current user is authorized, false if not.
      */
-    boolean isAuthorized(String... securityConfigurationAttributes);
+    public boolean hasAccessToObject(Object securedObject, String... securityConfigurationAttributes) {
+        throw new UnsupportedOperationException("Not implemented yet"); // TODO Implement me!
+    }
 
     /**
-     * Convenience method that invokes {@link #isAuthorized(String...)}, passing in the value of the specified {@link org.springframework.security.access.annotation.Secured} annotation instance.
+     * Convenience method that invokes {@link #hasAccessToObject(Object, String...)}, using the {@link org.springframework.security.access.annotation.Secured} annotation of the secured object
+     * to get the security configuration attributes.
      *
-     * @param securityConfiguration the security annotation instance.
+     * @param securedObject the secured object, must not be {@code null} and must have the {@link org.springframework.security.access.annotation.Secured} annotation.
      * @return true if the current user is authorized, false if not.
      */
-    boolean isAuthorized(Secured securityConfiguration);
+    public boolean hasAccessToSecuredObject(Object securedObject) {
+        Secured secured = securedObject.getClass().getAnnotation(Secured.class);
+        Assert.notNull(secured, "securedObject did not have @Secured annotation");
+        return hasAccessToObject(securedObject, secured.value());
+    }
+
+    /**
+     * @param authorities
+     * @return
+     */
+    public boolean hasAuthorities(String... authorities) {
+        for (String authority : authorities) {
+            if (!hasAuthority(authority)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @param authorities
+     * @return
+     */
+    public boolean hasAnyAuthority(String... authorities) {
+        for (String authority : authorities) {
+            if (hasAuthority(authority)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
