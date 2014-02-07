@@ -13,18 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.security;
+package org.vaadin.spring.boot.security;
+
+import com.vaadin.ui.UI;
 
 import java.lang.annotation.*;
 
 /**
- * Annotation to be placed on Vaadin {@link com.vaadin.ui.UI}s that handle the authentication themselves.
- * Spring Security will automatically be configured to allow access to the the URL of the UI.
+ * Annotation to be placed on Vaadin {@link com.vaadin.ui.UI}s that delegate to another Vaadin UI to handle the authentication.
+ * Spring Security will automatically be configured to redirect to the URL of the specified authentication UI if
+ * the current user has not been authenticated.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface SelfContainedAuthentication {
+public @interface ExternalUIAuthentication {
+
+    /**
+     * The UI that will handle the authentication. Spring Security will automatically be configured to allow access to the
+     * UI if the current user is not authenticated.
+     */
+    Class<? extends UI> authenticationUI();
 }
