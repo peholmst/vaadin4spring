@@ -16,14 +16,23 @@
 package org.vaadin.spring.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Convenience class that provides the Spring Security operations that are most commonly required in a Vaadin application.
@@ -35,11 +44,18 @@ public class Security {
     @Autowired
     AuthenticationManager authenticationManager;
 
+    @Autowired
+    AccessDecisionManager accessDecisionManager;
+
     /**
-     * Checks if the current user is authenticated or not.
+     * Checks if the current user is authenticated.
+     *
+     * @return true if the current {@link org.springframework.security.core.context.SecurityContext} contains an {@link org.springframework.security.core.Authentication} token,
+     * and the token has been authenticated by an {@link org.springframework.security.authentication.AuthenticationManager}.
+     * @see org.springframework.security.core.Authentication#isAuthenticated()
      */
     public boolean isAuthenticated() {
-        Authentication authentication = getAuthentication();
+        final Authentication authentication = getAuthentication();
         return authentication != null && authentication.isAuthenticated();
     }
 
@@ -48,10 +64,12 @@ public class Security {
      * will return without exceptions.
      *
      * @param authentication the authentication object to authenticate, must not be {@code null}.
-     * @throws org.springframework.security.core.AuthenticationException if authentication failed.
+     * @throws org.springframework.security.core.AuthenticationException if authentication fails.
      */
     public void login(Authentication authentication) throws AuthenticationException {
-        throw new UnsupportedOperationException("Not implemented yet"); // TODO Implement me!
+        final Authentication fullyAuthenticated = authenticationManager.authenticate(authentication);
+        final SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(fullyAuthenticated);
     }
 
     /**
@@ -60,7 +78,7 @@ public class Security {
      *
      * @param username the username to use, must not be {@code null}.
      * @param password the password to use, must not be {@code null}.
-     * @throws AuthenticationException if authentication failed.
+     * @throws AuthenticationException if authentication fails.
      */
     public void login(String username, String password) throws AuthenticationException {
         login(new UsernamePasswordAuthenticationToken(username, password));
@@ -71,19 +89,37 @@ public class Security {
      * invalidating the session.
      */
     public void logout() {
-        throw new UnsupportedOperationException("Not implemented yet"); // TODO Implement me!
+        final SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(null);
     }
 
     /**
-     * @param authority
-     * @return
+     * Checks if the current user has the specified authority. This method works with static authorities (such as roles).
+     * If you need more dynamic authorization (such as ACLs or EL expressions), use {@link #hasAccessToObject(Object, String...)}.
+     *
+     * @param authority the authority to check, must not be {@code null}.
+     * @return true if the current {@link org.springframework.security.core.context.SecurityContext} contains an authenticated {@link org.springframework.security.core.Authentication}
+     * token that has a {@link org.springframework.security.core.GrantedAuthority} whose string representation matches the specified {@code authority}.
+     * @see org.springframework.security.core.Authentication#getAuthorities()
+     * @see org.springframework.security.core.GrantedAuthority#getAuthority()
      */
     public boolean hasAuthority(String authority) {
-        throw new UnsupportedOperationException("Not implemented yet"); // TODO Implement me!
+        final Authentication authentication = getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return false;
+        }
+        for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
+            if (authority.equals(grantedAuthority.getAuthority())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
-     * @return
+     * Gets the authentication token of the current user.
+     *
+     * @return the {@link org.springframework.security.core.Authentication} token stored in the current {@link org.springframework.security.core.context.SecurityContext}, or {@code null}.
      */
     public Authentication getAuthentication() {
         final SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -100,7 +136,20 @@ public class Security {
      * @return true if the current user is authorized, false if not.
      */
     public boolean hasAccessToObject(Object securedObject, String... securityConfigurationAttributes) {
-        throw new UnsupportedOperationException("Not implemented yet"); // TODO Implement me!
+        final Authentication authentication = getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return false;
+        }
+        final Collection<ConfigAttribute> configAttributes = new ArrayList<>(securityConfigurationAttributes.length);
+        for (String securityConfigString : securityConfigurationAttributes) {
+            configAttributes.add(new SecurityConfig(securityConfigString));
+        }
+        try {
+            accessDecisionManager.decide(authentication, securedObject, configAttributes);
+            return true;
+        } catch (AccessDeniedException | InsufficientAuthenticationException ex) {
+            return false;
+        }
     }
 
     /**
@@ -111,14 +160,18 @@ public class Security {
      * @return true if the current user is authorized, false if not.
      */
     public boolean hasAccessToSecuredObject(Object securedObject) {
-        Secured secured = securedObject.getClass().getAnnotation(Secured.class);
+        final Secured secured = securedObject.getClass().getAnnotation(Secured.class);
         Assert.notNull(secured, "securedObject did not have @Secured annotation");
         return hasAccessToObject(securedObject, secured.value());
     }
 
     /**
-     * @param authorities
-     * @return
+     * Checks if the current user has all required authorities.
+     *
+     * @param authorities the required authorities.
+     * @return true if the current user is authenticated and has all of the specified authorities.
+     * @see #hasAuthority(String)
+     * @see #hasAnyAuthority(String...)
      */
     public boolean hasAuthorities(String... authorities) {
         for (String authority : authorities) {
@@ -130,8 +183,12 @@ public class Security {
     }
 
     /**
-     * @param authorities
-     * @return
+     * Checks if the current user has at least one of the specified authorities.
+     *
+     * @param authorities the authorities.
+     * @return true if the current user is authenticated and has at least one of the specified authorities.
+     * @see #hasAuthority(String)
+     * @see #hasAuthorities(String...)
      */
     public boolean hasAnyAuthority(String... authorities) {
         for (String authority : authorities) {
@@ -141,5 +198,4 @@ public class Security {
         }
         return false;
     }
-
 }
