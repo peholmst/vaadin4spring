@@ -21,7 +21,12 @@
     <contributors>
         <contributor>
             <name>Josh Long</name>
-            <!-- TODO Fill in missing details -->
+            <email>josh@joshlong.com</email>
+        </contributor>
+        <contributor>
+            <name>Matti Tahvonen</name>
+            <organization>Vaadin</organization>
+            <email>matti@vaadin.com</email>
         </contributor>
         <contributor>
             <name>Petter Holmström</name>
@@ -129,9 +134,8 @@
     </repositories>
 
     <modules>
-        <module>spring-boot-sample</module>
         <module>spring-boot-vaadin</module>
         <module>spring-vaadin</module>
-        <module>spring-boot-sample-security</module>
+        <module>spring-security-vaadin</module>
     </modules>
 </project>
