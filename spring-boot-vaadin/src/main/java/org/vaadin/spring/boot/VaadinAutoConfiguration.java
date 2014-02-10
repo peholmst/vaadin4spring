@@ -66,6 +66,7 @@ public class VaadinAutoConfiguration {
          * Name of the Spring environment property that contains the URL mapping of the Vaadin servlet. By default, this mapping is {@code /*}.
          */
         public static final String SERVLET_URL_MAPPING_PARAMETER_NAME = "vaadin.servlet.urlMapping";
+        public static final String DEFAULT_SERVLET_URL_MAPPING = "/*";
         @Autowired
         Environment environment;
 
@@ -77,7 +78,7 @@ public class VaadinAutoConfiguration {
         @Bean
         ServletRegistrationBean vaadinServlet() {
             logger.debug("Registering Vaadin servlet");
-            final String urlMapping = this.environment.getProperty(SERVLET_URL_MAPPING_PARAMETER_NAME, "/*");
+            final String urlMapping = this.environment.getProperty(SERVLET_URL_MAPPING_PARAMETER_NAME, DEFAULT_SERVLET_URL_MAPPING);
             logger.debug("Vaadin Servlet will be mapped to URL [" + urlMapping + "]");
             final ServletRegistrationBean registrationBean = new ServletRegistrationBean(
                     new SpringAwareVaadinServlet(), urlMapping, "/VAADIN/*");
