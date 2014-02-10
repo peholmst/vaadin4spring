@@ -15,6 +15,8 @@
  */
 package org.vaadin.spring.security;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
@@ -31,6 +33,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.Assert;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -44,8 +47,17 @@ public class Security {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    @Autowired
+    @Autowired(required = false)
     AccessDecisionManager accessDecisionManager;
+
+    private Log logger = LogFactory.getLog(getClass());
+
+    @PostConstruct
+    void init() {
+        if (accessDecisionManager == null) {
+            logger.warn("No AccessDecisionManager set! Some security methods will not be available.");
+        }
+    }
 
     /**
      * Checks if the current user is authenticated.
@@ -137,7 +149,7 @@ public class Security {
      */
     public boolean hasAccessToObject(Object securedObject, String... securityConfigurationAttributes) {
         final Authentication authentication = getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
+        if (accessDecisionManager == null || authentication == null || !authentication.isAuthenticated()) {
             return false;
         }
         final Collection<ConfigAttribute> configAttributes = new ArrayList<>(securityConfigurationAttributes.length);
