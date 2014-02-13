@@ -34,7 +34,11 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.SpringServletContainerInitializer;
+import org.springframework.web.WebApplicationInitializer;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
 import org.vaadin.spring.VaadinUI;
@@ -51,7 +55,12 @@ import org.vaadin.spring.navigator.VaadinView;
  */
 @EnableAutoConfiguration
 @ComponentScan
-public class Application {
+public class Application extends SpringBootServletInitializer {
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(Application.class);
+    }
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Application.class, args);
