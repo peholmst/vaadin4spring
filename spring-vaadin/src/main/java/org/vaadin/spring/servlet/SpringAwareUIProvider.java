@@ -53,7 +53,7 @@ public class SpringAwareUIProvider extends UIProvider {
             Class<?> beanType = webApplicationContext.getType(uiBeanName);
             if (UI.class.isAssignableFrom(beanType)) {
                 logger.info(String.format("Found Vaadin UI [%s]", beanType.getCanonicalName()));
-                final String path = beanType.getAnnotation(VaadinUI.class).path();
+                final String path = webApplicationContext.findAnnotationOnBean(uiBeanName, VaadinUI.class).path();
                 Class<? extends UI> existingBeanType = pathToUIMap.get(path);
                 if (existingBeanType != null) {
                     throw new IllegalStateException(String.format("[%s] is already mapped to the path [%s]", existingBeanType.getCanonicalName(), path));
