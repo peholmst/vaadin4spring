@@ -15,15 +15,12 @@
  */
 package org.vaadin.spring.events;
 
-import org.vaadin.spring.UIScope;
-
 /**
  * An event bus for {@link org.vaadin.spring.events.EventScope#UI} scoped events. The event bus
  * can be used as is, or chained to a {@link org.vaadin.spring.events.SessionEventBus}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@UIScope
 public class UIEventBus extends ScopedEventBus {
 
     public UIEventBus() {

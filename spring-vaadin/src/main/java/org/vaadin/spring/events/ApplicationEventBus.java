@@ -15,9 +15,10 @@
  */
 package org.vaadin.spring.events;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.annotation.Scope;
 
 /**
  * An event bus for {@link org.vaadin.spring.events.EventScope#APPLICATION} scoped events. Any events published using
@@ -26,8 +27,9 @@ import org.springframework.context.annotation.Scope;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@Scope("singleton")
 public class ApplicationEventBus extends ScopedEventBus implements ApplicationListener<ApplicationEvent> {
+
+    private Log logger = LogFactory.getLog(getClass());
 
     @Override
     protected EventScope getScope() {
@@ -36,6 +38,7 @@ public class ApplicationEventBus extends ScopedEventBus implements ApplicationLi
 
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
+        logger.debug(String.format("Propagating application event [%s] to event bus [%s]", event, this));
         publish(event.getSource(), event);
     }
 }

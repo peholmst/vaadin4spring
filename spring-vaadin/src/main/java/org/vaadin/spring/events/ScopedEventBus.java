@@ -15,13 +15,20 @@
  */
 package org.vaadin.spring.events;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.Serializable;
+
 /**
  * Base class for an {@link org.vaadin.spring.events.EventBus} that publishes events with one specific {@link org.vaadin.spring.events.EventScope}.
  * A scoped event bus can also have a parent event bus, in which case all events published on the parent bus will propagate to the scoped event bus as well.
  *
  * @author petter@vaadin.com
  */
-public abstract class ScopedEventBus implements EventBus {
+public abstract class ScopedEventBus implements EventBus, Serializable {
+
+    private final Log logger = LogFactory.getLog(getClass());
 
     /**
      * A list of listeners subscribed to this event bus.
@@ -32,6 +39,7 @@ public abstract class ScopedEventBus implements EventBus {
     private EventBusListener<Object> parentListener = new EventBusListener<Object>() {
         @Override
         public void onEvent(Event<Object> event) {
+            logger.debug(String.format("Propagating event [%s] from parent event bus [%s] to event bus [%s]", event, parentEventBus, ScopedEventBus.this));
             listeners.publish(event);
         }
     };
@@ -45,6 +53,7 @@ public abstract class ScopedEventBus implements EventBus {
      */
     protected ScopedEventBus(EventBus parentEventBus) {
         if (parentEventBus != null) {
+            logger.debug("Using parent event bus [" + parentEventBus + "]");
             parentEventBus.subscribe(parentListener);
         }
         this.parentEventBus = parentEventBus;
@@ -60,16 +69,31 @@ public abstract class ScopedEventBus implements EventBus {
 
     @Override
     public <T> void publish(Object sender, T payload) {
+        logger.debug(String.format("Publishing payload [%s] from sender [%s] on event bus [%s]", payload, sender, this));
         listeners.publish(new Event<T>(getScope(), this, sender, payload));
     }
 
+    /**
+     * {@inheritDoc}
+     * <p/>
+     * This implementation uses weak references to store the listeners, so make sure you store a reference to the listener
+     * somewhere else until you no longer need it.
+     */
     @Override
     public <T> void subscribe(EventBusListener<T> listener) {
+        logger.debug(String.format("Subscribing listener [%s] to event bus [%s]", listener, this));
         listeners.add(listener);
     }
 
+    /**
+     * {@inheritDoc}
+     * <p/>
+     * This implementation uses weak references to store listeners, which means that the listener will be automatically removed
+     * once it gets garbage collected.
+     */
     @Override
     public <T> void unsubscribe(EventBusListener<T> listener) {
+        logger.debug(String.format("Unsubscribing listener [%s] from event bus [%s]", listener, this));
         listeners.remove(listener);
     }
 

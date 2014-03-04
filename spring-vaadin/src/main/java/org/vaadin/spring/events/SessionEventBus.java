@@ -15,15 +15,12 @@
  */
 package org.vaadin.spring.events;
 
-import org.springframework.context.annotation.Scope;
-
 /**
  * An event bus for {@link org.vaadin.spring.events.EventScope#SESSION} scoped events.
  * The event bus can be used as is, or chained to an {@link org.vaadin.spring.events.ApplicationEventBus}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@Scope("session")
 public class SessionEventBus extends ScopedEventBus {
 
     public SessionEventBus() {

@@ -17,6 +17,7 @@ package org.vaadin.spring.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.vaadin.spring.events.ApplicationEventBus;
 import org.vaadin.spring.events.SessionEventBus;
 import org.vaadin.spring.events.UIEventBus;
@@ -50,11 +51,13 @@ public class VaadinConfiguration {
     }
 
     @Bean
+    @Scope("session")
     SessionEventBus sessionEventBus() {
         return new SessionEventBus(applicationEventBus());
     }
 
     @Bean
+    @Scope("ui")
     UIEventBus uiEventBus() {
         return new UIEventBus(sessionEventBus());
     }

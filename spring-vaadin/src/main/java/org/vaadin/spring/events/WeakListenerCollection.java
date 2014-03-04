@@ -15,7 +15,10 @@
  */
 package org.vaadin.spring.events;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.core.GenericTypeResolver;
+import org.springframework.util.Assert;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -31,6 +34,7 @@ import java.util.WeakHashMap;
  */
 class WeakListenerCollection implements Serializable {
 
+    private final Log logger = LogFactory.getLog(getClass());
     private final WeakHashMap<EventBusListener<?>, Class<?>> listeners = new WeakHashMap<>();
 
     /**
@@ -41,6 +45,8 @@ class WeakListenerCollection implements Serializable {
      */
     public <T> void add(EventBusListener<T> listener) {
         Class<?> eventPayloadType = GenericTypeResolver.resolveTypeArgument(listener.getClass(), EventBusListener.class);
+        Assert.notNull(eventPayloadType, "Could not resolve payload type");
+        logger.debug(String.format("Adding listener [%s] for payload type [%s]", listener, eventPayloadType.getCanonicalName()));
         synchronized (listeners) {
             listeners.put(listener, eventPayloadType);
         }
@@ -53,6 +59,7 @@ class WeakListenerCollection implements Serializable {
      * @param <T>      the event payload type.
      */
     public <T> void remove(EventBusListener<T> listener) {
+        logger.debug(String.format("Removing listener [%s]", listener));
         synchronized (listeners) {
             listeners.remove(listener);
         }

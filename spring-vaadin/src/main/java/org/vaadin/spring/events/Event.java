@@ -87,4 +87,10 @@ public class Event<T> implements Serializable {
     public T getPayload() {
         return payload;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s[scope=%s, ts=%d, source0=[%s], eventBus=[%s], payload=[%s]]",
+                getClass().getSimpleName(), getScope(), getTimestamp(), getSource(), getEventBus(), getPayload());
+    }
 }
