@@ -83,13 +83,24 @@ public interface EventBus {
     EventScope getScope();
 
     /**
-     * Subscribes the specified listener to the event bus. The event bus will analyse the
-     * payload type of the listener to determine which events it is interested in receiving.
+     * Subscribes the specified listener to the event bus, including propagated events from parent event buses.
+     * The event bus will analyse the payload type of the listener to determine which events it is interested in receiving.
+     * This is the same as calling {@link #subscribe(EventBusListener, boolean) subscribe(listener, true)}.
      *
      * @param listener the listener to subscribe, never {@code null}.
      * @param <T>      the type of payload the listener is interested in.
      */
     <T> void subscribe(EventBusListener<T> listener);
+
+    /**
+     * Subscribes the specified listener to the event bus for events. The event bus will analyse the
+     * payload type of the listener to determine which events it is interested in receiving.
+     *
+     * @param listener                   the listener to subscribe, never {@code null}.
+     * @param includingPropagatingEvents true to notify the listener of events that have propagated from the chain of parent event buses, false to only notify the listeners of events that are directly published on this event bus.
+     * @param <T>                        the type of payload the listener is interested in.
+     */
+    <T> void subscribe(EventBusListener<T> listener, boolean includingPropagatingEvents);
 
     /**
      * Unsubscribes the specified listener from the event bus.
