@@ -37,20 +37,39 @@ import java.util.WeakHashMap;
 class WeakListenerCollection implements Serializable {
 
     private final Log logger = LogFactory.getLog(getClass());
-    private final WeakHashMap<EventBusListener<?>, Class<?>> listeners = new WeakHashMap<>();
+    private final WeakHashMap<EventBusListener<?>, ListenerMetaData> listeners = new WeakHashMap<>();
+
+    static class ListenerMetaData implements Serializable {
+        final Class<?> payloadType;
+        final Object metaData;
+
+        ListenerMetaData(Class<?> payloadType, Object metaData) {
+            this.payloadType = payloadType;
+            this.metaData = metaData;
+        }
+
+        boolean supportsPayload(Object payload) {
+            return payloadType.isAssignableFrom(payload.getClass());
+        }
+    }
+
+    public interface ListenerSpecification {
+        boolean satisfies(Object metaData);
+    }
 
     /**
      * Adds the specified listener to the collection.
      *
      * @param listener the listener to add, never {@code null}.
+     * @param metaData optional meta data to associate with the listener, may be {@code null}.
      * @param <T>      the event payload type.
      */
-    public <T> void add(EventBusListener<T> listener) {
+    public <T> void add(EventBusListener<T> listener, Object metaData) {
         Class<?> eventPayloadType = GenericTypeResolver.resolveTypeArgument(listener.getClass(), EventBusListener.class);
         Assert.notNull(eventPayloadType, "Could not resolve payload type");
         logger.debug(String.format("Adding listener [%s] for payload type [%s]", listener, eventPayloadType.getCanonicalName()));
         synchronized (listeners) {
-            listeners.put(listener, eventPayloadType);
+            listeners.put(listener, new ListenerMetaData(eventPayloadType, metaData));
         }
     }
 
@@ -68,23 +87,38 @@ class WeakListenerCollection implements Serializable {
     }
 
     /**
-     * Publishes the specified event to all listeners that can receive it.
+     * Publishes the specified event to all listeners.
      *
      * @param event the event to publish, never {@code null}.
      * @param <T>   the event payload type.
      */
     public <T> void publish(Event<T> event) {
-        Class<T> eventPayloadType = (Class<T>) event.getPayload().getClass();
-        for (EventBusListener<T> listener : getListenersForPayloadType(eventPayloadType)) {
+        publish(event, new ListenerSpecification() {
+            @Override
+            public boolean satisfies(Object metaData) {
+                return true;
+            }
+        });
+    }
+
+    /**
+     * Publishes the specified event to all listeners that satisfies the specification.
+     *
+     * @param event         the event to publish, never {@code null}.
+     * @param specification the specification of which event listeners to publish to, never {@code null}.
+     * @param <T>           the event payload type.
+     */
+    public <T> void publish(Event<T> event, ListenerSpecification specification) {
+        for (EventBusListener<T> listener : getListenersForPayload(event.getPayload(), specification)) {
             listener.onEvent(event);
         }
     }
 
-    private <T> Set<EventBusListener<T>> getListenersForPayloadType(Class<T> payloadType) {
+    private <T> Set<EventBusListener<T>> getListenersForPayload(T payload, ListenerSpecification specification) {
         Set<EventBusListener<T>> selectedListeners = new HashSet<>();
         synchronized (listeners) {
-            for (Map.Entry<EventBusListener<?>, Class<?>> entry : listeners.entrySet()) {
-                if (entry.getValue().isAssignableFrom(payloadType)) {
+            for (Map.Entry<EventBusListener<?>, ListenerMetaData> entry : listeners.entrySet()) {
+                if (entry.getValue().supportsPayload(payload) && specification.satisfies(entry.getValue().metaData)) {
                     selectedListeners.add((EventBusListener<T>) entry.getKey());
                 }
             }

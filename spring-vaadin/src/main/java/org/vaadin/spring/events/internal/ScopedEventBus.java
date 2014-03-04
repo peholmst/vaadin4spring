@@ -44,9 +44,14 @@ public class ScopedEventBus implements EventBus, Serializable {
     private EventBus parentEventBus;
     private EventBusListener<Object> parentListener = new EventBusListener<Object>() {
         @Override
-        public void onEvent(Event<Object> event) {
+        public void onEvent(final Event<Object> event) {
             logger.debug(String.format("Propagating event [%s] from parent event bus [%s] to event bus [%s]", event, parentEventBus, ScopedEventBus.this));
-            listeners.publish(event);
+            listeners.publish(event, new WeakListenerCollection.ListenerSpecification() {
+                @Override
+                public boolean satisfies(Object metaData) {
+                    return (Boolean) metaData;
+                }
+            });
         }
     };
 
@@ -71,7 +76,7 @@ public class ScopedEventBus implements EventBus, Serializable {
     }
 
     @PreDestroy
-    private void destroy() {
+    void destroy() {
         if (parentEventBus != null) {
             parentEventBus.unsubscribe(parentListener);
         }
@@ -109,8 +114,19 @@ public class ScopedEventBus implements EventBus, Serializable {
      */
     @Override
     public <T> void subscribe(EventBusListener<T> listener) {
+        subscribe(listener, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p/>
+     * This implementation uses weak references to store the listeners, so make sure you store a reference to the listener
+     * somewhere else until you no longer need it.
+     */
+    @Override
+    public <T> void subscribe(EventBusListener<T> listener, boolean includingPropagatingEvents) {
         logger.debug(String.format("Subscribing listener [%s] to event bus [%s]", listener, this));
-        listeners.add(listener);
+        listeners.add(listener, includingPropagatingEvents);
     }
 
     /**
