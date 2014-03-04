@@ -68,9 +68,13 @@ public class SpringViewProvider implements ViewProvider {
 
     // We can have multiple views with the same view name, as long as they belong to different UI subclasses
     private final Map<String, Set<String>> viewNameToBeanNamesMap = new ConcurrentHashMap<>();
-    @Autowired
-    ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
     private transient Log logger = LogFactory.getLog(getClass());
+
+    @Autowired
+    public SpringViewProvider(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         logger = LogFactory.getLog(getClass());

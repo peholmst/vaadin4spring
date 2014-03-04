@@ -15,6 +15,9 @@
  */
 package org.vaadin.spring.config;
 
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.*;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusScope;
@@ -33,7 +36,9 @@ import org.vaadin.spring.navigator.SpringViewProvider;
  * @see org.vaadin.spring.EnableVaadin
  */
 @Configuration
-public class VaadinConfiguration {
+public class VaadinConfiguration implements ApplicationContextAware {
+
+    private ApplicationContext applicationContext;
 
     @Bean
     static VaadinUIScope uiScope() {
@@ -42,7 +47,7 @@ public class VaadinConfiguration {
 
     @Bean
     SpringViewProvider viewProvider() {
-        return new SpringViewProvider();
+        return new SpringViewProvider(applicationContext);
     }
 
     @Bean
@@ -69,5 +74,10 @@ public class VaadinConfiguration {
     @EventBusScope(EventScope.UI)
     EventBus uiEventBus() {
         return new ScopedEventBus(EventScope.UI, sessionEventBus());
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }
