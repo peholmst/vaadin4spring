@@ -134,4 +134,9 @@ public class ScopedEventBus implements EventBus, Serializable {
     protected EventBus getParentEventBus() {
         return parentEventBus;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s[id=%d, eventScope=%s, parentEventBus=%s]", getClass().getSimpleName(), System.identityHashCode(this), eventScope, parentEventBus);
+    }
 }
