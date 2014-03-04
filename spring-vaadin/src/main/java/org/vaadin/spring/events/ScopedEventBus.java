@@ -28,6 +28,7 @@ public abstract class ScopedEventBus implements EventBus {
      */
     protected final WeakListenerCollection listeners = new WeakListenerCollection();
 
+    private EventBus parentEventBus;
     private EventBusListener<Object> parentListener = new EventBusListener<Object>() {
         @Override
         public void onEvent(Event<Object> event) {
@@ -36,10 +37,17 @@ public abstract class ScopedEventBus implements EventBus {
     };
 
     protected ScopedEventBus() {
-        EventBus parent = getParentEventBus();
-        if (parent != null) {
-            parent.subscribe(parentListener);
+        this(null);
+    }
+
+    /**
+     * @param parentEventBus the parent event bus to use, may be {@code null};
+     */
+    protected ScopedEventBus(EventBus parentEventBus) {
+        if (parentEventBus != null) {
+            parentEventBus.subscribe(parentListener);
         }
+        this.parentEventBus = parentEventBus;
     }
 
     /**
@@ -71,5 +79,7 @@ public abstract class ScopedEventBus implements EventBus {
      *
      * @return the parent event bus, or {@code null} if this event bus has no parent.
      */
-    protected abstract EventBus getParentEventBus();
+    protected EventBus getParentEventBus() {
+        return parentEventBus;
+    }
 }
