@@ -15,23 +15,23 @@
  */
 package org.vaadin.spring.events;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import java.lang.annotation.*;
+
 /**
- * An event bus for {@link org.vaadin.spring.events.EventScope#SESSION} scoped events.
- * The event bus can be used as is, or chained to an {@link org.vaadin.spring.events.ApplicationEventBus}.
+ * Qualifier to be used to specify which type of {@link org.vaadin.spring.events.EventBus} to inject.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-public class SessionEventBus extends ScopedEventBus {
-
-    public SessionEventBus() {
-    }
-
-    public SessionEventBus(ApplicationEventBus parentEventBus) {
-        super(parentEventBus);
-    }
-
-    @Override
-    protected EventScope getScope() {
-        return EventScope.SESSION;
-    }
+@Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE, ElementType.ANNOTATION_TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Inherited
+@Documented
+@Qualifier
+public @interface EventBusScope {
+    /**
+     * The scope of the event bus.
+     */
+    EventScope value();
 }

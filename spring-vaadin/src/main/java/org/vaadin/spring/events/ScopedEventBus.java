@@ -18,17 +18,19 @@ package org.vaadin.spring.events;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.annotation.PreDestroy;
 import java.io.Serializable;
 
 /**
- * Base class for an {@link org.vaadin.spring.events.EventBus} that publishes events with one specific {@link org.vaadin.spring.events.EventScope}.
+ * Implementation of {@link org.vaadin.spring.events.EventBus} that publishes events with one specific {@link org.vaadin.spring.events.EventScope}.
  * A scoped event bus can also have a parent event bus, in which case all events published on the parent bus will propagate to the scoped event bus as well.
  *
  * @author petter@vaadin.com
  */
-public abstract class ScopedEventBus implements EventBus, Serializable {
+public class ScopedEventBus implements EventBus, Serializable {
 
     private final Log logger = LogFactory.getLog(getClass());
+    private final EventScope eventScope;
 
     /**
      * A list of listeners subscribed to this event bus.
@@ -44,14 +46,19 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
         }
     };
 
-    protected ScopedEventBus() {
-        this(null);
+    /**
+     * @param scope the scope of the events that this event bus handles.
+     */
+    public ScopedEventBus(EventScope scope) {
+        this(scope, null);
     }
 
     /**
+     * @param scope          the scope of the events that this event bus handles.
      * @param parentEventBus the parent event bus to use, may be {@code null};
      */
-    protected ScopedEventBus(EventBus parentEventBus) {
+    public ScopedEventBus(EventScope scope, EventBus parentEventBus) {
+        eventScope = scope;
         if (parentEventBus != null) {
             logger.debug("Using parent event bus [" + parentEventBus + "]");
             parentEventBus.subscribe(parentListener);
@@ -59,18 +66,35 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
         this.parentEventBus = parentEventBus;
     }
 
-    /**
-     * Gets the scope of the events published on this event bus.
-     *
-     * @return the event scope, never {@code null}.
-     * @see org.vaadin.spring.events.Event#getScope()
-     */
-    protected abstract EventScope getScope();
+    @PreDestroy
+    private void destroy() {
+        if (parentEventBus != null) {
+            parentEventBus.unsubscribe(parentListener);
+        }
+    }
+
+    @Override
+    public EventScope getScope() {
+        return eventScope;
+    }
 
     @Override
     public <T> void publish(Object sender, T payload) {
         logger.debug(String.format("Publishing payload [%s] from sender [%s] on event bus [%s]", payload, sender, this));
-        listeners.publish(new Event<T>(getScope(), this, sender, payload));
+        listeners.publish(new Event<>(getScope(), sender, payload));
+    }
+
+    @Override
+    public <T> void publish(EventScope scope, Object sender, T payload) throws UnsupportedOperationException {
+        logger.debug(String.format("Trying to publish payload [%s] from sender [%s] using scope [%s] on event bus [%s]", payload, sender, scope, this));
+        if (eventScope.equals(scope)) {
+            publish(sender, payload);
+        } else if (parentEventBus != null) {
+            parentEventBus.publish(scope, sender, payload);
+        } else {
+            logger.warn(String.format("Could not publish payload with scope [%s] on event bus [%s]", scope, this));
+            throw new UnsupportedOperationException("Could not publish event with scope " + scope);
+        }
     }
 
     /**

@@ -15,12 +15,8 @@
  */
 package org.vaadin.spring.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.vaadin.spring.events.ApplicationEventBus;
-import org.vaadin.spring.events.SessionEventBus;
-import org.vaadin.spring.events.UIEventBus;
+import org.springframework.context.annotation.*;
+import org.vaadin.spring.events.*;
 import org.vaadin.spring.internal.VaadinUIScope;
 import org.vaadin.spring.navigator.SpringViewProvider;
 
@@ -46,19 +42,28 @@ public class VaadinConfiguration {
     }
 
     @Bean
-    ApplicationEventBus applicationEventBus() {
-        return new ApplicationEventBus();
+    ApplicationContextEventBroker applicationContextEventBroker() {
+        return new ApplicationContextEventBroker(applicationEventBus());
     }
 
     @Bean
-    @Scope("session")
-    SessionEventBus sessionEventBus() {
-        return new SessionEventBus(applicationEventBus());
+    @EventBusScope(EventScope.APPLICATION)
+    EventBus applicationEventBus() {
+        return new ScopedEventBus(EventScope.APPLICATION);
     }
 
     @Bean
-    @Scope("ui")
-    UIEventBus uiEventBus() {
-        return new UIEventBus(sessionEventBus());
+    @Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES)
+    @EventBusScope(EventScope.SESSION)
+    EventBus sessionEventBus() {
+        return new ScopedEventBus(EventScope.SESSION, applicationEventBus());
+    }
+
+    @Bean
+    @Scope(value = "ui", proxyMode = ScopedProxyMode.INTERFACES)
+    @Primary
+    @EventBusScope(EventScope.UI)
+    EventBus uiEventBus() {
+        return new ScopedEventBus(EventScope.UI, sessionEventBus());
     }
 }

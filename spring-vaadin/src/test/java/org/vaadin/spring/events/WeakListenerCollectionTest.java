@@ -42,7 +42,7 @@ public class WeakListenerCollectionTest {
         final WeakListenerCollection listenerList = new WeakListenerCollection();
         listenerList.add(stringListener);
 
-        listenerList.publish(new Event<>(EventScope.APPLICATION, null, this, "hello"));
+        listenerList.publish(new Event<>(EventScope.APPLICATION, this, "hello"));
 
         assertTrue(seenPayloads.contains("hello"));
     }
@@ -59,7 +59,7 @@ public class WeakListenerCollectionTest {
         final WeakListenerCollection listenerList = new WeakListenerCollection();
         listenerList.add(integerListener);
 
-        listenerList.publish(new Event<>(EventScope.APPLICATION, null, this, "hello"));
+        listenerList.publish(new Event<>(EventScope.APPLICATION, this, "hello"));
     }
 
     @Test
@@ -74,7 +74,7 @@ public class WeakListenerCollectionTest {
         final WeakListenerCollection listenerList = new WeakListenerCollection();
         listenerList.add(objectListener);
 
-        listenerList.publish(new Event<>(EventScope.APPLICATION, null, this, "hello"));
+        listenerList.publish(new Event<>(EventScope.APPLICATION, this, "hello"));
 
         assertTrue(seenPayloads.contains("hello"));
     }

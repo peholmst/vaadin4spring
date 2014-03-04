@@ -24,10 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
 import org.vaadin.spring.VaadinUI;
-import org.vaadin.spring.events.ApplicationEventBus;
+import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusListener;
-import org.vaadin.spring.events.SessionEventBus;
-import org.vaadin.spring.events.UIEventBus;
+import org.vaadin.spring.events.EventScope;
+
+import javax.annotation.PreDestroy;
 
 /**
  * Demo of the scoped event buses.
@@ -38,13 +39,7 @@ import org.vaadin.spring.events.UIEventBus;
 public class EventsUI extends UI implements EventBusListener<Object> {
 
     @Autowired
-    UIEventBus uiEventBus;
-
-    @Autowired
-    SessionEventBus sessionEventBus;
-
-    @Autowired
-    ApplicationEventBus applicationEventBus;
+    EventBus eventBus;
 
     @Autowired
     ApplicationContext applicationContext;
@@ -54,29 +49,25 @@ public class EventsUI extends UI implements EventBusListener<Object> {
     @Override
     protected void init(VaadinRequest request) {
         setPollInterval(300);
-        /*
-            We only need to subscribe to the UI event bus, since session scoped and application scoped events will propagate
-            to it.
-         */
-        uiEventBus.subscribe(this);
+        eventBus.subscribe(this);
 
         layout = new VerticalLayout(
                 new Button("Publish UI Event", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        uiEventBus.publish(EventsUI.this, "Hello World from UI");
+                        eventBus.publish(EventsUI.this, "Hello World from UI");
                     }
                 }),
                 new Button("Publish Session Event", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        sessionEventBus.publish(EventsUI.this, "Hello World from Session");
+                        eventBus.publish(EventScope.SESSION, EventsUI.this, "Hello World from Session");
                     }
                 }),
                 new Button("Publish Application Event", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        applicationEventBus.publish(EventsUI.this, "Hello World from Application");
+                        eventBus.publish(EventScope.APPLICATION, EventsUI.this, "Hello World from Application");
                     }
                 }),
                 new Button("Publish Application Context Event", new Button.ClickListener() {
@@ -98,5 +89,10 @@ public class EventsUI extends UI implements EventBusListener<Object> {
     @Override
     public void onEvent(org.vaadin.spring.events.Event<Object> event) {
         layout.addComponent(new Label(event.toString()));
+    }
+
+    @PreDestroy
+    void destroy() {
+        eventBus.unsubscribe(this); // It's good manners to do this, even though we should be automatically unsubscribed when the UI is garbage collected
     }
 }

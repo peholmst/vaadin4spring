@@ -27,17 +27,14 @@ public class Event<T> implements Serializable {
 
     private final EventScope scope;
 
-    private final EventBus eventBus;
-
     private final Object source;
 
     private final long timestamp;
 
     private final T payload;
 
-    Event(EventScope scope, EventBus eventBus, Object source, T payload) {
+    Event(EventScope scope, Object source, T payload) {
         this.scope = scope;
-        this.eventBus = eventBus;
         this.source = source;
         this.payload = payload;
         this.timestamp = System.currentTimeMillis();
@@ -50,15 +47,6 @@ public class Event<T> implements Serializable {
      */
     public EventScope getScope() {
         return scope;
-    }
-
-    /**
-     * Gets the event bus on which the event was published.
-     *
-     * @return the event bus, never {@code null}.
-     */
-    public EventBus getEventBus() {
-        return eventBus;
     }
 
     /**
@@ -90,7 +78,7 @@ public class Event<T> implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s[scope=%s, ts=%d, source0=[%s], eventBus=[%s], payload=[%s]]",
-                getClass().getSimpleName(), getScope(), getTimestamp(), getSource(), getEventBus(), getPayload());
+        return String.format("%s[scope=%s, ts=%d, source=[%s], payload=[%s]]",
+                getClass().getSimpleName(), getScope(), getTimestamp(), getSource(), getPayload());
     }
 }

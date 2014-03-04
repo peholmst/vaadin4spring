@@ -21,24 +21,23 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 
 /**
- * An event bus for {@link org.vaadin.spring.events.EventScope#APPLICATION} scoped events. Any events published using
- * the {@link org.springframework.context.ApplicationContext#publishEvent(org.springframework.context.ApplicationEvent)} method
- * will also be published on this bus. However, any events published on this bus directly will NOT be propagated to the Spring application context.
+ * An {@link org.springframework.context.ApplicationListener} that will forward all received events to an {@link org.vaadin.spring.events.EventBus}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-public class ApplicationEventBus extends ScopedEventBus implements ApplicationListener<ApplicationEvent> {
+public class ApplicationContextEventBroker implements ApplicationListener<ApplicationEvent> {
 
     private Log logger = LogFactory.getLog(getClass());
 
-    @Override
-    protected EventScope getScope() {
-        return EventScope.APPLICATION;
+    private final EventBus eventBus;
+
+    public ApplicationContextEventBroker(EventBus eventBus) {
+        this.eventBus = eventBus;
     }
 
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
         logger.debug(String.format("Propagating application event [%s] to event bus [%s]", event, this));
-        publish(event.getSource(), event);
+        eventBus.publish(event.getSource(), event);
     }
 }
