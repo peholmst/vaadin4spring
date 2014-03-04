@@ -13,10 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.events;
+package org.vaadin.spring.events.internal;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.vaadin.spring.events.Event;
+import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventBusListener;
+import org.vaadin.spring.events.EventScope;
 
 import javax.annotation.PreDestroy;
 import java.io.Serializable;

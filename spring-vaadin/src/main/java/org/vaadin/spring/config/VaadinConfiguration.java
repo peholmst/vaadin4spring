@@ -16,7 +16,11 @@
 package org.vaadin.spring.config;
 
 import org.springframework.context.annotation.*;
-import org.vaadin.spring.events.*;
+import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventBusScope;
+import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.internal.ApplicationContextEventBroker;
+import org.vaadin.spring.events.internal.ScopedEventBus;
 import org.vaadin.spring.internal.VaadinUIScope;
 import org.vaadin.spring.navigator.SpringViewProvider;
 

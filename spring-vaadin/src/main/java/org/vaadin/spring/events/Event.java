@@ -33,7 +33,7 @@ public class Event<T> implements Serializable {
 
     private final T payload;
 
-    Event(EventScope scope, Object source, T payload) {
+    public Event(EventScope scope, Object source, T payload) {
         this.scope = scope;
         this.source = source;
         this.payload = payload;

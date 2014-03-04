@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.events;
+package org.vaadin.spring.events.internal;
 
 import org.junit.Test;
+import org.vaadin.spring.events.Event;
+import org.vaadin.spring.events.EventBusListener;
+import org.vaadin.spring.events.EventScope;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +27,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
- * Test case for {@link WeakListenerCollection}.
+ * Test case for {@link org.vaadin.spring.events.internal.WeakListenerCollection}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */

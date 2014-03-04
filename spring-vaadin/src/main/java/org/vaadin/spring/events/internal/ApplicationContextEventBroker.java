@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.events;
+package org.vaadin.spring.events.internal;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
+import org.vaadin.spring.events.EventBus;
 
 /**
  * An {@link org.springframework.context.ApplicationListener} that will forward all received events to an {@link org.vaadin.spring.events.EventBus}.

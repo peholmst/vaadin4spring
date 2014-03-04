@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.events;
+package org.vaadin.spring.events.internal;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.util.Assert;
+import org.vaadin.spring.events.Event;
+import org.vaadin.spring.events.EventBusListener;
 
 import java.io.Serializable;
 import java.util.HashSet;
