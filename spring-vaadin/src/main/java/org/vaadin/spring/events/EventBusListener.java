@@ -23,7 +23,6 @@ import java.io.Serializable;
  * @param <T> type of event payloads that the listener is interested in receiving.
  * @author Petter Holmström (petter@vaadin.com)
  */
-@FunctionalInterface // TODO Verify this works with JDK 7 as well
 public interface EventBusListener<T> extends Serializable {
 
     /**
