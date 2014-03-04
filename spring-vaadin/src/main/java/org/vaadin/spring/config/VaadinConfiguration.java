@@ -17,6 +17,9 @@ package org.vaadin.spring.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.vaadin.spring.events.ApplicationEventBus;
+import org.vaadin.spring.events.SessionEventBus;
+import org.vaadin.spring.events.UIEventBus;
 import org.vaadin.spring.internal.VaadinUIScope;
 import org.vaadin.spring.navigator.SpringViewProvider;
 
@@ -39,5 +42,20 @@ public class VaadinConfiguration {
     @Bean
     SpringViewProvider viewProvider() {
         return new SpringViewProvider();
+    }
+
+    @Bean
+    ApplicationEventBus applicationEventBus() {
+        return new ApplicationEventBus();
+    }
+
+    @Bean
+    SessionEventBus sessionEventBus() {
+        return new SessionEventBus(applicationEventBus());
+    }
+
+    @Bean
+    UIEventBus uiEventBus() {
+        return new UIEventBus(sessionEventBus());
     }
 }
