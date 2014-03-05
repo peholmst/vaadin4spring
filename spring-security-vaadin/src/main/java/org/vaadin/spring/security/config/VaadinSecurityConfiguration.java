@@ -18,13 +18,18 @@ package org.vaadin.spring.security.config;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.framework.ProxyFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.vaadin.spring.navigator.SpringViewProvider;
 import org.vaadin.spring.security.Security;
 import org.vaadin.spring.security.SpringSecurityViewProviderAccessDelegate;
 
@@ -35,7 +40,9 @@ import org.vaadin.spring.security.SpringSecurityViewProviderAccessDelegate;
  * @see org.vaadin.spring.security.EnableVaadinSecurity
  */
 @Configuration
-public class VaadinSecurityConfiguration {
+public class VaadinSecurityConfiguration implements ApplicationContextAware {
+
+    private ApplicationContext applicationContext;
 
     @Bean
     Authentication currentUser() {
@@ -54,11 +61,29 @@ public class VaadinSecurityConfiguration {
 
     @Bean
     Security security() {
-        return new Security();
+        AuthenticationManager authenticationManager;
+        try {
+            authenticationManager = applicationContext.getBean(AuthenticationManager.class);
+        } catch (NoSuchBeanDefinitionException ex) {
+            authenticationManager = null;
+        }
+
+        AccessDecisionManager accessDecisionManager;
+        try {
+            accessDecisionManager = applicationContext.getBean(AccessDecisionManager.class);
+        } catch (NoSuchBeanDefinitionException ex) {
+            accessDecisionManager = null;
+        }
+        return new Security(authenticationManager, accessDecisionManager);
     }
 
     @Bean
-    SpringViewProvider.ViewProviderAccessDelegate viewProviderAccessDelegate() {
-        return new SpringSecurityViewProviderAccessDelegate();
+    SpringSecurityViewProviderAccessDelegate viewProviderAccessDelegate() {
+        return new SpringSecurityViewProviderAccessDelegate(security());
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }

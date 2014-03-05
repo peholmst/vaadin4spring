@@ -33,7 +33,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.Assert;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -44,19 +43,29 @@ import java.util.Collection;
  */
 public class Security {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+
+    private final AccessDecisionManager accessDecisionManager;
+
+    private final Log logger = LogFactory.getLog(getClass());
 
     @Autowired(required = false)
-    AccessDecisionManager accessDecisionManager;
-
-    private Log logger = LogFactory.getLog(getClass());
-
-    @PostConstruct
-    void init() {
+    public Security(AuthenticationManager authenticationManager, AccessDecisionManager accessDecisionManager) {
+        this.authenticationManager = authenticationManager;
+        if (authenticationManager == null) {
+            logger.warn("No AuthenticationManager set! Some security methods will not be available.");
+        }
+        this.accessDecisionManager = accessDecisionManager;
         if (accessDecisionManager == null) {
             logger.warn("No AccessDecisionManager set! Some security methods will not be available.");
         }
+    }
+
+    private AuthenticationManager getAuthenticationManager() {
+        if (authenticationManager == null) {
+            throw new IllegalStateException("No AuthenticationManager has been set");
+        }
+        return authenticationManager;
     }
 
     /**
@@ -79,7 +88,7 @@ public class Security {
      * @throws org.springframework.security.core.AuthenticationException if authentication fails.
      */
     public void login(Authentication authentication) throws AuthenticationException {
-        final Authentication fullyAuthenticated = authenticationManager.authenticate(authentication);
+        final Authentication fullyAuthenticated = getAuthenticationManager().authenticate(authentication);
         final SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(fullyAuthenticated);
     }
