@@ -25,25 +25,20 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Link;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-import java.util.Date;
+import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.SpringBootServletInitializer;
+import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.SpringServletContainerInitializer;
-import org.springframework.web.WebApplicationInitializer;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
 import org.vaadin.spring.VaadinUI;
 import org.vaadin.spring.navigator.SpringViewProvider;
 import org.vaadin.spring.navigator.VaadinView;
+
+import java.util.Date;
 
 /**
  * Entry point into the Vaadin web application. You may run this from
@@ -105,12 +100,12 @@ class MyDefaultView extends VerticalLayout implements View {
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         addComponent(new Label(
-                String.format("%s: It's %s and I was just entered!", 
+                String.format("%s: It's %s and I was just entered!",
                         getClass().getSimpleName(), new Date())));
-        
+
         Chart chart = new Chart();
-        chart.getConfiguration().addSeries(new ListSeries(1,2,3));
-        
+        chart.getConfiguration().addSeries(new ListSeries(1, 2, 3));
+
         addComponent(chart);
     }
 }

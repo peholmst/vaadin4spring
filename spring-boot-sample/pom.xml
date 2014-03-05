@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.0.0.RC1</version>
+        <version>1.0.0.RC4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,7 +15,7 @@
     <packaging>war</packaging>
 
     <properties>
-        <vaadin.version>7.1.10</vaadin.version>
+        <vaadin.version>7.1.11</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
     </properties>
 
@@ -56,7 +56,7 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-    
+
     <repositories>
         <repository>
             <id>spring-snapshots</id>
@@ -70,7 +70,7 @@
             <url>http://maven.vaadin.com/vaadin-addons</url>
         </repository>
     </repositories>
-    
+
     <build>
         <plugins>
             <plugin>
@@ -87,7 +87,7 @@
                 <version>${vaadin.plugin.version}</version>
                 <configuration>
                     <extraJvmArgs>-Xmx1g -Xss1024k</extraJvmArgs>
-                    
+
                     <!-- We are doing "inplace" gwt compilation
                     but into subdir VAADIN/widgetsets -->
                     <webappDirectory>${basedir}/src/main/public/VAADIN/widgetsets
@@ -123,7 +123,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -143,7 +143,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <!-- As we are doing "inplace" GWT compilation, ensure the widgetset -->
             <!-- directory is cleaned properly -->
             <plugin>
@@ -162,7 +162,7 @@
                     </filesets>
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
@@ -176,12 +176,12 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${basedir}/target/classes/VAADIN</outputDirectory>
-                            <resources>          
+                            <resources>
                                 <resource>
                                     <directory>${basedir}/src/main/public/VAADIN</directory>
                                 </resource>
                             </resources>
-                        </configuration>            
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -201,5 +201,5 @@
             </plugin>
         </plugins>
     </build>
-    
+
 </project>
