@@ -89,25 +89,60 @@ public interface EventBus {
      *
      * @param listener the listener to subscribe, never {@code null}.
      * @param <T>      the type of payload the listener is interested in.
+     * @see #unsubscribe(EventBusListener)
      */
     <T> void subscribe(EventBusListener<T> listener);
 
     /**
-     * Subscribes the specified listener to the event bus for events. The event bus will analyse the
+     * Subscribes the specified listener to the event bus. The event bus will analyse the
      * payload type of the listener to determine which events it is interested in receiving.
      *
      * @param listener                   the listener to subscribe, never {@code null}.
      * @param includingPropagatingEvents true to notify the listener of events that have propagated from the chain of parent event buses, false to only notify the listeners of events that are directly published on this event bus.
      * @param <T>                        the type of payload the listener is interested in.
+     * @see #unsubscribe(EventBusListener)
      */
     <T> void subscribe(EventBusListener<T> listener, boolean includingPropagatingEvents);
+
+    /**
+     * Subscribes the specified listener to the event bus. The listener need not implement the {@link org.vaadin.spring.events.EventBusListener} interface,
+     * but must contain one or more methods that are annotated with the {@link org.vaadin.spring.events.EventBusListenerMethod} interface and conforms to this method
+     * signature: <code>myMethodName(Event&lt;MyPayloadType&gt;)</code>. The event bus will analyse the payload type of the listener methods to determine
+     * which events the different methods are interested in receiving. This is the same as calling {@link #subscribe(Object, boolean) subscribe(listener, true}.
+     *
+     * @param listener the listener to subscribe, never {@code null}.
+     */
+    void subscribe(Object listener);
+
+    /**
+     * Subscribes the specified listener to the event bus. The listener need not implement the {@link org.vaadin.spring.events.EventBusListener} interface,
+     * but must contain one or more methods that are annotated with the {@link org.vaadin.spring.events.EventBusListenerMethod} interface and conforms to this method
+     * signature: <code>myMethodName(Event&lt;MyPayloadType&gt;)</code>. The event bus will analyse the payload type of the listener methods to determine
+     * which events the different methods are interested in receiving.
+     *
+     * @param listener                   the listener to subscribe, never {@code null}.
+     * @param includingPropagatingEvents true to notify the listener of events that have propagated from the chain of parent event buses, false to only notify the listeners of events that are directly published on this event bus.
+     * @see #unsubscribe(Object)
+     */
+    void subscribe(Object listener, boolean includingPropagatingEvents);
 
     /**
      * Unsubscribes the specified listener from the event bus.
      *
      * @param listener the listener to unsubscribe, never {@code null}.
      * @param <T>      the type of the payload.
+     * @see #subscribe(EventBusListener)
+     * @see #subscribe(EventBusListener, boolean)
      */
     <T> void unsubscribe(EventBusListener<T> listener);
+
+    /**
+     * Unsubscribes the specified listener (and all its listener methods) from the event bus.
+     *
+     * @param listener the listener to unsubscribe, never {@code null}.
+     * @see #subscribe(Object)
+     * @see #subscribe(Object, boolean)
+     */
+    void unsubscribe(Object listener);
 
 }
