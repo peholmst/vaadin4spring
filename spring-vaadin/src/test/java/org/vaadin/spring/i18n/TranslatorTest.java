@@ -19,6 +19,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import org.junit.Test;
 import org.springframework.context.MessageSource;
+import org.vaadin.spring.i18n.support.ComponentProperties;
 
 import java.util.Locale;
 
@@ -33,15 +34,15 @@ import static org.mockito.Mockito.when;
  */
 public class TranslatorTest {
 
-    @TranslatedProperty(property = "caption", key = "privateLabel.caption")
+    @TranslatedProperty(property = ComponentProperties.CAPTION, key = "privateLabel.caption")
     private Label privateLabel = new Label();
 
-    @TranslatedProperty(property = "caption", key = "publicLabel.caption")
+    @TranslatedProperty(property = ComponentProperties.CAPTION, key = "publicLabel.caption")
     public Label publicLabel = new Label();
 
     @TranslatedProperties({
-            @TranslatedProperty(property = "caption", key = "textField.caption"),
-            @TranslatedProperty(property = "description", key = "textField.description")
+            @TranslatedProperty(property = ComponentProperties.CAPTION, key = "textField.caption"),
+            @TranslatedProperty(property = ComponentProperties.DESCRIPTION, key = "textField.description")
     })
     private TextField textField = new TextField();
 
@@ -49,14 +50,14 @@ public class TranslatorTest {
 
     private TextField methodTextField = new TextField();
 
-    @TranslatedProperty(property = "caption", key = "methodLabel.caption")
+    @TranslatedProperty(property = ComponentProperties.CAPTION, key = "methodLabel.caption")
     public Label getMethodLabel() {
         return methodLabel;
     }
 
     @TranslatedProperties({
-            @TranslatedProperty(property = "caption", key = "methodTextField.caption"),
-            @TranslatedProperty(property = "description", key = "methodTextField.description")
+            @TranslatedProperty(property = ComponentProperties.CAPTION, key = "methodTextField.caption"),
+            @TranslatedProperty(property = ComponentProperties.DESCRIPTION, key = "methodTextField.description")
     })
     public TextField getMethodTextField() {
         return methodTextField;
