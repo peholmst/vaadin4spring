@@ -17,6 +17,7 @@ package org.vaadin.spring.i18n;
 
 import org.springframework.context.MessageSource;
 import org.springframework.util.StringUtils;
+import org.vaadin.spring.internal.ClassUtils;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -27,6 +28,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import static org.vaadin.spring.internal.ClassUtils.visitClassHierarchy;
 
 /**
  * This translator class has been designed with Vaadin UIs in mind, but it works with other classes as well. The idea is that
@@ -77,7 +80,7 @@ public class Translator implements Serializable {
     private void analyzeTargetClass() {
         translatedFields = new HashMap<>();
         translatedMethods = new HashMap<>();
-        visitClassHierarchy(new ClassVisitor() {
+        visitClassHierarchy(new ClassUtils.ClassVisitor() {
             @Override
             public void visit(Class<?> clazz) {
                 analyzeFields(clazz);
@@ -109,18 +112,6 @@ public class Translator implements Serializable {
                     translatedFields.put(annotation, f);
                 }
             }
-        }
-    }
-
-    interface ClassVisitor {
-        void visit(Class<?> clazz);
-    }
-
-    private static void visitClassHierarchy(ClassVisitor visitor, Class<?> subClass) {
-        Class<?> visitedClass = subClass;
-        while (visitedClass.getSuperclass() != null) {
-            visitor.visit(visitedClass);
-            visitedClass = visitedClass.getSuperclass();
         }
     }
 
