@@ -17,9 +17,12 @@ package org.vaadin.spring.events.internal;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventBusScope;
+import org.vaadin.spring.events.EventScope;
 
 /**
  * An {@link org.springframework.context.ApplicationListener} that will forward all received events to an {@link org.vaadin.spring.events.EventBus}.
@@ -32,7 +35,8 @@ public class ApplicationContextEventBroker implements ApplicationListener<Applic
 
     private final EventBus eventBus;
 
-    public ApplicationContextEventBroker(EventBus eventBus) {
+    @Autowired
+    public ApplicationContextEventBroker(@EventBusScope(EventScope.APPLICATION) EventBus eventBus) {
         this.eventBus = eventBus;
     }
 
