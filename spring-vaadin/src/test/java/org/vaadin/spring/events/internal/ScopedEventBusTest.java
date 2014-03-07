@@ -21,9 +21,10 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.vaadin.spring.events.Event;
 import org.vaadin.spring.events.EventBusListener;
+import org.vaadin.spring.events.EventBusListenerMethod;
 import org.vaadin.spring.events.EventScope;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -37,6 +38,22 @@ public class ScopedEventBusTest {
     ScopedEventBus sessionEventBus;
 
     interface StringListener extends EventBusListener<String> {
+    }
+
+    static class MultipleListeners {
+
+        Event<String> theStringEvent;
+        Event<Integer> theIntegerEvent;
+
+        @EventBusListenerMethod
+        void onStringEvent(Event<String> stringEvent) {
+            theStringEvent = stringEvent;
+        }
+
+        @EventBusListenerMethod
+        void onIntegerEvent(Event<Integer> integerEvent) {
+            theIntegerEvent = integerEvent;
+        }
     }
 
     @Before
@@ -63,6 +80,19 @@ public class ScopedEventBusTest {
         assertEquals("Hello World", event.getValue().getPayload());
     }
 
+    @Test
+    public void testSubscribeAndPublishWithListenerMethods() {
+        MultipleListeners listener = new MultipleListeners();
+
+        sessionEventBus.subscribe(listener);
+        sessionEventBus.publish(this, "Hello World");
+
+
+        assertNull(listener.theIntegerEvent);
+        assertNotNull(listener.theStringEvent);
+        assertEquals("Hello World", listener.theStringEvent.getPayload());
+    }
+
     @Test(expected = UnsupportedOperationException.class)
     public void testPublishToInvalidScope() {
         applicationEventBus.publish(EventScope.SESSION, this, "fail");
@@ -81,6 +111,18 @@ public class ScopedEventBusTest {
     }
 
     @Test
+    public void testPublishToParentScopeWithListenerMethods() {
+        MultipleListeners listener = new MultipleListeners();
+
+        applicationEventBus.subscribe(listener);
+        sessionEventBus.publish(EventScope.APPLICATION, this, "Hello World");
+
+        assertNull(listener.theIntegerEvent);
+        assertNotNull(listener.theStringEvent);
+        assertEquals("Hello World", listener.theStringEvent.getPayload());
+    }
+
+    @Test
     public void testPropagateToChild() {
         StringListener stringListener = mock(StringListener.class);
 
@@ -90,6 +132,18 @@ public class ScopedEventBusTest {
         ArgumentCaptor<Event> event = ArgumentCaptor.forClass(Event.class);
         verify(stringListener).onEvent(event.capture());
         assertEquals("Hello World", event.getValue().getPayload());
+    }
+
+    @Test
+    public void testPropagateToChildWithListenerMethods() {
+        MultipleListeners listener = new MultipleListeners();
+
+        applicationEventBus.subscribe(listener);
+        applicationEventBus.publish(this, "Hello World");
+
+        assertNull(listener.theIntegerEvent);
+        assertNotNull(listener.theStringEvent);
+        assertEquals("Hello World", listener.theStringEvent.getPayload());
     }
 
     @Test
@@ -105,4 +159,18 @@ public class ScopedEventBusTest {
         verifyNoMoreInteractions(stringListener);
         assertEquals("Hello World", event.getValue().getPayload());
     }
+
+    @Test
+    public void testNoPropagationToChildWithListenerMethods() {
+        MultipleListeners listener = new MultipleListeners();
+
+        sessionEventBus.subscribe(listener, false);
+        sessionEventBus.publish(this, "Hello World Session");
+        applicationEventBus.publish(this, "Hello World Application");
+
+        assertNull(listener.theIntegerEvent);
+        assertNotNull(listener.theStringEvent);
+        assertEquals("Hello World Session", listener.theStringEvent.getPayload());
+    }
+
 }
