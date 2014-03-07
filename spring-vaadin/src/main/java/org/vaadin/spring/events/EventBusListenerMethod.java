@@ -29,14 +29,6 @@ import java.lang.annotation.*;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Inherited
 @Documented
 public @interface EventBusListenerMethod {
-
-    /**
-     * Specifies whether the event bus listener method will be stored in a weak or strong reference (the default).
-     * Weak listeners will be automatically unsubscribed when they are garbage collected. On the other hand, this means
-     * that they need to be referenced somewhere else as well for as long as they are needed.
-     */
-    boolean weak() default false;
 }

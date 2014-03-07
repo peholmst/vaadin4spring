@@ -26,12 +26,10 @@ import java.io.Serializable;
 public interface EventBusListener<T> extends Serializable {
 
     /**
-     * Called when an event has been received. Implementing classes can redeclare the {@link org.vaadin.spring.events.EventBusListenerMethod} annotation
-     * to change attributes.
+     * Called when an event has been received.
      *
      * @param event the event, never {@code null}.
      */
-    @EventBusListenerMethod
     void onEvent(Event<T> event);
 
 }

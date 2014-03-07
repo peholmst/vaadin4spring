@@ -25,7 +25,7 @@ import java.io.Serializable;
  */
 public class Event<T> implements Serializable {
 
-    private final EventScope scope;
+    private final EventBus eventBus;
 
     private final Object source;
 
@@ -33,11 +33,20 @@ public class Event<T> implements Serializable {
 
     private final T payload;
 
-    public Event(EventScope scope, Object source, T payload) {
-        this.scope = scope;
+    public Event(EventBus eventBus, Object source, T payload) {
+        this.eventBus = eventBus;
         this.source = source;
         this.payload = payload;
         this.timestamp = System.currentTimeMillis();
+    }
+
+    /**
+     * Gets the event bus on which the event was originally published.
+     *
+     * @return the event bus, never {@code null}.
+     */
+    public EventBus getEventBus() {
+        return eventBus;
     }
 
     /**
@@ -46,7 +55,7 @@ public class Event<T> implements Serializable {
      * @return the scope, never {@code null}.
      */
     public EventScope getScope() {
-        return scope;
+        return eventBus.getScope();
     }
 
     /**
@@ -78,7 +87,7 @@ public class Event<T> implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s[scope=%s, ts=%d, source=[%s], payload=[%s]]",
-                getClass().getSimpleName(), getScope(), getTimestamp(), getSource(), getPayload());
+        return String.format("%s[scope=%s, eventBus=%s, ts=%d, source=[%s], payload=[%s]]",
+                getClass().getSimpleName(), getScope(), getEventBus(), getTimestamp(), getSource(), getPayload());
     }
 }
