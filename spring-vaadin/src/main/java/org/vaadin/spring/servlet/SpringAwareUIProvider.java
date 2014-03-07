@@ -20,8 +20,8 @@ import com.vaadin.server.UICreateEvent;
 import com.vaadin.server.UIProvider;
 import com.vaadin.ui.UI;
 import com.vaadin.util.CurrentInstance;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.vaadin.spring.VaadinUI;
 import org.vaadin.spring.internal.VaadinUIIdentifier;
@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SpringAwareUIProvider extends UIProvider {
 
-    private final Log logger = LogFactory.getLog(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     private final WebApplicationContext webApplicationContext;
     private final Map<String, Class<? extends UI>> pathToUIMap = new ConcurrentHashMap<>();
 
@@ -52,13 +52,13 @@ public class SpringAwareUIProvider extends UIProvider {
         for (String uiBeanName : uiBeanNames) {
             Class<?> beanType = webApplicationContext.getType(uiBeanName);
             if (UI.class.isAssignableFrom(beanType)) {
-                logger.info(String.format("Found Vaadin UI [%s]", beanType.getCanonicalName()));
+                logger.info("Found Vaadin UI [{}]", beanType.getCanonicalName());
                 final String path = webApplicationContext.findAnnotationOnBean(uiBeanName, VaadinUI.class).path();
                 Class<? extends UI> existingBeanType = pathToUIMap.get(path);
                 if (existingBeanType != null) {
                     throw new IllegalStateException(String.format("[%s] is already mapped to the path [%s]", existingBeanType.getCanonicalName(), path));
                 }
-                logger.debug("Mapping Vaadin UI [" + beanType.getCanonicalName() + "] to path [" + path + "]");
+                logger.debug("Mapping Vaadin UI [{}] to path [{}]", beanType.getCanonicalName(), path);
                 pathToUIMap.put(path, (Class<? extends UI>) beanType);
             }
         }
@@ -95,7 +95,7 @@ public class SpringAwareUIProvider extends UIProvider {
         final VaadinUIIdentifier identifier = new VaadinUIIdentifier(event);
         CurrentInstance.set(key, identifier);
         try {
-            logger.debug(String.format("Creating a new UI bean of class [%s] with identifier [%s]", event.getUIClass().getCanonicalName(), identifier));
+            logger.debug("Creating a new UI bean of class [{}] with identifier [{}]", event.getUIClass().getCanonicalName(), identifier);
             return webApplicationContext.getBean(event.getUIClass());
         } finally {
             CurrentInstance.set(key, null);

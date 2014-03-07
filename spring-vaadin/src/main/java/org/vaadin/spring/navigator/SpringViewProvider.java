@@ -18,16 +18,14 @@ package org.vaadin.spring.navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewProvider;
 import com.vaadin.ui.UI;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -69,15 +67,11 @@ public class SpringViewProvider implements ViewProvider {
     // We can have multiple views with the same view name, as long as they belong to different UI subclasses
     private final Map<String, Set<String>> viewNameToBeanNamesMap = new ConcurrentHashMap<>();
     private final ApplicationContext applicationContext;
-    private transient Log logger = LogFactory.getLog(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     public SpringViewProvider(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
-    }
-
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        logger = LogFactory.getLog(getClass());
     }
 
     @PostConstruct
@@ -89,7 +83,7 @@ public class SpringViewProvider implements ViewProvider {
             if (View.class.isAssignableFrom(type)) {
                 final VaadinView annotation = type.getAnnotation(VaadinView.class);
                 final String viewName = annotation.name();
-                logger.debug(String.format("Found VaadinView bean [%s] with view name [%s]", beanName, viewName));
+                logger.debug("Found VaadinView bean [{}] with view name [{}]", beanName, viewName);
                 Set<String> beanNames = viewNameToBeanNamesMap.get(viewName);
                 if (beanNames == null) {
                     beanNames = new ConcurrentSkipListSet<>();
@@ -102,7 +96,7 @@ public class SpringViewProvider implements ViewProvider {
 
     @Override
     public String getViewName(String viewAndParameters) {
-        logger.debug(String.format("Extracting view name from [%s]", viewAndParameters));
+        logger.trace("Extracting view name from [{}]", viewAndParameters);
         String viewName = null;
         if (isViewNameValidForCurrentUI(viewAndParameters)) {
             viewName = viewAndParameters;
@@ -111,7 +105,7 @@ public class SpringViewProvider implements ViewProvider {
             String viewPart = viewAndParameters;
             while ((lastSlash = viewPart.lastIndexOf('/')) > -1) {
                 viewPart = viewPart.substring(0, lastSlash);
-                logger.debug(String.format("Checking if [%s] is a valid view", viewPart));
+                logger.trace("Checking if [{}] is a valid view", viewPart);
                 if (isViewNameValidForCurrentUI(viewPart)) {
                     viewName = viewPart;
                     break;
@@ -119,9 +113,9 @@ public class SpringViewProvider implements ViewProvider {
             }
         }
         if (viewName == null) {
-            logger.debug(String.format("Found no view name in [%s]", viewAndParameters));
+            logger.trace("Found no view name in [{}]", viewAndParameters);
         } else {
-            logger.debug(String.format("[%s] is a valid view", viewName));
+            logger.trace("[{}] is a valid view", viewName);
             ;
         }
         return viewName;
@@ -160,18 +154,18 @@ public class SpringViewProvider implements ViewProvider {
         final Map<String, ViewProviderAccessDelegate> accessDelegates = applicationContext.getBeansOfType(ViewProviderAccessDelegate.class);
         for (ViewProviderAccessDelegate accessDelegate : accessDelegates.values()) {
             if (!accessDelegate.isAccessGranted(viewClass, currentUI)) {
-                logger.debug(String.format("Access delegate [%s] denied access to view class [%s]", accessDelegate, viewClass.getCanonicalName()));
+                logger.debug("Access delegate [{}] denied access to view class [{}]", accessDelegate, viewClass.getCanonicalName());
                 return false;
             }
         }
 
         if (annotation.ui().length == 0) {
-            logger.debug(String.format("View class [%s] with view name [%s] is available for all UI subclasses", viewClass.getCanonicalName(), annotation.name()));
+            logger.trace("View class [{}] with view name [{}] is available for all UI subclasses", viewClass.getCanonicalName(), annotation.name());
             return true;
         } else {
             for (Class<? extends UI> validUI : annotation.ui()) {
                 if (validUI == currentUI.getClass()) {
-                    logger.debug(String.format("View class [%s] with view name [%s] is available for UI subclass [%s]", viewClass.getCanonicalName(), annotation.name(), validUI.getCanonicalName()));
+                    logger.trace("View class [%s] with view name [{}] is available for UI subclass [{}]", viewClass.getCanonicalName(), annotation.name(), validUI.getCanonicalName());
                     return true;
                 }
             }
@@ -189,7 +183,7 @@ public class SpringViewProvider implements ViewProvider {
                 }
             }
         }
-        logger.warn(String.format("Found no view with name [%s]", viewName));
+        logger.warn("Found no view with name [{}]", viewName);
         return null;
     }
 

@@ -16,8 +16,8 @@
 package org.vaadin.spring.internal;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -37,7 +37,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 public class VaadinUIScope implements Scope, BeanFactoryPostProcessor {
 
     public static final String UI_SCOPE_NAME = "ui";
-    private final Log logger = LogFactory.getLog(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private UIStore getUIStore() {
         final String attributeName = UIStore.class.getCanonicalName();
@@ -77,7 +77,7 @@ public class VaadinUIScope implements Scope, BeanFactoryPostProcessor {
     @Override
     public void postProcessBeanFactory(
             ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        logger.debug(String.format("Registering UI scope with beanFactory [%s]", beanFactory));
+        logger.debug("Registering UI scope with beanFactory [{}]", beanFactory);
         beanFactory.registerScope(UI_SCOPE_NAME, this);
     }
 }
