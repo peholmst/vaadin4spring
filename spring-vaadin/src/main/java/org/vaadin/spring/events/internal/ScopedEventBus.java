@@ -122,7 +122,7 @@ public class ScopedEventBus implements EventBus, Serializable {
             @Override
             public void visit(Class<?> clazz) {
                 for (Method m : clazz.getDeclaredMethods()) {
-                    if (m.isAnnotationPresent(EventBusListenerMethod.class) && m.getParameterCount() == 1 && m.getParameterTypes()[0] == Event.class) {
+                    if (m.isAnnotationPresent(EventBusListenerMethod.class) && m.getParameterTypes().length == 1 && m.getParameterTypes()[0] == Event.class) {
                         logger.trace("Found listener method [{}] in listener [{}]", m.getName(), listener);
                         MethodListenerWrapper l = new MethodListenerWrapper(ScopedEventBus.this, listener, includingPropagatingEvents, m);
                         listeners.add(l);

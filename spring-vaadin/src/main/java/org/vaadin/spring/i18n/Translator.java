@@ -91,7 +91,7 @@ public class Translator implements Serializable {
 
     private void analyzeMethods(Class<?> clazz) {
         for (Method m : clazz.getDeclaredMethods()) {
-            if (m.getParameterCount() == 0 && m.getReturnType() != Void.TYPE) {
+            if (m.getParameterTypes().length == 0 && m.getReturnType() != Void.TYPE) {
                 if (m.isAnnotationPresent(TranslatedProperty.class)) {
                     translatedMethods.put(m.getAnnotation(TranslatedProperty.class), m);
                 } else if (m.isAnnotationPresent(TranslatedProperties.class)) {
