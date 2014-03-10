@@ -9,7 +9,12 @@
     <version>0.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Vaadin Support for Spring and Spring Boot (Parent POM)</name>
+    <name>vaadin4spring</name>
+    <description>
+        Spring, Spring Boot and Spring Security support for Vaadin applications
+        (or the other way around, depending on your point of view).
+    </description>
+    <url>https://github.com/peholmst/vaadin4spring</url>
 
     <licenses>
         <license>
@@ -18,22 +23,31 @@
         </license>
     </licenses>
 
-    <contributors>
-        <contributor>
+    <scm>
+        <url>https://github.com/peholmst/vaadin4spring</url>
+        <connection>scm:git:git@github.com:peholmst/vaadin4spring.git</connection>
+        <developerConnection>scm:git:git@github.com:peholmst/vaadin4spring.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
             <name>Josh Long</name>
             <email>josh@joshlong.com</email>
-        </contributor>
-        <contributor>
+        </developer>
+        <developer>
             <name>Matti Tahvonen</name>
             <organization>Vaadin</organization>
             <email>matti@vaadin.com</email>
-        </contributor>
-        <contributor>
+        </developer>
+        <developer>
             <name>Petter Holmström</name>
             <organization>Vaadin</organization>
             <email>petter@vaadin.com</email>
-        </contributor>
-    </contributors>
+            <roles>
+                <role>Development lead</role>
+            </roles>
+        </developer>
+    </developers>
 
     <properties>
         <project.build.encoding>UTF-8</project.build.encoding>
@@ -165,6 +179,7 @@
     </build>
 
     <repositories>
+        <!-- TODO Remove snapshots repo as soon as the Spring Boot jars are available in a central repo -->
         <repository>
             <id>spring-snapshots</id>
             <url>http://repo.spring.io/libs-snapshot</url>
