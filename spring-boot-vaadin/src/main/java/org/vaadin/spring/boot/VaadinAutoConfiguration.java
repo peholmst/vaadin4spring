@@ -15,21 +15,17 @@
  */
 package org.vaadin.spring.boot;
 
-import com.vaadin.annotations.VaadinServletConfiguration;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.vaadin.server.VaadinServlet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.vaadin.spring.EnableVaadin;
-import org.vaadin.spring.internal.VaadinUIScope;
-import org.vaadin.spring.servlet.SpringAwareVaadinServlet;
-
-import java.lang.reflect.Method;
+import org.vaadin.spring.VaadinUI;
 
 /**
  * @author Petter Holmström (petter@vaadin.com)
@@ -37,68 +33,36 @@ import java.lang.reflect.Method;
  * @see org.vaadin.spring.EnableVaadin
  */
 @Configuration
-@ConditionalOnClass(VaadinUIScope.class)
+@ConditionalOnClass(VaadinUI.class)
 public class VaadinAutoConfiguration {
 
-    private static Log logger = LogFactory.getLog(VaadinAutoConfiguration.class);
+    private static Logger logger = LoggerFactory.getLogger(VaadinAutoConfiguration.class);
 
-    /**
-     * If the outer {@code \@Configuration} class is enabled (e.g., the
-     * {@link org.vaadin.spring.internal.VaadinUIScope UI scope} implementation is on the CLASSPATH),
-     * _then_ we let Spring import the configuration class.
-     */
     @Configuration
     @EnableVaadin
     static class EnableVaadinConfiguration implements InitializingBean {
-
-        /**
-         * Prefix to be used for all Spring environment properties that configure the Vaadin servlet.
-         * The full format of the environment property name is {@code [prefix][initParameter]} where {@code [prefix]}
-         * is <code>{@value}</code> and {@code initParameter} is the name of one of the parameters defined in {@link VaadinServletConfiguration}.
-         * <p/>
-         * For example, to change the production mode of the servlet, a property named <code>{@value}productionMode</code> would
-         * be used.
-         *
-         * @see Environment
-         */
-        public static final String SERVLET_CONFIGURATION_PARAMETER_PREFIX = "vaadin.servlet.params.";
-        /**
-         * Name of the Spring environment property that contains the URL mapping of the Vaadin servlet. By default, this mapping is {@code /*}.
-         */
-        public static final String SERVLET_URL_MAPPING_PARAMETER_NAME = "vaadin.servlet.urlMapping";
-        public static final String DEFAULT_SERVLET_URL_MAPPING = "/*";
-        @Autowired
-        Environment environment;
-
         @Override
         public void afterPropertiesSet() throws Exception {
             logger.debug(getClass().getName() + " has finished running");
         }
 
         @Bean
-        ServletRegistrationBean vaadinServlet() {
-            logger.debug("Registering Vaadin servlet");
-            final String urlMapping = this.environment.getProperty(SERVLET_URL_MAPPING_PARAMETER_NAME, DEFAULT_SERVLET_URL_MAPPING);
-            logger.debug("Vaadin Servlet will be mapped to URL [" + urlMapping + "]");
+        ServletRegistrationBean vaadinStaticServlet() {
+            logger.debug("Registering Vaadin servlet for serving static content");
             final ServletRegistrationBean registrationBean = new ServletRegistrationBean(
-                    new SpringAwareVaadinServlet(), urlMapping, "/VAADIN/*");
-            addInitParameters(registrationBean);
+                    new VaadinServlet(), "/VAADIN/*");
             return registrationBean;
         }
+    }
 
-        private void addInitParameters(ServletRegistrationBean servletRegistrationBean) {
-            logger.debug("Looking for servlet init parameters");
-            final Method[] methods = VaadinServletConfiguration.class
-                    .getDeclaredMethods();
-            for (Method method : methods) {
-                VaadinServletConfiguration.InitParameterName name = method
-                        .getAnnotation(VaadinServletConfiguration.InitParameterName.class);
-                String propertyValue = environment.getProperty(SERVLET_CONFIGURATION_PARAMETER_PREFIX + name.value());
-                if (propertyValue != null) {
-                    logger.debug(String.format("Found servlet init parameter [%s] = [%s]", name.value(), propertyValue));
-                    servletRegistrationBean.addInitParameter(name.value(), propertyValue);
-                }
-            }
+    @Configuration
+    @EnableVaadinServlet
+    @ConditionalOnMissingClass(name = "org.vaadin.spring.touchkit.TouchKitUI")
+    static class EnableVaadinServletConfiguration implements InitializingBean {
+        @Override
+        public void afterPropertiesSet() throws Exception {
+            logger.debug(getClass().getName() + " has finished running");
         }
     }
+
 }
