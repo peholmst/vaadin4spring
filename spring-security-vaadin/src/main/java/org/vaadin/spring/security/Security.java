@@ -15,8 +15,8 @@
  */
 package org.vaadin.spring.security;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
@@ -47,7 +47,7 @@ public class Security {
 
     private final AccessDecisionManager accessDecisionManager;
 
-    private final Log logger = LogFactory.getLog(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired(required = false)
     public Security(AuthenticationManager authenticationManager, AccessDecisionManager accessDecisionManager) {
@@ -159,6 +159,9 @@ public class Security {
     public boolean hasAccessToObject(Object securedObject, String... securityConfigurationAttributes) {
         final Authentication authentication = getAuthentication();
         if (accessDecisionManager == null || authentication == null || !authentication.isAuthenticated()) {
+            if (accessDecisionManager == null) {
+                logger.warn("Access was denied to object because there was no AccessDecisionManager set!");
+            }
             return false;
         }
         final Collection<ConfigAttribute> configAttributes = new ArrayList<>(securityConfigurationAttributes.length);
