@@ -15,8 +15,8 @@
  */
 package org.vaadin.spring.boot;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
@@ -31,14 +31,14 @@ import org.vaadin.spring.security.Security;
 @ConditionalOnClass(Security.class)
 public class VaadinSecurityAutoConfiguration {
 
-    private static Log logger = LogFactory.getLog(VaadinSecurityAutoConfiguration.class);
+    private static Logger logger = LoggerFactory.getLogger(VaadinSecurityAutoConfiguration.class);
 
     @Configuration
     @EnableVaadinSecurity
     static class EnableVaadinSecurityConfiguration implements InitializingBean {
         @Override
         public void afterPropertiesSet() throws Exception {
-            logger.debug(getClass().getName() + " has finished running");
+            logger.debug("{} initialized", getClass().getName());
         }
     }
 }

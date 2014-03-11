@@ -15,6 +15,7 @@
  */
 package org.vaadin.spring.boot;
 
+import com.vaadin.server.Constants;
 import com.vaadin.server.VaadinServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,14 +44,16 @@ public class VaadinAutoConfiguration {
     static class EnableVaadinConfiguration implements InitializingBean {
         @Override
         public void afterPropertiesSet() throws Exception {
-            logger.debug(getClass().getName() + " has finished running");
+            logger.debug("{} initialized", getClass().getName());
         }
 
         @Bean
         ServletRegistrationBean vaadinStaticServlet() {
-            logger.debug("Registering Vaadin servlet for serving static content");
+            logger.info("Registering servlet for serving static Vaadin content");
             final ServletRegistrationBean registrationBean = new ServletRegistrationBean(
                     new VaadinServlet(), "/VAADIN/*");
+            // TODO Make this configurable as well
+            registrationBean.addInitParameter(Constants.SERVLET_PARAMETER_PRODUCTION_MODE, "true");
             return registrationBean;
         }
     }
@@ -61,7 +64,7 @@ public class VaadinAutoConfiguration {
     static class EnableVaadinServletConfiguration implements InitializingBean {
         @Override
         public void afterPropertiesSet() throws Exception {
-            logger.debug(getClass().getName() + " has finished running");
+            logger.debug("{} initialized", getClass().getName());
         }
     }
 

@@ -15,20 +15,25 @@
  */
 package org.vaadin.spring.boot.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.vaadin.spring.servlet.SpringAwareVaadinServlet;
+
+import javax.servlet.http.HttpServlet;
 
 /**
  * Spring configuration that sets up a {@link org.vaadin.spring.servlet.SpringAwareVaadinServlet}.
+ * If you want to customize the servlet, extend it and make it available as a Spring bean.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
 @Configuration
 public class VaadinServletConfiguration extends AbstractServletConfiguration {
+
+    private static Logger logger = LoggerFactory.getLogger(VaadinServletConfiguration.class);
 
     /**
      * Prefix to be used for all Spring environment properties that configure the Vaadin servlet.
@@ -45,29 +50,29 @@ public class VaadinServletConfiguration extends AbstractServletConfiguration {
      * Name of the Spring environment property that contains the URL mapping of the Vaadin servlet. By default, this mapping is {@code /*}.
      */
     public static final String SERVLET_URL_MAPPING_PARAMETER_NAME = "vaadin.servlet.urlMapping";
-    public static final String DEFAULT_SERVLET_URL_MAPPING = "/*";
-
-    @Autowired
-    Environment environment;
-
-    @Override
-    protected Environment getEnvironment() {
-        return environment;
-    }
-
-    @Bean
-    ServletRegistrationBean vaadinServlet() {
-        logger.debug("Registering Vaadin servlet");
-        final String urlMapping = this.environment.getProperty(SERVLET_URL_MAPPING_PARAMETER_NAME, DEFAULT_SERVLET_URL_MAPPING);
-        logger.debug("Vaadin Servlet will be mapped to URL [" + urlMapping + "]");
-        final ServletRegistrationBean registrationBean = new ServletRegistrationBean(
-                new SpringAwareVaadinServlet(), urlMapping);
-        addInitParameters(registrationBean);
-        return registrationBean;
-    }
 
     @Override
     protected String getServletConfigurationParameterPrefix() {
         return SERVLET_CONFIGURATION_PARAMETER_PREFIX;
+    }
+
+    @Override
+    protected String getServletUrlMappingParameterName() {
+        return SERVLET_URL_MAPPING_PARAMETER_NAME;
+    }
+
+    @Override
+    protected Class<? extends HttpServlet> getServletClass() {
+        return SpringAwareVaadinServlet.class;
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return logger;
+    }
+
+    @Bean
+    ServletRegistrationBean vaadinServletRegistration() {
+        return createServletRegistrationBean();
     }
 }
