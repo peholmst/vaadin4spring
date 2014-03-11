@@ -24,6 +24,7 @@ import org.vaadin.spring.events.EventBusScope;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.internal.ApplicationContextEventBroker;
 import org.vaadin.spring.events.internal.ScopedEventBus;
+import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.internal.VaadinUIScope;
 import org.vaadin.spring.navigator.SpringViewProvider;
 
@@ -43,6 +44,11 @@ public class VaadinConfiguration implements ApplicationContextAware {
     @Bean
     static VaadinUIScope uiScope() {
         return new VaadinUIScope();
+    }
+
+    @Bean
+    I18N i18n() {
+        return new I18N(applicationContext);
     }
 
     @Bean
