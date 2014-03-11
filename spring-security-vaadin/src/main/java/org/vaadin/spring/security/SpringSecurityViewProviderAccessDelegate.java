@@ -42,9 +42,6 @@ public class SpringSecurityViewProviderAccessDelegate implements SpringViewProvi
     @Override
     public boolean isAccessGranted(Class<? extends View> viewClass, UI ui) {
         Secured viewSecured = viewClass.getAnnotation(Secured.class);
-        if (viewSecured != null && !security.hasAnyAuthority(viewSecured.value())) {
-            return false;
-        }
-        return true;
+        return !(viewSecured != null && !security.hasAnyAuthority(viewSecured.value()));
     }
 }

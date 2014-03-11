@@ -116,7 +116,6 @@ public class SpringViewProvider implements ViewProvider {
             logger.trace("Found no view name in [{}]", viewAndParameters);
         } else {
             logger.trace("[{}] is a valid view", viewName);
-            ;
         }
         return viewName;
     }
