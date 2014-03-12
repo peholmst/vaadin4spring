@@ -15,8 +15,8 @@
  */
 package org.vaadin.spring.security;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
@@ -33,7 +33,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.Assert;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -44,19 +43,29 @@ import java.util.Collection;
  */
 public class Security {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+
+    private final AccessDecisionManager accessDecisionManager;
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired(required = false)
-    AccessDecisionManager accessDecisionManager;
-
-    private Log logger = LogFactory.getLog(getClass());
-
-    @PostConstruct
-    void init() {
+    public Security(AuthenticationManager authenticationManager, AccessDecisionManager accessDecisionManager) {
+        this.authenticationManager = authenticationManager;
+        if (authenticationManager == null) {
+            logger.warn("No AuthenticationManager set! Some security methods will not be available.");
+        }
+        this.accessDecisionManager = accessDecisionManager;
         if (accessDecisionManager == null) {
             logger.warn("No AccessDecisionManager set! Some security methods will not be available.");
         }
+    }
+
+    private AuthenticationManager getAuthenticationManager() {
+        if (authenticationManager == null) {
+            throw new IllegalStateException("No AuthenticationManager has been set");
+        }
+        return authenticationManager;
     }
 
     /**
@@ -79,7 +88,7 @@ public class Security {
      * @throws org.springframework.security.core.AuthenticationException if authentication fails.
      */
     public void login(Authentication authentication) throws AuthenticationException {
-        final Authentication fullyAuthenticated = authenticationManager.authenticate(authentication);
+        final Authentication fullyAuthenticated = getAuthenticationManager().authenticate(authentication);
         final SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(fullyAuthenticated);
     }
@@ -150,6 +159,9 @@ public class Security {
     public boolean hasAccessToObject(Object securedObject, String... securityConfigurationAttributes) {
         final Authentication authentication = getAuthentication();
         if (accessDecisionManager == null || authentication == null || !authentication.isAuthenticated()) {
+            if (accessDecisionManager == null) {
+                logger.warn("Access was denied to object because there was no AccessDecisionManager set!");
+            }
             return false;
         }
         final Collection<ConfigAttribute> configAttributes = new ArrayList<>(securityConfigurationAttributes.length);

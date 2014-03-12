@@ -47,9 +47,8 @@ public class VaadinUIIdentifier implements Serializable {
 
         VaadinUIIdentifier that = (VaadinUIIdentifier) o;
 
-        if (uiId != that.uiId) return false;
+        return uiId == that.uiId;
 
-        return true;
     }
 
     @Override

@@ -19,8 +19,8 @@ package org.vaadin.spring.internal;
 import com.vaadin.server.ClientConnector;
 import com.vaadin.ui.UI;
 import com.vaadin.util.CurrentInstance;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 class UIStore implements Serializable, ClientConnector.DetachListener {
 
-    private final Log logger = LogFactory.getLog(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     private final Map<VaadinUIIdentifier, Map<String, Object>> objectMap = new ConcurrentHashMap<>();
     private final Map<VaadinUIIdentifier, Map<String, Runnable>> destructionCallbackMap = new ConcurrentHashMap<>();
 
@@ -65,21 +65,21 @@ class UIStore implements Serializable, ClientConnector.DetachListener {
     }
 
     public Object get(String name, ObjectFactory<?> objectFactory, VaadinUIIdentifier uiId) {
-        logger.debug("Getting bean with name [" + name + "] from UI space [" + uiId + "]");
+        logger.trace("Getting bean with name [{}] from UI space [{}]", name, uiId);
         final Map<String, Object> uiSpace = getObjectMap(uiId);
         Object bean = uiSpace.get(name);
         if (bean == null) {
-            logger.debug(String.format("Bean [%s] not found in UI space [%s], invoking object factory", name, uiId));
+            logger.trace("Bean [{}] not found in UI space [{}], invoking object factory", name, uiId);
             bean = objectFactory.getObject();
             if (bean instanceof UI) {
                 ((UI) bean).addDetachListener(this);
             }
             if (!(bean instanceof Serializable)) {
-                logger.warn(String.format("Storing non-serializable bean [%s] with name [%s] in UI space [%s]", bean, name, uiId));
+                logger.warn("Storing non-serializable bean [{}] with name [{}] in UI space [{}]", bean, name, uiId);
             }
             uiSpace.put(name, bean);
         }
-        logger.debug(String.format("Returning bean [%s] with name [%s] from UI space [%s]", bean, name, uiId));
+        logger.trace("Returning bean [{}] with name [{}] from UI space [{}]", bean, name, uiId);
         return bean;
     }
 
@@ -88,7 +88,7 @@ class UIStore implements Serializable, ClientConnector.DetachListener {
     }
 
     public Object remove(String name, VaadinUIIdentifier uiId) {
-        logger.debug(String.format("Removing bean with name [%s] from UI space [%s]", name, uiId));
+        logger.trace("Removing bean with name [{}] from UI space [{}]", name, uiId);
         try {
             getDestructionCallbackMap(uiId).remove(name);
             return getObjectMap(uiId).remove(name);
@@ -102,9 +102,9 @@ class UIStore implements Serializable, ClientConnector.DetachListener {
     }
 
     public void registerDestructionCallback(String name, Runnable callback, VaadinUIIdentifier uiId) {
-        logger.debug(String.format("Registering destruction callback [%s] for bean with name [%s] in UI space [%s]", callback, name, uiId));
+        logger.trace("Registering destruction callback [{}] for bean with name [{}] in UI space [{}]", callback, name, uiId);
         if (!(callback instanceof Serializable)) {
-            logger.warn(String.format("Storing non-serializable destruction callback [%s] for bean with name [%s] in UI space [%s]", callback, name, uiId));
+            logger.warn("Storing non-serializable destruction callback [{}] for bean with name [{}] in UI space [{}]", callback, name, uiId);
         }
         getDestructionCallbackMap(uiId).put(name, callback);
     }
@@ -140,7 +140,7 @@ class UIStore implements Serializable, ClientConnector.DetachListener {
 
     @Override
     public void detach(ClientConnector.DetachEvent event) {
-        logger.debug(String.format("Received DetachEvent from [%s]", event.getSource()));
+        logger.debug("Received DetachEvent from [{}]", event.getSource());
         final VaadinUIIdentifier uiIdentifier = new VaadinUIIdentifier((UI) event.getSource());
         final Map<String, Runnable> destructionSpace = destructionCallbackMap.remove(uiIdentifier);
         if (destructionSpace != null) {

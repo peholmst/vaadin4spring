@@ -15,8 +15,16 @@
  */
 package org.vaadin.spring.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.*;
+import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventBusScope;
+import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.internal.ApplicationContextEventBroker;
+import org.vaadin.spring.events.internal.ScopedEventBus;
+import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.internal.VaadinUIScope;
 import org.vaadin.spring.navigator.SpringViewProvider;
 
@@ -29,7 +37,9 @@ import org.vaadin.spring.navigator.SpringViewProvider;
  * @see org.vaadin.spring.EnableVaadin
  */
 @Configuration
-public class VaadinConfiguration {
+public class VaadinConfiguration implements ApplicationContextAware {
+
+    private ApplicationContext applicationContext;
 
     @Bean
     static VaadinUIScope uiScope() {
@@ -37,7 +47,43 @@ public class VaadinConfiguration {
     }
 
     @Bean
+    I18N i18n() {
+        return new I18N(applicationContext);
+    }
+
+    @Bean
     SpringViewProvider viewProvider() {
-        return new SpringViewProvider();
+        return new SpringViewProvider(applicationContext);
+    }
+
+    @Bean
+    ApplicationContextEventBroker applicationContextEventBroker() {
+        return new ApplicationContextEventBroker(applicationEventBus());
+    }
+
+    @Bean
+    @EventBusScope(EventScope.APPLICATION)
+    EventBus applicationEventBus() {
+        return new ScopedEventBus(EventScope.APPLICATION);
+    }
+
+    @Bean
+    @Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES)
+    @EventBusScope(EventScope.SESSION)
+    EventBus sessionEventBus() {
+        return new ScopedEventBus(EventScope.SESSION, applicationEventBus());
+    }
+
+    @Bean
+    @Scope(value = "ui", proxyMode = ScopedProxyMode.INTERFACES)
+    @Primary
+    @EventBusScope(EventScope.UI)
+    EventBus uiEventBus() {
+        return new ScopedEventBus(EventScope.UI, sessionEventBus());
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }

@@ -30,7 +30,7 @@ import java.lang.annotation.Target;
  *     }
  *     </pre>
  * </code>
- * Or like this, if you want to map your UI to another URL (for example if you are having multilpe UI subclasses in your application):
+ * Or like this, if you want to map your UI to another URL (for example if you are having multiple UI subclasses in your application):
  * <code>
  * <pre>
  *     &#64;VaadinUI(path = "/myPath")
@@ -51,7 +51,7 @@ import java.lang.annotation.Target;
 public @interface VaadinUI {
 
     /**
-     * The path to witch the UI will be bound. For example, a value of {@code "/myUI"} would be mapped to
+     * The path to which the UI will be bound. For example, a value of {@code "/myUI"} would be mapped to
      * {@code "/myContextPath/myVaadinServletPath/myUI"}. An empty string (the default) will map the UI to the root of the servlet.
      * Within a web application, there must not be multiple UI sub classes with the same path.
      */

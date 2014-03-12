@@ -4,12 +4,23 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
     <groupId>org.vaadin.spring</groupId>
     <artifactId>parent-pom</artifactId>
     <version>0.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Vaadin Support for Spring and Spring Boot (Parent POM)</name>
+    <name>vaadin4spring</name>
+    <description>
+        Spring, Spring Boot and Spring Security support for Vaadin applications
+        (or the other way around, depending on your point of view).
+    </description>
+    <url>https://github.com/peholmst/vaadin4spring</url>
 
     <licenses>
         <license>
@@ -18,31 +29,43 @@
         </license>
     </licenses>
 
-    <contributors>
-        <contributor>
+    <scm>
+        <url>https://github.com/peholmst/vaadin4spring</url>
+        <connection>scm:git:git@github.com:peholmst/vaadin4spring.git</connection>
+        <developerConnection>scm:git:git@github.com:peholmst/vaadin4spring.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
             <name>Josh Long</name>
             <email>josh@joshlong.com</email>
-        </contributor>
-        <contributor>
+        </developer>
+        <developer>
             <name>Matti Tahvonen</name>
             <organization>Vaadin</organization>
             <email>matti@vaadin.com</email>
-        </contributor>
-        <contributor>
+        </developer>
+        <developer>
             <name>Petter Holmström</name>
             <organization>Vaadin</organization>
             <email>petter@vaadin.com</email>
-        </contributor>
-    </contributors>
+            <roles>
+                <role>Development lead</role>
+            </roles>
+        </developer>
+    </developers>
 
     <properties>
         <project.build.encoding>UTF-8</project.build.encoding>
         <project.build.target>1.7</project.build.target>
         <project.build.source>1.7</project.build.source>
-        <vaadin.version>7.1.10</vaadin.version>
-        <spring.version>4.0.1.RELEASE</spring.version>
-        <spring-boot.version>1.0.0.RC1</spring-boot.version>
-        <spring-security.version>3.2.0.RELEASE</spring-security.version>
+        <vaadin.version>7.1.11</vaadin.version>
+        <vaadin-touchkit.version>3.0.1</vaadin-touchkit.version>
+        <spring.version>4.0.2.RELEASE</spring.version>
+        <spring-boot.version>1.0.0.RC4</spring-boot.version>
+        <spring-security.version>3.2.1.RELEASE</spring-security.version>
+        <slf4j.version>1.7.6</slf4j.version>
+        <logback.version>1.1.1</logback.version>
     </properties>
 
     <dependencyManagement>
@@ -97,6 +120,41 @@
                 <artifactId>vaadin-server</artifactId>
                 <version>${vaadin.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.vaadin.addon</groupId>
+                <artifactId>vaadin-touchkit-agpl</artifactId>
+                <version>${vaadin-touchkit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.11</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>1.9.5</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.0.1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -114,6 +172,20 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
@@ -124,6 +196,7 @@
     </build>
 
     <repositories>
+        <!-- TODO Remove snapshots repo as soon as the Spring Boot jars are available in a central repo -->
         <repository>
             <id>spring-snapshots</id>
             <url>http://repo.spring.io/libs-snapshot</url>
@@ -131,11 +204,16 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>vaadin-addons</id>
+            <url>http://maven.vaadin.com/vaadin-addons</url>
+        </repository>
     </repositories>
 
     <modules>
         <module>spring-boot-vaadin</module>
         <module>spring-vaadin</module>
         <module>spring-security-vaadin</module>
+        <module>spring-vaadin-touchkit</module>
     </modules>
 </project>

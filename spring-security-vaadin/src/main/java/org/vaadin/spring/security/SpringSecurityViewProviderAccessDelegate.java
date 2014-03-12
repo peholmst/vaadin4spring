@@ -32,15 +32,16 @@ import org.vaadin.spring.navigator.SpringViewProvider;
  */
 public class SpringSecurityViewProviderAccessDelegate implements SpringViewProvider.ViewProviderAccessDelegate {
 
+    private Security security;
+
     @Autowired
-    Security security;
+    public SpringSecurityViewProviderAccessDelegate(Security security) {
+        this.security = security;
+    }
 
     @Override
     public boolean isAccessGranted(Class<? extends View> viewClass, UI ui) {
         Secured viewSecured = viewClass.getAnnotation(Secured.class);
-        if (viewSecured != null && !security.hasAnyAuthority(viewSecured.value())) {
-            return false;
-        }
-        return true;
+        return !(viewSecured != null && !security.hasAnyAuthority(viewSecured.value()));
     }
 }

@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.0.0.RC1</version>
+        <version>1.0.0.RC4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -14,7 +14,7 @@
     <version>0.0.2-SNAPSHOT</version>
 
     <properties>
-        <vaadin.version>7.1.10</vaadin.version>
+        <vaadin.version>7.1.11</vaadin.version>
     </properties>
 
     <dependencies>
