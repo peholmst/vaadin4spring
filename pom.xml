@@ -215,5 +215,6 @@
         <module>spring-vaadin</module>
         <module>spring-security-vaadin</module>
         <module>spring-vaadin-touchkit</module>
+        <module>spring-vaadin-stuff</module>
     </modules>
 </project>
