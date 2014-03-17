@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>spring-security-vaadin</artifactId>
+    <artifactId>spring-vaadin-security</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

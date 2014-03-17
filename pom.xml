@@ -62,8 +62,8 @@
         <vaadin.version>7.1.11</vaadin.version>
         <vaadin-touchkit.version>3.0.1</vaadin-touchkit.version>
         <spring.version>4.0.2.RELEASE</spring.version>
-        <spring-boot.version>1.0.0.RC4</spring-boot.version>
-        <spring-security.version>3.2.1.RELEASE</spring-security.version>
+        <spring-boot.version>1.0.0.BUILD-SNAPSHOT</spring-boot.version>
+        <spring-security.version>3.2.2.RELEASE</spring-security.version>
         <slf4j.version>1.7.6</slf4j.version>
         <logback.version>1.1.1</logback.version>
     </properties>
@@ -213,7 +213,7 @@
     <modules>
         <module>spring-boot-vaadin</module>
         <module>spring-vaadin</module>
-        <module>spring-security-vaadin</module>
+        <module>spring-vaadin-security</module>
         <module>spring-vaadin-touchkit</module>
         <module>spring-vaadin-stuff</module>
     </modules>

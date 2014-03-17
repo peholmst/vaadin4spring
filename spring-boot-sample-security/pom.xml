@@ -25,7 +25,7 @@
         </dependency>
         <dependency>
             <groupId>org.vaadin.spring</groupId>
-            <artifactId>spring-security-vaadin</artifactId>
+            <artifactId>spring-vaadin-security</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
