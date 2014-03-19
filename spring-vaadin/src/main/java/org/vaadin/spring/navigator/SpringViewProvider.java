@@ -81,7 +81,7 @@ public class SpringViewProvider implements ViewProvider {
         for (String beanName : viewBeanNames) {
             final Class<?> type = applicationContext.getType(beanName);
             if (View.class.isAssignableFrom(type)) {
-                final VaadinView annotation = type.getAnnotation(VaadinView.class);
+                final VaadinView annotation = applicationContext.findAnnotationOnBean(beanName, VaadinView.class);
                 final String viewName = annotation.name();
                 logger.debug("Found VaadinView bean [{}] with view name [{}]", beanName, viewName);
                 Set<String> beanNames = viewNameToBeanNamesMap.get(viewName);
@@ -134,42 +134,38 @@ public class SpringViewProvider implements ViewProvider {
 
     private boolean isViewBeanNameValidForCurrentUI(String beanName) {
         try {
-            Class<?> type = applicationContext.getType(beanName);
+            final Class<?> type = applicationContext.getType(beanName);
 
             Assert.isAssignable(View.class, type, "bean did not implement View interface");
 
-            return isViewClassValidForCurrentUI((Class<? extends View>) type);
+            final UI currentUI = UI.getCurrent();
+            final VaadinView annotation = applicationContext.findAnnotationOnBean(beanName, VaadinView.class);
+
+            Assert.notNull(annotation, "class did not have a VaadinView annotation");
+
+            final Map<String, ViewProviderAccessDelegate> accessDelegates = applicationContext.getBeansOfType(ViewProviderAccessDelegate.class);
+            for (ViewProviderAccessDelegate accessDelegate : accessDelegates.values()) {
+                if (!accessDelegate.isAccessGranted(beanName, currentUI)) {
+                    logger.debug("Access delegate [{}] denied access to view class [{}]", accessDelegate, type.getCanonicalName());
+                    return false;
+                }
+            }
+
+            if (annotation.ui().length == 0) {
+                logger.trace("View class [{}] with view name [{}] is available for all UI subclasses", type.getCanonicalName(), annotation.name());
+                return true;
+            } else {
+                for (Class<? extends UI> validUI : annotation.ui()) {
+                    if (validUI == currentUI.getClass()) {
+                        logger.trace("View class [%s] with view name [{}] is available for UI subclass [{}]", type.getCanonicalName(), annotation.name(), validUI.getCanonicalName());
+                        return true;
+                    }
+                }
+            }
+            return false;
         } catch (NoSuchBeanDefinitionException ex) {
             return false;
         }
-    }
-
-    private boolean isViewClassValidForCurrentUI(Class<? extends View> viewClass) {
-        final UI currentUI = UI.getCurrent();
-        final VaadinView annotation = viewClass.getAnnotation(VaadinView.class);
-
-        Assert.notNull(annotation, "class did not have a VaadinView annotation");
-
-        final Map<String, ViewProviderAccessDelegate> accessDelegates = applicationContext.getBeansOfType(ViewProviderAccessDelegate.class);
-        for (ViewProviderAccessDelegate accessDelegate : accessDelegates.values()) {
-            if (!accessDelegate.isAccessGranted(viewClass, currentUI)) {
-                logger.debug("Access delegate [{}] denied access to view class [{}]", accessDelegate, viewClass.getCanonicalName());
-                return false;
-            }
-        }
-
-        if (annotation.ui().length == 0) {
-            logger.trace("View class [{}] with view name [{}] is available for all UI subclasses", viewClass.getCanonicalName(), annotation.name());
-            return true;
-        } else {
-            for (Class<? extends UI> validUI : annotation.ui()) {
-                if (validUI == currentUI.getClass()) {
-                    logger.trace("View class [%s] with view name [{}] is available for UI subclass [{}]", viewClass.getCanonicalName(), annotation.name(), validUI.getCanonicalName());
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     @Override
@@ -196,10 +192,10 @@ public class SpringViewProvider implements ViewProvider {
         /**
          * Checks if the current user has access to the specified view and UI.
          *
-         * @param viewClass the view class, never {@code null}.
-         * @param ui        the UI, never {@code null}.
+         * @param beanName the bean name of the view, never {@code null}.
+         * @param ui       the UI, never {@code null}.
          * @return true if access is granted, false if access is denied.
          */
-        boolean isAccessGranted(Class<? extends View> viewClass, UI ui);
+        boolean isAccessGranted(String beanName, UI ui);
     }
 }

@@ -79,7 +79,7 @@ public class VaadinSecurityConfiguration implements ApplicationContextAware {
 
     @Bean
     SpringSecurityViewProviderAccessDelegate viewProviderAccessDelegate() {
-        return new SpringSecurityViewProviderAccessDelegate(security());
+        return new SpringSecurityViewProviderAccessDelegate(security(), applicationContext);
     }
 
     @Override
