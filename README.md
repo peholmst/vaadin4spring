@@ -58,6 +58,10 @@ REST endpoints as well, you need to change this mapping. You can do this by crea
 The Vaadin servlet init parameters can also be configured in this way. Just prefix the name of the init parameter with ```vaadin.servlet.params.```. For
 example, to turn on production mode, you would add ```vaadin.servlet.params.productionMode=true``` to the file.
 
+## Customizing the Vaadin servlet ##
+
+TODO
+
 ## The UI Scope ##
 
 This add-on provides a custom scope that binds the bean to the current UI instance. You can use it by adding the ```@UIScope``` annotation to the bean.
@@ -72,3 +76,25 @@ This add-on provides support for the Vaadin Navigator API. To use it:
 2. Inject an instance of ```SpringViewProvider``` into your UI and add it as a view provider to your ```Navigator``` instance.
 
 Please see the JavaDocs and the sample application for more information.
+
+## The Event Bus ##
+
+TODO
+
+## Internationalization ##
+
+TODO
+
+## TouchKit Support ##
+
+TODO
+
+## The Stuff Module ##
+
+TODO
+
+## Security Support ##
+
+The Spring Security integration is still in very early stages of development. Do not assume it will work, and don't use
+it in your projects until the supported features are listed in this README.
+
