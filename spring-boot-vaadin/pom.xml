@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>spring-security-vaadin</artifactId>
+            <artifactId>spring-vaadin-security</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
