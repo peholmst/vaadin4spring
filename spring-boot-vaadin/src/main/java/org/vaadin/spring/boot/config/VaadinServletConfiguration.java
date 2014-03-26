@@ -57,11 +57,6 @@ public class VaadinServletConfiguration extends AbstractServletConfiguration {
     }
 
     @Override
-    protected String getServletUrlMappingParameterName() {
-        return SERVLET_URL_MAPPING_PARAMETER_NAME;
-    }
-
-    @Override
     protected Class<? extends HttpServlet> getServletClass() {
         return SpringAwareVaadinServlet.class;
     }
@@ -69,6 +64,11 @@ public class VaadinServletConfiguration extends AbstractServletConfiguration {
     @Override
     protected Logger getLogger() {
         return logger;
+    }
+
+    @Override
+    protected String getUrlMapping() {
+        return environment.getProperty(SERVLET_URL_MAPPING_PARAMETER_NAME, DEFAULT_SERVLET_URL_MAPPING);
     }
 
     @Bean

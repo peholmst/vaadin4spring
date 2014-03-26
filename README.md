@@ -62,6 +62,10 @@ example, to turn on production mode, you would add ```vaadin.servlet.params.prod
 
 TODO
 
+## Serving static content ##
+
+TODO
+
 ## The UI Scope ##
 
 This add-on provides a custom scope that binds the bean to the current UI instance. You can use it by adding the ```@UIScope``` annotation to the bean.

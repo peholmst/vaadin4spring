@@ -44,8 +44,6 @@ abstract class AbstractServletConfiguration implements InitializingBean {
 
     protected abstract String getServletConfigurationParameterPrefix();
 
-    protected abstract String getServletUrlMappingParameterName();
-
     protected abstract Class<? extends HttpServlet> getServletClass();
 
     protected abstract Logger getLogger();
@@ -63,10 +61,9 @@ abstract class AbstractServletConfiguration implements InitializingBean {
         }
     }
 
-    protected ServletRegistrationBean createServletRegistrationBean() {
-        getLogger().info("Registering servlet of type [{}]", getServletClass().getCanonicalName());
-        final String urlMapping = this.environment.getProperty(getServletUrlMappingParameterName(), DEFAULT_SERVLET_URL_MAPPING);
-        getLogger().info("Servlet will be mapped to URL [{}]", urlMapping);
+    protected abstract String getUrlMapping();
+
+    protected HttpServlet createServlet() {
         HttpServlet servlet;
         try {
             servlet = applicationContext.getBean(getServletClass());
@@ -75,6 +72,14 @@ abstract class AbstractServletConfiguration implements InitializingBean {
             getLogger().info("Servlet was not found in the application context, using default");
             servlet = newServletInstance();
         }
+        return servlet;
+    }
+
+    protected ServletRegistrationBean createServletRegistrationBean() {
+        getLogger().info("Registering servlet of type [{}]", getServletClass().getCanonicalName());
+        final String urlMapping = getUrlMapping();
+        getLogger().info("Servlet will be mapped to URL [{}]", urlMapping);
+        final HttpServlet servlet = createServlet();
         final ServletRegistrationBean registrationBean = new ServletRegistrationBean(
                 servlet, urlMapping);
         addInitParameters(registrationBean);

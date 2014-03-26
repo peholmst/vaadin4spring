@@ -15,18 +15,16 @@
  */
 package org.vaadin.spring.boot;
 
-import com.vaadin.server.Constants;
-import com.vaadin.server.VaadinServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
-import org.springframework.boot.context.embedded.ServletRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.vaadin.spring.EnableVaadin;
 import org.vaadin.spring.VaadinUI;
+import org.vaadin.spring.boot.config.StaticContentVaadinServletConfiguration;
 
 /**
  * @author Petter Holmström (petter@vaadin.com)
@@ -41,20 +39,11 @@ public class VaadinAutoConfiguration {
 
     @Configuration
     @EnableVaadin
+    @Import(StaticContentVaadinServletConfiguration.class)
     static class EnableVaadinConfiguration implements InitializingBean {
         @Override
         public void afterPropertiesSet() throws Exception {
             logger.debug("{} initialized", getClass().getName());
-        }
-
-        @Bean
-        ServletRegistrationBean vaadinStaticServlet() {
-            logger.info("Registering servlet for serving static Vaadin content");
-            final ServletRegistrationBean registrationBean = new ServletRegistrationBean(
-                    new VaadinServlet(), "/VAADIN/*");
-            // TODO Make this configurable as well
-            registrationBean.addInitParameter(Constants.SERVLET_PARAMETER_PRODUCTION_MODE, "true");
-            return registrationBean;
         }
     }
 

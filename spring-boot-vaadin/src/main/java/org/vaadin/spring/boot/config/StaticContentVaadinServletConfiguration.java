@@ -15,28 +15,28 @@
  */
 package org.vaadin.spring.boot.config;
 
+import com.vaadin.server.VaadinServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.vaadin.spring.touchkit.servlet.SpringAwareTouchKitServlet;
 
 import javax.servlet.http.HttpServlet;
 
 /**
- * Spring configuration that sets up a {@link org.vaadin.spring.touchkit.servlet.SpringAwareTouchKitServlet}.
- * If you want to customize the servlet, extend it and make it available as a Spring bean.
+ * Spring configuration that sets up a {@link com.vaadin.server.VaadinServlet} without any UIs to serve static content from /VAADIN/*.
+ * This servlet can be customized using configuration parameters only.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
 @Configuration
-public class TouchKitServletConfiguration extends AbstractServletConfiguration {
+public class StaticContentVaadinServletConfiguration extends AbstractServletConfiguration {
 
-    private static Logger logger = LoggerFactory.getLogger(TouchKitServletConfiguration.class);
+    private static Logger logger = LoggerFactory.getLogger(StaticContentVaadinServletConfiguration.class);
 
     /**
-     * Prefix to be used for all Spring environment properties that configure the TouchKit servlet.
+     * Prefix to be used for all Spring environment properties that configure the static content Vaadin servlet.
      * The full format of the environment property name is {@code [prefix][initParameter]} where {@code [prefix]}
      * is <code>{@value}</code> and {@code initParameter} is the name of one of the parameters defined in {@link com.vaadin.annotations.VaadinServletConfiguration}.
      * <p/>
@@ -45,11 +45,7 @@ public class TouchKitServletConfiguration extends AbstractServletConfiguration {
      *
      * @see org.springframework.core.env.Environment
      */
-    public static final String SERVLET_CONFIGURATION_PARAMETER_PREFIX = "touchKit.servlet.params.";
-    /**
-     * Name of the Spring environment property that contains the URL mapping of the TouchKit servlet. By default, this mapping is {@code /*}.
-     */
-    public static final String SERVLET_URL_MAPPING_PARAMETER_NAME = "touchKit.servlet.urlMapping";
+    public static final String SERVLET_CONFIGURATION_PARAMETER_PREFIX = "vaadin.static.servlet.params.";
 
     @Override
     protected String getServletConfigurationParameterPrefix() {
@@ -58,7 +54,7 @@ public class TouchKitServletConfiguration extends AbstractServletConfiguration {
 
     @Override
     protected Class<? extends HttpServlet> getServletClass() {
-        return SpringAwareTouchKitServlet.class;
+        return VaadinServlet.class;
     }
 
     @Override
@@ -68,11 +64,16 @@ public class TouchKitServletConfiguration extends AbstractServletConfiguration {
 
     @Override
     protected String getUrlMapping() {
-        return environment.getProperty(SERVLET_URL_MAPPING_PARAMETER_NAME, DEFAULT_SERVLET_URL_MAPPING);
+        return "/VAADIN/*";
+    }
+
+    @Override
+    protected HttpServlet createServlet() {
+        return new VaadinServlet();
     }
 
     @Bean
-    ServletRegistrationBean touchKitServletRegistration() {
+    ServletRegistrationBean staticContentVaadinServletRegistration() {
         return createServletRegistrationBean();
     }
 }
