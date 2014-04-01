@@ -12,7 +12,7 @@ or download a snapshot from Sonatype. To build the add-on yourself, follow these
 1. Clone this repository: ```$ git clone https://github.com/peholmst/vaadin4spring.git```
 2. Change into the root directory of the working copy and run: ```mvn clean install```
 
-If you prefer to download the add-on from Sonatype, add this repository to your ```pom.xml``` file (please not that I
+If you prefer to download the add-on from Sonatype, add this repository to your ```pom.xml``` file (please note that I
 currently push new snapshots to Sonatype manually, which means you might not always get the latest version):
 
 ```xml
