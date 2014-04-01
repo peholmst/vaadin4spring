@@ -115,11 +115,11 @@ Please see the JavaDocs and the sample application for more information.
 ## The Event Bus ##
 
 This add-on provides its own event bus framework, with the intention of complementing Spring's own event publisher.
-The JavaDocs of the ```org.vaadin.spring.EventBus``` interface should be enough to get you started, but here is a
+The JavaDocs of the ```org.vaadin.spring.events.EventBus``` interface should be enough to get you started, but here is a
 summary of the key features:
 
-1. ```EventBus```es can be scoped to the current UI, the current session or the entire application.
-2. ```EventBus```es are chained in such a way that application events are propagated to the session event bus and the UI
+1. Event buses can be scoped to the current UI, the current session or the entire application.
+2. Event buses are chained in such a way that application events are propagated to the session event bus and the UI
 event bus, and session events are propagated to the UI event bus.
 3. Events published by Spring's event publisher are automatically propagated to the application event bus.
 4. You can use qualifiers to decide which of the event buses to inject. If no qualifiers are present, the UI event bus
