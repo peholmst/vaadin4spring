@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
@@ -35,6 +36,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.Assert;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -193,6 +195,26 @@ public class Security {
         final Secured secured = AopUtils.getTargetClass(securedObject).getAnnotation(Secured.class);
         Assert.notNull(secured, "securedObject did not have @Secured annotation");
         return hasAccessToObject(securedObject, secured.value());
+    }
+
+    /**
+     * Uses the {@link org.springframework.security.access.annotation.Secured} annotation on the specified method to check if the current user has access to the secured object.
+     *
+     * @param securedObject        the secured object, must not be {@code null}.
+     * @param methodName           the name of the method holding the {@link org.springframework.security.access.annotation.Secured} annotation.
+     * @param methodParameterTypes the parameter types of the method holding the {@link org.springframework.security.access.annotation.Secured} annotation.
+     * @return true if the current user is authorized, false if not.
+     * @see #hasAccessToSecuredObject(Object)
+     */
+    public boolean hasAccessToSecuredMethod(Object securedObject, String methodName, Class<?>... methodParameterTypes) {
+        try {
+            final Method method = securedObject.getClass().getMethod(methodName, methodParameterTypes);
+            final Secured secured = AnnotationUtils.findAnnotation(method, Secured.class);
+            Assert.notNull(secured, "securedObject did not have @Secured annotation");
+            return hasAccessToObject(securedObject, secured.value());
+        } catch (NoSuchMethodException ex) {
+            throw new IllegalArgumentException("Method " + methodName + " does not exist", ex);
+        }
     }
 
     /**
