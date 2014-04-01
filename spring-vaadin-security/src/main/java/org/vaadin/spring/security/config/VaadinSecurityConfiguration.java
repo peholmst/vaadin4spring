@@ -74,7 +74,7 @@ public class VaadinSecurityConfiguration implements ApplicationContextAware {
         } catch (NoSuchBeanDefinitionException ex) {
             accessDecisionManager = null;
         }
-        return new Security(authenticationManager, accessDecisionManager);
+        return new Security(authenticationManager, accessDecisionManager, applicationContext);
     }
 
     @Bean
