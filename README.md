@@ -72,8 +72,7 @@ http://localhost:8080 . Voila!
 
 By default, the Vaadin servlet is mapped to ```/*```. If you are only exposing your application as a web UI, this is
 good enough, but if you want REST endpoints as well, you need to change this mapping. You can do this by creating a file
-named ```application.properties``` in the ```src/main/resources```directory and add the following property to it:
-```vaadin.servlet.urlMapping=/myUI/*```
+named ```application.properties``` in the ```src/main/resources``` directory and add the following property to it: ```vaadin.servlet.urlMapping=/myUI/*```
 
 The Vaadin servlet init parameters can also be configured in this way. Just prefix the name of the init parameter with
 ```vaadin.servlet.params.```. For example, to turn on production mode, you would add
