@@ -17,7 +17,9 @@ package org.vaadin.spring.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
@@ -47,10 +49,12 @@ public class Security {
 
     private final AccessDecisionManager accessDecisionManager;
 
+    private final ApplicationContext applicationContext;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired(required = false)
-    public Security(AuthenticationManager authenticationManager, AccessDecisionManager accessDecisionManager) {
+    public Security(AuthenticationManager authenticationManager, AccessDecisionManager accessDecisionManager, ApplicationContext applicationContext) {
         this.authenticationManager = authenticationManager;
         if (authenticationManager == null) {
             logger.warn("No AuthenticationManager set! Some security methods will not be available.");
@@ -59,6 +63,8 @@ public class Security {
         if (accessDecisionManager == null) {
             logger.warn("No AccessDecisionManager set! Some security methods will not be available.");
         }
+        Assert.notNull(applicationContext);
+        this.applicationContext = applicationContext;
     }
 
     private AuthenticationManager getAuthenticationManager() {
@@ -184,7 +190,7 @@ public class Security {
      * @return true if the current user is authorized, false if not.
      */
     public boolean hasAccessToSecuredObject(Object securedObject) {
-        final Secured secured = securedObject.getClass().getAnnotation(Secured.class);
+        final Secured secured = AopUtils.getTargetClass(securedObject).getAnnotation(Secured.class);
         Assert.notNull(secured, "securedObject did not have @Secured annotation");
         return hasAccessToObject(securedObject, secured.value());
     }
