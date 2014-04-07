@@ -32,6 +32,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Scope;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
 import org.vaadin.spring.VaadinUI;
@@ -121,7 +122,7 @@ class MyView extends VerticalLayout implements View {
 }
 
 @VaadinView(name = "hello/world", ui = AnotherUI.class)
-@UIScope
+@Scope("prototype")
 class MyViewWithCustomName extends VerticalLayout implements View {
 
     @Override
