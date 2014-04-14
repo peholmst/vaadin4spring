@@ -18,8 +18,11 @@ package org.vaadin.spring.events;
 import java.lang.annotation.*;
 
 /**
- * Annotation to be placed on event bus listener methods. A listener method must always conform to the following method signature:
- * <code>myMethodName({@link org.vaadin.spring.events.Event Event}&lt;myPayloadType&gt;)</code>.
+ * Annotation to be placed on event bus listener methods. A listener method must always conform to one of the following method signatures:
+ * <ol>
+ *   <li><code>myMethodName({@link org.vaadin.spring.events.Event Event}&lt;MyPayloadType&gt;)</code></li>
+ *   <li><code>myMethodName(MyPayloadType)</code></li>
+ * </ol>
  * A listener method can have any visibility and any return type.
  *
  * @author Petter Holmström (petter@vaadin.com)

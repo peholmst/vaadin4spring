@@ -122,11 +122,15 @@ public class ScopedEventBus implements EventBus, Serializable {
             @Override
             public void visit(Class<?> clazz) {
                 for (Method m : clazz.getDeclaredMethods()) {
-                    if (m.isAnnotationPresent(EventBusListenerMethod.class) && m.getParameterTypes().length == 1 && m.getParameterTypes()[0] == Event.class) {
-                        logger.trace("Found listener method [{}] in listener [{}]", m.getName(), listener);
-                        MethodListenerWrapper l = new MethodListenerWrapper(ScopedEventBus.this, listener, includingPropagatingEvents, m);
-                        listeners.add(l);
-                        foundMethods[0]++;
+                    if (m.isAnnotationPresent(EventBusListenerMethod.class)) {
+                        if (m.getParameterTypes().length == 1) {
+                            logger.trace("Found listener method [{}] in listener [{}]", m.getName(), listener);
+                            MethodListenerWrapper l = new MethodListenerWrapper(ScopedEventBus.this, listener, includingPropagatingEvents, m);
+                            listeners.add(l);
+                            foundMethods[0]++;
+                        } else {
+                            throw new IllegalArgumentException("Listener method " + m.getName() + " does not have the required signature");
+                        }
                     }
                 }
             }

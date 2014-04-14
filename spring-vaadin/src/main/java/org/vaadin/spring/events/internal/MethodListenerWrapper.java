@@ -35,12 +35,19 @@ import java.lang.reflect.ParameterizedType;
 class MethodListenerWrapper extends AbstractListenerWrapper {
 
     private final Class<?> payloadType;
+    private final boolean payloadMethod;
     private transient Method listenerMethod;
 
     public MethodListenerWrapper(EventBus owningEventBus, Object listenerTarget, boolean includingPropagatingEvents, Method listenerMethod) {
         super(owningEventBus, listenerTarget, includingPropagatingEvents);
-        ParameterizedType type = (ParameterizedType) listenerMethod.getGenericParameterTypes()[0];
-        payloadType = (Class<?>) type.getActualTypeArguments()[0];
+        if (listenerMethod.getParameterTypes()[0] == Event.class) {
+            ParameterizedType type = (ParameterizedType) listenerMethod.getGenericParameterTypes()[0];
+            payloadType = (Class<?>) type.getActualTypeArguments()[0];
+            payloadMethod = false;
+        } else {
+            payloadType = listenerMethod.getParameterTypes()[0];
+            payloadMethod = true;
+        }
         this.listenerMethod = listenerMethod;
     }
 
@@ -63,7 +70,11 @@ class MethodListenerWrapper extends AbstractListenerWrapper {
     public void publish(Event<?> event) {
         listenerMethod.setAccessible(true);
         try {
-            listenerMethod.invoke(getListenerTarget(), event);
+            if (payloadMethod) {
+                listenerMethod.invoke(getListenerTarget(), event.getPayload());
+            } else {
+                listenerMethod.invoke(getListenerTarget(), event);
+            }
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Could not access listener method " + listenerMethod.getName());
         } catch (InvocationTargetException e) {
