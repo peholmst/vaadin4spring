@@ -1,0 +1,28 @@
+/*
+  The look and feel is based on the Reindeer theme and has intentionally been kept very simple.
+  Feel free to define your own! :-)
+*/
+
+.v-panel-deco-sideBarSection {
+    display: none;
+}
+
+.v-panel-content.v-panel-content-sideBarSection {
+    border: none;
+}
+
+.v-nativebutton-sideBarSectionItem {
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+.v-nativebutton.v-nativebutton-sideBarSectionItem .v-icon {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.v-nativebutton.v-nativebutton-sideBarSectionItem.selected .v-nativebutton-caption {
+    font-weight: bold;
+}
