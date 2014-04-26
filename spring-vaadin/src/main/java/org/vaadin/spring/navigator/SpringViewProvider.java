@@ -77,6 +77,7 @@ public class SpringViewProvider implements ViewProvider {
     @PostConstruct
     void init() {
         logger.info("Looking up VaadinViews");
+        int count = 0;
         final String[] viewBeanNames = applicationContext.getBeanNamesForAnnotation(VaadinView.class);
         for (String beanName : viewBeanNames) {
             final Class<?> type = applicationContext.getType(beanName);
@@ -84,13 +85,24 @@ public class SpringViewProvider implements ViewProvider {
                 final VaadinView annotation = applicationContext.findAnnotationOnBean(beanName, VaadinView.class);
                 final String viewName = annotation.name();
                 logger.debug("Found VaadinView bean [{}] with view name [{}]", beanName, viewName);
+                if (applicationContext.isSingleton(beanName)) {
+                    throw new IllegalStateException("VaadinView bean [" + beanName + "] must not be a singleton");
+                }
                 Set<String> beanNames = viewNameToBeanNamesMap.get(viewName);
                 if (beanNames == null) {
                     beanNames = new ConcurrentSkipListSet<>();
                     viewNameToBeanNamesMap.put(viewName, beanNames);
                 }
                 beanNames.add(beanName);
+                count++;
             }
+        }
+        if (count == 0) {
+            logger.warn("No VaadinViews found");
+        } else if (count == 1) {
+            logger.info("1 VaadinView found");
+        } else {
+            logger.info("{} VaadinViews found", count);
         }
     }
 
