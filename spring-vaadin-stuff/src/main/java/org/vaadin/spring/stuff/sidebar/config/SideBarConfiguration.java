@@ -25,9 +25,10 @@ import org.vaadin.spring.stuff.sidebar.SideBar;
 import org.vaadin.spring.stuff.sidebar.SideBarUtils;
 
 /**
- * TODO Document me!
+ * Spring configuration for the {@link org.vaadin.spring.stuff.sidebar.SideBar} and its dependencies.
  *
  * @author Petter Holmström (petter@vaadin.com)
+ * @see org.vaadin.spring.stuff.sidebar.EnableSideBar
  */
 @Configuration
 public class SideBarConfiguration {
