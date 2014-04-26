@@ -12,6 +12,8 @@
     <artifactId>spring-vaadin-security</artifactId>
     <packaging>jar</packaging>
 
+    <name>Vaadin4Spring Security</name>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.security</groupId>

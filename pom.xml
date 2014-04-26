@@ -15,7 +15,7 @@
     <version>0.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>vaadin4spring</name>
+    <name>Vaadin4Spring</name>
     <description>
         Spring, Spring Boot and Spring Security support for Vaadin applications
         (or the other way around, depending on your point of view).
@@ -121,6 +121,11 @@
                 <version>${vaadin.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-themes</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.vaadin.addon</groupId>
                 <artifactId>vaadin-touchkit-agpl</artifactId>
                 <version>${vaadin-touchkit.version}</version>
@@ -220,5 +225,6 @@
         <module>spring-vaadin-security</module>
         <module>spring-vaadin-touchkit</module>
         <module>spring-vaadin-stuff</module>
+        <module>samples</module>
     </modules>
 </project>
