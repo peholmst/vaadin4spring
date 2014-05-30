@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -59,11 +59,11 @@
         <project.build.encoding>UTF-8</project.build.encoding>
         <project.build.target>1.7</project.build.target>
         <project.build.source>1.7</project.build.source>
-        <vaadin.version>7.1.13</vaadin.version>
+        <vaadin.version>7.2.0</vaadin.version>
         <vaadin-touchkit.version>3.0.1</vaadin-touchkit.version>
-        <spring.version>4.0.3.RELEASE</spring.version>
-        <spring-boot.version>1.0.1.RELEASE</spring-boot.version>
-        <spring-security.version>3.2.3.RELEASE</spring-security.version>
+        <spring.version>4.0.5.RELEASE</spring.version>
+        <spring-boot.version>1.0.2.RELEASE</spring-boot.version>
+        <spring-security.version>3.2.4.RELEASE</spring-security.version>
         <slf4j.version>1.7.6</slf4j.version>
         <logback.version>1.1.1</logback.version>
     </properties>
@@ -220,5 +220,6 @@
         <module>spring-vaadin-security</module>
         <module>spring-vaadin-touchkit</module>
         <module>spring-vaadin-stuff</module>
+        <module>spring-vaadin-test</module>
     </modules>
 </project>
