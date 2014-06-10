@@ -17,6 +17,8 @@ package org.vaadin.spring.events.internal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.Advised;
+import org.springframework.aop.support.AopUtils;
 import org.vaadin.spring.events.*;
 import org.vaadin.spring.internal.ClassUtils;
 
@@ -59,11 +61,20 @@ public class ScopedEventBus implements EventBus, Serializable {
      */
     public ScopedEventBus(EventScope scope, EventBus parentEventBus) {
         eventScope = scope;
-        if (parentEventBus != null) {
-            logger.debug("Using parent event bus [{}]", parentEventBus);
-            parentEventBus.subscribe(parentListener);
-        }
         this.parentEventBus = parentEventBus;
+        if (parentEventBus != null) {
+            if (AopUtils.isJdkDynamicProxy(parentEventBus)) {
+                logger.debug("Parent event bus [{}] is proxied, trying to get the real EventBus instance", parentEventBus);
+                try {
+                    this.parentEventBus = (EventBus) ((Advised) parentEventBus).getTargetSource().getTarget();
+                } catch (Exception e) {
+                    logger.error("Could not get target EventBus from proxy", e);
+                    throw new RuntimeException("Could not get parent event bus", e);
+                }
+            }
+            logger.debug("Using parent event bus [{}]", this.parentEventBus);
+            this.parentEventBus.subscribe(parentListener);
+        }
     }
 
     @PreDestroy

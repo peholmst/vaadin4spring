@@ -21,47 +21,62 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * TODO Document me!
- * <p/>
- * This annotation can be placed on two types of beans:
+ * This annotation is used to declare a {@link org.vaadin.spring.stuff.sidebar.SideBar} item that a user can click on.
+ * It can be placed on two types of beans:
  * <ol>
  * <li>{@link java.lang.Runnable}s - when the item is clicked, the runnable is executed</li>
  * <li>{@link com.vaadin.navigator.View Views}s that are also annotated with {@link org.vaadin.spring.navigator.VaadinView VaadinView} - when the item is clicked, the {@link com.vaadin.navigator.Navigator navigator} navigates to the view.
  * </ol>
+ * Please note that the annotated class must be a Spring-managed bean - only adding this annotation is not enough.
  *
  * @author Petter Holmström (petter@vaadin.com)
+ * @see org.vaadin.spring.stuff.sidebar.SideBar
+ * @see org.vaadin.spring.stuff.sidebar.SideBarSection
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SideBarItem {
 
     /**
-     * @return
+     * The ID of the side bar section that this item belongs to.
+     *
+     * @see SideBarSection#id()
      */
     String sectionId();
 
     /**
-     * @return
+     * The caption of this item.
+     *
+     * @see #captionCode()
      */
     String caption() default "";
 
     /**
-     * @return
+     * The code to pass to the {@link org.vaadin.spring.i18n.I18N} instance to get the item caption.
+     * If this is an empty string, {@link #caption()} is used instead.
+     *
+     * @see org.vaadin.spring.i18n.I18N#get(String, Object...)
      */
     String captionCode() default "";
 
     /**
-     * @return
+     * The theme resource ID of the icon of this item.
+     *
+     * @see com.vaadin.server.ThemeResource
      */
     String iconResource() default "";
 
     /**
-     * @return
+     * The code to pass to the {@link org.vaadin.spring.i18n.I18N} instance to get the theme resource ID of
+     * the icon of this item. If this is an empty string, {@link #iconResource()} is used instead.
+     *
+     * @see #iconResource()
+     * @see com.vaadin.server.ThemeResource
      */
     String iconResourceCode() default "";
 
     /**
-     * @return
+     * The order of this item within its section. Items with a lower order are placed higher up in the list.
      */
     int order() default Integer.MAX_VALUE;
 }

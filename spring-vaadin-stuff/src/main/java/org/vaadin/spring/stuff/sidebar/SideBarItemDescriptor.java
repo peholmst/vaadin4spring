@@ -23,26 +23,25 @@ import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.navigator.VaadinView;
 
 /**
- * TODO Document me!
+ * This is a class that describes a side bar item that has been declared using a {@link org.vaadin.spring.stuff.sidebar.SideBarItem} annotation.
  *
- * @author petter@vaadin.com
+ * @author Petter Holmström (petter@vaadin.com)
  */
 public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDescriptor> {
 
     private final SideBarItem item;
     private final I18N i18n;
 
-    /**
-     * @param item
-     * @param i18n
-     */
-    public SideBarItemDescriptor(SideBarItem item, I18N i18n) {
+    protected SideBarItemDescriptor(SideBarItem item, I18N i18n) {
         this.item = item;
         this.i18n = i18n;
     }
 
     /**
-     * @return
+     * Returns the caption of this side bar item. If the caption was specified using {@link org.vaadin.spring.stuff.sidebar.SideBarItem#captionCode()},
+     * this method will fetch the string from {@link org.vaadin.spring.i18n.I18N}.
+     *
+     * @return a string, never {@code null}.
      */
     public String getCaption() {
         if (item.captionCode().isEmpty()) {
@@ -53,7 +52,10 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
     }
 
     /**
-     * @return
+     * Returns the icon of the side bar item. If the resource ID was specified using {@link org.vaadin.spring.stuff.sidebar.SideBarItem#iconResourceCode()},
+     * this method will fetch the real resource ID from {@link org.vaadin.spring.i18n.I18N}.
+     *
+     * @return an icon resource, or {@code null} if the item has no icon.
      */
     public Resource getIcon() {
         String resourceId;
@@ -70,15 +72,17 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
     }
 
     /**
-     * @return
+     * Returns the order of this side bar item within the section.
      */
     public int getOrder() {
         return item.order();
     }
 
     /**
-     * @param section
-     * @return
+     * Checks if this item is a member of the specified side bar section.
+     *
+     * @param section the side bar section, must not be {@code null}.
+     * @return true if the item is a member, false otherwise.
      */
     public boolean isMemberOfSection(SideBarSectionDescriptor section) {
         return item.sectionId().equals(section.getId());
@@ -90,12 +94,14 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
     }
 
     /**
-     * @param ui
+     * This method must be called when the user clicks the item in the UI.
+     *
+     * @param ui the UI in which the item was invoked, must not be {@code null}.
      */
     public abstract void itemInvoked(UI ui);
 
     /**
-     *
+     * Side bar item descriptor for action items. When invoked, the descriptor will execute the operation.
      */
     public static class ActionItemDescriptor extends SideBarItemDescriptor {
 
@@ -103,10 +109,12 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
         private final ApplicationContext applicationContext;
 
         /**
-         * @param item
-         * @param i18n
-         * @param beanName
-         * @param applicationContext
+         * You should never need to create instances of this class directly.
+         *
+         * @param item               the annotation, must not be {@code null}.
+         * @param i18n               the {@link org.vaadin.spring.i18n.I18N} instance to use when looking up localized captions and icons, must not be {@code null}.
+         * @param beanName           the name of the bean that implements the {@link Runnable} to run, must not be {@code null}.
+         * @param applicationContext the application context to use when looking up the runnable bean, must not be {@code null}.
          */
         public ActionItemDescriptor(SideBarItem item, I18N i18n, String beanName, ApplicationContext applicationContext) {
             super(item, i18n);
@@ -122,16 +130,19 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
     }
 
     /**
-     *
+     * Side bar item descriptor for view items. When invoked, the descriptor will navigate to the
+     * view.
      */
     public static class ViewItemDescriptor extends SideBarItemDescriptor {
 
         private final VaadinView vaadinView;
 
         /**
-         * @param item
-         * @param i18n
-         * @param vaadinView
+         * You should never need to create instances of this class directly.
+         *
+         * @param item       the annotation, must not be {@code null}.
+         * @param i18n       the {@link org.vaadin.spring.i18n.I18N} instance to use when looking up localized captions and icons, must not be {@code null}.
+         * @param vaadinView the view annotation, must not be {@code null}.
          */
         public ViewItemDescriptor(SideBarItem item, I18N i18n, VaadinView vaadinView) {
             super(item, i18n);
@@ -139,7 +150,9 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
         }
 
         /**
-         * @return
+         * Gets the name of the view to navigate to.
+         *
+         * @return a string, never {@code null}.
          */
         public String getViewName() {
             return vaadinView.name();

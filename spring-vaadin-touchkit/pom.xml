@@ -12,6 +12,8 @@
     <artifactId>spring-vaadin-touchkit</artifactId>
     <packaging>jar</packaging>
 
+    <name>Vaadin4Spring TouchKit</name>
+
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>

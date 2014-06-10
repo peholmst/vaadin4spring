@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.stuff.sidebar;
+package org.vaadin.spring.samples.eventbus;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
- * This annotation is used to declare multiple {@link org.vaadin.spring.stuff.sidebar.SideBarSection}s on the same
- * bean. Please refer to the JavaDocs for {@link org.vaadin.spring.stuff.sidebar.SideBarSection} for more information.
+ * Main class for the event bus demo application.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface SideBarSections {
+@EnableAutoConfiguration
+@ComponentScan
+public class Application {
 
-    SideBarSection[] value();
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(Application.class, args);
+    }
 }

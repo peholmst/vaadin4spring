@@ -15,7 +15,7 @@
     <version>0.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>vaadin4spring</name>
+    <name>Vaadin4Spring</name>
     <description>
         Spring, Spring Boot and Spring Security support for Vaadin applications
         (or the other way around, depending on your point of view).
@@ -59,7 +59,7 @@
         <project.build.encoding>UTF-8</project.build.encoding>
         <project.build.target>1.7</project.build.target>
         <project.build.source>1.7</project.build.source>
-        <vaadin.version>7.2.0</vaadin.version>
+        <vaadin.version>7.2.2</vaadin.version>
         <vaadin-touchkit.version>3.0.1</vaadin-touchkit.version>
         <spring.version>4.0.5.RELEASE</spring.version>
         <spring-boot.version>1.0.2.RELEASE</spring-boot.version>
@@ -118,6 +118,11 @@
             <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-server</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-themes</artifactId>
                 <version>${vaadin.version}</version>
             </dependency>
             <dependency>
@@ -220,6 +225,7 @@
         <module>spring-vaadin-security</module>
         <module>spring-vaadin-touchkit</module>
         <module>spring-vaadin-stuff</module>
-        <module>spring-vaadin-test</module>
+		<module>spring-vaadin-test</module>
+        <module>samples</module>
     </modules>
 </project>

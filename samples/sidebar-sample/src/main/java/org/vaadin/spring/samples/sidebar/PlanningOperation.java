@@ -13,22 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.stuff.sidebar;
+package org.vaadin.spring.samples.sidebar;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.vaadin.ui.Notification;
+import org.springframework.stereotype.Component;
+import org.vaadin.spring.UIScope;
+import org.vaadin.spring.stuff.sidebar.SideBarItem;
+
+import java.io.Serializable;
 
 /**
- * This annotation is used to declare multiple {@link org.vaadin.spring.stuff.sidebar.SideBarSection}s on the same
- * bean. Please refer to the JavaDocs for {@link org.vaadin.spring.stuff.sidebar.SideBarSection} for more information.
+ * Example operation that shows up under the Planning section in the side bar.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface SideBarSections {
-
-    SideBarSection[] value();
+@SideBarItem(sectionId = Sections.PLANNING,
+        caption = "Operation",
+        iconResource = "../runo/icons/64/settings.png",
+        order = 3)
+@Component
+@UIScope
+public class PlanningOperation implements Runnable, Serializable {
+    @Override
+    public void run() {
+        Notification.show("Operation executed!");
+    }
 }

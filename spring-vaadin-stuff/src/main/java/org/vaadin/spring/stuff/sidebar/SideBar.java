@@ -15,25 +15,57 @@
  */
 package org.vaadin.spring.stuff.sidebar;
 
+import com.vaadin.annotations.StyleSheet;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
 
 import java.util.Collection;
 
 /**
- * TODO Document me
+ * This is a side bar component that can be used as a main menu in applications. The side bar is an {@link com.vaadin.ui.Accordion}
+ * that looks like this:
+ * <p/>
+ * <pre>
+ * |-------------|
+ * |   Section   |
+ * |-------------|
+ * |    Item     |
+ * |    Item     |
+ * |    Item     |
+ * |             |
+ * |-------------|
+ * |   Section   |
+ * |-------------|
+ * |   Section   |
+ * |-------------|
+ * </pre>
+ * <p/>
+ * The sections and items are declared using the {@link org.vaadin.spring.stuff.sidebar.SideBarSection} and {@link org.vaadin.spring.stuff.sidebar.SideBarItem} annotations, respectively.
+ * To use this side bar, simply enable it in your application configuration using the {@link org.vaadin.spring.stuff.sidebar.EnableSideBar} annotation,
+ * and inject it into your UI.
+ * <p/>
+ * The side bar comes with a simple theme. In most cases, you probably want to change the styles to make the look and feel of the side bar more compatible with your application.
+ * Please see the {@code VAADIN/addons/sidebar/sidebar.css} file in the resources directory.
+ * <p/>
+ * If you want to customize the components that are added to the accordion, implement {@link org.vaadin.spring.stuff.sidebar.SideBar.SectionComponentFactory} and/or {@link org.vaadin.spring.stuff.sidebar.SideBar.ItemComponentFactory}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
+@StyleSheet("vaadin://addons/sidebar/sidebar.css")
 public class SideBar extends Accordion {
 
     private final SideBarUtils sideBarUtils;
     private final SectionComponentFactory sectionComponentFactory;
     private final ItemComponentFactory itemComponentFactory;
 
+    /**
+     * You should not need to create instances of this component directly. Instead, just inject the side bar into
+     * your UI.
+     */
     public SideBar(SideBarUtils sideBarUtils, SectionComponentFactory sectionComponentFactory, ItemComponentFactory itemComponentFactory) {
         this.sideBarUtils = sideBarUtils;
         addStyleName("sideBar");
+        setSizeFull();
 
         if (sectionComponentFactory == null) {
             sectionComponentFactory = new DefaultSectionComponentFactory();
@@ -62,75 +94,56 @@ public class SideBar extends Accordion {
     }
 
     /**
+     * Interface defining a factory for creating components that correspond to sections in a side bar.
+     * In practice, a section is a tab of a {@link org.vaadin.spring.stuff.sidebar.SideBar}.
+     * <p/>
+     * If you want to use your own factory, make a Spring managed bean that implements this interface.
+     * It will automatically be used by the {@link org.vaadin.spring.stuff.sidebar.SideBar}.
      *
+     * @see SideBar#addTab(com.vaadin.ui.Component)
      */
     public interface SectionComponentFactory {
         /**
-         * @param itemComponentFactory
+         * Sets the {@code ItemComponentFactory} to use when creating the items of the section.
+         *
+         * @param itemComponentFactory the item component factory, must not be {@code null}.
          */
         void setItemComponentFactory(ItemComponentFactory itemComponentFactory);
 
         /**
-         * @param descriptor
-         * @return
+         * Creates a component to be added as a tab to the {@link org.vaadin.spring.stuff.sidebar.SideBar}.
+         *
+         * @param descriptor      the descriptor of the side bar section, must not be {@code null}.
+         * @param itemDescriptors the descriptors of the items to be added to the section, must not be {@code null}.
+         * @return a component, never {@code null}.
+         * @see SideBar#addTab(com.vaadin.ui.Component)
          */
         Component createSectionComponent(SideBarSectionDescriptor descriptor, Collection<SideBarItemDescriptor> itemDescriptors);
     }
 
     /**
-     *
+     * Interface defining a factory for creating components that correspond to items in a side bar section. When
+     * the item is clicked by the user, {@link org.vaadin.spring.stuff.sidebar.SideBarItemDescriptor#itemInvoked(com.vaadin.ui.UI)}
+     * must be called.
+     * <p/>
+     * If you want to use your own factory, make a Spring managed bean that implements this interface.
+     * It will automatically be used by the {@link org.vaadin.spring.stuff.sidebar.SideBar}.
      */
     public interface ItemComponentFactory {
 
         /**
-         * @param descriptor
-         * @return
+         * Creates a component to be added to a side bar section by a {@link org.vaadin.spring.stuff.sidebar.SideBar.SectionComponentFactory}.
+         * Remember to call {@link org.vaadin.spring.stuff.sidebar.SideBarItemDescriptor#itemInvoked(com.vaadin.ui.UI)} when the item
+         * is clicked by the user.
+         *
+         * @param descriptor the descriptor of the side bar item, must not be {@code null}.
+         * @return a component, never {@code null}.
          */
         Component createItemComponent(SideBarItemDescriptor descriptor);
     }
 
     /**
-     *
-     */
-    public class DefaultSectionComponentFactory implements SectionComponentFactory {
-
-        private ItemComponentFactory itemComponentFactory;
-
-        @Override
-        public void setItemComponentFactory(ItemComponentFactory itemComponentFactory) {
-            this.itemComponentFactory = itemComponentFactory;
-        }
-
-        @Override
-        public Component createSectionComponent(SideBarSectionDescriptor descriptor, Collection<SideBarItemDescriptor> itemDescriptors) {
-            final Panel panel = new Panel();
-            panel.addStyleName("sideBarSection");
-            final VerticalLayout layout = new VerticalLayout();
-            panel.setContent(layout);
-            for (SideBarItemDescriptor item : itemDescriptors) {
-                layout.addComponent(itemComponentFactory.createItemComponent(item));
-            }
-            return panel;
-        }
-    }
-
-    /**
-     *
-     */
-    public class DefaultItemComponentFactory implements ItemComponentFactory {
-
-        @Override
-        public Component createItemComponent(SideBarItemDescriptor descriptor) {
-            if (descriptor instanceof SideBarItemDescriptor.ViewItemDescriptor) {
-                return new ViewItemButton((SideBarItemDescriptor.ViewItemDescriptor) descriptor);
-            } else {
-                return new ItemButton(descriptor);
-            }
-        }
-    }
-
-    /**
-     *
+     * Extended version of {@link com.vaadin.ui.NativeButton} that is used by the {@link org.vaadin.spring.stuff.sidebar.SideBar.DefaultItemComponentFactory}.
      */
     static class ItemButton extends NativeButton {
         ItemButton(final SideBarItemDescriptor descriptor) {
@@ -138,6 +151,7 @@ public class SideBar extends Accordion {
             setIcon(descriptor.getIcon());
             setDisableOnClick(true);
             addStyleName("sideBarSectionItem");
+            setWidth(100, Unit.PERCENTAGE);
             addClickListener(new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
@@ -152,7 +166,9 @@ public class SideBar extends Accordion {
     }
 
     /**
-     *
+     * Extended version of {@link org.vaadin.spring.stuff.sidebar.SideBar.ItemButton} that is used for view items. This
+     * button keeps track of the currently selected view in the current UI's {@link com.vaadin.navigator.Navigator} and
+     * updates its style so that the button of the currently visible view can be highlighted.
      */
     static class ViewItemButton extends ItemButton implements ViewChangeListener {
 
@@ -166,6 +182,9 @@ public class SideBar extends Accordion {
         @Override
         public void attach() {
             super.attach();
+            if (getUI().getNavigator() == null) {
+                throw new IllegalStateException("Please configure the Navigator before you attach the SideBar to the UI");
+            }
             getUI().getNavigator().addViewChangeListener(this);
         }
 
@@ -177,7 +196,7 @@ public class SideBar extends Accordion {
 
         @Override
         public boolean beforeViewChange(ViewChangeEvent event) {
-            return false;
+            return true;
         }
 
         @Override
@@ -186,6 +205,49 @@ public class SideBar extends Accordion {
                 addStyleName("selected");
             } else {
                 removeStyleName("selected");
+            }
+        }
+    }
+
+    /**
+     * Default implementation of {@link org.vaadin.spring.stuff.sidebar.SideBar.SectionComponentFactory} that creates
+     * a {@link com.vaadin.ui.Panel} with a {@link com.vaadin.ui.VerticalLayout} that contains the items.
+     */
+    public class DefaultSectionComponentFactory implements SectionComponentFactory {
+
+        private ItemComponentFactory itemComponentFactory;
+
+        @Override
+        public void setItemComponentFactory(ItemComponentFactory itemComponentFactory) {
+            this.itemComponentFactory = itemComponentFactory;
+        }
+
+        @Override
+        public Component createSectionComponent(SideBarSectionDescriptor descriptor, Collection<SideBarItemDescriptor> itemDescriptors) {
+            final Panel panel = new Panel();
+            panel.addStyleName("sideBarSection");
+            panel.setSizeFull();
+            final VerticalLayout layout = new VerticalLayout();
+            panel.setContent(layout);
+            for (SideBarItemDescriptor item : itemDescriptors) {
+                layout.addComponent(itemComponentFactory.createItemComponent(item));
+            }
+            return panel;
+        }
+    }
+
+    /**
+     * Default implementation of {@link org.vaadin.spring.stuff.sidebar.SideBar.ItemComponentFactory} that creates
+     * {@link com.vaadin.ui.NativeButton}s.
+     */
+    public class DefaultItemComponentFactory implements ItemComponentFactory {
+
+        @Override
+        public Component createItemComponent(SideBarItemDescriptor descriptor) {
+            if (descriptor instanceof SideBarItemDescriptor.ViewItemDescriptor) {
+                return new ViewItemButton((SideBarItemDescriptor.ViewItemDescriptor) descriptor);
+            } else {
+                return new ItemButton(descriptor);
             }
         }
     }

@@ -12,6 +12,8 @@
     <artifactId>spring-vaadin</artifactId>
     <packaging>jar</packaging>
 
+    <name>Vaadin4Spring Core</name>
+
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
