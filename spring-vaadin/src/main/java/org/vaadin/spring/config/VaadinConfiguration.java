@@ -18,7 +18,11 @@ package org.vaadin.spring.config;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusScope;
 import org.vaadin.spring.events.EventScope;
@@ -69,6 +73,13 @@ public class VaadinConfiguration implements ApplicationContextAware {
 
     @Bean
     @Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES)
+    @EventBusScope(value = EventScope.SESSION, proxy = true)
+    EventBus proxiedSessionEventBus() {
+        return new ScopedEventBus(EventScope.SESSION, applicationEventBus());
+    }
+
+    @Bean
+    @Scope(value = "session", proxyMode = ScopedProxyMode.NO)
     @EventBusScope(EventScope.SESSION)
     EventBus sessionEventBus() {
         return new ScopedEventBus(EventScope.SESSION, applicationEventBus());
@@ -76,6 +87,13 @@ public class VaadinConfiguration implements ApplicationContextAware {
 
     @Bean
     @Scope(value = "ui", proxyMode = ScopedProxyMode.INTERFACES)
+    @EventBusScope(value = EventScope.UI, proxy = true)
+    EventBus proxiedUiEventBus() {
+        return new ScopedEventBus(EventScope.UI, sessionEventBus());
+    }
+
+    @Bean
+    @Scope(value = "ui", proxyMode = ScopedProxyMode.NO)
     @Primary
     @EventBusScope(EventScope.UI)
     EventBus uiEventBus() {
