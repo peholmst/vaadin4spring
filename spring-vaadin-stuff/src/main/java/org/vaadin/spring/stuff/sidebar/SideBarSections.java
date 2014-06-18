@@ -21,7 +21,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * TODO Document me
+ * This annotation is used to declare multiple {@link org.vaadin.spring.stuff.sidebar.SideBarSection}s on the same
+ * bean. Please refer to the JavaDocs for {@link org.vaadin.spring.stuff.sidebar.SideBarSection} for more information.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */

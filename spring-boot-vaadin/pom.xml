@@ -12,6 +12,8 @@
     <artifactId>spring-boot-vaadin</artifactId>
     <packaging>jar</packaging>
 
+    <name>Vaadin4Spring Boot Core</name>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

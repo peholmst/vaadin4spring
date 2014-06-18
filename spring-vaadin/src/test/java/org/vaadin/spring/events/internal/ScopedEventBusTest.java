@@ -44,6 +44,8 @@ public class ScopedEventBusTest {
 
         Event<String> theStringEvent;
         Event<Integer> theIntegerEvent;
+        String theStringPayload;
+        Integer theIntegerPayload;
 
         @EventBusListenerMethod
         void onStringEvent(Event<String> stringEvent) {
@@ -51,8 +53,32 @@ public class ScopedEventBusTest {
         }
 
         @EventBusListenerMethod
+        void onStringPayloadEvent(String stringPayload) {
+            theStringPayload = stringPayload;
+        }
+
+        @EventBusListenerMethod
         void onIntegerEvent(Event<Integer> integerEvent) {
             theIntegerEvent = integerEvent;
+        }
+
+        @EventBusListenerMethod
+        void onIntegerPayloadEvent(Integer integerPayload) {
+            theIntegerPayload = integerPayload;
+        }
+    }
+
+    static class InvalidListener1 {
+
+        @EventBusListenerMethod
+        void tooFewParameters() {
+        }
+    }
+
+    static class InvalidListener2 {
+
+        @EventBusListenerMethod
+        void tooManyParameters(String parameter1, Integer parameter2) {
         }
     }
 
@@ -87,10 +113,21 @@ public class ScopedEventBusTest {
         sessionEventBus.subscribe(listener);
         sessionEventBus.publish(this, "Hello World");
 
-
         assertNull(listener.theIntegerEvent);
+        assertNull(listener.theIntegerPayload);
         assertNotNull(listener.theStringEvent);
         assertEquals("Hello World", listener.theStringEvent.getPayload());
+        assertEquals("Hello World", listener.theStringPayload);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSubscribeAndPublishWithListenerMethodsAndTooFewParameters() {
+        sessionEventBus.subscribe(new InvalidListener1());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSubscribeAndPublishWithListenerMethodsAndTooManyParameters() {
+        sessionEventBus.subscribe(new InvalidListener2());
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -118,8 +155,10 @@ public class ScopedEventBusTest {
         sessionEventBus.publish(EventScope.APPLICATION, this, "Hello World");
 
         assertNull(listener.theIntegerEvent);
+        assertNull(listener.theIntegerPayload);
         assertNotNull(listener.theStringEvent);
         assertEquals("Hello World", listener.theStringEvent.getPayload());
+        assertEquals("Hello World", listener.theStringPayload);
     }
 
     @Test
@@ -142,8 +181,10 @@ public class ScopedEventBusTest {
         applicationEventBus.publish(this, "Hello World");
 
         assertNull(listener.theIntegerEvent);
+        assertNull(listener.theIntegerPayload);
         assertNotNull(listener.theStringEvent);
         assertEquals("Hello World", listener.theStringEvent.getPayload());
+        assertEquals("Hello World", listener.theStringPayload);
     }
 
     @Test
@@ -169,8 +210,10 @@ public class ScopedEventBusTest {
         applicationEventBus.publish(this, "Hello World Application");
 
         assertNull(listener.theIntegerEvent);
+        assertNull(listener.theIntegerPayload);
         assertNotNull(listener.theStringEvent);
         assertEquals("Hello World Session", listener.theStringEvent.getPayload());
+        assertEquals("Hello World Session", listener.theStringPayload);
     }
 
 }

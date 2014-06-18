@@ -34,7 +34,7 @@ import org.springframework.web.context.request.RequestContextHolder;
  * @author Petter Holmström (petter@vaadin.com)
  * @see org.vaadin.spring.UIScope
  */
-public class VaadinUIScope implements Scope, BeanFactoryPostProcessor {
+public class UIScope implements Scope, BeanFactoryPostProcessor {
 
     public static final String UI_SCOPE_NAME = "ui";
     private final Logger logger = LoggerFactory.getLogger(getClass());

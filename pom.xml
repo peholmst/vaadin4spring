@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,7 +15,7 @@
     <version>0.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>vaadin4spring</name>
+    <name>Vaadin4Spring</name>
     <description>
         Spring, Spring Boot and Spring Security support for Vaadin applications
         (or the other way around, depending on your point of view).
@@ -59,11 +59,11 @@
         <project.build.encoding>UTF-8</project.build.encoding>
         <project.build.target>1.7</project.build.target>
         <project.build.source>1.7</project.build.source>
-        <vaadin.version>7.1.13</vaadin.version>
+        <vaadin.version>7.2.2</vaadin.version>
         <vaadin-touchkit.version>3.0.1</vaadin-touchkit.version>
-        <spring.version>4.0.3.RELEASE</spring.version>
-        <spring-boot.version>1.0.1.RELEASE</spring-boot.version>
-        <spring-security.version>3.2.3.RELEASE</spring-security.version>
+        <spring.version>4.0.5.RELEASE</spring.version>
+        <spring-boot.version>1.0.2.RELEASE</spring-boot.version>
+        <spring-security.version>3.2.4.RELEASE</spring-security.version>
         <slf4j.version>1.7.6</slf4j.version>
         <logback.version>1.1.1</logback.version>
     </properties>
@@ -121,6 +121,11 @@
                 <version>${vaadin.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-themes</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.vaadin.addon</groupId>
                 <artifactId>vaadin-touchkit-agpl</artifactId>
                 <version>${vaadin-touchkit.version}</version>
@@ -155,21 +160,16 @@
                 <artifactId>javax.servlet-api</artifactId>
                 <version>3.0.1</version>
             </dependency>
+            <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <encoding>${project.build.encoding}</encoding>
-                    <target>${project.build.target}</target>
-                    <source>${project.build.source}</source>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -184,15 +184,34 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
-                <configuration>
-                    <encoding>${project.build.encoding}</encoding>
-                </configuration>
-            </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.1</version>
+                    <configuration>
+                        <encoding>${project.build.encoding}</encoding>
+                        <target>${project.build.target}</target>
+                        <source>${project.build.source}</source>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.6</version>
+                    <configuration>
+                        <encoding>${project.build.encoding}</encoding>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <repositories>
@@ -216,5 +235,7 @@
         <module>spring-vaadin-security</module>
         <module>spring-vaadin-touchkit</module>
         <module>spring-vaadin-stuff</module>
+        <module>spring-vaadin-test</module>
+        <module>samples</module>
     </modules>
 </project>

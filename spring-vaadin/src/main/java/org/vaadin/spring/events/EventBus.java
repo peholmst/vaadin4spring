@@ -106,9 +106,9 @@ public interface EventBus {
 
     /**
      * Subscribes the specified listener to the event bus. The listener need not implement the {@link org.vaadin.spring.events.EventBusListener} interface,
-     * but must contain one or more methods that are annotated with the {@link org.vaadin.spring.events.EventBusListenerMethod} interface and conforms to this method
-     * signature: <code>myMethodName(Event&lt;MyPayloadType&gt;)</code>. The event bus will analyse the payload type of the listener methods to determine
-     * which events the different methods are interested in receiving. This is the same as calling {@link #subscribe(Object, boolean) subscribe(listener, true}.
+     * but must contain one or more methods that are annotated with the {@link org.vaadin.spring.events.EventBusListenerMethod} interface and conform to one of these method
+     * signatures: <code>myMethodName(Event&lt;MyPayloadType&gt;)</code> or <code>myMethodName(MyPayloadType)</code>. The event bus will analyse the payload type of the listener methods to determine
+     * which events the different methods are interested in receiving. This is the same as calling {@link #subscribe(Object, boolean) subscribe(listener, true)}.
      *
      * @param listener the listener to subscribe, never {@code null}.
      */
@@ -116,8 +116,8 @@ public interface EventBus {
 
     /**
      * Subscribes the specified listener to the event bus. The listener need not implement the {@link org.vaadin.spring.events.EventBusListener} interface,
-     * but must contain one or more methods that are annotated with the {@link org.vaadin.spring.events.EventBusListenerMethod} interface and conforms to this method
-     * signature: <code>myMethodName(Event&lt;MyPayloadType&gt;)</code>. The event bus will analyse the payload type of the listener methods to determine
+     * but must contain one or more methods that are annotated with the {@link org.vaadin.spring.events.EventBusListenerMethod} interface and conform to one of these method
+     * signatures: <code>myMethodName(Event&lt;MyPayloadType&gt;)</code> or <code>myMethodName(MyPayloadType)</code>. The event bus will analyse the payload type of the listener methods to determine
      * which events the different methods are interested in receiving.
      *
      * @param listener                   the listener to subscribe, never {@code null}.

@@ -25,29 +25,31 @@ import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Serializable storage for all UI scoped beans. The idea is to have one {@code UIStore} stored in each session.
- * Thus, when the session is deserialized, all UI scoped beans and destruction callbacks should also be deserialzied.
+ * Thus, when the session is deserialized, all UI scoped beans and destruction callbacks should also be deserialized.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-class UIStore implements Serializable, ClientConnector.DetachListener {
+class UIStore implements Serializable, ClientConnector.DetachListener, HttpSessionBindingListener {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private final Map<VaadinUIIdentifier, Map<String, Object>> objectMap = new ConcurrentHashMap<>();
-    private final Map<VaadinUIIdentifier, Map<String, Runnable>> destructionCallbackMap = new ConcurrentHashMap<>();
+    private final Map<UIID, Map<String, Object>> objectMap = new ConcurrentHashMap<>();
+    private final Map<UIID, Map<String, Runnable>> destructionCallbackMap = new ConcurrentHashMap<>();
 
-    public VaadinUIIdentifier currentUiId() {
+    public UIID currentUIID() {
         final UI currentUI = UI.getCurrent();
-        if (currentUI != null) {
-            return new VaadinUIIdentifier(currentUI);
+        if (currentUI != null && currentUI.getUIId() != -1) {
+            return new UIID(currentUI);
         } else {
-            VaadinUIIdentifier currentIdentifier = CurrentInstance.get(VaadinUIIdentifier.class);
-            Assert.notNull(currentIdentifier, String.format("Found no valid %s instance!", VaadinUIIdentifier.class.getName()));
+            UIID currentIdentifier = CurrentInstance.get(UIID.class);
+            Assert.notNull(currentIdentifier, String.format("Found no valid %s instance!", UIID.class.getName()));
             return currentIdentifier;
         }
     }
@@ -57,83 +59,83 @@ class UIStore implements Serializable, ClientConnector.DetachListener {
     }
 
     public String getConversationId() {
-        return currentSessionId() + currentUiId();
+        return currentSessionId() + currentUIID();
     }
 
     public Object get(String name, ObjectFactory<?> objectFactory) {
-        return get(name, objectFactory, currentUiId());
+        return get(name, objectFactory, currentUIID());
     }
 
-    public Object get(String name, ObjectFactory<?> objectFactory, VaadinUIIdentifier uiId) {
-        logger.trace("Getting bean with name [{}] from UI space [{}]", name, uiId);
-        final Map<String, Object> uiSpace = getObjectMap(uiId);
+    public Object get(String name, ObjectFactory<?> objectFactory, UIID uuid) {
+        logger.trace("Getting bean with name [{}] from UI space [{}]", name, uuid);
+        final Map<String, Object> uiSpace = getObjectMap(uuid);
         Object bean = uiSpace.get(name);
         if (bean == null) {
-            logger.trace("Bean [{}] not found in UI space [{}], invoking object factory", name, uiId);
+            logger.trace("Bean [{}] not found in UI space [{}], invoking object factory", name, uuid);
             bean = objectFactory.getObject();
             if (bean instanceof UI) {
                 ((UI) bean).addDetachListener(this);
             }
             if (!(bean instanceof Serializable)) {
-                logger.warn("Storing non-serializable bean [{}] with name [{}] in UI space [{}]", bean, name, uiId);
+                logger.warn("Storing non-serializable bean [{}] with name [{}] in UI space [{}]", bean, name, uuid);
             }
             uiSpace.put(name, bean);
         }
-        logger.trace("Returning bean [{}] with name [{}] from UI space [{}]", bean, name, uiId);
+        logger.trace("Returning bean [{}] with name [{}] from UI space [{}]", bean, name, uuid);
         return bean;
     }
 
     public Object remove(String name) {
-        return remove(name, currentUiId());
+        return remove(name, currentUIID());
     }
 
-    public Object remove(String name, VaadinUIIdentifier uiId) {
-        logger.trace("Removing bean with name [{}] from UI space [{}]", name, uiId);
+    public Object remove(String name, UIID uuid) {
+        logger.trace("Removing bean with name [{}] from UI space [{}]", name, uuid);
         try {
-            getDestructionCallbackMap(uiId).remove(name);
-            return getObjectMap(uiId).remove(name);
+            getDestructionCallbackMap(uuid).remove(name);
+            return getObjectMap(uuid).remove(name);
         } finally {
-            cleanEmptyMaps(uiId);
+            cleanEmptyMaps(uuid);
         }
     }
 
     public void registerDestructionCallback(String name, Runnable callback) {
-        registerDestructionCallback(name, callback, currentUiId());
+        registerDestructionCallback(name, callback, currentUIID());
     }
 
-    public void registerDestructionCallback(String name, Runnable callback, VaadinUIIdentifier uiId) {
-        logger.trace("Registering destruction callback [{}] for bean with name [{}] in UI space [{}]", callback, name, uiId);
+    public void registerDestructionCallback(String name, Runnable callback, UIID uuid) {
+        logger.trace("Registering destruction callback [{}] for bean with name [{}] in UI space [{}]", callback, name, uuid);
         if (!(callback instanceof Serializable)) {
-            logger.warn("Storing non-serializable destruction callback [{}] for bean with name [{}] in UI space [{}]", callback, name, uiId);
+            logger.warn("Storing non-serializable destruction callback [{}] for bean with name [{}] in UI space [{}]", callback, name, uuid);
         }
-        getDestructionCallbackMap(uiId).put(name, callback);
+        getDestructionCallbackMap(uuid).put(name, callback);
     }
 
-    private Map<String, Object> getObjectMap(VaadinUIIdentifier uiId) {
-        Map<String, Object> map = objectMap.get(uiId);
+    private Map<String, Object> getObjectMap(UIID uuid) {
+        Map<String, Object> map = objectMap.get(uuid);
         if (map == null) {
             map = new ConcurrentHashMap<>();
-            objectMap.put(uiId, map);
+            objectMap.put(uuid, map);
         }
         return map;
     }
 
-    private void cleanEmptyMaps(VaadinUIIdentifier uiId) {
-        Map<String, Object> uiSpace = objectMap.get(uiId);
+    private void cleanEmptyMaps(UIID uuid) {
+        Map<String, Object> uiSpace = objectMap.get(uuid);
         if (uiSpace != null && uiSpace.isEmpty()) {
-            objectMap.remove(uiId);
+            objectMap.remove(uuid);
         }
-        Map<String, Runnable> destructionCallbacks = destructionCallbackMap.get(uiId);
+        Map<String, Runnable> destructionCallbacks = destructionCallbackMap.get(uuid);
         if (destructionCallbacks != null && destructionCallbacks.isEmpty()) {
-            destructionCallbacks.remove(uiId);
+            destructionCallbacks.remove(uuid);
         }
     }
 
-    private Map<String, Runnable> getDestructionCallbackMap(VaadinUIIdentifier uiId) {
-        Map<String, Runnable> map = destructionCallbackMap.get(uiId);
+    private Map<String, Runnable> getDestructionCallbackMap(UIID uuid) {
+        Map<String, Runnable> map = destructionCallbackMap.get(uuid);
         if (map == null) {
             map = new ConcurrentHashMap<>();
-            destructionCallbackMap.put(uiId, map);
+            destructionCallbackMap.put(uuid, map);
         }
         return map;
     }
@@ -141,7 +143,7 @@ class UIStore implements Serializable, ClientConnector.DetachListener {
     @Override
     public void detach(ClientConnector.DetachEvent event) {
         logger.debug("Received DetachEvent from [{}]", event.getSource());
-        final VaadinUIIdentifier uiIdentifier = new VaadinUIIdentifier((UI) event.getSource());
+        final UIID uiIdentifier = new UIID((UI) event.getSource());
         final Map<String, Runnable> destructionSpace = destructionCallbackMap.remove(uiIdentifier);
         if (destructionSpace != null) {
             for (Runnable runnable : destructionSpace.values()) {
@@ -149,5 +151,15 @@ class UIStore implements Serializable, ClientConnector.DetachListener {
             }
         }
         objectMap.remove(uiIdentifier);
+    }
+
+    @Override
+    public void valueBound(HttpSessionBindingEvent event) {
+        logger.debug("UIStore bound to HTTP session [{}]", event.getSession().getId());
+    }
+
+    @Override
+    public void valueUnbound(HttpSessionBindingEvent event) {
+        logger.debug("UIStore unbound from HTTP session [{}]", event.getSession().getId());
     }
 }

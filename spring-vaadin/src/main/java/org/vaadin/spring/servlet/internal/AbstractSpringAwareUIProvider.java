@@ -23,7 +23,7 @@ import com.vaadin.util.CurrentInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.WebApplicationContext;
-import org.vaadin.spring.internal.VaadinUIIdentifier;
+import org.vaadin.spring.internal.UIID;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -85,8 +85,8 @@ public abstract class AbstractSpringAwareUIProvider extends UIProvider {
 
     @Override
     public UI createInstance(UICreateEvent event) {
-        final Class<VaadinUIIdentifier> key = VaadinUIIdentifier.class;
-        final VaadinUIIdentifier identifier = new VaadinUIIdentifier(event);
+        final Class<UIID> key = UIID.class;
+        final UIID identifier = new UIID(event);
         CurrentInstance.set(key, identifier);
         try {
             logger.debug("Creating a new UI bean of class [{}] with identifier [{}]", event.getUIClass().getCanonicalName(), identifier);

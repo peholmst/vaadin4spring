@@ -28,16 +28,21 @@ import java.io.Serializable;
  * @author Petter Holmström (petter@vaadin.com)
  * @author Josh Long (josh@joshlong.com)
  */
-public class VaadinUIIdentifier implements Serializable {
+public class UIID implements Serializable {
     private final int uiId;
 
-    public VaadinUIIdentifier(UICreateEvent createEvent) {
+    public UIID(UICreateEvent createEvent) {
         this.uiId = createEvent.getUiId();
     }
 
-    public VaadinUIIdentifier(UI ui) {
+    public UIID(UI ui) {
         Assert.notNull(ui, "ui must not be null");
+        Assert.isTrue(ui.getUIId() > -1, "UIId of ui must not be -1");
         this.uiId = ui.getUIId();
+    }
+
+    public UIID(int uiId) {
+        this.uiId = uiId;
     }
 
     @Override
@@ -45,10 +50,9 @@ public class VaadinUIIdentifier implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        VaadinUIIdentifier that = (VaadinUIIdentifier) o;
+        final UIID that = (UIID) o;
 
         return uiId == that.uiId;
-
     }
 
     @Override

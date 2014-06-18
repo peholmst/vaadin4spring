@@ -166,3 +166,6 @@ use any of them in production until the supported features are listed in this RE
 The Spring Security integration is still in very early stages of development. Do not assume it will work, and don't use
 it in your projects until the supported features are listed in this README.
 
+## Testing
+
+The testing module has its own REAMDE, you can find it [here](spring-vaadin-test/README.md).
