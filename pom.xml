@@ -160,6 +160,11 @@
                 <artifactId>javax.servlet-api</artifactId>
                 <version>3.0.1</version>
             </dependency>
+            <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -230,7 +235,7 @@
         <module>spring-vaadin-security</module>
         <module>spring-vaadin-touchkit</module>
         <module>spring-vaadin-stuff</module>
-		<module>spring-vaadin-test</module>
+        <module>spring-vaadin-test</module>
         <module>samples</module>
     </modules>
 </project>

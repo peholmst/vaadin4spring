@@ -15,21 +15,13 @@
  */
 package org.vaadin.spring.test;
 
-import com.vaadin.ui.UI;
-import com.vaadin.util.CurrentInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.Conventions;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
-import org.vaadin.spring.internal.UIID;
-import org.vaadin.spring.internal.UIScope;
 
 /**
  * @author Petter Holmström (petter@vaadin.com)
@@ -45,7 +37,6 @@ public class VaadinTestExecutionListener extends AbstractTestExecutionListener {
     public static final String SET_CURRENT_UI_ATTRIBUTE = Conventions.getQualifiedAttributeName(
             VaadinTestExecutionListener.class, "setCurrentUI");
     private static final Logger logger = LoggerFactory.getLogger(VaadinTestExecutionListener.class);
-    private int nextUIId = 0;
 
     @Override
     public void prepareTestInstance(TestContext testContext) throws Exception {
@@ -59,11 +50,7 @@ public class VaadinTestExecutionListener extends AbstractTestExecutionListener {
 
     @Override
     public void afterTestMethod(TestContext testContext) throws Exception {
-        testContext.removeAttribute(SET_CURRENT_UI_ATTRIBUTE);
-        logger.debug("Detaching MockUI [{}] after test", UI.getCurrent());
-        UI.getCurrent().detach();
-        UI.setCurrent(null);
-        CurrentInstance.set(UIID.class, null);
+        clearCurrentUIIfNecessary(testContext);
     }
 
     private boolean notAnnotatedWithVaadinAppConfiguration(TestContext testContext) {
@@ -76,28 +63,21 @@ public class VaadinTestExecutionListener extends AbstractTestExecutionListener {
 
     private synchronized void setCurrentUIIfNecessary(TestContext testContext) {
         if (notAnnotatedWithVaadinAppConfiguration(testContext) || alreadySetCurrentUI(testContext)) {
+            logger.debug("No need to set up MockUI for test context [{}]", testContext);
             return;
         }
 
         final ApplicationContext context = testContext.getApplicationContext();
+        MockUI.setUp(context);
+        testContext.setAttribute(SET_CURRENT_UI_ATTRIBUTE, Boolean.TRUE);
+    }
 
-        if (context instanceof ConfigurableApplicationContext) {
-            final ConfigurableApplicationContext cac = (ConfigurableApplicationContext) context;
-            final ConfigurableListableBeanFactory bf = cac.getBeanFactory();
-
-            logger.debug("Setting up MockUI for test context [{}]", testContext);
-
-            final MockUI ui = new MockUI(++nextUIId);
-            UI.setCurrent(ui);
-            CurrentInstance.set(UIID.class, ui.getUiIdentifier());
-            // Register the UI with the UI Scope (to get detach events, etc.)
-            bf.getRegisteredScope(UIScope.UI_SCOPE_NAME).get("mockUI", new ObjectFactory<MockUI>() {
-                @Override
-                public MockUI getObject() throws BeansException {
-                    return ui;
-                }
-            });
-            testContext.setAttribute(SET_CURRENT_UI_ATTRIBUTE, Boolean.TRUE);
+    private synchronized void clearCurrentUIIfNecessary(TestContext testContext) {
+        if (notAnnotatedWithVaadinAppConfiguration(testContext) || !alreadySetCurrentUI(testContext)) {
+            logger.debug("No need to clear MockUI for test context [{}]", testContext);
+            return;
         }
+        MockUI.tearDown();
+        testContext.removeAttribute(SET_CURRENT_UI_ATTRIBUTE);
     }
 }
