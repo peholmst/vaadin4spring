@@ -75,7 +75,7 @@ public class VaadinConfiguration implements ApplicationContextAware {
     @Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES)
     @EventBusScope(value = EventScope.SESSION, proxy = true)
     EventBus proxiedSessionEventBus() {
-        return new ScopedEventBus(EventScope.SESSION, applicationEventBus());
+        return sessionEventBus();
     }
 
     @Bean
@@ -89,7 +89,7 @@ public class VaadinConfiguration implements ApplicationContextAware {
     @Scope(value = "ui", proxyMode = ScopedProxyMode.INTERFACES)
     @EventBusScope(value = EventScope.UI, proxy = true)
     EventBus proxiedUiEventBus() {
-        return new ScopedEventBus(EventScope.UI, sessionEventBus());
+        return uiEventBus();
     }
 
     @Bean
