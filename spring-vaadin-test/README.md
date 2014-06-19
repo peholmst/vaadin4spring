@@ -21,3 +21,19 @@ public class MyTest {
 When running this test, a mocked ```UI``` instance will be created and activated for each test method, making it possible
 to inject both UI-scoped and session scoped beans into the test and performing operations on them (including
 the event buses). For an example, see [this test case](src/test/java/org/vaadin/spring/test/ExampleIntegrationTest.java).
+
+## When the Test Execution Listener does not work
+
+Sometimes, you might need to test UI scoped objects using a separate test runner. In this case you might have to set up
+the mocks manually if the required test execution listeners aren't registered properly using 
+the ```@VaadinAppConfiguration``` annotation.
+
+Create set up (```@Before```) and tear down (```@After```) methods and invoke the ```MockUI.setUp(ApplicationContext)``` 
+and ```MockUI.tearDown()``` methods in them, respectively (this is what the test execution listener does automatically).
+This still assumes that the HTTP session and HTTP request have been mocked properly (a Spring feature). If this does
+not happen, you have to set up the session and request mocks manually.
+
+You cannot access any scoped objects before the Mock UI has been set up. If you are still able to inject beans into
+your test case, you cannot inject any scoped beans directly. Instead, inject your scoped beans as ```Provider```s,
+and request the actual bean inside the test method. For an example, see 
+[this test case](src/test/java/org/vaadin/spring/test/ExampleManualIntegrationTest.java).
