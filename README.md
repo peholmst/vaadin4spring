@@ -2,7 +2,9 @@ Vaadin + Spring = AWESOME
 =========================
 
 This add-on adds support for Vaadin to Spring and Spring Boot, or Spring support to Vaadin,
-depending on your point of view ;-).
+depending on your point of view ;-). 
+
+This project is not yet an official Vaadin Spring add-on, but a Vaadin R&D prototype that I work on whenever I have time. I'm also using the add-on in several customer projects to make sure it meets the requirements of a real-world project.
 
 ## Quick start ##
 
