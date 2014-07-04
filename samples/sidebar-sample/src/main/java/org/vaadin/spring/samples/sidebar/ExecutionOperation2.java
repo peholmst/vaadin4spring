@@ -19,6 +19,7 @@ import com.vaadin.ui.Notification;
 import org.springframework.stereotype.Component;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.stuff.sidebar.SideBarItem;
+import org.vaadin.spring.stuff.sidebar.ThemeIcon;
 
 import java.io.Serializable;
 
@@ -28,8 +29,8 @@ import java.io.Serializable;
  * @author Petter Holmström (petter@vaadin.com)
  */
 @SideBarItem(sectionId = Sections.EXECUTION,
-        caption = "Operation 2",
-        iconResource = "../runo/icons/64/lock.png")
+        caption = "Operation 2")
+@ThemeIcon("../runo/icons/64/lock.png")
 @Component
 @UIScope
 public class ExecutionOperation2 implements Runnable, Serializable {

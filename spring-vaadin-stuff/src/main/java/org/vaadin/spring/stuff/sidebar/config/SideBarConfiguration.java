@@ -21,8 +21,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.i18n.I18N;
+import org.vaadin.spring.stuff.sidebar.FontAwesomeIconProvider;
+import org.vaadin.spring.stuff.sidebar.LocalizedThemeIconProvider;
 import org.vaadin.spring.stuff.sidebar.SideBar;
 import org.vaadin.spring.stuff.sidebar.SideBarUtils;
+import org.vaadin.spring.stuff.sidebar.ThemeIconProvider;
 
 /**
  * Spring configuration for the {@link org.vaadin.spring.stuff.sidebar.SideBar} and its dependencies.
@@ -51,5 +54,20 @@ public class SideBarConfiguration {
     @Bean
     SideBarUtils sideBarUtils() {
         return new SideBarUtils(applicationContext, i18n);
+    }
+
+    @Bean
+    ThemeIconProvider themeIconProvider() {
+        return new ThemeIconProvider();
+    }
+
+    @Bean
+    LocalizedThemeIconProvider localizedThemeIconProvider() {
+        return new LocalizedThemeIconProvider(i18n);
+    }
+
+    @Bean
+    FontAwesomeIconProvider fontAwesomeIconProvider() {
+        return new FontAwesomeIconProvider();
     }
 }

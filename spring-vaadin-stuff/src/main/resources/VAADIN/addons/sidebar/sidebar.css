@@ -21,6 +21,9 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
+    width: 48px;
+    height: 48px;
+    font-size: 48px;
 }
 
 .v-nativebutton.v-nativebutton-sideBarSectionItem.selected .v-nativebutton-caption {

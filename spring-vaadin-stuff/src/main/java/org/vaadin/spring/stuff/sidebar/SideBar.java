@@ -17,7 +17,12 @@ package org.vaadin.spring.stuff.sidebar;
 
 import com.vaadin.annotations.StyleSheet;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Accordion;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.NativeButton;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.VerticalLayout;
 
 import java.util.Collection;
 
@@ -54,6 +59,11 @@ import java.util.Collection;
 @StyleSheet("vaadin://addons/sidebar/sidebar.css")
 public class SideBar extends Accordion {
 
+    public static final String SIDE_BAR_STYLE = "sideBar";
+    public static final String SIDE_BAR_SECTION_ITEM_STYLE = "sideBarSectionItem";
+    public static final String SIDE_BAR_SECTION_STYLE = "sideBarSection";
+    public static final String SELECTED_STYLE = "selected";
+
     private final SideBarUtils sideBarUtils;
     private final SectionComponentFactory sectionComponentFactory;
     private final ItemComponentFactory itemComponentFactory;
@@ -64,7 +74,7 @@ public class SideBar extends Accordion {
      */
     public SideBar(SideBarUtils sideBarUtils, SectionComponentFactory sectionComponentFactory, ItemComponentFactory itemComponentFactory) {
         this.sideBarUtils = sideBarUtils;
-        addStyleName("sideBar");
+        addStyleName(SIDE_BAR_STYLE);
         setSizeFull();
 
         if (sectionComponentFactory == null) {
@@ -150,7 +160,7 @@ public class SideBar extends Accordion {
             setCaption(descriptor.getCaption());
             setIcon(descriptor.getIcon());
             setDisableOnClick(true);
-            addStyleName("sideBarSectionItem");
+            addStyleName(SIDE_BAR_SECTION_ITEM_STYLE);
             setWidth(100, Unit.PERCENTAGE);
             addClickListener(new Button.ClickListener() {
                 @Override
@@ -202,9 +212,9 @@ public class SideBar extends Accordion {
         @Override
         public void afterViewChange(ViewChangeEvent event) {
             if (event.getViewName().equals(viewName)) {
-                addStyleName("selected");
+                addStyleName(SELECTED_STYLE);
             } else {
-                removeStyleName("selected");
+                removeStyleName(SELECTED_STYLE);
             }
         }
     }
@@ -225,7 +235,7 @@ public class SideBar extends Accordion {
         @Override
         public Component createSectionComponent(SideBarSectionDescriptor descriptor, Collection<SideBarItemDescriptor> itemDescriptors) {
             final Panel panel = new Panel();
-            panel.addStyleName("sideBarSection");
+            panel.addStyleName(SIDE_BAR_SECTION_STYLE);
             panel.setSizeFull();
             final VerticalLayout layout = new VerticalLayout();
             panel.setContent(layout);

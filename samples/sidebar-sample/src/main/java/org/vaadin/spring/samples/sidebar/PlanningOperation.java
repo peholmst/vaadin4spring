@@ -15,9 +15,11 @@
  */
 package org.vaadin.spring.samples.sidebar;
 
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Notification;
 import org.springframework.stereotype.Component;
 import org.vaadin.spring.UIScope;
+import org.vaadin.spring.stuff.sidebar.FontAwesomeIcon;
 import org.vaadin.spring.stuff.sidebar.SideBarItem;
 
 import java.io.Serializable;
@@ -29,8 +31,8 @@ import java.io.Serializable;
  */
 @SideBarItem(sectionId = Sections.PLANNING,
         caption = "Operation",
-        iconResource = "../runo/icons/64/settings.png",
         order = 3)
+@FontAwesomeIcon(FontAwesome.APPLE)
 @Component
 @UIScope
 public class PlanningOperation implements Runnable, Serializable {

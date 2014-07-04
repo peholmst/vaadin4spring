@@ -22,6 +22,7 @@ import com.vaadin.ui.VerticalLayout;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.navigator.VaadinView;
 import org.vaadin.spring.stuff.sidebar.SideBarItem;
+import org.vaadin.spring.stuff.sidebar.ThemeIcon;
 
 /**
  * Example view that shows up under the Reporting section in the side bar.
@@ -30,8 +31,8 @@ import org.vaadin.spring.stuff.sidebar.SideBarItem;
  */
 @VaadinView(name = ReportingView2.VIEW_NAME)
 @SideBarItem(sectionId = Sections.REPORTING,
-        caption = "View 1",
-        iconResource = "../runo/icons/64/globe.png")
+        caption = "View 1")
+@ThemeIcon("../runo/icons/64/globe.png")
 @UIScope
 public class ReportingView2 extends VerticalLayout implements View {
 

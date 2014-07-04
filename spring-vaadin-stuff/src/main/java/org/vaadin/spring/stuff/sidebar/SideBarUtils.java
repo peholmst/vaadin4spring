@@ -19,7 +19,6 @@ import com.vaadin.navigator.View;
 import com.vaadin.ui.UI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.navigator.VaadinView;
@@ -47,7 +46,6 @@ public class SideBarUtils {
 
     private final List<SideBarItemDescriptor> items = new ArrayList<>();
 
-    @Autowired
     public SideBarUtils(ApplicationContext applicationContext, I18N i18n) {
         this.applicationContext = applicationContext;
         this.i18n = i18n;
@@ -84,14 +82,12 @@ public class SideBarUtils {
         for (String beanName : beanNames) {
             logger.debug("Bean [{}] declares a side bar item", beanName);
             Class<?> beanType = applicationContext.getType(beanName);
-            SideBarItem item = beanType.getAnnotation(SideBarItem.class);
             if (Runnable.class.isAssignableFrom(beanType)) {
                 logger.debug("Adding side bar item for action [{}]", beanType);
-                this.items.add(new SideBarItemDescriptor.ActionItemDescriptor(item, i18n, beanName, applicationContext));
+                this.items.add(new SideBarItemDescriptor.ActionItemDescriptor(beanName, applicationContext));
             } else if (View.class.isAssignableFrom(beanType) && beanType.isAnnotationPresent(VaadinView.class)) {
-                VaadinView vaadinView = beanType.getAnnotation(VaadinView.class);
-                logger.debug("Adding side bar item for view [{}]", vaadinView.name());
-                this.items.add(new SideBarItemDescriptor.ViewItemDescriptor(item, i18n, vaadinView));
+                logger.debug("Adding side bar item for view [{}]", beanType);
+                this.items.add(new SideBarItemDescriptor.ViewItemDescriptor(beanName, applicationContext));
             }
         }
     }

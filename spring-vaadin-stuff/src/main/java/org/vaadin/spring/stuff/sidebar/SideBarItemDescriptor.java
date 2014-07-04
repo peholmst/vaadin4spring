@@ -16,11 +16,12 @@
 package org.vaadin.spring.stuff.sidebar;
 
 import com.vaadin.server.Resource;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.UI;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.navigator.VaadinView;
+
+import java.lang.annotation.Annotation;
 
 /**
  * This is a class that describes a side bar item that has been declared using a {@link org.vaadin.spring.stuff.sidebar.SideBarItem} annotation.
@@ -31,10 +32,59 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
 
     private final SideBarItem item;
     private final I18N i18n;
+    private final ApplicationContext applicationContext;
+    private final String beanName;
+    private final Annotation iconAnnotation;
+    private final SideBarItemIconProvider<Annotation> iconProvider;
 
-    protected SideBarItemDescriptor(SideBarItem item, I18N i18n) {
-        this.item = item;
-        this.i18n = i18n;
+    protected SideBarItemDescriptor(String beanName, ApplicationContext applicationContext) {
+        this.item = applicationContext.findAnnotationOnBean(beanName, SideBarItem.class);
+        this.i18n = applicationContext.getBean(I18N.class);
+        this.applicationContext = applicationContext;
+        this.beanName = beanName;
+        this.iconAnnotation = findIconAnnotation();
+        this.iconProvider = findIconProvider();
+    }
+
+    private Annotation findIconAnnotation() {
+        Class<?> type = applicationContext.getType(beanName);
+        while (type != null) {
+            Annotation[] annotations = type.getDeclaredAnnotations();
+            for (Annotation annotation : annotations) {
+                if (annotation.annotationType().isAnnotationPresent(SideBarItemIcon.class)) {
+                    return annotation;
+                }
+            }
+            type = type.getSuperclass();
+        }
+        return null;
+    }
+
+    private SideBarItemIconProvider<Annotation> findIconProvider() {
+        if (iconAnnotation != null) {
+            final Class<? extends SideBarItemIconProvider> iconProviderClass = iconAnnotation.annotationType().getAnnotation(SideBarItemIcon.class).value();
+            return applicationContext.getBean(iconProviderClass);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * TODO Document me
+     *
+     * @return
+     */
+    protected ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
+    /**
+     * TODO Document me
+     *
+     * @return
+     */
+    protected String getBeanName() {
+        return beanName;
     }
 
     /**
@@ -52,22 +102,15 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
     }
 
     /**
-     * Returns the icon of the side bar item. If the resource ID was specified using {@link org.vaadin.spring.stuff.sidebar.SideBarItem#iconResourceCode()},
-     * this method will fetch the real resource ID from {@link org.vaadin.spring.i18n.I18N}.
+     * Returns the icon of the side bar item.
      *
      * @return an icon resource, or {@code null} if the item has no icon.
      */
     public Resource getIcon() {
-        String resourceId;
-        if (item.iconResourceCode().isEmpty()) {
-            resourceId = item.iconResource();
+        if (iconProvider != null) {
+            return iconProvider.getIcon(iconAnnotation);
         } else {
-            resourceId = i18n.get(item.iconResourceCode());
-        }
-        if (resourceId.isEmpty()) {
             return null;
-        } else {
-            return new ThemeResource(resourceId);
         }
     }
 
@@ -105,26 +148,19 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
      */
     public static class ActionItemDescriptor extends SideBarItemDescriptor {
 
-        private final String beanName;
-        private final ApplicationContext applicationContext;
-
         /**
          * You should never need to create instances of this class directly.
          *
-         * @param item               the annotation, must not be {@code null}.
-         * @param i18n               the {@link org.vaadin.spring.i18n.I18N} instance to use when looking up localized captions and icons, must not be {@code null}.
          * @param beanName           the name of the bean that implements the {@link Runnable} to run, must not be {@code null}.
-         * @param applicationContext the application context to use when looking up the runnable bean, must not be {@code null}.
+         * @param applicationContext the application context to use when looking up beans, must not be {@code null}.
          */
-        public ActionItemDescriptor(SideBarItem item, I18N i18n, String beanName, ApplicationContext applicationContext) {
-            super(item, i18n);
-            this.beanName = beanName;
-            this.applicationContext = applicationContext;
+        public ActionItemDescriptor(String beanName, ApplicationContext applicationContext) {
+            super(beanName, applicationContext);
         }
 
         @Override
         public void itemInvoked(UI ui) {
-            final Runnable operation = applicationContext.getBean(beanName, Runnable.class);
+            final Runnable operation = getApplicationContext().getBean(getBeanName(), Runnable.class);
             operation.run();
         }
     }
@@ -140,13 +176,12 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
         /**
          * You should never need to create instances of this class directly.
          *
-         * @param item       the annotation, must not be {@code null}.
-         * @param i18n       the {@link org.vaadin.spring.i18n.I18N} instance to use when looking up localized captions and icons, must not be {@code null}.
-         * @param vaadinView the view annotation, must not be {@code null}.
+         * @param beanName           the name of the bean that implements the view to go to, must not be {@code null}.
+         * @param applicationContext the application context to use when looking up beans, must not be {@code null}.
          */
-        public ViewItemDescriptor(SideBarItem item, I18N i18n, VaadinView vaadinView) {
-            super(item, i18n);
-            this.vaadinView = vaadinView;
+        public ViewItemDescriptor(String beanName, ApplicationContext applicationContext) {
+            super(beanName, applicationContext);
+            this.vaadinView = applicationContext.findAnnotationOnBean(beanName, VaadinView.class);
         }
 
         /**

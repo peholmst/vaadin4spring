@@ -17,10 +17,12 @@ package org.vaadin.spring.samples.sidebar;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.stuff.sidebar.FontAwesomeIcon;
 import org.vaadin.spring.stuff.sidebar.SideBarItem;
 
 /**
@@ -31,8 +33,8 @@ import org.vaadin.spring.stuff.sidebar.SideBarItem;
 @VaadinView(name = PlanningView2.VIEW_NAME)
 @SideBarItem(sectionId = Sections.PLANNING,
         caption = "View 2",
-        iconResource = "../runo/icons/64/document.png",
         order = 2)
+@FontAwesomeIcon(FontAwesome.AMBULANCE)
 @UIScope
 public class PlanningView2 extends VerticalLayout implements View {
 
