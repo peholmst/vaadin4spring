@@ -15,7 +15,9 @@
  */
 package org.vaadin.spring.samples.eventbus;
 
+import com.vaadin.annotations.Push;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
@@ -36,6 +38,7 @@ import javax.annotation.PreDestroy;
  * @author Petter Holmström (petter@vaadin.com)
  */
 @VaadinUI
+@Push(transport = Transport.LONG_POLLING)
 public class EventBusUI extends UI implements EventBusListener<Object> {
 
     @Autowired
@@ -48,7 +51,6 @@ public class EventBusUI extends UI implements EventBusListener<Object> {
 
     @Override
     protected void init(VaadinRequest request) {
-        setPollInterval(300);
         eventBus.subscribe(this);
 
         layout = new VerticalLayout(
@@ -87,8 +89,13 @@ public class EventBusUI extends UI implements EventBusListener<Object> {
     }
 
     @Override
-    public void onEvent(org.vaadin.spring.events.Event<Object> event) {
-        layout.addComponent(new Label(event.toString()));
+    public void onEvent(final org.vaadin.spring.events.Event<Object> event) {
+        getUI().access(new Runnable() {
+            @Override
+            public void run() {
+                layout.addComponent(new Label(event.toString()));
+            }
+        });
     }
 
     @PreDestroy
