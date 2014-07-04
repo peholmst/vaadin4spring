@@ -32,6 +32,9 @@ import java.lang.annotation.Target;
  * @author Petter Holmström (petter@vaadin.com)
  * @see org.vaadin.spring.stuff.sidebar.SideBar
  * @see org.vaadin.spring.stuff.sidebar.SideBarSection
+ * @see org.vaadin.spring.stuff.sidebar.FontAwesomeIcon
+ * @see org.vaadin.spring.stuff.sidebar.ThemeIcon
+ * @see org.vaadin.spring.stuff.sidebar.LocalizedThemeIcon
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -58,22 +61,6 @@ public @interface SideBarItem {
      * @see org.vaadin.spring.i18n.I18N#get(String, Object...)
      */
     String captionCode() default "";
-
-    /**
-     * The theme resource ID of the icon of this item.
-     *
-     * @see com.vaadin.server.ThemeResource
-     */
-    String iconResource() default "";
-
-    /**
-     * The code to pass to the {@link org.vaadin.spring.i18n.I18N} instance to get the theme resource ID of
-     * the icon of this item. If this is an empty string, {@link #iconResource()} is used instead.
-     *
-     * @see #iconResource()
-     * @see com.vaadin.server.ThemeResource
-     */
-    String iconResourceCode() default "";
 
     /**
      * The order of this item within its section. Items with a lower order are placed higher up in the list.
