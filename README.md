@@ -120,12 +120,7 @@ The event bus has its own README, you can find it [here](spring-vaadin/src/main/
 
 ## Internationalization ##
 
-This add-on provides some helper classes to make it easier to use Spring's ```MessageSource```s in Vaadin applications.
-The most stable one, that you can use in your applications already, is the ```org.vaadin.spring.i18n.I18N``` class.
-Please read the JavaDocs for more information.
-
-There are also some other I18N classes, but they are still very experimental so I won't write about them here just yet.
-;-)
+The internationalization support has its own README, you can find it [here](spring-vaadin/src/main/java/org/vaadin/spring/i18n/README.md).
 
 ## TouchKit Support ##
 
