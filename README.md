@@ -116,18 +116,7 @@ Please see the JavaDocs and the sample application for more information.
 
 ## The Event Bus ##
 
-This add-on provides its own event bus framework, with the intention of complementing Spring's own event publisher.
-The JavaDocs of the ```org.vaadin.spring.events.EventBus``` interface should be enough to get you started, but here is a
-summary of the key features:
-
-1. Event buses can be scoped to the current UI, the current session or the entire application.
-2. Event buses are chained in such a way that application events are propagated to the session event bus and the UI
-event bus, and session events are propagated to the UI event bus.
-3. Events published by Spring's event publisher are automatically propagated to the application event bus.
-4. You can use qualifiers to decide which of the event buses to inject. If no qualifiers are present, the UI event bus
-is injected.
-5. You can use the UI event bus to both publish and subscribe to events of any scope.
-6. You need to explicitly subscribe to and unsubscribe from an event bus.
+The event bus has its own README, you can find it [here](spring-vaadin/src/main/java/org/vaadin/spring/events/README.md).
 
 ## Internationalization ##
 
@@ -158,10 +147,9 @@ If you want to customize the TouchKit servlet, extend
 
 Finally, please note that TouchKit is a commercial Vaadin product. It can, however, also be used in AGPL projects.
 
-## The Stuff Module ##
+## Stuff ##
 
-The Stuff module contains different classes and utilities that I often end up re-implementing in my projects. Do not
-use any of them in production until the supported features are listed in this README.
+The stuff module has its own README, you can find it [here](spring-vaadin-stuff/README.md).
 
 ## Security Support ##
 
