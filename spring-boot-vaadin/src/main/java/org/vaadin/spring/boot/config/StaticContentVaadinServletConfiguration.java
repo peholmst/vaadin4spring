@@ -15,7 +15,6 @@
  */
 package org.vaadin.spring.boot.config;
 
-import com.vaadin.server.VaadinServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
@@ -25,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.servlet.http.HttpServlet;
 
 /**
- * Spring configuration that sets up a {@link com.vaadin.server.VaadinServlet} without any UIs to serve static content from /VAADIN/*.
+ * Spring configuration that sets up a {@link org.vaadin.spring.boot.config.StaticContentServlet} to serve static content from /VAADIN/*.
  * This servlet can be customized using configuration parameters only.
  *
  * @author Petter Holmström (petter@vaadin.com)
@@ -54,7 +53,7 @@ public class StaticContentVaadinServletConfiguration extends AbstractServletConf
 
     @Override
     protected Class<? extends HttpServlet> getServletClass() {
-        return VaadinServlet.class;
+        return StaticContentServlet.class;
     }
 
     @Override
@@ -69,7 +68,7 @@ public class StaticContentVaadinServletConfiguration extends AbstractServletConf
 
     @Override
     protected HttpServlet createServlet() {
-        return new VaadinServlet();
+        return new StaticContentServlet();
     }
 
     @Bean
