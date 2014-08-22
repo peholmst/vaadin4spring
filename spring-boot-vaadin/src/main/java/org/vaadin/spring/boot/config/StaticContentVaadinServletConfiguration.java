@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.servlet.http.HttpServlet;
 
 /**
- * Spring configuration that sets up a {@link com.vaadin.server.VaadinServlet} without any UIs to serve static content from /VAADIN/*.
+ * Spring configuration that sets up a {@link org.vaadin.spring.boot.config.StaticContentServlet} to serve static content from /VAADIN/*.
  * This servlet can be customized using configuration parameters only.
  *
  * @author Petter Holmström (petter@vaadin.com)

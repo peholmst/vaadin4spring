@@ -20,14 +20,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.servlet.http.HttpServlet;
 import org.vaadin.spring.touchkit.servlet.PingServlet;
 
+import javax.servlet.http.HttpServlet;
+
 /**
- * Spring configuration that sets up a PingServlet{@link org.vaadin.spring.touchkit.servlet.PingServlet} 
+ * Spring configuration that sets up a PingServlet{@link org.vaadin.spring.touchkit.servlet.PingServlet}
  * needed by some Android offline mode haxies.
- * 
  */
 @Configuration
 public class PingServletConfiguration extends AbstractServletConfiguration {
@@ -51,7 +50,7 @@ public class PingServletConfiguration extends AbstractServletConfiguration {
     protected HttpServlet createServlet() {
         return new PingServlet();
     }
-    
+
 
     @Override
     protected Logger getLogger() {
