@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Uniquely identifies an instrument by asset owner and operating day
  *
- * @author cphillipson
+ * @author Chris Phillipson (fastnsilver@gmail.com)
  */
 public class AssetOwnedDailyId implements Serializable {
 
