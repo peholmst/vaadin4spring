@@ -6,6 +6,8 @@ server:
 vaadin:
     servlet:
         urlMapping: /mui/*
+        params:
+            productionMode: true
 
 market:
     default:

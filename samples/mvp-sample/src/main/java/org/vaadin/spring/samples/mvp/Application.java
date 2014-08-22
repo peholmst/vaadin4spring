@@ -1,4 +1,4 @@
-package org.vaadin.spring;
+package org.vaadin.spring.samples.mvp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -18,8 +18,8 @@ import org.vaadin.spring.samples.mvp.ui.service.UserService;
  */
 @ComponentScan
 @EnableAutoConfiguration
-@EnableVaadin
 public class Application extends SpringBootServletInitializer {
+
     private static Class<Application> entryPointClass = Application.class;
 
     public static void main(String[] args) {
