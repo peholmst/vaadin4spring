@@ -15,7 +15,6 @@
  */
 package org.vaadin.spring.boot.config;
 
-import com.vaadin.server.VaadinServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
@@ -54,7 +53,7 @@ public class StaticContentVaadinServletConfiguration extends AbstractServletConf
 
     @Override
     protected Class<? extends HttpServlet> getServletClass() {
-        return VaadinServlet.class;
+        return StaticContentServlet.class;
     }
 
     @Override
@@ -69,7 +68,7 @@ public class StaticContentVaadinServletConfiguration extends AbstractServletConf
 
     @Override
     protected HttpServlet createServlet() {
-        return new VaadinServlet();
+        return new StaticContentServlet();
     }
 
     @Bean
