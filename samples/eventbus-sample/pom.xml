@@ -5,11 +5,10 @@
     <parent>
         <artifactId>samples-parent-pom</artifactId>
         <groupId>org.vaadin.spring.samples</groupId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>0.0.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.vaadin.spring.samples</groupId>
     <artifactId>eventbus-sample</artifactId>
 
     <name>Vaadin4Spring Samples - Event Bus</name>
