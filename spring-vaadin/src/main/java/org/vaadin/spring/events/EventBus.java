@@ -21,27 +21,27 @@ package org.vaadin.spring.events;
  * <li>Events propagate from parent buses to children</li>
  * <li>Events are scoped</li>
  * </ul>
- * <p/>
+ * <p>
  * There are three event scopes, and therefore three event bus types:
  * <ol>
  * <li>{@link EventScope#APPLICATION} events are published to the entire application.</li>
  * <li>{@link EventScope#SESSION} events are published to the current session.</li>
  * <li>{@link EventScope#UI} events are published to the current UI.</li>
  * </ol>
- * <p/>
+ * <p>
  * The event buses are chained in the following way:
  * <ul>
  * <li>Application events are propagated to the session event bus.</li>
  * <li>Session events are propagated to the UI event bus.</li>
  * </ul>
  * Furthermore, {@link org.springframework.context.ApplicationEventPublisher} events are propagated to the application event bus (and further down the chain to the UI event bus).
- * <p/>
+ * <p>
  * The primary {@code EventBus} implementation is always UI-scoped and can be injected into your UI classes like this:
  * <code>
  * &#64;Autowired EventBus myUIScopedEventBus;
  * </code>
  * With this implementation, you can subscribe to and publish events of all scopes (see {@link #publish(EventScope, Object, Object)}).
- * <p/>
+ * <p>
  * However, if you want to inject any of the other
  * event buses, you have to use the {@link org.vaadin.spring.events.EventBusScope} qualifier. For example, the following code will inject the session event bus:
  * <code>

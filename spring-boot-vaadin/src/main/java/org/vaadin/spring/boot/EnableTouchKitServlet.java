@@ -15,10 +15,11 @@
  */
 package org.vaadin.spring.boot;
 
-import org.springframework.context.annotation.Import;
-import org.vaadin.spring.boot.config.TouchKitServletConfiguration;
 
 import java.lang.annotation.*;
+import org.springframework.context.annotation.Import;
+import org.vaadin.spring.boot.config.PingServletConfiguration;
+import org.vaadin.spring.boot.config.TouchKitServletConfiguration;
 
 /**
  * Annotation for enabling the TouchKit servlet.
@@ -28,6 +29,6 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(TouchKitServletConfiguration.class)
+@Import({TouchKitServletConfiguration.class, PingServletConfiguration.class})
 public @interface EnableTouchKitServlet {
 }

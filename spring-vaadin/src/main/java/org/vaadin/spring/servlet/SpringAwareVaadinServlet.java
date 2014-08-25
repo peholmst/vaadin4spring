@@ -27,7 +27,7 @@ import javax.servlet.ServletException;
 /**
  * Subclass of the standard {@link com.vaadin.server.VaadinServlet Vaadin servlet} that adds a {@link SpringAwareUIProvider} to
  * every new Vaadin session.
- * <p/>
+ * <p>
  * If you need a custom Vaadin servlet, you can either extend this servlet directly, or extend another subclass of {@link VaadinServlet}
  * and just add the UI provider.
  *

@@ -27,7 +27,7 @@ import javax.servlet.ServletException;
 /**
  * Subclass of {@link com.vaadin.addon.touchkit.server.TouchKitServlet} that adds a {@link org.vaadin.spring.touchkit.servlet.SpringAwareTouchKitUIProvider} to
  * every new Vaadin session.
- * <p/>
+ * <p>
  * If you need a custom TouchKit servlet, you can either extend this servlet directly, or extend another subclass of {@link com.vaadin.addon.touchkit.server.TouchKitServlet}
  * and just add the UI provider.
  *

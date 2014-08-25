@@ -28,7 +28,6 @@ import java.util.Locale;
 /**
  * Helper class for resolving messages in a Vaadin UI. This is effectively a wrapper around {@link org.springframework.context.ApplicationContext}
  * that uses the locale of the current UI to lookup messages. Use it like this:
- * <code>
  * <pre>
  * &#64;VaadinUI
  * public class MyUI extends UI {
@@ -42,7 +41,6 @@ import java.util.Locale;
  *     }
  * }
  * </pre>
- * </code>
  * Please note, that you also need to configure a {@link org.springframework.context.MessageSource} inside your application context
  * that contains all the messages to resolve.
  *

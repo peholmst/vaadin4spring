@@ -29,7 +29,7 @@ import java.util.Collection;
 /**
  * This is a side bar component that can be used as a main menu in applications. The side bar is an {@link com.vaadin.ui.Accordion}
  * that looks like this:
- * <p/>
+ * <p>
  * <pre>
  * |-------------|
  * |   Section   |
@@ -44,14 +44,14 @@ import java.util.Collection;
  * |   Section   |
  * |-------------|
  * </pre>
- * <p/>
+ * <p>
  * The sections and items are declared using the {@link org.vaadin.spring.stuff.sidebar.SideBarSection} and {@link org.vaadin.spring.stuff.sidebar.SideBarItem} annotations, respectively.
  * To use this side bar, simply enable it in your application configuration using the {@link org.vaadin.spring.stuff.sidebar.EnableSideBar} annotation,
  * and inject it into your UI.
- * <p/>
+ * <p>
  * The side bar comes with a simple theme. In most cases, you probably want to change the styles to make the look and feel of the side bar more compatible with your application.
  * Please see the {@code VAADIN/addons/sidebar/sidebar.css} file in the resources directory.
- * <p/>
+ * <p>
  * If you want to customize the components that are added to the accordion, implement {@link org.vaadin.spring.stuff.sidebar.SideBar.SectionComponentFactory} and/or {@link org.vaadin.spring.stuff.sidebar.SideBar.ItemComponentFactory}.
  *
  * @author Petter Holmström (petter@vaadin.com)
@@ -106,7 +106,7 @@ public class SideBar extends Accordion {
     /**
      * Interface defining a factory for creating components that correspond to sections in a side bar.
      * In practice, a section is a tab of a {@link org.vaadin.spring.stuff.sidebar.SideBar}.
-     * <p/>
+     * <p>
      * If you want to use your own factory, make a Spring managed bean that implements this interface.
      * It will automatically be used by the {@link org.vaadin.spring.stuff.sidebar.SideBar}.
      *
@@ -135,7 +135,7 @@ public class SideBar extends Accordion {
      * Interface defining a factory for creating components that correspond to items in a side bar section. When
      * the item is clicked by the user, {@link org.vaadin.spring.stuff.sidebar.SideBarItemDescriptor#itemInvoked(com.vaadin.ui.UI)}
      * must be called.
-     * <p/>
+     * <p>
      * If you want to use your own factory, make a Spring managed bean that implements this interface.
      * It will automatically be used by the {@link org.vaadin.spring.stuff.sidebar.SideBar}.
      */

@@ -25,13 +25,12 @@ import java.lang.annotation.Target;
 /**
  * Annotation to be placed on {@link com.vaadin.navigator.View}-classes that should be
  * handled by the {@link SpringViewProvider}.
- * <p/>
+ * <p>
  * This annotation is also a stereotype annotation, so Spring will automatically detect the annotated classes.
  * <b>However, the scope must be explicitly specified as the default singleton scope will not work!</b> You can use
  * the {@code prototype} scope or the {@link org.vaadin.spring.UIScope ui} scope.
- * <p/>
+ * <p>
  * This is an example of a view that is mapped to an empty view name and is available for all UI subclasses in the application:
- * <code>
  *     <pre>
  *     &#64;VaadinView(name = "")
  *     &#64;UIScope
@@ -39,9 +38,7 @@ import java.lang.annotation.Target;
  *         // ...
  *     }
  *     </pre>
- * </code>
  * This is an example of a view that is only available to a specified UI subclass:
- * <code>
  *     <pre>
  *     &#64;VaadinView(name = "myView", ui = MyUI.class)
  *     &#64;UIScope
@@ -49,7 +46,6 @@ import java.lang.annotation.Target;
  *         // ...
  *     }
  *     </pre>
- * </code>
  *
  * @author Petter Holmström (petter@vaadin.com)
  */

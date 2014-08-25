@@ -61,11 +61,11 @@
         <project.build.encoding>UTF-8</project.build.encoding>
         <project.build.target>1.7</project.build.target>
         <project.build.source>1.7</project.build.source>
-        <vaadin.version>7.3.0.beta1</vaadin.version>
-        <vaadin-touchkit.version>3.0.1</vaadin-touchkit.version>
+        <vaadin.version>7.3.0.rc1</vaadin.version>
+        <vaadin-touchkit.version>4.0.0.beta2</vaadin-touchkit.version>
         <spring.version>4.0.6.RELEASE</spring.version>
         <spring-boot.version>1.1.5.RELEASE</spring-boot.version>
-        <spring-security.version>3.2.4.RELEASE</spring-security.version>
+        <spring-security.version>3.2.5.RELEASE</spring-security.version>
         <slf4j.version>1.7.7</slf4j.version>
         <logback.version>1.1.2</logback.version>
     </properties>
@@ -216,15 +216,44 @@
         </pluginManagement>
     </build>
 
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <repositories>
-        <!-- TODO Remove snapshots repo as soon as the Spring Boot jars are available in a central repo -->
-        <repository>
-            <id>spring-snapshots</id>
-            <url>http://repo.spring.io/libs-snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
         <repository>
             <id>vaadin-addons</id>
             <url>http://maven.vaadin.com/vaadin-addons</url>

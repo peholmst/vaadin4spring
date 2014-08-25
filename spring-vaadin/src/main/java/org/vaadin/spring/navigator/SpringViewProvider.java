@@ -34,9 +34,8 @@ import java.util.concurrent.ConcurrentSkipListSet;
 /**
  * A Vaadin {@link ViewProvider} that fetches the views from the Spring application context. The views
  * must implement the {@link View} interface and be annotated with the {@link VaadinView} annotation.
- * <p/>
+ * <p>
  * Use like this:
- * <code>
  * <pre>
  *         &#64;VaadinUI
  *         public class MyUI extends UI {
@@ -51,7 +50,6 @@ import java.util.concurrent.ConcurrentSkipListSet;
  *              }
  *         }
  *     </pre>
- * </code>
  *
  * View-based security can be provided by creating a Spring bean that implements the {@link org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate} interface.
  *

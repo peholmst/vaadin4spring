@@ -20,7 +20,6 @@ import java.lang.annotation.*;
 /**
  * This annotation can be placed on fields or getter methods whose types are JavaBean with String properties that are to be
  * translated. For example:
- * <code>
  * <pre>
  * &#64;TranslatedProperty(property = "value", key = "myLabel.value")
  * private Label myLabel;
@@ -28,7 +27,6 @@ import java.lang.annotation.*;
  * &#64;TranslatedProperty(property = "description", key = "myTextField.description")
  * public TextField getMyTextField() { ... }
  * </pre>
- * </code>
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
