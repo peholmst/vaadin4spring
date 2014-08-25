@@ -1,7 +1,5 @@
 package org.vaadin.spring.navigator;
 
-import java.lang.annotation.Annotation;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
@@ -52,22 +50,12 @@ public abstract class Presenter<V extends View> {
      */
     public V getView() {
         V result = null;
-        Annotation[] annotations = getClass().getDeclaredAnnotations();
-        if (annotations != null && annotations.length > 0) {
-            int i = 0;
-            for (Annotation a: annotations) {
-                if (a.annotationType().equals(VaadinPresenter.class)) {
-                    VaadinPresenter vp = (VaadinPresenter) a;
-                    result = (V) viewProvider.getView(vp.viewName());
-                    i++;
-                    break;
-                }
-            }
-            if (i == 0) {
-                logger.error("Presenter does not have a @VaadinPresenter annotation!");
-            }
+        Class<?> clazz = getClass();
+        if (clazz.isAnnotationPresent(VaadinPresenter.class)) {
+            VaadinPresenter vp = clazz.getAnnotation(VaadinPresenter.class);
+            result = (V) viewProvider.getView(vp.viewName());
         } else {
-            logger.error("Presenter does not have any annotations!");
+            logger.error("Presenter [{}] does not have a @VaadinPresenter annotation!", clazz.getSimpleName());
         }
         return result;
     }
