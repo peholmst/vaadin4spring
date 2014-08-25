@@ -36,6 +36,11 @@
     </scm>
 
     <developers>
+        <!-- In alphabetical order -->
+        <developer>
+            <name>Chris Phillipson</name>
+            <email>fastnsilver@gmail.com</email>
+        </developer>
         <developer>
             <name>Josh Long</name>
             <email>josh@joshlong.com</email>
@@ -56,6 +61,7 @@
             <email>petter@vaadin.com</email>
         </developer>
     </developers>
+
 
     <properties>
         <project.build.encoding>UTF-8</project.build.encoding>
