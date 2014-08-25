@@ -11,13 +11,13 @@
 
     <groupId>org.vaadin.spring.samples</groupId>
     <artifactId>samples-parent-pom</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Vaadin4Spring Samples</name>
 
     <properties>
-        <vaadin.version>7.2.6</vaadin.version>
+        <vaadin.version>7.3.0.rc1</vaadin.version>
     </properties>
 
     <dependencyManagement>
