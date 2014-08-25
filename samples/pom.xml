@@ -34,6 +34,11 @@
             </dependency>
             <dependency>
                 <groupId>org.vaadin.spring</groupId>
+                <artifactId>spring-vaadin-mvp</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.vaadin.spring</groupId>
                 <artifactId>spring-vaadin-stuff</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -96,5 +101,6 @@
     <modules>
         <module>sidebar-sample</module>
         <module>eventbus-sample</module>
+        <module>mvp-sample</module>
     </modules>
 </project>

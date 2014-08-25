@@ -1,0 +1,20 @@
+[
+  {
+    "id": 900.1,
+    "alias": "inc_offers",
+    "name": "Inc Offers",
+    "parent": 900
+  },
+  {
+    "id": 900.2,
+    "alias": "dec_bids",
+    "name": "Dec Bids",
+    "parent": 900
+  },
+  {
+    "id": 900.3,
+    "alias": "results",
+    "name": "Virtual Market Results",
+    "parent": 900
+  }
+]

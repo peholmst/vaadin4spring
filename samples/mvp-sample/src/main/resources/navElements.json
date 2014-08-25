@@ -1,0 +1,20 @@
+[
+  {
+    "id": 700,
+    "alias": "demand",
+    "name": "Demand",
+    "parent": null
+  },
+  {
+    "id": 701,
+    "alias": "demand/dsr",
+    "name": "DSR",
+    "parent": 700
+  },
+  {
+    "id": 900,
+    "alias": "virtual",
+    "name": "Virtual",
+    "parent": null
+  }
+]

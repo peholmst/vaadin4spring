@@ -1,6 +1,17 @@
+
+# Maven
 target/
+
+# IntelliJ
 *.iml
 .idea/
 
+# Eclipse
+.settings/
+*.project
+*.classpath
+*.springBeans
+
+# Vaadin
 spring-boot-sample/src/main/public/VAADIN/widgetsets
 spring-boot-sample/src/main/resources/VAADIN/themes/sample/styles.css

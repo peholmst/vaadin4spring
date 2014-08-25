@@ -1,0 +1,20 @@
+# Manually set session timeout to 5 minutes
+# @see https://github.com/peholmst/vaadin4spring/issues/51
+server:
+    sessionTimeout: 300
+    
+vaadin:
+    servlet:
+        urlMapping: /mui/*
+        params:
+            productionMode: true
+
+market:
+    default:
+        offsetDays: 14
+        
+info:
+    app:
+        name: Market UI
+        description: A demonstration of Vaadin + Spring Boot employing MVP
+        version: 1.0.0
