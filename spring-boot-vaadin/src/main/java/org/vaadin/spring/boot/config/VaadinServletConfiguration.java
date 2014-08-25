@@ -39,7 +39,7 @@ public class VaadinServletConfiguration extends AbstractServletConfiguration {
      * Prefix to be used for all Spring environment properties that configure the Vaadin servlet.
      * The full format of the environment property name is {@code [prefix][initParameter]} where {@code [prefix]}
      * is <code>{@value}</code> and {@code initParameter} is the name of one of the parameters defined in {@link com.vaadin.annotations.VaadinServletConfiguration}.
-     * <p/>
+     * <p>
      * For example, to change the production mode of the servlet, a property named <code>{@value}productionMode</code> would
      * be used.
      *

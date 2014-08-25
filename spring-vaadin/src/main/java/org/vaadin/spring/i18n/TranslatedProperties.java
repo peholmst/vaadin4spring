@@ -19,7 +19,6 @@ import java.lang.annotation.*;
 
 /**
  * Annotation that makes it possible to place multiple {@link TranslatedProperty} annotations on the same element. For example:
- * <code>
  * <pre>
  * &#64;TranslatedProperties({
  *     &#64;TranslatedProperty(property = "caption", key = "myTextField.caption"),
@@ -27,7 +26,6 @@ import java.lang.annotation.*;
  * })
  * private TextField myTextField;
  * </pre>
- * </code>
  *
  * @author Petter Holmström (petter@vaadin.com)
  * @see org.vaadin.spring.i18n.TranslatedProperty

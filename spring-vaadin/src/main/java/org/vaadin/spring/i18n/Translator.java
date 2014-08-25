@@ -37,17 +37,15 @@ import static org.vaadin.spring.internal.ClassUtils.visitClassHierarchy;
  * These translatable properties can be mapped to {@link org.springframework.context.MessageSource} keys by using the {@link org.vaadin.spring.i18n.TranslatedProperty} annotation.
  * A {@code Translator} instance would then be created for the UI component (the target object). When the {@link #translate(java.util.Locale, org.springframework.context.MessageSource)}  method
  * is invoked, the translator will go through all fields and getter methods that are annotated and update the translated properties with values from the {@code MessageSource}.
- * <p/>
+ * <p>
  * For example, a label with a translatable value would be defined like this:
- * <code>
  * <pre>
  * &#64;TranslatedProperty(property = "value", key = "myLabel.value")
  * private Label myLabel;
  * </pre>
- * </code>
  * When translating the UI, the translator would first get the message with the key {@code myLabel.value} from the {@code MessageSource}, and then
  * invoke {@link com.vaadin.ui.Label#setValue(String)}, passing in the message as the only parameter.
- * <p/>
+ * <p>
  * The UI component is itself responsible for creating the translator and invoking the {@link #translate(java.util.Locale, org.springframework.context.MessageSource)} method
  * when necessary (normally on initial component setup and when the locale changes).
  *

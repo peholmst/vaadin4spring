@@ -24,23 +24,19 @@ import java.lang.annotation.Target;
 
 /**
  * The TouchKit counterpart to {@link org.vaadin.spring.VaadinUI}. Use it like this:
- * <code>
  * <pre>
  *     &#64;VaadinUI
  *     public class MyRootTouchKitUI extends UI {
  *         // ...
  *     }
  *     </pre>
- * </code>
  * Or like this, if you want to map your UI to another URL (for example if you are having multiple UI subclasses in your application):
- * <code>
  * <pre>
  *     &#64;VaadinUI(path = "/myPath")
  *     public class MyTouchKitUI extends UI {
  *         // ...
  *     }
  *     </pre>
- * </code>
  * The annotated UI will automatically be placed in the {@link org.vaadin.spring.UIScope}, so there is no need to add that annotation explicitly.
  *
  * @author Petter Holmström (petter@vaadin.com)

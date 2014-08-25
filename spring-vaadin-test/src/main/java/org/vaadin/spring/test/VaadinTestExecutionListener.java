@@ -31,8 +31,8 @@ public class VaadinTestExecutionListener extends AbstractTestExecutionListener {
     /**
      * Attribute name for a {@link TestContext} attribute which indicates that
      * {@code VaadinTestExecutionListener} has already set the current UI.
-     * <p/>
-     * <p>Permissible values include {@link Boolean#TRUE} and {@link Boolean#FALSE}.
+     * <p>
+     * Permissible values include {@link Boolean#TRUE} and {@link Boolean#FALSE}.
      */
     public static final String SET_CURRENT_UI_ATTRIBUTE = Conventions.getQualifiedAttributeName(
             VaadinTestExecutionListener.class, "setCurrentUI");
