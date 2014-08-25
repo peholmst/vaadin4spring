@@ -11,7 +11,7 @@
 
     <groupId>org.vaadin.spring</groupId>
     <artifactId>spring-boot-sample</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
     <packaging>war</packaging>
 
     <properties>
