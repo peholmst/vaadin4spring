@@ -15,13 +15,16 @@ import org.vaadin.spring.events.EventBusListenerMethod;
 import org.vaadin.spring.navigator.Presenter;
 import org.vaadin.spring.navigator.VaadinPresenter;
 import org.vaadin.spring.samples.mvp.dto.AssetOwnedDailyId;
+import org.vaadin.spring.samples.mvp.dto.DSRUpdateDTO;
 import org.vaadin.spring.samples.mvp.ui.component.ControlButton;
 import org.vaadin.spring.samples.mvp.ui.component.listener.MarketDaySelectedListener;
 import org.vaadin.spring.samples.mvp.ui.component.listener.ParticipantSelectedListener;
 import org.vaadin.spring.samples.mvp.ui.component.selector.AnyParticipantSelector;
 import org.vaadin.spring.samples.mvp.ui.component.selector.MarketDayPicker;
 import org.vaadin.spring.samples.mvp.ui.component.selector.ParticipantSelector;
+import org.vaadin.spring.samples.mvp.ui.service.DsrService;
 import org.vaadin.spring.samples.mvp.ui.view.DSRUpdateHourlyView;
+import org.vaadin.spring.samples.mvp.util.SSTimeUtil;
 
 import com.vaadin.data.Property;
 import com.vaadin.ui.Button.ClickEvent;
@@ -39,10 +42,8 @@ public class DSRUpdateHourlyPresenter extends Presenter<DSRUpdateHourlyView> {
     @Inject
     private ApplicationContext applicationContext;
 
-    /*
     @Inject
     private DsrService dsrService;
-     */
 
     // XXX each presenter may have multiple listener methods each with same signature;
     // therefore, each method's implementation is responsible for deciding whether or not
@@ -84,16 +85,14 @@ public class DSRUpdateHourlyPresenter extends Presenter<DSRUpdateHourlyView> {
             AssetOwnedDailyId id = ((Property<AssetOwnedDailyId>) screen.getControl(AnyParticipantSelector.class)).getValue();
 
             if (marketDay != null && id != null) {
-                // TODO get values from controls then set criteria for query
                 try {
-                    //List<DSRUpdateDTO> dsrUpdateHourlies = dsrService.getDSRHourly(criteria);
-                    List<?> dsrUpdateHourlies = null;
-                    Table table = new Table();
+                    List<DSRUpdateDTO> dsrUpdateHourlies = dsrService.getDSRHourly(SSTimeUtil.dateToDateTime(marketDay), id.getAssetOwner());
+                    new Table();
                     // should only ever have one
                     if (CollectionUtils.isNotEmpty(dsrUpdateHourlies)) {
-                        // getView().populateGrid(dsrUpdateHourlies.get(0).getRecords(), table);
+                        getView().populateGrid(dsrUpdateHourlies.get(0).getRecords());
                     } else {
-                        getView().populateGrid(null, table);
+                        getView().populateGrid(null);
                     }
                 } catch (Exception e) {
                     String fullTrace = ExceptionUtils.getStackTrace(e);

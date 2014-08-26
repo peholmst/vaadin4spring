@@ -38,3 +38,9 @@ The controls drive what will ultimately be displayed in the right-hand pane. (Ty
 Also, note the controls are chained with `ValueChangeListener`s. (E.g., selecting a `Market Day` will limit the list of available `Participant`s).
 
 See [MockParticipantDAO](https://github.com/fastnsilver/vaadin4spring/blob/master/samples/mvp-sample/src/main/java/org/vaadin/spring/samples/mvp/ui/mock/MockParticipantDAO.java) for which participants are "effective" on a particular date.
+
+## Screenshot ##
+
+What you should see once you select a day and participant and click the Fetch button...
+
+![mvp-sample app screenshot](image/mvp-sample-screenshot.png "MVP Sample Application Screenshot")

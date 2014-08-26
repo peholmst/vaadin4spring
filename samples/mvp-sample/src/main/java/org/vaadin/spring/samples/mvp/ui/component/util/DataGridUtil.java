@@ -1,12 +1,13 @@
 package org.vaadin.spring.samples.mvp.ui.component.util;
 
-import org.vaadin.spring.samples.mvp.ui.component.listener.TrayListener;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
-import com.vaadin.server.Sizeable.Unit;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.NativeButton;
+import org.vaadin.spring.samples.mvp.dto.HasHour;
+import org.vaadin.spring.samples.mvp.dto.UniquelyKeyed;
+import org.vaadin.spring.samples.mvp.util.SSTimeUtil;
+
 import com.vaadin.ui.Table;
 
 
@@ -17,30 +18,17 @@ import com.vaadin.ui.Table;
  */
 public class DataGridUtil {
 
-    public static GridLayout addReportControls() {
-        GridLayout right = new GridLayout(1, 1);
-        right.setWidth(100f, Unit.PERCENTAGE);
-        HorizontalLayout reportSelection = buildReportSelectionArea();
-        right.addComponent(reportSelection, 0, 0);
-        right.setComponentAlignment(reportSelection, Alignment.MIDDLE_RIGHT);
-        return right;
-    }
-
-    protected static HorizontalLayout buildReportSelectionArea() {
-        HorizontalLayout reportSelection = new HorizontalLayout();
-        reportSelection.setSpacing(true);
-        NativeButton getXmlBtn = new NativeButton("Get XML Report");
-        // FIXME wire to appropriate back-end service
-        getXmlBtn.addClickListener(new TrayListener("Fetching XML Report..."));
-
-        NativeButton getCsvBtn = new NativeButton("Get CSV Report");
-        // FIXME wire to appropriate back-end service
-        getXmlBtn.addClickListener(new TrayListener("Fetching CSV Report..."));
-
-        reportSelection.addComponent(getXmlBtn);
-        reportSelection.addComponent(getCsvBtn);
-
-        return reportSelection;
+    public static Set<String> addHourColumnHeaders(Table table, List<? extends UniquelyKeyed<? extends HasHour>> data, Class<?> type) {
+        Set<String> columnHeaders = new TreeSet<>();
+        String hour;
+        for (UniquelyKeyed<? extends HasHour> item: data) {
+            hour = SSTimeUtil.isoToHourLabel(item.getKey().getHour());
+            if (!columnHeaders.contains(hour)) {
+                table.addContainerProperty(hour, type, null);
+            }
+            columnHeaders.add(hour);
+        }
+        return columnHeaders;
     }
 
 }

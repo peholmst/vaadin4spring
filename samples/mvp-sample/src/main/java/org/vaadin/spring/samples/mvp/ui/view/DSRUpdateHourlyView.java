@@ -1,27 +1,23 @@
 package org.vaadin.spring.samples.mvp.ui.view;
 
-import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.navigator.VaadinView;
-import org.vaadin.spring.samples.mvp.dto.CommitStatusType;
 import org.vaadin.spring.samples.mvp.dto.DSRUpdateHourlyDTO;
-import org.vaadin.spring.samples.mvp.ui.component.grid.DataGrid;
-import org.vaadin.spring.samples.mvp.ui.component.layout.Styles;
-import org.vaadin.spring.samples.mvp.ui.component.selector.DefaultSelector;
+import org.vaadin.spring.samples.mvp.ui.component.grid.HierarchicalDataGrid;
 import org.vaadin.spring.samples.mvp.ui.component.util.DataGridUtil;
+import org.vaadin.spring.samples.mvp.ui.component.util.HierarchicalRow;
+import org.vaadin.spring.samples.mvp.ui.component.util.HierarchicalRows;
 import org.vaadin.spring.samples.mvp.util.SSTimeUtil;
 
-import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.Container.Hierarchical;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.DefaultFieldFactory;
-import com.vaadin.ui.Field;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.Table.ColumnGenerator;
-import com.vaadin.ui.TextField;
 
 /**
  * Demand Side Response Hourly Update grid
@@ -30,121 +26,99 @@ import com.vaadin.ui.TextField;
  */
 @UIScope
 @VaadinView(name = DSRUpdateHourlyView.NAME)
-public class DSRUpdateHourlyView extends DataGrid<DSRUpdateHourlyDTO, Table> {
+public class DSRUpdateHourlyView extends HierarchicalDataGrid<DSRUpdateHourlyDTO> {
 
     private static final long serialVersionUID = 1L;
 
     public static final String NAME = "demand/dsr/hourly_updates";
 
-    private static final String ID = "id";
-    private static final String HOUR_GEN_COLUMN = "hour";
-    private static final String HOUR_COLUMN = "id.hour";
-    private static final String COMMIT_STATUS_COLUMN = "commitStatus";
-    private static final String ECO_MIN_COLUMN = "economicMin";
-    private static final String ECO_MAX_COLUMN = "economicMax";
+    private static final String LOCATION_COLUMN = "Location";
+    private static final String COMMIT_STATUS_COLUMN = "Commit Status";
+    private static final String ECO_MIN_COLUMN = "Economic Minimum";
+    private static final String ECO_MAX_COLUMN = "Economic Maximum";
 
 
     @Override
     protected void defineColumns(List<DSRUpdateHourlyDTO> data) {
-        // TODO externalize
-        // Idea: create new utility class UiHints w/ constructor arg of screen id
-        // it would look for a JSON file with screen id as filename
-        // JSON file would have display properties for that screen
-        // e.g., visibleColumns and any other queue for presentation or enabling feature
+        table.addContainerProperty(LOCATION_COLUMN, String.class, null);
+        Set<String> hours = DataGridUtil.addHourColumnHeaders(table, data, String.class);
 
-        table.addGeneratedColumn(HOUR_GEN_COLUMN, new ColumnGenerator() {
-            @Override
-            public Component generateCell(Table source,
-                    final Object itemId, Object columnId) {
-                // Get the value in the first column
-                String isoHour = (String) source
-                        .getContainerProperty(itemId, HOUR_COLUMN).getValue();
+        // TODO move to its own method?
+        table.setColumnAlignment(LOCATION_COLUMN, Table.Align.LEFT);
+        for (String hour: hours) {
+            table.setColumnAlignment(hour, Table.Align.RIGHT);
+            table.setColumnWidth(hour, 60);
+        }
 
-                TextField tf = new TextField(null, SSTimeUtil.isoToHourLabel(isoHour));
-                tf.addStyleName(Styles.NUMERIC);
-                tf.setReadOnly(true);
-                tf.setWidth("40");
-                return tf;
-            }
-        });
-
-        table.setColumnHeader(COMMIT_STATUS_COLUMN, "Commit Status");
-        table.setColumnHeader(ECO_MIN_COLUMN, "Economic Minimum");
-        table.setColumnHeader(ECO_MAX_COLUMN, "Economic Maximum");
-
-        table.setColumnWidth(HOUR_GEN_COLUMN, 40);
-
-        table.setColumnAlignment(HOUR_GEN_COLUMN, Table.Align.RIGHT);
-        table.setColumnAlignment(ECO_MIN_COLUMN, Table.Align.RIGHT);
-        table.setColumnAlignment(ECO_MAX_COLUMN, Table.Align.RIGHT);
-
-        // these are the properties (including nested properties and generated columns) of the DTO, in column name order
-        table.setVisibleColumns(new Object[]{ HOUR_GEN_COLUMN, COMMIT_STATUS_COLUMN, ECO_MIN_COLUMN, ECO_MAX_COLUMN });
+        table.setColumnWidth(LOCATION_COLUMN, 150);
 
     }
 
     @Override
     protected void insertData(List<DSRUpdateHourlyDTO> data) {
-        BeanItemContainer<DSRUpdateHourlyDTO> container = new BeanItemContainer<>(DSRUpdateHourlyDTO.class);
-        container.addNestedContainerBean(ID);
-        container.addAll(data);
-        table.setContainerDataSource(container);
+        int rowIndex = 0;
+        HierarchicalRows struct = new HierarchicalRows();
+        NumberFormat df = NumberFormat.getNumberInstance();
+        for (DSRUpdateHourlyDTO dto : data) {
+            struct.addRow(dto.getId().getLocation(),
+                    SSTimeUtil.isoToHourLabel(dto.getId().getHour()), dto.getCommitStatus(),
+                    df.format(dto.getEconomicMin()), df.format(dto.getEconomicMax()));
+        }
+
+        String interfaceName;
+        Object[] parentRow;
+        Object[] commitStatus;
+        Object[] ecoMin;
+        Object[] ecoMax;
+        HierarchicalRow hr;
+        Object itemId;
+        for (Map.Entry<String, HierarchicalRow> parent: struct.getRows().entrySet()) {
+            interfaceName = parent.getKey();
+            hr = parent.getValue();
+            commitStatus = hr.getRowAsObjectArray(COMMIT_STATUS_COLUMN , 0);
+            ecoMin = hr.getRowAsObjectArray(ECO_MIN_COLUMN , 1);
+            ecoMax = hr.getRowAsObjectArray(ECO_MAX_COLUMN , 2);
+            parentRow = new Object[NumberUtils.max(new int[] {commitStatus.length, ecoMin.length, ecoMax.length})];
+            parentRow[0] = interfaceName;
+            table.addItem(parentRow, rowIndex);
+            rowIndex++;
+
+            itemId = table.addItem(commitStatus, rowIndex);
+            ((Hierarchical) table).setParent(rowIndex, rowIndex-1);
+            table.setChildrenAllowed(itemId, false);
+            rowIndex++;
+
+            itemId = table.addItem(ecoMin, rowIndex);
+            ((Hierarchical) table).setParent(rowIndex, rowIndex-2);
+            table.setChildrenAllowed(itemId, false);
+            rowIndex++;
+
+            itemId = table.addItem(ecoMax, rowIndex);
+            ((Hierarchical) table).setParent(rowIndex, rowIndex-3);
+            table.setChildrenAllowed(itemId, false);
+
+            table.setCollapsed(rowIndex-3, false);
+            rowIndex++;
+        }
+
         // we want to see all hours at once; disable paging
         table.setPageLength(0);
     }
 
-    // TODO for now only editable presentation defined, split into editable and read-only and provide toggle
     @Override
     protected void defineFieldPresentation() {
-        table.setTableFieldFactory(new DefaultFieldFactory() {
 
-            @Override
-            public Field<?> createField(Container container, Object itemId,
-                    Object propertyId, Component uiContext) {
-
-                Class<?> cls = container.getType(propertyId);
-
-                Field<?> field = null;
-
-                if (cls.equals(BigDecimal.class)) {
-                    TextField tf = new TextField();
-                    tf.addStyleName(Styles.NUMERIC);
-                    field = tf;
-                }
-
-                // Make commitStatus field render a single select
-                if (propertyId.equals(COMMIT_STATUS_COLUMN)) {
-                    String value = ((DSRUpdateHourlyDTO) itemId).getCommitStatus();
-                    CommitStatusType status = CommitStatusType.fromValue(value);
-                    try {
-                        field = new DefaultSelector(status, "getValue");
-                    } catch (Exception e) {
-                        // do nothing, and fall-through
-                    }
-                }
-
-                // catch-all
-                if (field == null) {
-                    field = super.createField(container, itemId, propertyId, uiContext);
-                }
-
-                return field;
-            }
-        });
     }
 
     @Override
     protected void defineTableProperties() {
         table.setImmediate(true);
-        // TODO consider setting this property with a UiHint
-        table.setEditable(true);
     }
 
     @Override
     protected void addControls() {
-        addComponent(DataGridUtil.addReportControls());
-    }
 
+    }
 
     @Override
     public void enter(ViewChangeEvent event) {

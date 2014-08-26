@@ -4,10 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.vaadin.spring.samples.mvp.ui.mock.MockUserService;
-import org.vaadin.spring.samples.mvp.ui.service.UserService;
 
 /**
  * Bootstraps application using Spring Boot API Indiscriminately and recursively
@@ -32,8 +29,4 @@ public class Application extends SpringBootServletInitializer {
         return application.sources(entryPointClass);
     }
 
-    @Bean
-    UserService userService() {
-        return new MockUserService();
-    }
 }
