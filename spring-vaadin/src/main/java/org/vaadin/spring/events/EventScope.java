@@ -34,5 +34,7 @@ public enum EventScope {
     /**
      * The event is specific to the current UI.
      */
-    UI
+    UI,
+
+    UNDEFINED
 }

@@ -15,15 +15,18 @@
  */
 package org.vaadin.spring.events.internal;
 
-import org.vaadin.spring.events.Event;
-import org.vaadin.spring.events.EventBus;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+
+import org.vaadin.spring.events.Event;
+import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventBusListenerMethod;
+import org.vaadin.spring.events.EventBusListenerMethod.EventBusListenerMethodFilter;
+import org.vaadin.spring.events.EventScope;
 
 /**
  * Implementation of {@link org.vaadin.spring.events.internal.AbstractListenerWrapper} that wraps an object
@@ -86,4 +89,24 @@ class MethodListenerWrapper extends AbstractListenerWrapper {
             }
         }
     }
+
+    @Override
+    public boolean supports(Event<?> event) {
+        boolean supports = super.supports(event);
+        try {
+            if (listenerMethod.isAnnotationPresent(EventBusListenerMethod.class)) {
+                EventBusListenerMethod annotation = listenerMethod.getAnnotation(EventBusListenerMethod.class);
+                EventBusListenerMethodFilter filter = annotation.filter().newInstance();
+                EventScope scope = annotation.scope();
+                if (scope.equals(EventScope.UNDEFINED)) {
+                    scope = event.getScope();
+                }
+                supports = supports && filter.filter(event.getPayload()) && event.getScope().equals(scope);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("A checked exception occurred while invoking listener method " + listenerMethod.getName(), e);
+        }
+        return supports;
+    }
+
 }
