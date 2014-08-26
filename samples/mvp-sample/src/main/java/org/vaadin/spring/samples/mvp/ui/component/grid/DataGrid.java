@@ -46,7 +46,11 @@ public abstract class DataGrid<DTO, T extends Table> extends VerticalLayout impl
      * Populates this grid with data
      * @param data any list of transfer objects
      */
-    public void populateGrid(List<DTO> data, T table) {
+    public void populateGrid(List<DTO> data) {
+        populateGrid(data, (T) new Table());
+    }
+
+    protected void populateGrid(List<DTO> data, T table) {
         // preemptively remove all components from layout
         if (getComponentCount() > 0) {
             removeAllComponents();
@@ -56,10 +60,9 @@ public abstract class DataGrid<DTO, T extends Table> extends VerticalLayout impl
         // if no data show default message
         if (CollectionUtils.isEmpty(data)) {
             addComponent(new Label(NO_RESULTS_CAPTION, ContentMode.TEXT));
-
+        } else {
             // we have data... insert it into table,
             // then define table, column and field presentation properties
-        } else {
             doPopulateGrid(data, table);
         }
     }

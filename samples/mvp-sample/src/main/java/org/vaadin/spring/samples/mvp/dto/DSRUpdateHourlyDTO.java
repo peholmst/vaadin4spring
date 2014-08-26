@@ -3,7 +3,7 @@ package org.vaadin.spring.samples.mvp.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class DSRUpdateHourlyDTO implements Serializable {
+public class DSRUpdateHourlyDTO implements Serializable, UniquelyKeyed<AssetOwnedHourlyLocatableId> {
     private static final long serialVersionUID = 1L;
     private final AssetOwnedHourlyLocatableId id = new AssetOwnedHourlyLocatableId();
 
@@ -36,6 +36,11 @@ public class DSRUpdateHourlyDTO implements Serializable {
     }
 
     public AssetOwnedHourlyLocatableId getId() {
+        return id;
+    }
+
+    @Override
+    public AssetOwnedHourlyLocatableId getKey() {
         return id;
     }
 

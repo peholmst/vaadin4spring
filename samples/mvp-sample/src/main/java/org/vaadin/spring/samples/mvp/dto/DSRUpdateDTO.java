@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DSRUpdateDTO implements Serializable {
+public class DSRUpdateDTO implements Serializable, UniquelyKeyed<AssetOwnedDailyLocatableId> {
 
     private static final long serialVersionUID = 1L;
     private final AssetOwnedDailyLocatableId id = new AssetOwnedDailyLocatableId();
@@ -16,5 +16,9 @@ public class DSRUpdateDTO implements Serializable {
 
     public AssetOwnedDailyLocatableId getId() { return id; }
 
+    @Override
+    public AssetOwnedDailyLocatableId getKey() {
+        return id;
+    }
 }
 

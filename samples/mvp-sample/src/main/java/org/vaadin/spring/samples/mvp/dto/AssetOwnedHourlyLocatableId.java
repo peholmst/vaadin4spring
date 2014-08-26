@@ -8,7 +8,7 @@ import java.io.Serializable;
  *
  * @author Chris Phillipson (fastnsilver@gmail.com)
  */
-public class AssetOwnedHourlyLocatableId implements Serializable {
+public class AssetOwnedHourlyLocatableId implements Serializable, HasHour {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,6 +26,7 @@ public class AssetOwnedHourlyLocatableId implements Serializable {
         this.location = location;
     }
 
+    @Override
     public String getHour() {
         return hour;
     }
