@@ -35,19 +35,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface EventBusListenerMethod {
 
-    public interface EventBusListenerMethodFilter {
-        boolean filter(Object payload);
-    }
-
-    public class NoEventBusListenerMethodFilter implements EventBusListenerMethodFilter {
-
-        @Override
-        public boolean filter(Object payload) {
-            return true;
-        }
-
-    }
-
     /**
      * The default scope of a listener method is <code>EventScope.UNDEFINED</code>
      * This means that listener will listen for any {@link EventScope} if {@link EventBus#subscribe(EventBusListener, boolean)} is set to propagate event

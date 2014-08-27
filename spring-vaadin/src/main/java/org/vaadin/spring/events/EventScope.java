@@ -36,5 +36,9 @@ public enum EventScope {
      */
     UI,
 
+    /**
+     * Undefined event scope. An internal event scope used only when no scope has been explicitly defined.
+     * @see org.vaadin.spring.events.EventBusListenerMethod#scope()
+     */
     UNDEFINED
 }

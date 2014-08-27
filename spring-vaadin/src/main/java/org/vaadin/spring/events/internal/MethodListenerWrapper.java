@@ -25,7 +25,7 @@ import java.lang.reflect.ParameterizedType;
 import org.vaadin.spring.events.Event;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusListenerMethod;
-import org.vaadin.spring.events.EventBusListenerMethod.EventBusListenerMethodFilter;
+import org.vaadin.spring.events.EventBusListenerMethodFilter;
 import org.vaadin.spring.events.EventScope;
 
 /**
