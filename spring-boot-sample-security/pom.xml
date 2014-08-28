@@ -11,7 +11,7 @@
 
     <groupId>org.vaadin.spring</groupId>
     <artifactId>spring-boot-sample-security</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.2.1</version>
 
     <properties>
         <vaadin.version>7.1.11</vaadin.version>
