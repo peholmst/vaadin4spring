@@ -34,4 +34,13 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface EventBusListenerMethod {
+
+    /**
+     * The default scope of a listener method is <code>EventScope.UNDEFINED</code>
+     * This means that listener will listen for any {@link EventScope} if {@link EventBus#subscribe(EventBusListener, boolean)} is set to propagate event
+     */
+    EventScope scope() default EventScope.UNDEFINED;
+
+    Class<? extends EventBusListenerMethodFilter> filter() default NoEventBusListenerMethodFilter.class;
+
 }
