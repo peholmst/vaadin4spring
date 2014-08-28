@@ -6,7 +6,7 @@ package org.vaadin.spring.events;
  * @author Chris Phillipson (fastnsilver@gmail.com)
  * @see org.vaadin.spring.events.EventBusListenerMethod#scope()
  */
-class NoEventBusListenerMethodFilter implements EventBusListenerMethodFilter {
+public class NoEventBusListenerMethodFilter implements EventBusListenerMethodFilter {
 
     @Override
     public boolean filter(Object payload) {
