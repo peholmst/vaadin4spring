@@ -7,9 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventBusScope;
-import org.vaadin.spring.events.EventScope;
-
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewProvider;
 
@@ -31,7 +28,6 @@ public abstract class Presenter<V extends View> {
     private SpringViewProvider viewProvider;
 
     @Autowired
-    @EventBusScope(EventScope.APPLICATION)
     private EventBus eventBus;
 
     @PostConstruct

@@ -4,6 +4,7 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
 
 /**
@@ -29,6 +30,7 @@ import org.vaadin.spring.VaadinComponent;
 @Target({java.lang.annotation.ElementType.TYPE})
 @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 @Documented
+@UIScope
 @VaadinComponent
 public @interface VaadinPresenter {
 
