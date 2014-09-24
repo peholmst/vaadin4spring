@@ -10,7 +10,7 @@ import org.vaadin.spring.samples.mvp.ui.view.HeaderView;
 @VaadinPresenter(viewName = HeaderView.NAME)
 public class HeaderPresenter extends Presenter<HeaderView> {
 
-    @EventBusListenerMethod
+    @EventBusListenerMethod(filter=StartupFilter.class)
     public void onStartup(Event<Action> event) {
         getEventBus().publish(this, ControlsContext.empty());
     }

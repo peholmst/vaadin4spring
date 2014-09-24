@@ -2,6 +2,7 @@ package org.vaadin.spring.samples.mvp.ui.component.listener;
 
 import javax.inject.Inject;
 
+import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusScope;
@@ -13,6 +14,7 @@ import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.shared.MouseEventDetails.MouseButton;
 
+@UIScope
 @VaadinComponent
 public class NavigationPanelListener implements ItemClickListener {
 
