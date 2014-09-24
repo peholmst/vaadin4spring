@@ -22,7 +22,7 @@ public class NavigationPanelPresenter extends Presenter<NavigationPanelView> {
 
     private static final String NAV_ELEMENTS_FILE = "navElements.json";
 
-    @EventBusListenerMethod
+    @EventBusListenerMethod(filter=StartupFilter.class)
     public void onStartup(Event<Action> event) {
         NavElementFactory factory = new NavElementFactory();
         getEventBus().publish(this, factory.getNavElements(NAV_ELEMENTS_FILE));

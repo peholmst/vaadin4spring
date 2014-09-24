@@ -15,7 +15,7 @@ public class BannerPresenter extends Presenter<BannerView> {
     @Inject
     UserService userService;
 
-    @EventBusListenerMethod
+    @EventBusListenerMethod(filter=StartupFilter.class)
     public void onStartup(Event<Action> event) {
         getView().setUser(userService.getUserName());
     }
