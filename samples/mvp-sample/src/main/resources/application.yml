@@ -1,20 +1,82 @@
+# DEFAULT PROFILE
+
+# Credentials for logging into the UI
+app:
+    user:
+        name: admin
+        password: admin
+                  
+# Sets the default range of selectable market days (+/- offsetDays from today)
+market:
+    default:
+        offsetDays: 7
+        
 # Manually set session timeout to 5 minutes
 # @see https://github.com/peholmst/vaadin4spring/issues/51
 server:
     sessionTimeout: 300
+
+# Set server context path 
+# (if intending to deploy to JBoss container, in WEB-INF/jboss-web.xml the value of <context-root/> should be the same)
+# @see http://stackoverflow.com/questions/20405474/spring-boot-context-root
+    contextPath: /market
+
+# Update Spring Boot Actuator's endpoint base URL
+# @see http://tadtech.blogspot.com/2013/10/spring-boot-actuator-how-to-change.html
+management:
+    contextPath: /manage
     
+# Update Spring Boot Actuator end-point administration credentials
+# @see http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready-sensitive-endpoints
+security:
+    user:
+        name: admin
+        password: admin
+
+# Servlet mapping for VaadinServlet
 vaadin:
     servlet:
-        urlMapping: /mui/*
+        urlMapping: /ui/*
         params:
             productionMode: true
-
-market:
-    default:
-        offsetDays: 14
         
+# Spring Boot additional information about this app added to /info end-point
 info:
     app:
         name: Market UI
         description: A demonstration of Vaadin + Spring Boot employing MVP
         version: 1.0.0
+
+# Choices here are: basic, digest, form
+# Informs Spring Security which strategy to employ for authentication
+# @see SecurityConfig
+app:
+    security: 
+        scheme: form
+        
+# Spring Boot Actuator end-points configuration      
+endpoints:
+    autoconfig:
+        enabled: true
+    beans:
+        enabled: true
+    configprops:
+        enabled: false
+    dump:
+        enabled: true
+    env:
+        enabled: true
+    health:
+        enabled: true
+    info:
+        enabled: true
+    metrics:
+        enabled: true
+    mappings:
+        enabled: true
+    shutdown:
+        enabled: true
+    trace:
+        enabled: true
+ 
+        
