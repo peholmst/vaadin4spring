@@ -40,7 +40,7 @@ Now it is time to add this add-on. Add the following dependencies to your ```pom
 <dependency>
   <groupId>org.vaadin.spring</groupId>
   <artifactId>spring-boot-vaadin</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.3-SNAPSHOT</version>
 </dependency>
 <dependency>
    <groupId>com.vaadin</groupId>
