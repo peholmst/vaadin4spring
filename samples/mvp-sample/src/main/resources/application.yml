@@ -39,6 +39,12 @@ vaadin:
         urlMapping: /ui/*
         params:
             productionMode: true
+            
+# Servlet init params for StaticContentServlet
+    static:
+        servlet:
+            params: 
+                widgetset: org.vaadin.spring.samples.mvp.ui.widgetset.CustomWidgetSet
         
 # Spring Boot additional information about this app added to /info end-point
 info:

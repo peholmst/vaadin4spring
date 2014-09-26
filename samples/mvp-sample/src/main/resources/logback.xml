@@ -8,8 +8,7 @@
     </encoder>
   </appender>
   
-  <logger name="org.springframework.security" level="INFO"/>
-  <logger name="org.springframework.security" level="TRACE"/>
+  <logger name="org.springframework" level="INFO"/>
   <logger name="org.vaadin" level="INFO"/>
   
   <root level="INFO">
