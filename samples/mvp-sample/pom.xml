@@ -24,7 +24,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<start-class>com.esca.mui.ui.Application</start-class>
+		<start-class>org.vaadin.spring.samples.mvp.Application</start-class>
 
 		<apache.commons-collections.version>4.0</apache.commons-collections.version>
 		<apache.commons-lang3.version>3.3.2</apache.commons-lang3.version>
