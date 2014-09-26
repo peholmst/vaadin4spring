@@ -2,31 +2,24 @@ package org.vaadin.spring.samples.mvp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * Bootstraps application using Spring Boot API Indiscriminately and recursively
+ * Bootstraps application using Spring Boot API indiscriminately and recursively
  * scans for beans on classpath
  *
  * @author Chris Phillipson (fastnsilver@gmail.com)
  *
  */
+@Configuration
 @ComponentScan
 @EnableAutoConfiguration
-public class Application extends SpringBootServletInitializer {
+public class Application {
 
-    private static Class<Application> entryPointClass = Application.class;
-
-    public static void main(String[] args) {
-        SpringApplication.run(entryPointClass, args);
-    }
-
-    @Override
-    protected SpringApplicationBuilder configure(
-            SpringApplicationBuilder application) {
-        return application.sources(entryPointClass);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
 
 }
+

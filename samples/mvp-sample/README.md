@@ -22,7 +22,7 @@ where x.x.x is the current `SNAPSHOT` version
 
 Launch your browser and visit
 
-    http://localhost:8080/mui
+    http://localhost:8080/market/ui
     
 Primary navigation is driven by clicking on nodes in left-hand tree-pane.
 

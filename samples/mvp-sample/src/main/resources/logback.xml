@@ -9,9 +9,9 @@
   </appender>
   
   <logger name="org.springframework" level="INFO"/>
-  <logger name="org.vaadin" level="DEBUG"/>
+  <logger name="org.vaadin" level="INFO"/>
   
-  <root level="DEBUG">
+  <root level="INFO">
     <appender-ref ref="STDOUT" />
   </root>
   
