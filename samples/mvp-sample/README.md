@@ -8,11 +8,10 @@ focus on MVP architecture.
 
 Clone this repository `git clone https://github.com/fastnsilver/vaadin4spring.git`
 
-Build the "libraries" with Maven `mvn clean install`
+Build the library and sample modules with Maven using 
 
-Change directories into `samples`
+    `mvn clean install`
 
-Build the "applications" with Maven `mvn clean install`
 
 To run the `mvp-sample` application, change directories into `mvp-sample`, and execute:
 
@@ -23,7 +22,12 @@ where x.x.x is the current `SNAPSHOT` version
 Launch your browser and visit
 
     http://localhost:8080/market/ui
-    
+
+You will have to authenticate.  There are two accounts:
+
+    admin/admin
+    user/user
+        
 Primary navigation is driven by clicking on nodes in left-hand tree-pane.
 
 Click on `DSR`.
@@ -44,3 +48,10 @@ See [MockParticipantDAO](https://github.com/fastnsilver/vaadin4spring/blob/maste
 What you should see once you select a day and participant and click the Fetch button...
 
 ![mvp-sample app screenshot](image/mvp-sample-screenshot.png "MVP Sample Application Screenshot")
+
+
+## Security Notes ##
+
+A little documented feature of the Vaadin + Spring Boot integration is how you configure delivery of static content.  In order for security to work you must declare a custom widgetset and reference it as a servlet initialization parameter. 
+
+See this [pull request](https://github.com/peholmst/vaadin4spring/pull/84), [application.yml](https://github.com/peholmst/vaadin4spring/blob/master/samples/mvp-sample/src/main/resources/application.yml) and [StaticContentVaadinServletConfiguration](https://github.com/peholmst/vaadin4spring/blob/master/spring-boot-vaadin/src/main/java/org/vaadin/spring/boot/config/StaticContentVaadinServletConfiguration.java) for details.
