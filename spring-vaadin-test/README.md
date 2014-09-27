@@ -18,22 +18,21 @@ public class MyTest {
 }
 ```
 
-When running this test, a mocked ```UI``` instance will be created and activated for each test method, making it possible
-to inject both UI-scoped and session scoped beans into the test and performing operations on them (including
+When running this test, the UI and VaadinSession scopes will be changed so that they behave correctly in the
+context of the test, even though there is no active session nor a UI. This makes it possible to inject both UI-scoped 
+and VaadinSession scoped beans into the test and perform operations on them (including
 the event buses). For an example, see [this test case](src/test/java/org/vaadin/spring/test/ExampleIntegrationTest.java).
 
 ## When the Test Execution Listener does not work
 
 Sometimes, you might need to test UI scoped objects using a separate test runner. In this case you might have to set up
-the mocks manually if the required test execution listeners aren't registered properly using 
+the scopes manually if the required test execution listeners aren't registered properly using 
 the ```@VaadinAppConfiguration``` annotation.
 
-Create set up (```@Before```) and tear down (```@After```) methods and invoke the ```MockUI.setUp(ApplicationContext)``` 
-and ```MockUI.tearDown()``` methods in them, respectively (this is what the test execution listener does automatically).
-This still assumes that the HTTP session and HTTP request have been mocked properly (a Spring feature). If this does
-not happen, you have to set up the session and request mocks manually.
+Create set up (```@Before```) and tear down (```@After```) methods and invoke the ```VaadinScopes.setUp()``` 
+and ```VaadinScopes.tearDown()``` methods in them, respectively (this is what the test execution listener does automatically).
 
-You cannot access any scoped objects before the Mock UI has been set up. If you are still able to inject beans into
+You cannot access any scoped objects before the scopes have been set up. If you are still able to inject beans into
 your test case, you cannot inject any scoped beans directly. Instead, inject your scoped beans as ```Provider```s,
 and request the actual bean inside the test method. For an example, see 
 [this test case](src/test/java/org/vaadin/spring/test/ExampleManualIntegrationTest.java).

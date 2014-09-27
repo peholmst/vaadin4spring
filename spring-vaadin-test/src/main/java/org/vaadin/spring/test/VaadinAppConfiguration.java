@@ -19,7 +19,6 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.springframework.test.context.web.ServletTestExecutionListener;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.lang.annotation.ElementType;
@@ -32,13 +31,12 @@ import java.lang.annotation.Target;
  * <ul>
  * <li>are run with the {@link org.springframework.test.context.junit4.SpringJUnit4ClassRunner},</li>
  * <li>use autowiring to inject managed beans into the actual test, and</li>
- * <li>perform tests on beans that are {@link org.vaadin.spring.UIScope}d</li>
+ * <li>perform tests on beans that are {@link org.vaadin.spring.UIScope}d or {@link org.vaadin.spring.VaadinSessionScope}d</li>
  * </ul>
- * With this annotation in place, all test methods will run inside the context of a {@link org.vaadin.spring.test.MockUI},
- * and all beans that are UI-scoped or session scoped will work as expected. The indented use case for this approach is
+ * With this annotation in place, all beans that are UI-scoped or VaadinSession-scoped will work as expected. The indented use case for this approach is
  * to test non-visual components like presenters or controllers. It is not usable for testing Vaadin components or
  * actual {@link com.vaadin.ui.UI} instances.
- * <p>
+ * <p/>
  * Example of usage:
  * <pre>
  *   &#64;RunWith(SpringJUnit4ClassRunner.class)
@@ -53,12 +51,12 @@ import java.lang.annotation.Target;
  *   </pre>
  *
  * @author Petter Holmström (petter@vaadin.com)
+ * @see org.vaadin.spring.test.VaadinScopes
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @WebAppConfiguration
 @TestExecutionListeners({
-        ServletTestExecutionListener.class,
         VaadinTestExecutionListener.class,
         DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,

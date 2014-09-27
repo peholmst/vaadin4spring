@@ -17,7 +17,6 @@ package org.vaadin.spring.test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.core.Conventions;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.test.context.TestContext;
@@ -26,58 +25,51 @@ import org.springframework.test.context.support.AbstractTestExecutionListener;
 /**
  * @author Petter Holmström (petter@vaadin.com)
  */
-public class VaadinTestExecutionListener extends AbstractTestExecutionListener {
+class VaadinTestExecutionListener extends AbstractTestExecutionListener {
 
-    /**
-     * Attribute name for a {@link TestContext} attribute which indicates that
-     * {@code VaadinTestExecutionListener} has already set the current UI.
-     * <p>
-     * Permissible values include {@link Boolean#TRUE} and {@link Boolean#FALSE}.
-     */
-    public static final String SET_CURRENT_UI_ATTRIBUTE = Conventions.getQualifiedAttributeName(
-            VaadinTestExecutionListener.class, "setCurrentUI");
+    public static final String SET_UP_SCOPES_ATTRIBUTE = Conventions.getQualifiedAttributeName(
+            VaadinTestExecutionListener.class, "setUpScopes");
     private static final Logger logger = LoggerFactory.getLogger(VaadinTestExecutionListener.class);
 
     @Override
     public void prepareTestInstance(TestContext testContext) throws Exception {
-        setCurrentUIIfNecessary(testContext);
+        setUpVaadinScopesIfNecessary(testContext);
     }
 
     @Override
     public void beforeTestMethod(TestContext testContext) throws Exception {
-        setCurrentUIIfNecessary(testContext);
+        setUpVaadinScopesIfNecessary(testContext);
     }
 
     @Override
     public void afterTestMethod(TestContext testContext) throws Exception {
-        clearCurrentUIIfNecessary(testContext);
+        tearDownVaadinScopesIfNecessary(testContext);
     }
 
     private boolean notAnnotatedWithVaadinAppConfiguration(TestContext testContext) {
         return AnnotationUtils.findAnnotation(testContext.getTestClass(), VaadinAppConfiguration.class) == null;
     }
 
-    private boolean alreadySetCurrentUI(TestContext testContext) {
-        return Boolean.TRUE.equals(testContext.getAttribute(SET_CURRENT_UI_ATTRIBUTE));
+    private boolean alreadySetUpVaadinScopes(TestContext testContext) {
+        return Boolean.TRUE.equals(testContext.getAttribute(SET_UP_SCOPES_ATTRIBUTE));
     }
 
-    private synchronized void setCurrentUIIfNecessary(TestContext testContext) {
-        if (notAnnotatedWithVaadinAppConfiguration(testContext) || alreadySetCurrentUI(testContext)) {
-            logger.debug("No need to set up MockUI for test context [{}]", testContext);
+    private synchronized void setUpVaadinScopesIfNecessary(TestContext testContext) {
+        if (notAnnotatedWithVaadinAppConfiguration(testContext) || alreadySetUpVaadinScopes(testContext)) {
+            logger.debug("No need to set up Vaadin scopes for test context [{}]", testContext);
             return;
         }
 
-        final ApplicationContext context = testContext.getApplicationContext();
-        MockUI.setUp(context);
-        testContext.setAttribute(SET_CURRENT_UI_ATTRIBUTE, Boolean.TRUE);
+        VaadinScopes.setUp();
+        testContext.setAttribute(SET_UP_SCOPES_ATTRIBUTE, Boolean.TRUE);
     }
 
-    private synchronized void clearCurrentUIIfNecessary(TestContext testContext) {
-        if (notAnnotatedWithVaadinAppConfiguration(testContext) || !alreadySetCurrentUI(testContext)) {
-            logger.debug("No need to clear MockUI for test context [{}]", testContext);
+    private synchronized void tearDownVaadinScopesIfNecessary(TestContext testContext) {
+        if (notAnnotatedWithVaadinAppConfiguration(testContext) || !alreadySetUpVaadinScopes(testContext)) {
+            logger.debug("No need to tear down Vaadin scopes for test context [{}]", testContext);
             return;
         }
-        MockUI.tearDown();
-        testContext.removeAttribute(SET_CURRENT_UI_ATTRIBUTE);
+        VaadinScopes.tearDown();
+        testContext.removeAttribute(SET_UP_SCOPES_ATTRIBUTE);
     }
 }

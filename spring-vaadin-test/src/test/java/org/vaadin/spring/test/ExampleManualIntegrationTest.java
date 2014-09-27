@@ -20,15 +20,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.vaadin.spring.EnableVaadin;
 import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinSessionScope;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusScope;
 import org.vaadin.spring.events.EventScope;
@@ -40,7 +39,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
 /**
- * Example test that manually sets up and tears down the Mock UI, for situations where you for some
+ * Example test that manually sets up and tears down the Vaadin scopes, for situations where you for some
  * reason cannot use the {@link org.vaadin.spring.test.VaadinAppConfiguration} annotation.
  *
  * @author Petter Holmström (petter@vaadin.com)
@@ -49,9 +48,6 @@ import static org.junit.Assert.assertSame;
 @WebAppConfiguration
 @ContextConfiguration(classes = ExampleManualIntegrationTest.Config.class)
 public class ExampleManualIntegrationTest {
-
-    @Autowired
-    ApplicationContext applicationContext;
 
     @Autowired
     Provider<ExampleSessionData> exampleSessionData;
@@ -69,12 +65,12 @@ public class ExampleManualIntegrationTest {
 
     @Before
     public void setUp() {
-        MockUI.setUp(applicationContext);
+        VaadinScopes.setUp();
     }
 
     @After
     public void tearDown() {
-        MockUI.tearDown();
+        VaadinScopes.tearDown();
     }
 
     @Test
@@ -128,7 +124,7 @@ public class ExampleManualIntegrationTest {
         }
 
         @Bean
-        @Scope("session")
+        @VaadinSessionScope
         ExampleSessionData exampleSessionData() {
             return new ExampleSessionData();
         }

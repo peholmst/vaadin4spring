@@ -20,18 +20,18 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.vaadin.spring.EnableVaadin;
 import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinSessionScope;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusScope;
 import org.vaadin.spring.events.EventScope;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 /**
  * Example test that uses the {@link org.vaadin.spring.test.VaadinAppConfiguration} annotation.
@@ -43,10 +43,6 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = ExampleIntegrationTest.Config.class)
 public class ExampleIntegrationTest {
 
-    @Autowired
-    MockHttpSession session;
-    @Autowired
-    MockHttpServletRequest request;
     @Autowired
     ExampleSessionData exampleSessionData;
     @Autowired
@@ -63,8 +59,6 @@ public class ExampleIntegrationTest {
 
     @Test
     public void testAutowiring() {
-        assertNotNull(request);
-        assertNotNull(session);
         assertNotNull(exampleSessionData);
         assertNotNull(exampleUIScopedObject);
         assertNotNull(applicationEvenBus);
@@ -110,7 +104,7 @@ public class ExampleIntegrationTest {
         }
 
         @Bean
-        @Scope("session")
+        @VaadinSessionScope
         ExampleSessionData exampleSessionData() {
             return new ExampleSessionData();
         }
