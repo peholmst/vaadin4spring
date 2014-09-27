@@ -8,7 +8,7 @@ This add-on provides its own event bus framework, with the intention of compleme
 Currently, there are three types of event buses that are attached to different scopes:
 
 1. The UI scoped event bus is specific to the current UI instance.
-2. The Session scoped event bus is specific to the current HTTP session. Events published on this event bus will propagate
+2. The Session scoped event bus is specific to the current Vaadin session. Events published on this event bus will propagate
    to all UI scoped event buses that are part of the session.
 3. The Application scoped event bus is global to the web application. Events published on this event bus will propagate to
    all session scoped event buses (and all UI scoped event buses).
