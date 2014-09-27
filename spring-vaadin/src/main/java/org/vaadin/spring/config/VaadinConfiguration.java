@@ -30,6 +30,8 @@ import org.vaadin.spring.events.internal.ApplicationContextEventBroker;
 import org.vaadin.spring.events.internal.ScopedEventBus;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.internal.UIScope;
+import org.vaadin.spring.internal.VaadinSessionScope;
+import org.vaadin.spring.internal.VaadinUIScope;
 import org.vaadin.spring.navigator.SpringViewProvider;
 
 /**
@@ -46,8 +48,19 @@ public class VaadinConfiguration implements ApplicationContextAware {
     private ApplicationContext applicationContext;
 
     @Bean
+    @Deprecated
     static UIScope uiScope() {
         return new UIScope();
+    }
+
+    @Bean
+    static VaadinSessionScope vaadinSessionScope() {
+        return new VaadinSessionScope();
+    }
+
+    @Bean
+    static VaadinUIScope vaadinUIScope() {
+        return new VaadinUIScope();
     }
 
     @Bean
@@ -72,28 +85,28 @@ public class VaadinConfiguration implements ApplicationContextAware {
     }
 
     @Bean
-    @Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES)
+    @Scope(value = VaadinSessionScope.VAADIN_SESSION_SCOPE_NAME, proxyMode = ScopedProxyMode.INTERFACES)
     @EventBusScope(value = EventScope.SESSION, proxy = true)
     EventBus proxiedSessionEventBus() {
         return sessionEventBus();
     }
 
     @Bean
-    @Scope(value = "session", proxyMode = ScopedProxyMode.NO)
+    @Scope(value = VaadinSessionScope.VAADIN_SESSION_SCOPE_NAME, proxyMode = ScopedProxyMode.NO)
     @EventBusScope(EventScope.SESSION)
     EventBus sessionEventBus() {
         return new ScopedEventBus(EventScope.SESSION, applicationEventBus());
     }
 
     @Bean
-    @Scope(value = "ui", proxyMode = ScopedProxyMode.INTERFACES)
+    @Scope(value = VaadinUIScope.VAADIN_UI_SCOPE_NAME, proxyMode = ScopedProxyMode.INTERFACES)
     @EventBusScope(value = EventScope.UI, proxy = true)
     EventBus proxiedUiEventBus() {
         return uiEventBus();
     }
 
     @Bean
-    @Scope(value = "ui", proxyMode = ScopedProxyMode.NO)
+    @Scope(value = VaadinUIScope.VAADIN_UI_SCOPE_NAME, proxyMode = ScopedProxyMode.NO)
     @Primary
     @EventBusScope(EventScope.UI)
     EventBus uiEventBus() {

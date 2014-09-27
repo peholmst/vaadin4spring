@@ -33,7 +33,9 @@ import org.springframework.web.context.request.RequestContextHolder;
  * @author Josh Long (josh@joshlong.com)
  * @author Petter Holmström (petter@vaadin.com)
  * @see org.vaadin.spring.UIScope
+ * @deprecated Use {@link org.vaadin.spring.internal.VaadinUIScope} instead.
  */
+@Deprecated
 public class UIScope implements Scope, BeanFactoryPostProcessor {
 
     public static final String UI_SCOPE_NAME = "ui";

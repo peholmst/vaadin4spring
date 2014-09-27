@@ -37,6 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
+@Deprecated
 class UIStore implements Serializable, ClientConnector.DetachListener, HttpSessionBindingListener {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

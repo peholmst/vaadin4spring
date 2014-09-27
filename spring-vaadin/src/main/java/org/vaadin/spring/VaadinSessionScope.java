@@ -17,17 +17,20 @@ package org.vaadin.spring;
 
 import org.springframework.context.annotation.Scope;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Stereotype annotation for Spring's {@code @Scope("vaadin-ui")}.
+ * Stereotype annotation for Spring's {@code @Scope("vaadin-session")}.
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @author Josh Long (josh@joshlong.com)
  */
-@Scope("vaadin-ui")
+@Scope("vaadin-session")
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface UIScope {
+public @interface VaadinSessionScope {
 }
