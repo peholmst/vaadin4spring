@@ -32,7 +32,7 @@ import java.util.Set;
 class ListenerCollection implements Serializable {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private final Set<Listener> listeners = new HashSet<>();
+    private final Set<Listener> listeners = new HashSet<Listener>();
 
     /**
      * Interface defining a listener.
@@ -115,7 +115,7 @@ class ListenerCollection implements Serializable {
      * @see org.vaadin.spring.events.internal.ListenerCollection.Listener#supports(org.vaadin.spring.events.Event)
      */
     public void publish(Event<?> event) {
-        Set<Listener> interestedListeners = new HashSet<>();
+        Set<Listener> interestedListeners = new HashSet<Listener>();
         synchronized (listeners) {
             addSupportedListenersToSet(listeners, interestedListeners, event);
         }

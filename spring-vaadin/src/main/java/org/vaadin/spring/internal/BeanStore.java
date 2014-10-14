@@ -32,9 +32,9 @@ public class BeanStore implements Serializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BeanStore.class);
 
-    private final Map<String, Object> objectMap = new ConcurrentHashMap<>();
+    private final Map<String, Object> objectMap = new ConcurrentHashMap<String, Object>();
 
-    private final Map<String, Runnable> destructionCallbacks = new ConcurrentHashMap<>();
+    private final Map<String, Runnable> destructionCallbacks = new ConcurrentHashMap<String, Runnable>();
 
     private final String identification;
 

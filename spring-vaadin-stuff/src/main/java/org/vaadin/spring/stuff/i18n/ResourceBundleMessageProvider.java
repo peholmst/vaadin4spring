@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -101,8 +102,20 @@ public class ResourceBundleMessageProvider implements MessageProvider {
             if ("java.properties".equals(format)) {
                 final String resourceName = toResourceName(toBundleName(baseName, locale), "properties");
                 final InputStream stream = loader.getResourceAsStream(resourceName);
-                try (Reader reader = new InputStreamReader(stream, encoding)) {
-                    return new PropertyResourceBundle(reader);
+                if (stream == null) {
+                	return null; // Not found
+                }
+                Reader reader = null;
+                try {
+                	reader = new InputStreamReader(stream, encoding);
+                	return new PropertyResourceBundle(reader);
+                } catch (UnsupportedEncodingException ex) {
+                	stream.close();
+                	throw ex;
+                } finally {
+                	if (reader != null) {
+                		reader.close();
+                	}
                 }
             } else {
                 return super.newBundle(baseName, locale, format, loader, reload);

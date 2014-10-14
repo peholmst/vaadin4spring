@@ -158,7 +158,7 @@ public class VaadinUIScope implements Scope, BeanFactoryPostProcessor {
 
         private static final Logger LOGGER = LoggerFactory.getLogger(UIStore.class);
 
-        private final Map<UIID, BeanStore> beanStoreMap = new ConcurrentHashMap<>();
+        private final Map<UIID, BeanStore> beanStoreMap = new ConcurrentHashMap<UIID, BeanStore>();
 
         UIStore() {
         }

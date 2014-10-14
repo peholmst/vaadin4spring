@@ -42,7 +42,7 @@ public class SideBarSectionDescriptor implements Comparable<SideBarSectionDescri
     public SideBarSectionDescriptor(SideBarSection section, I18N i18n) {
         this.section = section;
         this.i18n = i18n;
-        availableUIClasses = new HashSet<>(Arrays.asList(section.ui()));
+        availableUIClasses = new HashSet<Class<? extends UI>>(Arrays.asList(section.ui()));
     }
 
     /**

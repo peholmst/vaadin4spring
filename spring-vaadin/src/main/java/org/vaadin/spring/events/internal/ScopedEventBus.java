@@ -92,7 +92,7 @@ public class ScopedEventBus implements EventBus, Serializable {
     @Override
     public <T> void publish(Object sender, T payload) {
         logger.debug("Publishing payload [{}] from sender [{}] on event bus [{}]", payload, sender, this);
-        listeners.publish(new Event<>(this, sender, payload));
+        listeners.publish(new Event<T>(this, sender, payload));
     }
 
     @Override

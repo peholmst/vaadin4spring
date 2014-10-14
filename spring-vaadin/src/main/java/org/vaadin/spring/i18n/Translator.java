@@ -76,8 +76,8 @@ public class Translator implements Serializable {
     }
 
     private void analyzeTargetClass() {
-        translatedFields = new HashMap<>();
-        translatedMethods = new HashMap<>();
+        translatedFields = new HashMap<TranslatedProperty, Field>();
+        translatedMethods = new HashMap<TranslatedProperty, Method>();
         visitClassHierarchy(new ClassUtils.ClassVisitor() {
             @Override
             public void visit(Class<?> clazz) {

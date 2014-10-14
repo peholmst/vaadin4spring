@@ -42,9 +42,9 @@ public class SideBarUtils {
 
     private final I18N i18n;
 
-    private final List<SideBarSectionDescriptor> sections = new ArrayList<>();
+    private final List<SideBarSectionDescriptor> sections = new ArrayList<SideBarSectionDescriptor>();
 
-    private final List<SideBarItemDescriptor> items = new ArrayList<>();
+    private final List<SideBarItemDescriptor> items = new ArrayList<SideBarItemDescriptor>();
 
     public SideBarUtils(ApplicationContext applicationContext, I18N i18n) {
         this.applicationContext = applicationContext;
@@ -100,7 +100,7 @@ public class SideBarUtils {
      * @see SideBarSection#ui()
      */
     public Collection<SideBarSectionDescriptor> getSideBarSections(Class<? extends UI> uiClass) {
-        List<SideBarSectionDescriptor> supportedSections = new ArrayList<>();
+        List<SideBarSectionDescriptor> supportedSections = new ArrayList<SideBarSectionDescriptor>();
         for (SideBarSectionDescriptor section : sections) {
             if (section.isAvailableFor(uiClass)) {
                 supportedSections.add(section);
@@ -116,7 +116,7 @@ public class SideBarUtils {
      * @return a collection of side bar item descriptors, never {@code null}.
      */
     public Collection<SideBarItemDescriptor> getSideBarItems(SideBarSectionDescriptor descriptor) {
-        List<SideBarItemDescriptor> supportedItems = new ArrayList<>();
+        List<SideBarItemDescriptor> supportedItems = new ArrayList<SideBarItemDescriptor>();
         for (SideBarItemDescriptor item : items) {
             if (item.isMemberOfSection(descriptor)) {
                 supportedItems.add(item);
