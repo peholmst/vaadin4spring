@@ -37,7 +37,7 @@ public abstract class AbstractSpringAwareUIProvider extends UIProvider {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
     private final WebApplicationContext webApplicationContext;
-    private final Map<String, Class<? extends UI>> pathToUIMap = new ConcurrentHashMap<>();
+    private final Map<String, Class<? extends UI>> pathToUIMap = new ConcurrentHashMap<String, Class<? extends UI>>();
 
     public AbstractSpringAwareUIProvider(WebApplicationContext webApplicationContext) {
         this.webApplicationContext = webApplicationContext;

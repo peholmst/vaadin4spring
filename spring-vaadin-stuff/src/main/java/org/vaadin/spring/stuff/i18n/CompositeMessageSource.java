@@ -39,7 +39,7 @@ public class CompositeMessageSource extends AbstractMessageSource implements Mes
 
     private final Collection<MessageProvider> messageProviders;
 
-    private final Map<Locale, Map<String, MessageFormat>> messageFormatCache = new ConcurrentHashMap<>();
+    private final Map<Locale, Map<String, MessageFormat>> messageFormatCache = new ConcurrentHashMap<Locale, Map<String, MessageFormat>>();
 
     /**
      * Creates a new {@code CompositeMessageSource}.
@@ -95,7 +95,7 @@ public class CompositeMessageSource extends AbstractMessageSource implements Mes
     private Map<String, MessageFormat> getMessageFormatCache(Locale locale) {
         Map<String, MessageFormat> cache = messageFormatCache.get(locale);
         if (cache == null) {
-            cache = new ConcurrentHashMap<>();
+            cache = new ConcurrentHashMap<String, MessageFormat>();
             messageFormatCache.put(locale, cache);
         }
         return cache;

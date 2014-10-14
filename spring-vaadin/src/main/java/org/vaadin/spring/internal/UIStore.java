@@ -41,8 +41,8 @@ import java.util.concurrent.ConcurrentHashMap;
 class UIStore implements Serializable, ClientConnector.DetachListener, HttpSessionBindingListener {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private final Map<UIID, Map<String, Object>> objectMap = new ConcurrentHashMap<>();
-    private final Map<UIID, Map<String, Runnable>> destructionCallbackMap = new ConcurrentHashMap<>();
+    private final Map<UIID, Map<String, Object>> objectMap = new ConcurrentHashMap<UIID, Map<String, Object>>();
+    private final Map<UIID, Map<String, Runnable>> destructionCallbackMap = new ConcurrentHashMap<UIID, Map<String, Runnable>>();
 
     public UIID currentUIID() {
         final UI currentUI = UI.getCurrent();
@@ -115,7 +115,7 @@ class UIStore implements Serializable, ClientConnector.DetachListener, HttpSessi
     private Map<String, Object> getObjectMap(UIID uuid) {
         Map<String, Object> map = objectMap.get(uuid);
         if (map == null) {
-            map = new ConcurrentHashMap<>();
+            map = new ConcurrentHashMap<String, Object>();
             objectMap.put(uuid, map);
         }
         return map;
@@ -135,7 +135,7 @@ class UIStore implements Serializable, ClientConnector.DetachListener, HttpSessi
     private Map<String, Runnable> getDestructionCallbackMap(UIID uuid) {
         Map<String, Runnable> map = destructionCallbackMap.get(uuid);
         if (map == null) {
-            map = new ConcurrentHashMap<>();
+            map = new ConcurrentHashMap<String, Runnable>();
             destructionCallbackMap.put(uuid, map);
         }
         return map;

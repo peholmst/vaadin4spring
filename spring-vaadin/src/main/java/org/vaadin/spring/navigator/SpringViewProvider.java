@@ -63,7 +63,7 @@ public class SpringViewProvider implements ViewProvider {
      */
 
     // We can have multiple views with the same view name, as long as they belong to different UI subclasses
-    private final Map<String, Set<String>> viewNameToBeanNamesMap = new ConcurrentHashMap<>();
+    private final Map<String, Set<String>> viewNameToBeanNamesMap = new ConcurrentHashMap<String, Set<String>>();
     private final ApplicationContext applicationContext;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -88,7 +88,7 @@ public class SpringViewProvider implements ViewProvider {
                 }
                 Set<String> beanNames = viewNameToBeanNamesMap.get(viewName);
                 if (beanNames == null) {
-                    beanNames = new ConcurrentSkipListSet<>();
+                    beanNames = new ConcurrentSkipListSet<String>();
                     viewNameToBeanNamesMap.put(viewName, beanNames);
                 }
                 beanNames.add(beanName);

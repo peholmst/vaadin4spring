@@ -172,15 +172,17 @@ public class Security {
             }
             return false;
         }
-        final Collection<ConfigAttribute> configAttributes = new ArrayList<>(securityConfigurationAttributes.length);
+        final Collection<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>(securityConfigurationAttributes.length);
         for (String securityConfigString : securityConfigurationAttributes) {
             configAttributes.add(new SecurityConfig(securityConfigString));
         }
         try {
             accessDecisionManager.decide(authentication, securedObject, configAttributes);
             return true;
-        } catch (AccessDeniedException | InsufficientAuthenticationException ex) {
+        } catch (AccessDeniedException ex) {
             return false;
+        } catch (InsufficientAuthenticationException ex) {
+        	return false;
         }
     }
 
