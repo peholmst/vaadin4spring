@@ -15,6 +15,8 @@
  */
 package org.vaadin.spring.internal;
 
+import com.vaadin.server.ServiceDestroyEvent;
+import com.vaadin.server.ServiceDestroyListener;
 import com.vaadin.server.SessionDestroyEvent;
 import com.vaadin.server.SessionDestroyListener;
 import com.vaadin.server.VaadinSession;
@@ -114,7 +116,7 @@ public class VaadinSessionScope implements Scope, BeanFactoryPostProcessor {
 
         @Override
         public BeanStore getBeanStore() {
-            VaadinSession session = getVaadinSession();
+            final VaadinSession session = getVaadinSession();
             session.lock();
             try {
                 BeanStore beanStore = session.getAttribute(BeanStore.class);
@@ -125,8 +127,25 @@ public class VaadinSessionScope implements Scope, BeanFactoryPostProcessor {
                     session.getService().addSessionDestroyListener(new SessionDestroyListener() {
                         @Override
                         public void sessionDestroy(SessionDestroyEvent event) {
-                            theBeanStore.destroy();
-                            event.getService().removeSessionDestroyListener(this);
+                            if (event.getSession().equals(session)) {
+                                try {
+                                    LOGGER.debug("Vaadin session {} has been destroyed, destroying bean store {}", theBeanStore);
+                                    theBeanStore.destroy();
+                                } finally {
+                                    event.getService().removeSessionDestroyListener(this);
+                                }
+                            }
+                        }
+                    });
+                    session.getService().addServiceDestroyListener(new ServiceDestroyListener() {
+                        @Override
+                        public void serviceDestroy(ServiceDestroyEvent event) {
+                            try {
+                                LOGGER.debug("Vaadin service has been destroyed, destroying bean store {}", theBeanStore);
+                                theBeanStore.destroy();
+                            } finally {
+                                event.getSource().removeServiceDestroyListener(this);
+                            }
                         }
                     });
                 }
