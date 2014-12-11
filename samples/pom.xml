@@ -153,7 +153,7 @@
     <modules>
         <module>sidebar-sample</module>
         <module>eventbus-sample</module>
-        <!--<module>mvp-sample</module> Temporarily disabled because of build problems -->
+        <module>mvp-sample</module>
         <module>push-sample</module>
     </modules>
 </project>
