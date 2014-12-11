@@ -33,6 +33,7 @@ public class SpringAwareUIProvider extends AbstractSpringAwareUIProvider {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void detectUIs() {
         logger.info("Checking the application context for Vaadin UIs");
         final String[] uiBeanNames = getWebApplicationContext().getBeanNamesForAnnotation(VaadinUI.class);

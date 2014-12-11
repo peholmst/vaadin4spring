@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.1.7.RELEASE</version>
+        <version>1.2.0.RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -17,7 +17,8 @@
     <name>Vaadin4Spring Samples</name>
 
     <properties>
-        <vaadin.version>7.3.1</vaadin.version>
+        <vaadin.version>7.3.6</vaadin.version>
+        <tomcat.version>7.0.55</tomcat.version> <!-- Server push is not yet working with Tomcat 8, at least not when using Spring Boot -->
     </properties>
 
     <dependencyManagement>
@@ -106,6 +107,7 @@
         
         <!-- Add Spring repositories -->
     	<!-- (you don't need this if you are using a .RELEASE version) -->
+        <!--
         <repository>
             <id>spring-snapshots</id>
             <url>http://repo.spring.io/snapshot</url>
@@ -115,8 +117,10 @@
             <id>spring-milestones</id>
             <url>http://repo.spring.io/milestone</url>
         </repository>
+        -->
     </repositories>
-    
+
+    <!--
     <pluginRepositories>
         <pluginRepository>
             <id>spring-snapshots</id>
@@ -127,11 +131,12 @@
             <url>http://repo.spring.io/milestone</url>
         </pluginRepository>
     </pluginRepositories>
+    -->
 
     <modules>
         <module>sidebar-sample</module>
         <module>eventbus-sample</module>
-        <module>mvp-sample</module>
+        <!--<module>mvp-sample</module> Temporarily disabled because of build problems -->
         <module>push-sample</module>
     </modules>
 </project>

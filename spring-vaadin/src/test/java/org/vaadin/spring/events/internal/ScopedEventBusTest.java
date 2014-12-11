@@ -95,6 +95,7 @@ public class ScopedEventBusTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testSubscribeAndPublish() {
         StringListener stringListener = mock(StringListener.class);
 
@@ -136,6 +137,7 @@ public class ScopedEventBusTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testPublishToParentScope() {
         StringListener stringListener = mock(StringListener.class);
 
@@ -162,6 +164,7 @@ public class ScopedEventBusTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testPropagateToChild() {
         StringListener stringListener = mock(StringListener.class);
 
@@ -188,6 +191,7 @@ public class ScopedEventBusTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testNoPropagationToChild() {
         StringListener stringListener = mock(StringListener.class);
 

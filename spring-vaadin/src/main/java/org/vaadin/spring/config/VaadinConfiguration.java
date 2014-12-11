@@ -29,14 +29,13 @@ import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.internal.ApplicationContextEventBroker;
 import org.vaadin.spring.events.internal.ScopedEventBus;
 import org.vaadin.spring.i18n.I18N;
-import org.vaadin.spring.internal.UIScope;
 import org.vaadin.spring.internal.VaadinSessionScope;
 import org.vaadin.spring.internal.VaadinUIScope;
 import org.vaadin.spring.navigator.SpringViewProvider;
 
 /**
- * Spring configuration for registering the custom Vaadin {@link org.vaadin.spring.internal.UIScope scope}
- * and the {@link SpringViewProvider view provider}.
+ * Spring configuration for registering the custom Vaadin scopes,
+ * the {@link SpringViewProvider view provider} and some other stuff.
  *
  * @author Josh Long (josh@joshlong.com)
  * @author Petter Holmström (petter@vaadin.com)
@@ -46,12 +45,6 @@ import org.vaadin.spring.navigator.SpringViewProvider;
 public class VaadinConfiguration implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
-
-    @Bean
-    @Deprecated
-    static UIScope uiScope() {
-        return new UIScope();
-    }
 
     @Bean
     static VaadinSessionScope vaadinSessionScope() {

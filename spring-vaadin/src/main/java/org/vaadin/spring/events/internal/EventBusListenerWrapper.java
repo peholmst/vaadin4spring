@@ -48,6 +48,7 @@ class EventBusListenerWrapper extends AbstractListenerWrapper {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void publish(Event<?> event) {
         getListenerTarget().onEvent(event);
     }
