@@ -11,14 +11,15 @@
 
     <groupId>org.vaadin.spring.samples</groupId>
     <artifactId>samples-parent-pom</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.3</version>
     <packaging>pom</packaging>
 
     <name>Vaadin4Spring Samples</name>
 
     <properties>
         <vaadin.version>7.3.6</vaadin.version>
-        <tomcat.version>7.0.55</tomcat.version> <!-- Server push is not yet working with Tomcat 8, at least not when using Spring Boot -->
+        <tomcat.version>7.0.55</tomcat.version>
+        <!-- Server push is not yet working with Tomcat 8, at least not when using Spring Boot -->
     </properties>
 
     <dependencyManagement>
@@ -95,6 +96,22 @@
                         <skip>true</skip>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.9.1</version>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.5</version>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -104,9 +121,9 @@
             <id>vaadin-addons</id>
             <url>http://maven.vaadin.com/vaadin-addons</url>
         </repository>
-        
+
         <!-- Add Spring repositories -->
-    	<!-- (you don't need this if you are using a .RELEASE version) -->
+        <!-- (you don't need this if you are using a .RELEASE version) -->
         <!--
         <repository>
             <id>spring-snapshots</id>
