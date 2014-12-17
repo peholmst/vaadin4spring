@@ -5,6 +5,12 @@ app:
     user:
         name: admin
         password: admin
+
+# Choices here are: basic, digest, form
+# Informs Spring Security which strategy to employ for authentication
+# @see SecurityConfig
+    security: 
+        scheme: form
                   
 # Sets the default range of selectable market days (+/- offsetDays from today)
 market:
@@ -52,13 +58,6 @@ info:
         name: Market UI
         description: A demonstration of Vaadin + Spring Boot employing MVP
         version: 1.0.0
-
-# Choices here are: basic, digest, form
-# Informs Spring Security which strategy to employ for authentication
-# @see SecurityConfig
-app:
-    security: 
-        scheme: form
         
 # Spring Boot Actuator end-points configuration      
 endpoints:
