@@ -20,11 +20,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.vaadin.spring.EnableVaadin;
 import org.vaadin.spring.VaadinUI;
 import org.vaadin.spring.boot.config.StaticContentVaadinServletConfiguration;
+import org.vaadin.spring.boot.context.VaadinApplicationContext;
 
 /**
  * @author Petter Holmström (petter@vaadin.com)
@@ -41,20 +43,28 @@ public class VaadinAutoConfiguration {
     @EnableVaadin
     @Import(StaticContentVaadinServletConfiguration.class)
     static class EnableVaadinConfiguration implements InitializingBean {
-        @Override
+        
+    	@Override
         public void afterPropertiesSet() throws Exception {
             logger.debug("{} initialized", getClass().getName());
         }
+    	
     }
 
     @Configuration
     @EnableVaadinServlet
     @ConditionalOnMissingClass(name = "org.vaadin.spring.touchkit.TouchKitUI")
     static class EnableVaadinServletConfiguration implements InitializingBean {
-        @Override
+        
+    	@Override
         public void afterPropertiesSet() throws Exception {
             logger.debug("{} initialized", getClass().getName());
         }
+    	
     }
 
+    @Bean
+    VaadinApplicationContext vaadinApplicationContext() {
+    	return new VaadinApplicationContext();
+    }
 }
