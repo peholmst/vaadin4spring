@@ -40,6 +40,8 @@ public class BeanStore implements Serializable {
 
     private final DestructionCallback destructionCallback;
 
+    private boolean destroyed = false;
+
     public BeanStore(String identification, DestructionCallback destructionCallback) {
         LOGGER.debug("Initializing scope for [{}]", identification);
         this.identification = identification;
@@ -81,14 +83,21 @@ public class BeanStore implements Serializable {
     }
 
     public void destroy() {
-        LOGGER.debug("Destroying scope for [{}]", identification);
-        for (Runnable destructionCallback : destructionCallbacks.values()) {
-            destructionCallback.run();
+        if (destroyed) {
+            return;
         }
-        destructionCallbacks.clear();
-        objectMap.clear();
-        if (destructionCallback != null) {
-            destructionCallback.beanStoreDestoyed(this);
+        try {
+            LOGGER.debug("Destroying scope for [{}]", identification);
+            for (Runnable destructionCallback : destructionCallbacks.values()) {
+                destructionCallback.run();
+            }
+            destructionCallbacks.clear();
+            objectMap.clear();
+            if (destructionCallback != null) {
+                destructionCallback.beanStoreDestoyed(this);
+            }
+        } finally {
+            destroyed = true;
         }
     }
 

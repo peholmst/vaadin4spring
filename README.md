@@ -8,8 +8,9 @@ This project is not yet an official Vaadin Spring add-on, but a Vaadin R&D proto
 
 ## Quick start ##
 
-There are two ways of getting this add-on. You can either clone this repository and build it yourself,
-or download a snapshot from Sonatype. To build the add-on yourself, follow these steps:
+There are three ways of getting this add-on. You can either clone this repository and build it yourself,
+download the latest release from Maven central, or download a snapshot from Sonatype. 
+To build the add-on yourself, follow these steps:
 
 1. Clone this repository: ```$ git clone https://github.com/peholmst/vaadin4spring.git```
 2. Change into the root directory of the working copy and run: ```mvn clean install```
@@ -30,6 +31,8 @@ currently push new snapshots to Sonatype manually, which means you might not alw
 </repository>
 ```
 
+If you are downloading a release from Maven central, there is no need to add this repository.
+
 When this is done, you need to create your actual application project. The easiest way is to go to
 http://start.spring.io and fill in the necessary details. Make sure you at least select the **Web** style. Then download
 the generated project as a **Maven Project** and open it up in your favorite IDE.
@@ -40,17 +43,17 @@ Now it is time to add this add-on. Add the following dependencies to your ```pom
 <dependency>
   <groupId>org.vaadin.spring</groupId>
   <artifactId>spring-boot-vaadin</artifactId>
-  <version>0.0.3-SNAPSHOT</version>
+  <version>[LATEST VERSION]</version>
 </dependency>
 <dependency>
    <groupId>com.vaadin</groupId>
    <artifactId>vaadin-themes</artifactId>
-   <version>7.1.13</version>
+   <version>[LATEST VAADIN VERSION]</version>
 </dependency>
 <dependency>
    <groupId>com.vaadin</groupId>
    <artifactId>vaadin-client-compiled</artifactId>
-   <version>7.1.13</version>
+   <version>[LATEST VAADIN VERSION]</version>
 </dependency>
 ```
 
@@ -103,6 +106,14 @@ This add-on provides a custom scope that binds the bean to the current UI instan
  ```@UIScope``` annotation to the bean. The lifecycle of the bean will automatically follow the lifecycle of the UI
 instance, so you can also use ```@PostConstruct``` and ```@PreDestroy```. Please note, however, that UI scoped beans
 cannot currently be ```ApplicationListener```s. Also, no Vaadin components can be proxied.
+
+## The Vaadin Session Scope
+
+This add-on provides a custom scope that binds the bean to the current Vaadin session. You can use it by adding the 
+```@VaadinSessionScope``` annotation to the bean. The lifecycle of the bean will automatically follow the lifecycle of
+the Vaadin session, so you can also use ```@PostConstruct``` and ```@PreDestroy```. Please note, however, that Vaadin
+session scoped beans cannot currently be ```ApplicationListener```s. Also, do not make any Vaadin components session scoped
+since a component can only belong to exactly one UI instance.
 
 ## Navigator API integration ##
 

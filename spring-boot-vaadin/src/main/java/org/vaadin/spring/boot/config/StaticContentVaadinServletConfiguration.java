@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServlet;
 
 /**
  * Spring configuration that sets up a {@link org.vaadin.spring.boot.config.StaticContentServlet} to serve static content from /VAADIN/*.
- * This servlet can be customized using configuration parameters only.
+ * If you want to customize the servlet, extend it and make it available as a Spring bean.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
@@ -64,11 +64,6 @@ public class StaticContentVaadinServletConfiguration extends AbstractServletConf
     @Override
     protected String getUrlMapping() {
         return "/VAADIN/*";
-    }
-
-    @Override
-    protected HttpServlet createServlet() {
-        return new StaticContentServlet();
     }
 
     @Bean

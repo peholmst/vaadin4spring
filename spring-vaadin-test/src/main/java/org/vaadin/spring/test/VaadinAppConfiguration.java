@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
  * With this annotation in place, all beans that are UI-scoped or VaadinSession-scoped will work as expected. The indented use case for this approach is
  * to test non-visual components like presenters or controllers. It is not usable for testing Vaadin components or
  * actual {@link com.vaadin.ui.UI} instances.
- * <p/>
+ * <p>
  * Example of usage:
  * <pre>
  *   &#64;RunWith(SpringJUnit4ClassRunner.class)

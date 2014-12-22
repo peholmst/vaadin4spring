@@ -33,6 +33,7 @@ public class SpringAwareTouchKitUIProvider extends AbstractSpringAwareUIProvider
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void detectUIs() {
         logger.info("Checking the application context for TouchKit UIs");
         final String[] uiBeanNames = getWebApplicationContext().getBeanNamesForAnnotation(TouchKitUI.class);

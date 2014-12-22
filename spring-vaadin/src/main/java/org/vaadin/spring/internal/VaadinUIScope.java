@@ -16,6 +16,10 @@
 package org.vaadin.spring.internal;
 
 import com.vaadin.server.ClientConnector;
+import com.vaadin.server.ServiceDestroyEvent;
+import com.vaadin.server.ServiceDestroyListener;
+import com.vaadin.server.SessionDestroyEvent;
+import com.vaadin.server.SessionDestroyListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
 import com.vaadin.util.CurrentInstance;
@@ -29,6 +33,7 @@ import org.springframework.beans.factory.config.Scope;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -118,13 +123,38 @@ public class VaadinUIScope implements Scope, BeanFactoryPostProcessor {
         }
 
         private UIStore getUIStore() {
-            VaadinSession session = getVaadinSession();
+            final VaadinSession session = getVaadinSession();
             session.lock();
             try {
                 UIStore uiStore = session.getAttribute(UIStore.class);
                 if (uiStore == null) {
                     uiStore = new UIStore();
                     session.setAttribute(UIStore.class, uiStore);
+                    final UIStore theStore = uiStore;
+                    session.getService().addSessionDestroyListener(new SessionDestroyListener() {
+                        @Override
+                        public void sessionDestroy(SessionDestroyEvent event) {
+                            if (event.getSession().equals(session)) {
+                                try {
+                                    LOGGER.debug("Vaadin session {} has been destroyed, destroying UI store {}", session, theStore);
+                                    theStore.destroy();
+                                } finally {
+                                    event.getService().removeSessionDestroyListener(this);
+                                }
+                            }
+                        }
+                    });
+                    session.getService().addServiceDestroyListener(new ServiceDestroyListener() {
+                        @Override
+                        public void serviceDestroy(ServiceDestroyEvent event) {
+                            try {
+                                LOGGER.debug("Vaadin service has been destroyed, destroying UI store {}", theStore);
+                                theStore.destroy();
+                            } finally {
+                                event.getSource().removeServiceDestroyListener(this);
+                            }
+                        }
+                    });
                 }
                 return uiStore;
             } finally {
@@ -182,6 +212,13 @@ public class VaadinUIScope implements Scope, BeanFactoryPostProcessor {
         void removeBeanStore(UIID uiid) {
             LOGGER.trace("Removing bean store for UI ID [{}]", uiid);
             beanStoreMap.remove(uiid);
+        }
+
+        void destroy() {
+            for (BeanStore beanStore : new HashSet<BeanStore>(beanStoreMap.values())) {
+                beanStore.destroy();
+            }
+            Assert.isTrue(beanStoreMap.isEmpty(), "beanStore should have been emptied by the destruction callbacks");
         }
     }
 

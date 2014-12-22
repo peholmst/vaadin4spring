@@ -26,6 +26,7 @@ import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.ui.UI;
 import org.vaadin.spring.VaadinUI;
 
+import javax.annotation.PreDestroy;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -76,9 +77,8 @@ public class PushUI extends UI {
         jobHandle = executorService.scheduleWithFixedDelay(updateGraphJob, 500, 2000, TimeUnit.MILLISECONDS);
     }
 
-    @Override
-    public void detach() {
+    @PreDestroy
+    void destroy() {
         jobHandle.cancel(true);
-        super.detach();
     }
 }

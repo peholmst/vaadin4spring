@@ -12,7 +12,7 @@
 
     <groupId>org.vaadin.spring</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Vaadin4Spring</name>
@@ -51,6 +51,10 @@
             <email>matti@vaadin.com</email>
         </developer>
         <developer>
+            <name>Nicolas Frankel</name>
+            <email>nicolas@frankel.ch</email>
+        </developer>
+        <developer>
             <name>Peter Lehto</name>
             <organization>Vaadin</organization>
             <email>peter@vaadin.com</email>
@@ -70,7 +74,7 @@
         <vaadin.version>7.3.6</vaadin.version>
         <vaadin-touchkit.version>4.0.0</vaadin-touchkit.version>
         <spring.version>4.1.2.RELEASE</spring.version>
-        <spring-boot.version>1.2.0.RC2</spring-boot.version>
+        <spring-boot.version>1.2.0.RELEASE</spring-boot.version>
         <spring-security.version>3.2.5.RELEASE</spring-security.version>
         <slf4j.version>1.7.7</slf4j.version>
         <logback.version>1.1.2</logback.version>
@@ -262,6 +266,7 @@
         
         <!-- Add Spring repositories -->
     	<!-- (you don't need this if you are using a .RELEASE version) -->
+        <!--
         <repository>
             <id>spring-snapshots</id>
             <url>http://repo.spring.io/snapshot</url>
@@ -271,8 +276,10 @@
             <id>spring-milestones</id>
             <url>http://repo.spring.io/milestone</url>
         </repository>
+        -->
     </repositories>
-    
+
+    <!--
     <pluginRepositories>
         <pluginRepository>
             <id>spring-snapshots</id>
@@ -283,6 +290,7 @@
             <url>http://repo.spring.io/milestone</url>
         </pluginRepository>
     </pluginRepositories>
+    -->
 
     <modules>
         <module>spring-boot-vaadin</module>
@@ -293,5 +301,6 @@
         <module>spring-vaadin-test</module>
         <module>spring-vaadin-mvp</module>
         <module>samples</module>
+        <module>spring-vaadin-simple-mvp</module>
     </modules>
 </project>
