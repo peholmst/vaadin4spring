@@ -15,6 +15,7 @@
  */
 package org.vaadin.spring.security;
 
+import com.vaadin.navigator.View;
 import com.vaadin.ui.UI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -45,5 +46,10 @@ public class SpringSecurityViewProviderAccessDelegate implements SpringViewProvi
     public boolean isAccessGranted(String beanName, UI ui) {
         Secured viewSecured = applicationContext.findAnnotationOnBean(beanName, Secured.class);
         return !(viewSecured != null && !security.hasAnyAuthority(viewSecured.value()));
+    }
+
+    @Override
+    public boolean isAccessGranted(View view, UI ui) {
+        return true;
     }
 }

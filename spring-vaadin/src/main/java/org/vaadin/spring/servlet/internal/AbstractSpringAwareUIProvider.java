@@ -60,7 +60,7 @@ public abstract class AbstractSpringAwareUIProvider extends UIProvider {
             String path = pathInfo;
             final int indexOfBang = path.indexOf('!');
             if (indexOfBang > -1) {
-                path = path.substring(0, indexOfBang - 1);
+                path = path.substring(0, indexOfBang);
             }
 
             if (path.endsWith("/")) {
