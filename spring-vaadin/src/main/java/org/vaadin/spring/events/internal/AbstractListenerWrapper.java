@@ -30,7 +30,9 @@ import org.vaadin.spring.events.EventBus;
  */
 abstract class AbstractListenerWrapper implements ListenerCollection.Listener {
 
-    private final EventBus owningEventBus;
+	private static final long serialVersionUID = 6211420845165980671L;
+
+	private final EventBus owningEventBus;
 
     private final Object listenerTarget;
 

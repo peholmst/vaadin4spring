@@ -62,7 +62,9 @@ public class SpringViewProvider implements ViewProvider {
      * Note! This is a singleton bean!
      */
 
-    // We can have multiple views with the same view name, as long as they belong to different UI subclasses
+	private static final long serialVersionUID = 6906237177564157222L;
+	
+	// We can have multiple views with the same view name, as long as they belong to different UI subclasses
     private final Map<String, Set<String>> viewNameToBeanNamesMap = new ConcurrentHashMap<String, Set<String>>();
     private final ApplicationContext applicationContext;
     private final Logger logger = LoggerFactory.getLogger(getClass());

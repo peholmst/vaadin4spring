@@ -29,7 +29,9 @@ import java.io.Serializable;
  * @author Josh Long (josh@joshlong.com)
  */
 public class UIID implements Serializable {
-    private final int uiId;
+
+	private static final long serialVersionUID = -999655298640370601L;
+	private final int uiId;
 
     public UIID(UICreateEvent createEvent) {
         this.uiId = createEvent.getUiId();

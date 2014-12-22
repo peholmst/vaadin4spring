@@ -28,7 +28,9 @@ import org.vaadin.spring.touchkit.TouchKitUI;
  */
 public class SpringAwareTouchKitUIProvider extends AbstractSpringAwareUIProvider {
 
-    public SpringAwareTouchKitUIProvider(WebApplicationContext webApplicationContext) {
+	private static final long serialVersionUID = 5748239645437914537L;
+
+	public SpringAwareTouchKitUIProvider(WebApplicationContext webApplicationContext) {
         super(webApplicationContext);
     }
 

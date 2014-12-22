@@ -29,7 +29,8 @@ import org.vaadin.spring.events.EventBusListener;
  */
 class EventBusListenerWrapper extends AbstractListenerWrapper {
 
-    private final Class<?> payloadType;
+	private static final long serialVersionUID = 8964309195124823892L;
+	private final Class<?> payloadType;
 
     public EventBusListenerWrapper(EventBus owningEventBus, EventBusListener<?> listenerTarget, boolean includingPropagatingEvents) {
         super(owningEventBus, listenerTarget, includingPropagatingEvents);

@@ -27,7 +27,9 @@ import java.io.IOException;
  */
 public class PingServlet extends HttpServlet {
 
-    @Override
+	private static final long serialVersionUID = 3198662072657326196L;
+
+	@Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.setContentType("text/plain");
