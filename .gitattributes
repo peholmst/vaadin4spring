@@ -1,5 +1,5 @@
 # Auto detect text files and perform LF normalization
-* text=auto
+*           text=auto whitespace=trailing-space,space-before-tab,-indent-with-non-tab,tab-in-indent,tabwidth=4
 
 # Custom for Visual Studio
 *.cs     diff=csharp
