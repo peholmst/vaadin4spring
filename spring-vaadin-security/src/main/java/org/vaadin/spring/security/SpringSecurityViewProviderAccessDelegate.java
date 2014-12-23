@@ -15,6 +15,7 @@
  */
 package org.vaadin.spring.security;
 
+import com.vaadin.navigator.View;
 import com.vaadin.ui.UI;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,10 @@ public class SpringSecurityViewProviderAccessDelegate implements SpringViewProvi
         	return security.hasAccessToSecuredObject(securedObject);
         else
         	return security.hasAnyAuthority(viewSecured.value());
+    }
+
+    @Override
+    public boolean isAccessGranted(View view, UI ui) {
+        return true;
     }
 }

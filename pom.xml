@@ -51,6 +51,10 @@
             <email>matti@vaadin.com</email>
         </developer>
         <developer>
+            <name>Nicolas Frankel</name>
+            <email>nicolas@frankel.ch</email>
+        </developer>
+        <developer>
             <name>Peter Lehto</name>
             <organization>Vaadin</organization>
             <email>peter@vaadin.com</email>
@@ -297,5 +301,6 @@
         <module>spring-vaadin-test</module>
         <module>spring-vaadin-mvp</module>
         <module>samples</module>
+        <module>spring-vaadin-simple-mvp</module>
     </modules>
 </project>
