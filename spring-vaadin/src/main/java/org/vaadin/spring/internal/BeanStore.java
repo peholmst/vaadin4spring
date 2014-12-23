@@ -30,6 +30,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class BeanStore implements Serializable {
 
+    private static final long serialVersionUID = 7625347916717427098L;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(BeanStore.class);
 
     private final Map<String, Object> objectMap = new ConcurrentHashMap<String, Object>();

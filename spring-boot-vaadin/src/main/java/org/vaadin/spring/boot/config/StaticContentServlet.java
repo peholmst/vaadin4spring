@@ -27,6 +27,8 @@ import java.io.IOException;
  */
 class StaticContentServlet extends VaadinServlet {
 
+    private static final long serialVersionUID = 5436303277198728952L;
+
     @Override
     protected void service(HttpServletRequest request,
                            HttpServletResponse response) throws ServletException, IOException {

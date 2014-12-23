@@ -6,4 +6,8 @@ import org.vaadin.spring.mvp.FooView;
 
 @UIScope
 @VaadinComponent
-public class AnnotatedFooView extends FooView {}
+public class AnnotatedFooView extends FooView {
+
+    private static final long serialVersionUID = -4497836114697117034L;
+ 
+}
