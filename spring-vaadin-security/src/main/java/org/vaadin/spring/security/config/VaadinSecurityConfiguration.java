@@ -19,35 +19,51 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.vaadin.spring.security.Security;
-import org.vaadin.spring.security.SpringSecurityViewProviderAccessDelegate;
+import org.vaadin.spring.security.GenericVaadinSecurity;
+import org.vaadin.spring.security.VaadinSecurity;
+import org.vaadin.spring.security.provider.SpringSecurityViewProviderAccessDelegate;
+import org.vaadin.spring.security.support.VaadinSecurityAwareProcessor;
 
 /**
  * Spring configuration for setting up the Spring Security integration.
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.security.EnableVaadinSecurity
+ * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
+ * @see org.vaadin.spring.security.annotation.EnableVaadinSecurity
  */
 @Configuration
 public class VaadinSecurityConfiguration implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
-    @Bean
+    public static final class Beans {
+    	
+    	public static final String VAADIN_SECURITY					= "vaadinSecurity";
+    	public static final String VAADIN_SECURITY_AWARE_PROCESSOR	= "vaadinSecurityProcessor";
+    	public static final String CURRENT_USER						= "currentUser";
+    	
+    }
+    
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+    
+    @Bean(name = Beans.CURRENT_USER)
     Authentication currentUser() {
-        return ProxyFactory.getProxy(Authentication.class, new MethodInterceptor() {
-            @Override
+        
+    	return ProxyFactory.getProxy(Authentication.class, new MethodInterceptor() {
+            
+    		@Override
             public Object invoke(MethodInvocation invocation) throws Throwable {
                 SecurityContext securityContext = SecurityContextHolder.getContext();
                 Authentication authentication = securityContext.getAuthentication();
@@ -56,34 +72,25 @@ public class VaadinSecurityConfiguration implements ApplicationContextAware {
                 }
                 return invocation.getMethod().invoke(authentication, invocation.getArguments());
             }
+    		
         });
+    	
+    }
+
+    @Bean(name = Beans.VAADIN_SECURITY)
+    VaadinSecurity vaadinSecurity() {
+        return new GenericVaadinSecurity();
+    }
+    
+    @Bean(name = Beans.VAADIN_SECURITY_AWARE_PROCESSOR)
+    @DependsOn(value = Beans.VAADIN_SECURITY)
+    VaadinSecurityAwareProcessor vaadinSecurityProcessor() {
+    	return new VaadinSecurityAwareProcessor();
     }
 
     @Bean
-    Security security() {
-        AuthenticationManager authenticationManager;
-        try {
-            authenticationManager = applicationContext.getBean(AuthenticationManager.class);
-        } catch (NoSuchBeanDefinitionException ex) {
-            authenticationManager = null;
-        }
-
-        AccessDecisionManager accessDecisionManager;
-        try {
-            accessDecisionManager = applicationContext.getBean(AccessDecisionManager.class);
-        } catch (NoSuchBeanDefinitionException ex) {
-            accessDecisionManager = null;
-        }
-        return new Security(authenticationManager, accessDecisionManager, applicationContext);
-    }
-
-    @Bean
+    @DependsOn(value = {Beans.VAADIN_SECURITY})
     SpringSecurityViewProviderAccessDelegate viewProviderAccessDelegate() {
-        return new SpringSecurityViewProviderAccessDelegate(security(), applicationContext);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+        return new SpringSecurityViewProviderAccessDelegate(vaadinSecurity(), applicationContext);
     }
 }

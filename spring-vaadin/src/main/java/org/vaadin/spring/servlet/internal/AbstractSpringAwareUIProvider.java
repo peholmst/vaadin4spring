@@ -35,7 +35,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class AbstractSpringAwareUIProvider extends UIProvider {
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+	private static final long serialVersionUID = -6195911893325385491L;
+	protected final Logger logger = LoggerFactory.getLogger(getClass());
     private final WebApplicationContext webApplicationContext;
     private final Map<String, Class<? extends UI>> pathToUIMap = new ConcurrentHashMap<String, Class<? extends UI>>();
 

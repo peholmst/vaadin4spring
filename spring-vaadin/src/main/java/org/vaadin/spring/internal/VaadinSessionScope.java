@@ -125,7 +125,10 @@ public class VaadinSessionScope implements Scope, BeanFactoryPostProcessor {
                     session.setAttribute(BeanStore.class, beanStore);
                     final BeanStore theBeanStore = beanStore;
                     session.getService().addSessionDestroyListener(new SessionDestroyListener() {
-                        @Override
+
+						private static final long serialVersionUID = 3387071173607691768L;
+
+						@Override
                         public void sessionDestroy(SessionDestroyEvent event) {
                             if (event.getSession().equals(session)) {
                                 try {
@@ -138,7 +141,10 @@ public class VaadinSessionScope implements Scope, BeanFactoryPostProcessor {
                         }
                     });
                     session.getService().addServiceDestroyListener(new ServiceDestroyListener() {
-                        @Override
+
+						private static final long serialVersionUID = 1286222033550070592L;
+
+						@Override
                         public void serviceDestroy(ServiceDestroyEvent event) {
                             try {
                                 LOGGER.debug("Vaadin service has been destroyed, destroying bean store {}", theBeanStore);

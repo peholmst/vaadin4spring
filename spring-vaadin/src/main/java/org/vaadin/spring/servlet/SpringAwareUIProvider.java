@@ -28,7 +28,9 @@ import org.vaadin.spring.servlet.internal.AbstractSpringAwareUIProvider;
  */
 public class SpringAwareUIProvider extends AbstractSpringAwareUIProvider {
 
-    public SpringAwareUIProvider(WebApplicationContext webApplicationContext) {
+	private static final long serialVersionUID = 6954428459733726004L;
+
+	public SpringAwareUIProvider(WebApplicationContext webApplicationContext) {
         super(webApplicationContext);
     }
 

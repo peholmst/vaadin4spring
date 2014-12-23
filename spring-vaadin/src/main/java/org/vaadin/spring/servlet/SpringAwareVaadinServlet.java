@@ -36,10 +36,15 @@ import javax.servlet.ServletException;
  */
 public class SpringAwareVaadinServlet extends VaadinServlet {
 
-    @Override
+	private static final long serialVersionUID = 5371983676318947478L;
+
+	@Override
     protected void servletInitialized() throws ServletException {
         getService().addSessionInitListener(new SessionInitListener() {
-            @Override
+
+			private static final long serialVersionUID = -6307820453486668084L;
+
+			@Override
             public void sessionInit(SessionInitEvent sessionInitEvent) throws ServiceException {
                 WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
                 SpringAwareUIProvider uiProvider = new SpringAwareUIProvider(webApplicationContext);

@@ -59,6 +59,8 @@ import java.util.Collection;
 @StyleSheet("vaadin://addons/sidebar/sidebar.css")
 public class SideBar extends Accordion {
 
+    private static final long serialVersionUID = 2268915666228648275L;
+
     public static final String SIDE_BAR_STYLE = "sideBar";
     public static final String SIDE_BAR_SECTION_ITEM_STYLE = "sideBarSectionItem";
     public static final String SIDE_BAR_SECTION_STYLE = "sideBarSection";
@@ -156,6 +158,9 @@ public class SideBar extends Accordion {
      * Extended version of {@link com.vaadin.ui.NativeButton} that is used by the {@link org.vaadin.spring.stuff.sidebar.SideBar.DefaultItemComponentFactory}.
      */
     static class ItemButton extends NativeButton {
+
+        private static final long serialVersionUID = 7051031354148037389L;
+
         ItemButton(final SideBarItemDescriptor descriptor) {
             setCaption(descriptor.getCaption());
             setIcon(descriptor.getIcon());
@@ -163,6 +168,9 @@ public class SideBar extends Accordion {
             addStyleName(SIDE_BAR_SECTION_ITEM_STYLE);
             setWidth(100, Unit.PERCENTAGE);
             addClickListener(new Button.ClickListener() {
+
+                private static final long serialVersionUID = -8512905888847432801L;
+
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
                     try {
@@ -182,6 +190,7 @@ public class SideBar extends Accordion {
      */
     static class ViewItemButton extends ItemButton implements ViewChangeListener {
 
+        private static final long serialVersionUID = -9062573995531971821L;
         private final String viewName;
 
         ViewItemButton(SideBarItemDescriptor.ViewItemDescriptor descriptor) {

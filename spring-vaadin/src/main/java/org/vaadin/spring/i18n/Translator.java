@@ -55,7 +55,9 @@ import static org.vaadin.spring.internal.ClassUtils.visitClassHierarchy;
  */
 public class Translator implements Serializable {
 
-    private final Object target;
+	private static final long serialVersionUID = 3943243194384876242L;
+
+	private final Object target;
 
     private transient Map<TranslatedProperty, Field> translatedFields;
     private transient Map<TranslatedProperty, Method> translatedMethods;
