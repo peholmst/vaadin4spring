@@ -43,22 +43,30 @@ public class SpringSecurityViewProviderAccessDelegate implements SpringViewProvi
         this.applicationContext = applicationContext;
     }
 
+    
     @Override
     public boolean isAccessGranted(String beanName, UI ui) {
     	
-    	Object securedObject = applicationContext.getBean(beanName);
-        Secured viewSecured = applicationContext.findAnnotationOnBean(beanName, Secured.class);
+    	Secured viewSecured = applicationContext.findAnnotationOnBean(beanName, Secured.class);
         
         if ( viewSecured == null )
         	return true;
         else if ( security.hasAccessDecisionManager() )
-        	return security.hasAccessToSecuredObject(securedObject);
+        	return true; // Leave decision to the second hook
         else
         	return security.hasAnyAuthority(viewSecured.value());
     }
 
     @Override
     public boolean isAccessGranted(View view, UI ui) {
-        return true;
+    	
+        Secured viewSecured = view.getClass().getAnnotation(Secured.class);
+        
+        if ( viewSecured == null )
+        	return true;
+        else if ( security.hasAccessDecisionManager())
+        	return security.hasAccessToSecuredObject(view);
+        else
+        	return security.hasAnyAuthority(viewSecured.value());
     }
 }
