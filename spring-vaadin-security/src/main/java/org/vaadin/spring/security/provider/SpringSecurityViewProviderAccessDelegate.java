@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.security;
+package org.vaadin.spring.security.provider;
 
 import com.vaadin.navigator.View;
 import com.vaadin.ui.UI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.annotation.Secured;
 import org.vaadin.spring.navigator.SpringViewProvider;
+import org.vaadin.spring.security.VaadinSecurity;
 
 /**
  * Implementation of {@link org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate} that
