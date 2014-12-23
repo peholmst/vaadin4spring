@@ -37,7 +37,7 @@ import org.vaadin.spring.security.SpringSecurityViewProviderAccessDelegate;
  * Spring configuration for setting up the Spring Security integration.
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.security.EnableVaadinSecurity
+ * @see org.vaadin.spring.security.annotation.EnableVaadinSecurity
  */
 @Configuration
 public class VaadinSecurityConfiguration implements ApplicationContextAware {

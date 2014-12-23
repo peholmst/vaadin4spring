@@ -20,12 +20,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
-import org.vaadin.spring.security.EnableVaadinSecurity;
 import org.vaadin.spring.security.Security;
+import org.vaadin.spring.security.annotation.EnableVaadinSecurity;
 
 /**
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.security.EnableVaadinSecurity
+ * @see org.vaadin.spring.security.annotation.EnableVaadinSecurity
  */
 @Configuration
 @ConditionalOnClass(Security.class)
@@ -36,9 +36,11 @@ public class VaadinSecurityAutoConfiguration {
     @Configuration
     @EnableVaadinSecurity
     static class EnableVaadinSecurityConfiguration implements InitializingBean {
-        @Override
+        
+    	@Override
         public void afterPropertiesSet() throws Exception {
             logger.debug("{} initialized", getClass().getName());
         }
+    	
     }
 }
