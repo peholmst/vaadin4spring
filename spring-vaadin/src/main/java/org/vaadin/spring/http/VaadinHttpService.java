@@ -15,20 +15,20 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class VaadinHttpService implements HttpService {
 
-	@Autowired
-	private HttpServletRequest request;
-	
-	@Autowired
-	private HttpServletResponse response;
-	
-	@Override
-	public HttpServletRequest getCurrentRequest() {		
-		return request;
-	}
+    @Autowired
+    private HttpServletRequest request;
 
-	@Override
-	public HttpServletResponse getCurrentResponse() {
-		return response;
-	}
+    @Autowired
+    private HttpServletResponse response;
+
+    @Override
+    public HttpServletRequest getCurrentRequest() {		
+        return request;
+    }
+
+    @Override
+    public HttpServletResponse getCurrentResponse() {
+        return response;
+    }
 
 }

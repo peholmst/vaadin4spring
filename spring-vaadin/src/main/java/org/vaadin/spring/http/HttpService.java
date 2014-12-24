@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletResponse;
  * Initial code:<a href="https://github.com/markoradinovic/Vaadin4Spring-MVP-Sample-SpringSecurity">https://github.com/markoradinovic/Vaadin4Spring-MVP-Sample-SpringSecurity</a>
  */
 public interface HttpService {
-	
-	public HttpServletRequest getCurrentRequest();
-	
-	public HttpServletResponse getCurrentResponse();
-	
+
+    public HttpServletRequest getCurrentRequest();
+
+    public HttpServletResponse getCurrentResponse();
+
 }
