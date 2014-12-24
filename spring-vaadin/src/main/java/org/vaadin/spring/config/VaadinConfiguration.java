@@ -124,7 +124,7 @@ public class VaadinConfiguration implements ApplicationContextAware {
     
     /**
      * Allow access to the current HttpServletRequest
-     * thtrough autowiring
+     * through autowiring
      */
     @Bean
     RequestContextListener requestContextListener() {
