@@ -32,6 +32,7 @@ import org.vaadin.spring.events.internal.ApplicationContextEventBroker;
 import org.vaadin.spring.events.internal.ScopedEventBus;
 import org.vaadin.spring.http.HttpResponseFactory;
 import org.vaadin.spring.http.HttpResponseFilter;
+import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.http.VaadinHttpService;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.internal.VaadinSessionScope;
@@ -154,7 +155,7 @@ public class VaadinConfiguration implements ApplicationContextAware {
      */
     @Bean
     @Scope(value = org.springframework.web.context.WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)
-    VaadinHttpService vaadinHttpService() {
+    HttpService httpService() {
         return new VaadinHttpService();
     }
 }
