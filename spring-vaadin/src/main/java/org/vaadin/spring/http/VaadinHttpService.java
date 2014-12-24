@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 
  * @author Marko Radinovic (markoradinovic79@gmail.com)
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
- * <br>
+ * <br><br>
  * Initial code:<a href="https://github.com/markoradinovic/Vaadin4Spring-MVP-Sample-SpringSecurity">https://github.com/markoradinovic/Vaadin4Spring-MVP-Sample-SpringSecurity</a>
  */
 public class VaadinHttpService implements HttpService {
