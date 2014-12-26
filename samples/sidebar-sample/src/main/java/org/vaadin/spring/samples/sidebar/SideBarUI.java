@@ -28,7 +28,7 @@ import com.vaadin.ui.themes.Reindeer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.VaadinUI;
 import org.vaadin.spring.navigator.SpringViewProvider;
-import org.vaadin.spring.stuff.sidebar.SideBar;
+import org.vaadin.spring.sidebar.SideBar;
 
 /**
  * UI that demonstrates the {@link org.vaadin.spring.stuff.sidebar.SideBar}.
