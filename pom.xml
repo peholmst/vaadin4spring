@@ -1,289 +1,291 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
-	</parent>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
 
-	<groupId>org.vaadin.spring</groupId>
-	<artifactId>parent-pom</artifactId>
-	<version>0.0.4-SNAPSHOT</version>
-	<packaging>pom</packaging>
+    <groupId>org.vaadin.spring</groupId>
+    <artifactId>parent-pom</artifactId>
+    <version>0.0.4-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-	<name>Vaadin4Spring</name>
-	<description>
+    <name>Vaadin4Spring</name>
+    <description>
         Spring, Spring Boot and Spring Security support for Vaadin applications
         (or the other way around, depending on your point of view).
     </description>
-	<url>https://github.com/peholmst/vaadin4spring</url>
+    <url>https://github.com/peholmst/vaadin4spring</url>
 
-	<licenses>
-		<license>
-			<name>Apache License 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-		</license>
-	</licenses>
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+        </license>
+    </licenses>
 
-	<scm>
-		<url>https://github.com/peholmst/vaadin4spring</url>
-		<connection>scm:git:git@github.com:peholmst/vaadin4spring.git</connection>
-		<developerConnection>scm:git:git@github.com:peholmst/vaadin4spring.git</developerConnection>
-	</scm>
+    <scm>
+        <url>https://github.com/peholmst/vaadin4spring</url>
+        <connection>scm:git:git@github.com:peholmst/vaadin4spring.git</connection>
+        <developerConnection>scm:git:git@github.com:peholmst/vaadin4spring.git</developerConnection>
+    </scm>
 
-	<developers>
-		<!-- In alphabetical order -->
-		<developer>
-			<name>Chris Phillipson</name>
-			<email>fastnsilver@gmail.com</email>
-		</developer>
-		<developer>
-			<name>Josh Long</name>
-			<email>josh@joshlong.com</email>
-		</developer>
-		<developer>
-			<name>Matti Tahvonen</name>
-			<organization>Vaadin</organization>
-			<email>matti@vaadin.com</email>
-		</developer>
-		<developer>
-			<name>Nicolas Frankel</name>
-			<email>nicolas@frankel.ch</email>
-		</developer>
-		<developer>
-			<name>Peter Lehto</name>
-			<organization>Vaadin</organization>
-			<email>peter@vaadin.com</email>
-		</developer>
-		<developer>
-			<name>Petter Holmström</name>
-			<organization>Vaadin</organization>
-			<email>petter@vaadin.com</email>
-		</developer>
-	</developers>
+    <developers>
+        <!-- In alphabetical order -->
+        <developer>
+            <name>Chris Phillipson</name>
+            <email>fastnsilver@gmail.com</email>
+        </developer>
+        <developer>
+            <name>Josh Long</name>
+            <email>josh@joshlong.com</email>
+        </developer>
+        <developer>
+            <name>Matti Tahvonen</name>
+            <organization>Vaadin</organization>
+            <email>matti@vaadin.com</email>
+        </developer>
+        <developer>
+            <name>Nicolas Frankel</name>
+            <email>nicolas@frankel.ch</email>
+        </developer>
+        <developer>
+            <name>Peter Lehto</name>
+            <organization>Vaadin</organization>
+            <email>peter@vaadin.com</email>
+        </developer>
+        <developer>
+            <name>Petter Holmström</name>
+            <organization>Vaadin</organization>
+            <email>petter@vaadin.com</email>
+        </developer>
+    </developers>
 
 
-	<properties>
-		<project.build.encoding>UTF-8</project.build.encoding>
-		<project.build.target>1.6</project.build.target>
-		<project.build.source>1.6</project.build.source>
-		<vaadin.version>7.3.6</vaadin.version>
-		<vaadin-touchkit.version>4.0.0</vaadin-touchkit.version>
-		<spring.version>4.1.2.RELEASE</spring.version>
-		<spring-boot.version>1.2.0.RELEASE</spring-boot.version>
-		<spring-security.version>3.2.5.RELEASE</spring-security.version>
-		<slf4j.version>1.7.7</slf4j.version>
-		<logback.version>1.1.2</logback.version>
-	</properties>
+    <properties>
+        <project.build.encoding>UTF-8</project.build.encoding>
+        <project.build.target>1.6</project.build.target>
+        <project.build.source>1.6</project.build.source>
+        <vaadin.version>7.3.6</vaadin.version>
+        <vaadin-touchkit.version>4.0.0</vaadin-touchkit.version>
+        <spring.version>4.1.2.RELEASE</spring.version>
+        <spring-boot.version>1.2.0.RELEASE</spring-boot.version>
+        <spring-security.version>3.2.5.RELEASE</spring-security.version>
+        <slf4j.version>1.7.7</slf4j.version>
+        <logback.version>1.1.2</logback.version>
+    </properties>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-beans</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-core</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-context</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-web</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-test</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-web</artifactId>
-				<version>${spring-security.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-config</artifactId>
-				<version>${spring-security.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-core</artifactId>
-				<version>${spring-security.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.vaadin</groupId>
-				<artifactId>vaadin-server</artifactId>
-				<version>${vaadin.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.vaadin</groupId>
-				<artifactId>vaadin-themes</artifactId>
-				<version>${vaadin.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.vaadin.addon</groupId>
-				<artifactId>vaadin-touchkit-agpl</artifactId>
-				<version>${vaadin-touchkit.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.11</version>
-			</dependency>
-			<dependency>
-				<groupId>org.mockito</groupId>
-				<artifactId>mockito-core</artifactId>
-				<version>1.9.5</version>
-			</dependency>
-			<dependency>
-				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-core</artifactId>
-				<version>${logback.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-classic</artifactId>
-				<version>${logback.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>${slf4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>javax.servlet-api</artifactId>
-				<version>3.0.1</version>
-			</dependency>
-			<dependency>
-				<groupId>javax.inject</groupId>
-				<artifactId>javax.inject</artifactId>
-				<version>1</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${spring-security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${spring-security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring-security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-server</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-themes</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin.addon</groupId>
+                <artifactId>vaadin-touchkit-agpl</artifactId>
+                <version>${vaadin-touchkit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.11</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>1.9.5</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>1</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.2.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.1</version>
-					<configuration>
-						<encoding>${project.build.encoding}</encoding>
-						<target>${project.build.target}</target>
-						<source>${project.build.source}</source>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.6</version>
-					<configuration>
-						<encoding>${project.build.encoding}</encoding>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.8.1</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.1</version>
+                    <configuration>
+                        <encoding>${project.build.encoding}</encoding>
+                        <target>${project.build.target}</target>
+                        <source>${project.build.source}</source>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.6</version>
+                    <configuration>
+                        <encoding>${project.build.encoding}</encoding>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
-	<profiles>
-		<profile>
-			<id>release</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>2.9.1</version>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.5</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
-	<repositories>
-		<repository>
-			<id>vaadin-addons</id>
-			<url>http://maven.vaadin.com/vaadin-addons</url>
-		</repository>
+    <repositories>
+        <repository>
+            <id>vaadin-addons</id>
+            <url>http://maven.vaadin.com/vaadin-addons</url>
+        </repository>
 
-		<!-- Add Spring repositories -->
-		<!-- (you don't need this if you are using a .RELEASE version) -->
-		<!-- <repository> <id>spring-snapshots</id> <url>http://repo.spring.io/snapshot</url> 
-			<snapshots><enabled>true</enabled></snapshots> </repository> <repository> 
-			<id>spring-milestones</id> <url>http://repo.spring.io/milestone</url> </repository> -->
-	</repositories>
+        <!-- Add Spring repositories -->
+        <!-- (you don't need this if you are using a .RELEASE version) -->
+        <!-- <repository> <id>spring-snapshots</id> <url>http://repo.spring.io/snapshot</url> 
+            <snapshots><enabled>true</enabled></snapshots> </repository> <repository> 
+            <id>spring-milestones</id> <url>http://repo.spring.io/milestone</url> </repository> -->
+    </repositories>
 
-	<!-- <pluginRepositories> <pluginRepository> <id>spring-snapshots</id> <url>http://repo.spring.io/snapshot</url> 
-		</pluginRepository> <pluginRepository> <id>spring-milestones</id> <url>http://repo.spring.io/milestone</url> 
-		</pluginRepository> </pluginRepositories> -->
+    <!-- <pluginRepositories> <pluginRepository> <id>spring-snapshots</id> 
+        <url>http://repo.spring.io/snapshot</url> </pluginRepository> <pluginRepository> 
+        <id>spring-milestones</id> <url>http://repo.spring.io/milestone</url> </pluginRepository> 
+        </pluginRepositories> -->
 
-	<modules>
-		<module>spring-boot-vaadin</module>
-		<module>spring-vaadin</module>
-		<module>spring-vaadin-security</module>
-		<module>spring-vaadin-touchkit</module>
-		<module>spring-vaadin-stuff</module>
-		<module>spring-vaadin-test</module>
-		<module>spring-vaadin-mvp</module>
-		<module>samples</module>
-		<module>spring-vaadin-simple-mvp</module>
-		<module>spring-vaadin-sidebar</module>
-	</modules>
+    <modules>
+        <module>spring-boot-vaadin</module>
+        <module>spring-vaadin</module>
+        <module>spring-vaadin-security</module>
+        <module>spring-vaadin-touchkit</module>
+        <module>spring-vaadin-stuff</module>
+        <module>spring-vaadin-test</module>
+        <module>spring-vaadin-mvp</module>
+        <module>samples</module>
+        <module>spring-vaadin-simple-mvp</module>
+        <module>spring-vaadin-sidebar</module>
+        <module>spring-vaadin-i18n</module>
+    </modules>
 </project>
