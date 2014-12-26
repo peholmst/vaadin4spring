@@ -32,6 +32,8 @@ import javax.annotation.PreDestroy;
  */
 public class ExampleUIScopedObject implements EventBusListener<String> {
 
+    private static final long serialVersionUID = 8217357935429748277L;
+
     private final static Logger logger = LoggerFactory.getLogger(ExampleUIScopedObject.class);
 
     @Autowired

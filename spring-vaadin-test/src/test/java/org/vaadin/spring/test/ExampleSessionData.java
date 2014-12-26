@@ -24,5 +24,7 @@ import java.io.Serializable;
  */
 public class ExampleSessionData implements Serializable {
 
+    private static final long serialVersionUID = -986592125355013797L;
+    
     public String someData;
 }
