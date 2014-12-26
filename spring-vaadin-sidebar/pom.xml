@@ -12,7 +12,7 @@
     <artifactId>spring-vaadin-sidebar</artifactId>
     <packaging>jar</packaging>
 
-    <name>spring-vaadin-sidebar</name>
+    <name>Vaadin4Spring Sidebar</name>
 
     <dependencies>
         <dependency>
