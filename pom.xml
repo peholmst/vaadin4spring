@@ -280,7 +280,6 @@
         <module>spring-vaadin</module>
         <module>spring-vaadin-security</module>
         <module>spring-vaadin-touchkit</module>
-        <module>spring-vaadin-stuff</module>
         <module>spring-vaadin-test</module>
         <module>spring-vaadin-mvp</module>
         <module>samples</module>
