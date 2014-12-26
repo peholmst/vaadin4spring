@@ -34,6 +34,7 @@ import java.lang.reflect.Method;
  */
 public class ScopedEventBus implements EventBus, Serializable {
 
+    private static final long serialVersionUID = 1637290543180920954L;
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final EventScope eventScope;
 
@@ -41,11 +42,15 @@ public class ScopedEventBus implements EventBus, Serializable {
 
     private EventBus parentEventBus;
     private EventBusListener<Object> parentListener = new EventBusListener<Object>() {
+        
+        private static final long serialVersionUID = -8276470908536582989L;
+
         @Override
         public void onEvent(final Event<Object> event) {
             logger.debug("Propagating event [{}] from parent event bus [{}] to event bus [{}]", event, parentEventBus, ScopedEventBus.this);
             listeners.publish(event);
         }
+        
     };
 
     /**

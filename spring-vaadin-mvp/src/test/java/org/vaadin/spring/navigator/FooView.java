@@ -10,6 +10,8 @@ import com.vaadin.ui.Panel;
 @VaadinView(name = FooView.NAME)
 class FooView extends Panel implements View {
 
+    private static final long serialVersionUID = 3893006670519931367L;
+
     public static final String NAME = "foo";
 
     private String foo;

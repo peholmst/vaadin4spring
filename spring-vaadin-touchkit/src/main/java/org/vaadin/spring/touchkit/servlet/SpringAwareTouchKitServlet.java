@@ -35,16 +35,22 @@ import javax.servlet.ServletException;
  */
 public class SpringAwareTouchKitServlet extends TouchKitServlet {
 
+    private static final long serialVersionUID = 5870315475551692157L;
+
     @Override
     protected void servletInitialized() throws ServletException {
         super.servletInitialized();
         getService().addSessionInitListener(new SessionInitListener() {
+
+            private static final long serialVersionUID = 7153583441622330002L;
+
             @Override
             public void sessionInit(SessionInitEvent sessionInitEvent) throws ServiceException {
                 WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
                 SpringAwareTouchKitUIProvider uiProvider = new SpringAwareTouchKitUIProvider(webApplicationContext);
                 sessionInitEvent.getSession().addUIProvider(uiProvider);
             }
+            
         });
     }
 }

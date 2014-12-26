@@ -125,6 +125,9 @@ public class VaadinSessionScope implements Scope, BeanFactoryPostProcessor {
                     session.setAttribute(BeanStore.class, beanStore);
                     final BeanStore theBeanStore = beanStore;
                     session.getService().addSessionDestroyListener(new SessionDestroyListener() {
+
+                        private static final long serialVersionUID = 3387071173607691768L;
+
                         @Override
                         public void sessionDestroy(SessionDestroyEvent event) {
                             if (event.getSession().equals(session)) {
@@ -138,6 +141,9 @@ public class VaadinSessionScope implements Scope, BeanFactoryPostProcessor {
                         }
                     });
                     session.getService().addServiceDestroyListener(new ServiceDestroyListener() {
+                        
+                        private static final long serialVersionUID = 1286222033550070592L;
+
                         @Override
                         public void serviceDestroy(ServiceDestroyEvent event) {
                             try {
@@ -147,6 +153,7 @@ public class VaadinSessionScope implements Scope, BeanFactoryPostProcessor {
                                 event.getSource().removeServiceDestroyListener(this);
                             }
                         }
+                        
                     });
                 }
                 return beanStore;

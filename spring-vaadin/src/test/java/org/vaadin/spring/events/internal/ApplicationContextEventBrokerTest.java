@@ -32,6 +32,9 @@ public class ApplicationContextEventBrokerTest {
     @Test
     public void testOnApplicationEvent() {
         ApplicationEvent event = new ApplicationEvent(this) {
+
+            private static final long serialVersionUID = 7475015652750718692L;
+
             @Override
             public Object getSource() {
                 return "mySource";

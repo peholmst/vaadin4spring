@@ -31,6 +31,7 @@ import java.util.Set;
  */
 class ListenerCollection implements Serializable {
 
+    private static final long serialVersionUID = -6237902400879667320L;
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final Set<Listener> listeners = new HashSet<Listener>();
 
