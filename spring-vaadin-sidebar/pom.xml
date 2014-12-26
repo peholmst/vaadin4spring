@@ -10,6 +10,7 @@
 	</parent>
 	
 	<artifactId>spring-vaadin-sidebar</artifactId>
+	<packaging>jar</packaging>
 	
 	<name>spring-vaadin-sidebar</name>
 		
