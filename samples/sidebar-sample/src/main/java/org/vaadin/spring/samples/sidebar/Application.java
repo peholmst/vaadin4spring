@@ -26,7 +26,7 @@ import org.vaadin.spring.sidebar.EnableSideBar;
  * @author Petter Holmström (petter@vaadin.com)
  */
 @EnableAutoConfiguration
-@org.vaadin.spring.sidebar.EnableSideBar
+@EnableSideBar
 @ComponentScan
 public class Application {
 
