@@ -5,6 +5,10 @@ The side bar can be used as a main menu in applications with many views. It is i
 and divided into sections. Every section contains clickable menu items. Both sections and menu items are added
 declaratively using annotations.
 
+# Implementation Notice
+Feel free to use the features listed in this README in your projects, but please
+consider this module slightly less stable (in terms of API) than the other modules in Vaadin4Spring.
+
 # Enabling the Side Bar
 
 To enable the side bar, add the ```@EnableSideBar``` annotation to your application configuration.

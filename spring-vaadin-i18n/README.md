@@ -4,6 +4,10 @@ The Vaadin4Spring I18N Extensions
 This package contains some classes to make it easier to work with internationalization. They are not
 related to Vaadin, but might still be useful in applications that use Vaadin4Spring.
 
+# Implementation Notice
+Feel free to use the features listed in this README in your projects, but please
+consider this module slightly less stable (in terms of API) than the other modules in Vaadin4Spring.
+
 # Composite Message Source
 
 A composite message source is an implementation of the Spring ```MessageSource``` interface
