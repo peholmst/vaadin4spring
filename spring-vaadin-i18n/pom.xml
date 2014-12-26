@@ -12,7 +12,7 @@
     <artifactId>spring-vaadin-i18n</artifactId>
     <packaging>jar</packaging>
 
-    <name>spring-vaadin-i18n</name>
+    <name>Vaadin4Spring I18n</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
