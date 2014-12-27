@@ -23,12 +23,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.web.context.request.RequestContextListener;
 import org.vaadin.spring.context.VaadinApplicationContext;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusScope;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.internal.ApplicationContextEventBroker;
 import org.vaadin.spring.events.internal.ScopedEventBus;
+import org.vaadin.spring.http.HttpResponseFactory;
+import org.vaadin.spring.http.HttpResponseFilter;
+import org.vaadin.spring.http.HttpService;
+import org.vaadin.spring.http.VaadinHttpService;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.internal.VaadinSessionScope;
 import org.vaadin.spring.internal.VaadinUIScope;
@@ -40,6 +45,7 @@ import org.vaadin.spring.navigator.SpringViewProvider;
  *
  * @author Josh Long (josh@joshlong.com)
  * @author Petter Holmström (petter@vaadin.com)
+ * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  * @see org.vaadin.spring.EnableVaadin
  */
 @Configuration
@@ -115,5 +121,41 @@ public class VaadinConfiguration implements ApplicationContextAware {
     @Bean
     VaadinApplicationContext vaadinApplicationContext() {
     	return new VaadinApplicationContext();
+    }
+    
+    /**
+     * Allow access to the current HttpServletRequest
+     * through autowiring
+     */
+    @Bean
+    RequestContextListener requestContextListener() {
+        return new RequestContextListener();
+    }
+    
+    /**
+     * Allow injection of HttpServletResponse
+     * Required by {@link HttpResponseFactory}
+     */
+    @Bean
+    HttpResponseFilter httpResponseFilter() {
+        return new HttpResponseFilter();        
+    }
+    
+    /**
+     * Allow injection of HttpServletResponse
+     */
+    @Bean
+    HttpResponseFactory httpResponseFactory() {
+        return new HttpResponseFactory();
+    }
+    
+    /**
+     * Vaadin Http Service
+     * Allow access to HttpRequest / HttpResponse
+     */
+    @Bean
+    @Scope(value = org.springframework.web.context.WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)
+    HttpService httpService() {
+        return new VaadinHttpService();
     }
 }
