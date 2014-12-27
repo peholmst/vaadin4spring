@@ -31,10 +31,13 @@ public class HttpResponseFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws IOException, ServletException {
 
-        HttpServletResponse r = (HttpServletResponse) response;
-        responses.set(r);
-        chain.doFilter(request, response);
-        responses.remove();		
+        try {
+            HttpServletResponse r = (HttpServletResponse) response;
+            responses.set(r);
+            chain.doFilter(request, response);
+        } finally {
+            responses.remove();
+        }		
     }
 
     public HttpServletResponse getHttpServletReponse() {
