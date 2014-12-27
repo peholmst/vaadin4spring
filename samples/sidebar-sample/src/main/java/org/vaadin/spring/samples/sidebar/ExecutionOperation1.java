@@ -18,8 +18,8 @@ package org.vaadin.spring.samples.sidebar;
 import com.vaadin.ui.Notification;
 import org.springframework.stereotype.Component;
 import org.vaadin.spring.UIScope;
-import org.vaadin.spring.stuff.sidebar.SideBarItem;
-import org.vaadin.spring.stuff.sidebar.ThemeIcon;
+import org.vaadin.spring.sidebar.SideBarItem;
+import org.vaadin.spring.sidebar.ThemeIcon;
 
 import java.io.Serializable;
 

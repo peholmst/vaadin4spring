@@ -13,29 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.samples.sidebar;
+package org.vaadin.spring.sidebar;
 
-import com.vaadin.ui.Notification;
-import org.springframework.stereotype.Component;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.sidebar.SideBarItem;
-import org.vaadin.spring.sidebar.ThemeIcon;
-
-import java.io.Serializable;
+import com.vaadin.server.Resource;
+import com.vaadin.server.ThemeResource;
 
 /**
- * Example operation that shows up under the Execution section in the side bar.
+ * Icon provider for {@link org.vaadin.spring.sidebar.ThemeIcon}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@SideBarItem(sectionId = Sections.EXECUTION,
-        caption = "Operation 3")
-@ThemeIcon("../runo/icons/64/note.png")
-@Component
-@UIScope
-public class ExecutionOperation3 implements Runnable, Serializable {
+public class ThemeIconProvider implements SideBarItemIconProvider<ThemeIcon> {
+
     @Override
-    public void run() {
-        Notification.show("Operation 3 executed!");
+    public Resource getIcon(ThemeIcon annotation) {
+        final String resourceId = annotation.value();
+        if (resourceId.isEmpty()) {
+            return null;
+        } else {
+            return new ThemeResource(resourceId);
+        }
     }
 }

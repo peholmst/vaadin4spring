@@ -13,29 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.samples.sidebar;
+package org.vaadin.spring.sidebar;
 
-import com.vaadin.ui.Notification;
-import org.springframework.stereotype.Component;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.sidebar.SideBarItem;
-import org.vaadin.spring.sidebar.ThemeIcon;
+import com.vaadin.server.Resource;
 
-import java.io.Serializable;
+import java.lang.annotation.Annotation;
 
 /**
- * Example operation that shows up under the Execution section in the side bar.
+ * Interface defining a provider that maps a side bar item icon annotation to an actual {@link com.vaadin.server.Resource}.
+ * Implementations of this interface should be Spring managed beans (typically singletons).
  *
  * @author Petter Holmström (petter@vaadin.com)
+ * @see SideBarItemIcon#value()
  */
-@SideBarItem(sectionId = Sections.EXECUTION,
-        caption = "Operation 3")
-@ThemeIcon("../runo/icons/64/note.png")
-@Component
-@UIScope
-public class ExecutionOperation3 implements Runnable, Serializable {
-    @Override
-    public void run() {
-        Notification.show("Operation 3 executed!");
-    }
+public interface SideBarItemIconProvider<A extends Annotation> {
+
+    /**
+     * Returns the icon resource that the specified annotation refers to, or {@code null} if not found.
+     */
+    Resource getIcon(A annotation);
+
 }
