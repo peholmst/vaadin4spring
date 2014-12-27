@@ -13,29 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.samples.sidebar;
+package org.vaadin.spring.sidebar;
 
-import com.vaadin.ui.Notification;
-import org.springframework.stereotype.Component;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.sidebar.SideBarItem;
-import org.vaadin.spring.sidebar.ThemeIcon;
+import org.springframework.context.annotation.Import;
+import org.vaadin.spring.sidebar.config.SideBarConfiguration;
 
-import java.io.Serializable;
+import java.lang.annotation.*;
 
 /**
- * Example operation that shows up under the Execution section in the side bar.
+ * Add this annotation to your application configuration to enable the {@link org.vaadin.spring.sidebar.SideBar}
+ * component. After that, just inject the side bar into your UIs.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@SideBarItem(sectionId = Sections.EXECUTION,
-        caption = "Operation 3")
-@ThemeIcon("../runo/icons/64/note.png")
-@Component
-@UIScope
-public class ExecutionOperation3 implements Runnable, Serializable {
-    @Override
-    public void run() {
-        Notification.show("Operation 3 executed!");
-    }
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Import(SideBarConfiguration.class)
+public @interface EnableSideBar {
 }

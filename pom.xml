@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -263,44 +262,29 @@
             <id>vaadin-addons</id>
             <url>http://maven.vaadin.com/vaadin-addons</url>
         </repository>
-        
+
         <!-- Add Spring repositories -->
-    	<!-- (you don't need this if you are using a .RELEASE version) -->
-        <!--
-        <repository>
-            <id>spring-snapshots</id>
-            <url>http://repo.spring.io/snapshot</url>
-            <snapshots><enabled>true</enabled></snapshots>
-        </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <url>http://repo.spring.io/milestone</url>
-        </repository>
-        -->
+        <!-- (you don't need this if you are using a .RELEASE version) -->
+        <!-- <repository> <id>spring-snapshots</id> <url>http://repo.spring.io/snapshot</url> 
+            <snapshots><enabled>true</enabled></snapshots> </repository> <repository> 
+            <id>spring-milestones</id> <url>http://repo.spring.io/milestone</url> </repository> -->
     </repositories>
 
-    <!--
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-snapshots</id>
-            <url>http://repo.spring.io/snapshot</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <url>http://repo.spring.io/milestone</url>
-        </pluginRepository>
-    </pluginRepositories>
-    -->
+    <!-- <pluginRepositories> <pluginRepository> <id>spring-snapshots</id> 
+        <url>http://repo.spring.io/snapshot</url> </pluginRepository> <pluginRepository> 
+        <id>spring-milestones</id> <url>http://repo.spring.io/milestone</url> </pluginRepository> 
+        </pluginRepositories> -->
 
     <modules>
         <module>spring-boot-vaadin</module>
         <module>spring-vaadin</module>
         <module>spring-vaadin-security</module>
         <module>spring-vaadin-touchkit</module>
-        <module>spring-vaadin-stuff</module>
         <module>spring-vaadin-test</module>
         <module>spring-vaadin-mvp</module>
         <module>samples</module>
         <module>spring-vaadin-simple-mvp</module>
+        <module>spring-vaadin-sidebar</module>
+        <module>spring-vaadin-i18n</module>
     </modules>
 </project>
