@@ -153,9 +153,13 @@ If you want to customize the TouchKit servlet, extend
 
 Finally, please note that TouchKit is a commercial Vaadin product. It can, however, also be used in AGPL projects.
 
-## Stuff ##
+## i18n ##
+This package contains some classes to make it easier to work with internationalization. They are not related to Vaadin, but might still be useful in applications that use Vaadin4Spring.
+More information can be found [here](spring-vaadin-i18n/README.md).
 
-The stuff module has its own README, you can find it [here](spring-vaadin-stuff/README.md).
+## Sidebar ##
+The side bar can be used as a main menu in applications with many views. It is implemented as a Vaadin accordion and divided into sections. Every section contains clickable menu items. Both sections and menu items are added declaratively using annotations.
+More information can be found [here](spring-vaadin-sidebar/README.md)
 
 ## Security Support ##
 
