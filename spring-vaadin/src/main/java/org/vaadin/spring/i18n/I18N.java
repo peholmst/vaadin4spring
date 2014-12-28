@@ -48,6 +48,7 @@ import java.util.Locale;
  */
 public class I18N implements Serializable {
 
+    private static final long serialVersionUID = 7729662803476642498L;
     private final ApplicationContext applicationContext;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 

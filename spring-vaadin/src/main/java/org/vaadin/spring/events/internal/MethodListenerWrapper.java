@@ -37,6 +37,7 @@ import org.vaadin.spring.events.EventScope;
  */
 class MethodListenerWrapper extends AbstractListenerWrapper {
 
+    private static final long serialVersionUID = -3624543380547361337L;
     private final Class<?> payloadType;
     private final boolean payloadMethod;
     private transient Method listenerMethod;

@@ -58,6 +58,8 @@ import java.util.concurrent.ConcurrentSkipListSet;
  */
 public class SpringViewProvider implements ViewProvider {
 
+    private static final long serialVersionUID = 6906237177564157222L;
+    
     /*
      * Note! This is a singleton bean!
      */
