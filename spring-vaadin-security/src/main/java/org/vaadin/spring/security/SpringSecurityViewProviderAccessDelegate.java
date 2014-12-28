@@ -62,11 +62,9 @@ public class SpringSecurityViewProviderAccessDelegate implements SpringViewProvi
     	
         Secured viewSecured = view.getClass().getAnnotation(Secured.class);
         
-        if ( viewSecured == null )
-        	return true;
-        else if ( security.hasAccessDecisionManager())
-        	return security.hasAccessToSecuredObject(view);
+        if ( viewSecured == null || !security.hasAccessDecisionManager() )
+        	return true; // Decision is already done if there is no AccessDecisionManager
         else
-        	return security.hasAnyAuthority(viewSecured.value());
+        	return security.hasAccessToSecuredObject(view);
     }
 }
