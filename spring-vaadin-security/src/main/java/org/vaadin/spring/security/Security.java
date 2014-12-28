@@ -252,4 +252,14 @@ public class Security {
         }
         return false;
     }
+    
+    /** 
+     * Checks if the Security bean has an accessDecisionManager
+     * 
+     * @return true if the Security bean has an accessDecisionManager
+     */
+    public boolean hasAccessDecisionManager()
+    {
+    	return (accessDecisionManager != null);
+    }
 }
