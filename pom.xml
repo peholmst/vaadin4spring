@@ -275,16 +275,17 @@
         <id>spring-milestones</id> <url>http://repo.spring.io/milestone</url> </pluginRepository> 
         </pluginRepositories> -->
 
+    <!-- Ordered alphabetically -->
     <modules>
+        <module>samples</module>
         <module>spring-boot-vaadin</module>
         <module>spring-vaadin</module>
-        <module>spring-vaadin-security</module>
-        <module>spring-vaadin-touchkit</module>
-        <module>spring-vaadin-test</module>
-        <module>spring-vaadin-mvp</module>
-        <module>samples</module>
-        <module>spring-vaadin-simple-mvp</module>
-        <module>spring-vaadin-sidebar</module>
         <module>spring-vaadin-i18n</module>
+        <module>spring-vaadin-mvp</module>
+        <module>spring-vaadin-security</module>
+        <module>spring-vaadin-sidebar</module>
+        <module>spring-vaadin-simple-mvp</module>
+        <module>spring-vaadin-test</module>
+        <module>spring-vaadin-touchkit</module>
     </modules>
 </project>
