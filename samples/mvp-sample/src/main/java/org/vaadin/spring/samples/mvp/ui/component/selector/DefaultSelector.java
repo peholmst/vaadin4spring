@@ -40,11 +40,11 @@ public class DefaultSelector extends ComboBox {
         EnumSet<E> set = EnumSet.allOf(enumClass);
         String value;
         for (E item: set) {
-            value = (String) MethodUtils.invokeExactMethod(item, accessor, null);
+            value = (String) MethodUtils.invokeExactMethod(item, accessor, new Object[]{});
             addItem(value);
             setItemCaption(value, value);
         }
-        String selectedValue = (String) MethodUtils.invokeExactMethod(e, accessor, null);
+        String selectedValue = (String) MethodUtils.invokeExactMethod(e, accessor, new Object[]{});
         setValue(selectedValue);
 
         setNullSelectionAllowed(false);
