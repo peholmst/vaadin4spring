@@ -46,6 +46,7 @@ public abstract class DataGrid<DTO, T extends Table> extends VerticalLayout impl
      * Populates this grid with data
      * @param data any list of transfer objects
      */
+    @SuppressWarnings("unchecked")
     public void populateGrid(List<DTO> data) {
         populateGrid(data, (T) new Table());
     }
