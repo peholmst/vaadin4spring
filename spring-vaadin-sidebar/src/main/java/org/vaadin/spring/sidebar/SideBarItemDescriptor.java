@@ -60,7 +60,7 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
         return null;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private SideBarItemIconProvider<Annotation> findIconProvider() {
         if (iconAnnotation != null) {
             final Class<? extends SideBarItemIconProvider> iconProviderClass = iconAnnotation.annotationType().getAnnotation(SideBarItemIcon.class).value();
