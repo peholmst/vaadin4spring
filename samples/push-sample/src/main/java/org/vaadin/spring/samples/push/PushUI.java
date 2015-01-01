@@ -45,7 +45,9 @@ import java.util.concurrent.TimeUnit;
 @VaadinUI
 public class PushUI extends UI {
 
+    private static final long serialVersionUID = 3708190173011782944L;
     private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(10);
+
     private Random rnd = new Random();
     private Chart chart;
     private ListSeries series;
