@@ -278,8 +278,8 @@
     <!-- Ordered alphabetically -->
     <modules>
         <module>samples</module>
-        <module>spring-boot-vaadin</module>
         <module>spring-vaadin</module>
+        <module>spring-vaadin-boot</module>
         <module>spring-vaadin-i18n</module>
         <module>spring-vaadin-mvp</module>
         <module>spring-vaadin-security</module>

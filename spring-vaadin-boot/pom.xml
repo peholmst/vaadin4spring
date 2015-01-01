@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>spring-boot-vaadin</artifactId>
+    <artifactId>spring-vaadin-boot</artifactId>
     <packaging>jar</packaging>
 
     <name>Vaadin4Spring Boot Core</name>
