@@ -25,6 +25,8 @@ import com.vaadin.ui.PopupDateField;
 @VaadinView(name = MarketDayPicker.NAME)
 public class MarketDayPicker extends PopupDateField implements View {
 
+    private static final long serialVersionUID = 5271190219929731976L;
+
     @Inject
     private Environment env;
 

@@ -15,6 +15,8 @@ import com.vaadin.data.util.filter.UnsupportedFilterException;
  */
 public abstract class SuggestingContainer<BEANTYPE, SERVICE> extends BeanItemContainer<BEANTYPE> {
 
+    private static final long serialVersionUID = -7702366917056870298L;
+
     protected SERVICE service;
 
     public SuggestingContainer(Class<? super BEANTYPE> type, SERVICE service) throws IllegalArgumentException {
@@ -58,6 +60,8 @@ public abstract class SuggestingContainer<BEANTYPE, SERVICE> extends BeanItemCon
      * database.
      */
     public static class SuggestionFilter implements Container.Filter {
+
+        private static final long serialVersionUID = 3643966422244708411L;
 
         private String filterString;
 

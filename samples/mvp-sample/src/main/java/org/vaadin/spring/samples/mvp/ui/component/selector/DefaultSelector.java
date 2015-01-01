@@ -11,6 +11,8 @@ import com.vaadin.ui.ComboBox;
 
 public class DefaultSelector extends ComboBox {
 
+    private static final long serialVersionUID = -3103214555075605482L;
+
     public DefaultSelector(@NotNull String items[]) {
         this(null, items);
     }

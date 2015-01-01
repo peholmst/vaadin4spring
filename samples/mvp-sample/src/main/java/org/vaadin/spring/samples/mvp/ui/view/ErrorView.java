@@ -6,6 +6,9 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 public class ErrorView extends VerticalLayout implements View {
+
+    private static final long serialVersionUID = 8975141453718936920L;
+
     private Label message;
 
     public ErrorView() {
