@@ -36,6 +36,8 @@ import org.vaadin.spring.sidebar.ThemeIcon;
 @UIScope
 public class ReportingView3 extends VerticalLayout implements View {
 
+    private static final long serialVersionUID = 3349407981454517828L;
+    
     public static final String VIEW_NAME = "reporting3";
 
     public ReportingView3() {

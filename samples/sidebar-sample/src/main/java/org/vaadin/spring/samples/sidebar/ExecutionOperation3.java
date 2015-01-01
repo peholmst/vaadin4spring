@@ -34,6 +34,9 @@ import java.io.Serializable;
 @Component
 @UIScope
 public class ExecutionOperation3 implements Runnable, Serializable {
+
+    private static final long serialVersionUID = 6936718554616209000L;
+
     @Override
     public void run() {
         Notification.show("Operation 3 executed!");

@@ -38,6 +38,8 @@ import org.vaadin.spring.sidebar.SideBarItem;
 @UIScope
 public class PlanningView2 extends VerticalLayout implements View {
 
+    private static final long serialVersionUID = -5940176536863140421L;
+    
     public static final String VIEW_NAME = "planning2";
 
     public PlanningView2() {
