@@ -78,6 +78,7 @@ public class DSRUpdateHourlyPresenter extends Presenter<DSRUpdateHourlyView> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @EventBusListenerMethod
     public void onFetch(Screen screen) {
         if (screen.getViewName().equals(DSRUpdateHourlyView.NAME) && screen.getAction().equals(Action.GET_DATA)) {

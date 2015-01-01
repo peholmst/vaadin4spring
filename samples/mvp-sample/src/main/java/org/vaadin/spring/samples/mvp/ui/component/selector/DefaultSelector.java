@@ -34,6 +34,7 @@ public class DefaultSelector extends ComboBox {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public <E extends Enum<E>> DefaultSelector(E e, String accessor) throws Exception {
         Class<E> enumClass = (Class<E>) e.getClass();
         EnumSet<E> set = EnumSet.allOf(enumClass);
