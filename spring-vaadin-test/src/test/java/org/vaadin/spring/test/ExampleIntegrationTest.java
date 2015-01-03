@@ -24,7 +24,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.vaadin.spring.EnableVaadin;
 import org.vaadin.spring.UIScope;
-import org.vaadin.spring.VaadinSessionScope;
+import org.vaadin.spring.SessionScope;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusScope;
 import org.vaadin.spring.events.EventScope;
@@ -104,7 +104,7 @@ public class ExampleIntegrationTest {
         }
 
         @Bean
-        @VaadinSessionScope
+        @SessionScope
         ExampleSessionData exampleSessionData() {
             return new ExampleSessionData();
         }
