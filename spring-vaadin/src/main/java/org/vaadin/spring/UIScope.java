@@ -15,9 +15,14 @@
  */
 package org.vaadin.spring;
 
-import org.springframework.context.annotation.Scope;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.lang.annotation.*;
+import org.springframework.context.annotation.Scope;
+import org.vaadin.spring.internal.VaadinUIScope;
 
 /**
  * Stereotype annotation for Spring's {@code @Scope("vaadin-ui")}.
@@ -25,7 +30,7 @@ import java.lang.annotation.*;
  * @author Petter Holmström (petter@vaadin.com)
  * @author Josh Long (josh@joshlong.com)
  */
-@Scope("vaadin-ui")
+@Scope(VaadinUIScope.VAADIN_UI_SCOPE_NAME)
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

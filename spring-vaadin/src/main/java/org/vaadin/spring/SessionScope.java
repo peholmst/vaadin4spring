@@ -29,7 +29,7 @@ import org.vaadin.spring.internal.VaadinSessionScope;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@Scope("vaadin-session")
+@Scope(VaadinSessionScope.VAADIN_SESSION_SCOPE_NAME)
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
