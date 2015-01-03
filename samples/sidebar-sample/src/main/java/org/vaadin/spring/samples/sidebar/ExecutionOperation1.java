@@ -17,7 +17,7 @@ package org.vaadin.spring.samples.sidebar;
 
 import com.vaadin.ui.Notification;
 import org.springframework.stereotype.Component;
-import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.stuff.sidebar.SideBarItem;
 import org.vaadin.spring.stuff.sidebar.ThemeIcon;
 
@@ -32,7 +32,7 @@ import java.io.Serializable;
         caption = "Operation 1")
 @ThemeIcon("../runo/icons/64/email.png")
 @Component
-@UIScope
+@VaadinUIScope
 public class ExecutionOperation1 implements Runnable, Serializable {
     @Override
     public void run() {

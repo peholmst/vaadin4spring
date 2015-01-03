@@ -1,13 +1,13 @@
 package org.vaadin.spring.samples.mvp.ui.view;
 
-import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.navigator.VaadinView;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.CustomLayout;
 
-@UIScope
+@VaadinUIScope
 @VaadinView(name = FooterView.NAME)
 public class FooterView extends CustomLayout implements View {
 

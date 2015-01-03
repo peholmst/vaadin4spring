@@ -26,8 +26,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.vaadin.spring.EnableVaadin;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.SessionScope;
+import org.vaadin.spring.VaadinUIScope;
+import org.vaadin.spring.VaadinSessionScope;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusScope;
 import org.vaadin.spring.events.EventScope;
@@ -118,13 +118,13 @@ public class ExampleManualIntegrationTest {
     public static class Config {
 
         @Bean
-        @UIScope
+        @VaadinUIScope
         ExampleUIScopedObject exampleUIScopedObject() {
             return new ExampleUIScopedObject();
         }
 
         @Bean
-        @SessionScope
+        @VaadinSessionScope
         ExampleSessionData exampleSessionData() {
             return new ExampleSessionData();
         }

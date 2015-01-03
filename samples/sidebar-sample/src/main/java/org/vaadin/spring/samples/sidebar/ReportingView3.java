@@ -19,7 +19,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.navigator.VaadinView;
 import org.vaadin.spring.stuff.sidebar.SideBarItem;
 import org.vaadin.spring.stuff.sidebar.ThemeIcon;
@@ -33,7 +33,7 @@ import org.vaadin.spring.stuff.sidebar.ThemeIcon;
 @SideBarItem(sectionId = Sections.REPORTING,
         caption = "View 3")
 @ThemeIcon("../runo/icons/64/help.png")
-@UIScope
+@VaadinUIScope
 public class ReportingView3 extends VerticalLayout implements View {
 
     public static final String VIEW_NAME = "reporting3";

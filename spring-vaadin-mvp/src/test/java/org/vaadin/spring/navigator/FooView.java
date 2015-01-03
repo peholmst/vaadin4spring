@@ -1,12 +1,12 @@
 package org.vaadin.spring.navigator;
 
-import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinUIScope;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Panel;
 
-@UIScope
+@VaadinUIScope
 @VaadinView(name = FooView.NAME)
 class FooView extends Panel implements View {
 

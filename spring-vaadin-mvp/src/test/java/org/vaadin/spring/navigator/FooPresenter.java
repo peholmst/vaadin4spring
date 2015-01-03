@@ -1,9 +1,9 @@
 package org.vaadin.spring.navigator;
 
-import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.events.EventBusListenerMethod;
 
-@UIScope
+@VaadinUIScope
 @VaadinPresenter(viewName=FooView.NAME)
 class FooPresenter extends Presenter<FooView> {
 

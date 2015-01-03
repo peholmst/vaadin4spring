@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.ArrayUtils;
 import org.joda.time.DateTime;
 import org.springframework.core.env.Environment;
-import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.navigator.VaadinView;
 import org.vaadin.spring.samples.mvp.util.SSTimeUtil;
 
@@ -21,7 +21,7 @@ import com.vaadin.ui.PopupDateField;
  * @author Chris Phillipson (fastnsilver@gmail.com)
  *
  */
-@UIScope
+@VaadinUIScope
 @VaadinView(name = MarketDayPicker.NAME)
 public class MarketDayPicker extends PopupDateField implements View {
 

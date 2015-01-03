@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.navigator.VaadinView;
 import org.vaadin.spring.samples.mvp.dto.DSRUpdateHourlyDTO;
 import org.vaadin.spring.samples.mvp.ui.component.grid.HierarchicalDataGrid;
@@ -24,7 +24,7 @@ import com.vaadin.ui.Table;
  * @author Chris Phillipson (fastnsilver@gmail.com)
  *
  */
-@UIScope
+@VaadinUIScope
 @VaadinView(name = DSRUpdateHourlyView.NAME)
 public class DSRUpdateHourlyView extends HierarchicalDataGrid<DSRUpdateHourlyDTO> {
 

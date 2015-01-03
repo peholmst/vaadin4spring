@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  * <p>
  * This annotation is also a stereotype annotation, so Spring will automatically detect the annotated classes.
  * <b>However, the scope must be explicitly specified as the default singleton scope will not work!</b> You can use
- * the {@code prototype} scope or the {@link org.vaadin.spring.UIScope ui} scope.
+ * the {@code prototype} scope or the {@link org.vaadin.spring.VaadinUIScope ui} scope.
  * <p>
  * This is an example of a view that is mapped to an empty view name and is available for all UI subclasses in the application:
  *     <pre>

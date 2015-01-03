@@ -20,7 +20,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.navigator.VaadinView;
 import org.vaadin.spring.stuff.sidebar.FontAwesomeIcon;
 import org.vaadin.spring.stuff.sidebar.SideBarItem;
@@ -35,7 +35,7 @@ import org.vaadin.spring.stuff.sidebar.SideBarItem;
         caption = "View 1",
         order = 1)
 @FontAwesomeIcon(FontAwesome.ANDROID)
-@UIScope
+@VaadinUIScope
 public class PlanningView1 extends VerticalLayout implements View {
 
     public static final String VIEW_NAME = "planning1";

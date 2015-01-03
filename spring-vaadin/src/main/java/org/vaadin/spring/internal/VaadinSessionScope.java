@@ -34,7 +34,7 @@ import org.springframework.beans.factory.config.Scope;
  * as the scope "{@value #VAADIN_SESSION_SCOPE_NAME}".
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.SessionScope
+ * @see org.vaadin.spring.VaadinSessionScope
  */
 public class VaadinSessionScope implements Scope, BeanFactoryPostProcessor {
 

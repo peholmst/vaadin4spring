@@ -35,7 +35,7 @@ import java.lang.annotation.Target;
  *         // ...
  *     }
  *     </pre>
- * The annotated UI will automatically be placed in the {@link UIScope}, so there is no need to add that annotation explicitly.
+ * The annotated UI will automatically be placed in the {@link VaadinUIScope}, so there is no need to add that annotation explicitly.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
@@ -43,7 +43,7 @@ import java.lang.annotation.Target;
 @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 @Documented
 @VaadinComponent
-@UIScope
+@VaadinUIScope
 public @interface VaadinUI {
 
     /**
