@@ -39,6 +39,7 @@ class EventBusListenerWrapper extends AbstractListenerWrapper {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public EventBusListener getListenerTarget() {
         return (EventBusListener) super.getListenerTarget();
     }

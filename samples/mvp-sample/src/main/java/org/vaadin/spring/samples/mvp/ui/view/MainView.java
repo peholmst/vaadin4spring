@@ -14,6 +14,7 @@ import com.vaadin.ui.VerticalLayout;
 @VaadinView(name = MainView.NAME)
 public class MainView extends VerticalLayout implements View {
 
+    private static final long serialVersionUID = 6041151920926888211L;
     public static final String NAME = "main";
 
 

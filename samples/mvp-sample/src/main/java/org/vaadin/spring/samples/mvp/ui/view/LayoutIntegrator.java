@@ -13,6 +13,7 @@ import com.vaadin.ui.Layout;
  */
 class LayoutIntegrator {
 
+    @SuppressWarnings("unused")
     private static Logger log = LoggerFactory.getLogger(LayoutIntegrator.class);
 
     static void addComponents(Layout layout, Component[] components) {

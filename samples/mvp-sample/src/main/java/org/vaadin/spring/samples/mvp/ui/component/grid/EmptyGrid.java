@@ -12,6 +12,7 @@ import com.vaadin.ui.Table;
  */
 class EmptyGrid extends DataGrid<Void, Table> {
 
+    private static final long serialVersionUID = -1048597713538645459L;
 
     @Override
     protected void defineColumns(List<Void> data) {

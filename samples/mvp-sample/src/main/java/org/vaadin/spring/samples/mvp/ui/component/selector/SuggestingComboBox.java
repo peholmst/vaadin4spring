@@ -7,6 +7,8 @@ import com.vaadin.ui.ComboBox;
 
 public class SuggestingComboBox extends ComboBox {
 
+    private static final long serialVersionUID = 8935599681528959687L;
+
     /**
      * Overwrite the protected method
      * {@link ComboBox#buildFilter(String, FilteringMode)} to return a custom

@@ -18,6 +18,8 @@ import com.vaadin.data.Property.ValueChangeListener;
 @VaadinComponent
 public class MarketDaySelectedListener implements ValueChangeListener {
 
+    private static final long serialVersionUID = -123053805576375573L;
+
     @Inject
     @EventBusScope(EventScope.APPLICATION)
     private EventBus eventBus;

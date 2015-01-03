@@ -22,7 +22,9 @@ import com.vaadin.ui.Panel;
 @VaadinView(name = BannerView.NAME)
 public class BannerView extends Panel implements View {
 
-	public static final String NAME = "banner";
+    private static final long serialVersionUID = 2140523090860294866L;
+
+    public static final String NAME = "banner";
 
 	@Inject
 	Environment env;
