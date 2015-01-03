@@ -37,6 +37,7 @@ public @interface SideBarItemIcon {
      * the actual icon {@link com.vaadin.server.Resource}s. An instance of this class will be looked up from the
      * Spring application context, so make sure your icon provider is Spring managed.
      */
+    @SuppressWarnings("rawtypes")
     Class<? extends SideBarItemIconProvider> value();
 
 }

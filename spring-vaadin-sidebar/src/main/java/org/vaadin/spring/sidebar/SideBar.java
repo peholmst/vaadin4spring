@@ -68,6 +68,7 @@ public class SideBar extends Accordion {
 
     private final SideBarUtils sideBarUtils;
     private final SectionComponentFactory sectionComponentFactory;
+    @SuppressWarnings("unused")
     private final ItemComponentFactory itemComponentFactory;
 
     /**

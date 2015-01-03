@@ -51,6 +51,7 @@ public class Security {
 
     private final AccessDecisionManager accessDecisionManager;
 
+    @SuppressWarnings("unused")
     private final ApplicationContext applicationContext;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

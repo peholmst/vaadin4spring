@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.events.EventBus;
+
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewProvider;
 
@@ -44,6 +45,7 @@ public abstract class Presenter<V extends View> {
      * A match is made if the ViewProvider finds a VaadinView annotated View whose name matches Presenter's viewName
      * @return an implementor of {@link View}
      */
+    @SuppressWarnings("unchecked")
     public V getView() {
         V result = null;
         Class<?> clazz = getClass();
