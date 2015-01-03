@@ -34,7 +34,7 @@ import org.vaadin.spring.security.VaadinSecurityAware;
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  * @see VaadinSecurity#hasAnyAuthority(String...)
  */
-public class SpringSecurityViewProviderAccessDelegate implements VaadinSecurityAware, ViewProviderAccessDelegate {
+public class SecuredViewProviderAccessDelegate implements VaadinSecurityAware, ViewProviderAccessDelegate {
 
     private VaadinSecurity security;
     private ApplicationContext applicationContext;
