@@ -1,93 +1,26 @@
-/*
- * Copyright 2014 The original authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.vaadin.spring.security;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.aop.support.AopUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.security.access.AccessDecisionManager;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.ConfigAttribute;
-import org.springframework.security.access.SecurityConfig;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.Assert;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
- * Convenience class that provides the Spring Security operations that are most commonly required in a Vaadin application.
- *
- * @author Petter Holmström (petter@vaadin.com)
+ * Interface that provides the Spring Security operations that are most commonly required
+ * in a Vaadin application.
+ *  
+ *  @author Petter Holmström (petter@vaadin.com)
+ *  @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  */
-public class VaadinSecurity {
+public interface VaadinSecurity extends VaadinSecurityContext {
 
-    private final AuthenticationManager authenticationManager;
-
-    private final AccessDecisionManager accessDecisionManager;
-
-    private final ApplicationContext applicationContext;
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-
-    @Autowired(required = false)
-    public VaadinSecurity(AuthenticationManager authenticationManager, AccessDecisionManager accessDecisionManager, ApplicationContext applicationContext) {
-        this.authenticationManager = authenticationManager;
-        if (authenticationManager == null) {
-            logger.warn("No AuthenticationManager set! Some security methods will not be available.");
-        }
-        this.accessDecisionManager = accessDecisionManager;
-        if (accessDecisionManager == null) {
-            logger.warn("No AccessDecisionManager set! Some security methods will not be available.");
-        }
-        Assert.notNull(applicationContext);
-        this.applicationContext = applicationContext;
-    }
-
-    private AuthenticationManager getAuthenticationManager() {
-        if (authenticationManager == null) {
-            throw new IllegalStateException("No AuthenticationManager has been set");
-        }
-        return authenticationManager;
-    }
-
-    /**
+	/**
      * Checks if the current user is authenticated.
      *
      * @return true if the current {@link org.springframework.security.core.context.SecurityContext} contains an {@link org.springframework.security.core.Authentication} token,
      * and the token has been authenticated by an {@link org.springframework.security.authentication.AuthenticationManager}.
      * @see org.springframework.security.core.Authentication#isAuthenticated()
      */
-    public boolean isAuthenticated() {
-        final Authentication authentication = getAuthentication();
-        return authentication != null && authentication.isAuthenticated();
-    }
-
+    boolean isAuthenticated();
+	
     /**
      * Tries to login using the specified authentication object. If authentication succeeds, this method
      * will return without exceptions.
@@ -95,12 +28,8 @@ public class VaadinSecurity {
      * @param authentication the authentication object to authenticate, must not be {@code null}.
      * @throws org.springframework.security.core.AuthenticationException if authentication fails.
      */
-    public void login(Authentication authentication) throws AuthenticationException {
-        final Authentication fullyAuthenticated = getAuthenticationManager().authenticate(authentication);
-        final SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(fullyAuthenticated);
-    }
-
+    void login(Authentication authentication) throws AuthenticationException;
+    
     /**
      * Convenience method that invokes {@link #login(org.springframework.security.core.Authentication)} with a
      * {@link org.springframework.security.authentication.UsernamePasswordAuthenticationToken}-object.
@@ -109,19 +38,14 @@ public class VaadinSecurity {
      * @param password the password to use, must not be {@code null}.
      * @throws AuthenticationException if authentication fails.
      */
-    public void login(String username, String password) throws AuthenticationException {
-        login(new UsernamePasswordAuthenticationToken(username, password));
-    }
-
+    void login(String username, String password) throws AuthenticationException;
+    
     /**
      * Logs the user out, clearing the {@link org.springframework.security.core.context.SecurityContext} without
      * invalidating the session.
      */
-    public void logout() {
-        final SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(null);
-    }
-
+    void logout();
+    
     /**
      * Checks if the current user has the specified authority. This method works with static authorities (such as roles).
      * If you need more dynamic authorization (such as ACLs or EL expressions), use {@link #hasAccessToObject(Object, String...)}.
@@ -132,30 +56,15 @@ public class VaadinSecurity {
      * @see org.springframework.security.core.Authentication#getAuthorities()
      * @see org.springframework.security.core.GrantedAuthority#getAuthority()
      */
-    public boolean hasAuthority(String authority) {
-        final Authentication authentication = getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return false;
-        }
-        for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
-            if (authority.equals(grantedAuthority.getAuthority())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    public boolean hasAuthority(String authority);
+    
     /**
      * Gets the authentication token of the current user.
      *
      * @return the {@link org.springframework.security.core.Authentication} token stored in the current {@link org.springframework.security.core.context.SecurityContext}, or {@code null}.
      */
-    public Authentication getAuthentication() {
-        final SecurityContext securityContext = SecurityContextHolder.getContext();
-        final Authentication authentication = securityContext.getAuthentication();
-        return authentication;
-    }
-
+    Authentication getAuthentication();
+    
     /**
      * Checks if the current user is authorized based on the specified security configuration attributes. The attributes
      * can be roles or Spring EL expressions (basically anything you can specify as values of the {@link org.springframework.security.access.annotation.Secured} annotation).
@@ -164,28 +73,8 @@ public class VaadinSecurity {
      * @param securityConfigurationAttributes the security configuration attributes.
      * @return true if the current user is authorized, false if not.
      */
-    public boolean hasAccessToObject(Object securedObject, String... securityConfigurationAttributes) {
-        final Authentication authentication = getAuthentication();
-        if (accessDecisionManager == null || authentication == null || !authentication.isAuthenticated()) {
-            if (accessDecisionManager == null) {
-                logger.warn("Access was denied to object because there was no AccessDecisionManager set!");
-            }
-            return false;
-        }
-        final Collection<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>(securityConfigurationAttributes.length);
-        for (String securityConfigString : securityConfigurationAttributes) {
-            configAttributes.add(new SecurityConfig(securityConfigString));
-        }
-        try {
-            accessDecisionManager.decide(authentication, securedObject, configAttributes);
-            return true;
-        } catch (AccessDeniedException ex) {
-            return false;
-        } catch (InsufficientAuthenticationException ex) {
-        	return false;
-        }
-    }
-
+    boolean hasAccessToObject(Object securedObject, String... securityConfigurationAttributes);
+    
     /**
      * Convenience method that invokes {@link #hasAccessToObject(Object, String...)}, using the {@link org.springframework.security.access.annotation.Secured} annotation of the secured object
      * to get the security configuration attributes.
@@ -193,12 +82,8 @@ public class VaadinSecurity {
      * @param securedObject the secured object, must not be {@code null} and must have the {@link org.springframework.security.access.annotation.Secured} annotation.
      * @return true if the current user is authorized, false if not.
      */
-    public boolean hasAccessToSecuredObject(Object securedObject) {
-        final Secured secured = AopUtils.getTargetClass(securedObject).getAnnotation(Secured.class);
-        Assert.notNull(secured, "securedObject did not have @Secured annotation");
-        return hasAccessToObject(securedObject, secured.value());
-    }
-
+    boolean hasAccessToSecuredObject(Object securedObject);
+    
     /**
      * Uses the {@link org.springframework.security.access.annotation.Secured} annotation on the specified method to check if the current user has access to the secured object.
      *
@@ -208,17 +93,8 @@ public class VaadinSecurity {
      * @return true if the current user is authorized, false if not.
      * @see #hasAccessToSecuredObject(Object)
      */
-    public boolean hasAccessToSecuredMethod(Object securedObject, String methodName, Class<?>... methodParameterTypes) {
-        try {
-            final Method method = securedObject.getClass().getMethod(methodName, methodParameterTypes);
-            final Secured secured = AnnotationUtils.findAnnotation(method, Secured.class);
-            Assert.notNull(secured, "securedObject did not have @Secured annotation");
-            return hasAccessToObject(securedObject, secured.value());
-        } catch (NoSuchMethodException ex) {
-            throw new IllegalArgumentException("Method " + methodName + " does not exist", ex);
-        }
-    }
-
+    boolean hasAccessToSecuredMethod(Object securedObject, String methodName, Class<?>... methodParameterTypes);
+    
     /**
      * Checks if the current user has all required authorities.
      *
@@ -227,15 +103,8 @@ public class VaadinSecurity {
      * @see #hasAuthority(String)
      * @see #hasAnyAuthority(String...)
      */
-    public boolean hasAuthorities(String... authorities) {
-        for (String authority : authorities) {
-            if (!hasAuthority(authority)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
+    boolean hasAuthorities(String... authorities);
+    
     /**
      * Checks if the current user has at least one of the specified authorities.
      *
@@ -244,22 +113,6 @@ public class VaadinSecurity {
      * @see #hasAuthority(String)
      * @see #hasAuthorities(String...)
      */
-    public boolean hasAnyAuthority(String... authorities) {
-        for (String authority : authorities) {
-            if (hasAuthority(authority)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    boolean hasAnyAuthority(String... authorities);
     
-    /** 
-     * Checks if the Security bean has an accessDecisionManager
-     * 
-     * @return true if the Security bean has an accessDecisionManager
-     */
-    public boolean hasAccessDecisionManager()
-    {
-    	return (accessDecisionManager != null);
-    }
 }
