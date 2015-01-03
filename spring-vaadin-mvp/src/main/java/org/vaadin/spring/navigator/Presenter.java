@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.events.EventBus;
+
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewProvider;
 
@@ -29,14 +30,29 @@ public abstract class Presenter<V extends View> {
 
     @Autowired
     private EventBus eventBus;
+    
+    private String viewName;
 
     @PostConstruct
     protected void init() {
         eventBus.subscribe(this);
+        viewName = getViewName();
     }
 
     public EventBus getEventBus() {
         return this.eventBus;
+    }
+    
+    private String getViewName() {
+        String result = null;
+        Class<?> clazz = getClass();
+        if (clazz.isAnnotationPresent(VaadinPresenter.class)) {
+            VaadinPresenter vp = clazz.getAnnotation(VaadinPresenter.class);
+            result = vp.viewName();
+        } else {
+            logger.error("Presenter [{}] does not have a @VaadinPresenter annotation!", clazz.getSimpleName());
+        }
+        return result;
     }
 
     /**
@@ -46,12 +62,8 @@ public abstract class Presenter<V extends View> {
      */
     public V getView() {
         V result = null;
-        Class<?> clazz = getClass();
-        if (clazz.isAnnotationPresent(VaadinPresenter.class)) {
-            VaadinPresenter vp = clazz.getAnnotation(VaadinPresenter.class);
-            result = (V) viewProvider.getView(vp.viewName());
-        } else {
-            logger.error("Presenter [{}] does not have a @VaadinPresenter annotation!", clazz.getSimpleName());
+        if (viewName != null) {
+            result = (V) viewProvider.getView(viewName);
         }
         return result;
     }
