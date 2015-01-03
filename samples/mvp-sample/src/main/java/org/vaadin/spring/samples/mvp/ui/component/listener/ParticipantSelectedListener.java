@@ -15,6 +15,8 @@ import com.vaadin.data.Property.ValueChangeListener;
 @VaadinComponent
 public class ParticipantSelectedListener implements ValueChangeListener {
 
+    private static final long serialVersionUID = 331391425040065709L;
+
     @Inject
     @EventBusScope(EventScope.APPLICATION)
     private EventBus eventBus;

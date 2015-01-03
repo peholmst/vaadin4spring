@@ -9,7 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.vaadin.spring.samples</groupId>
     <artifactId>sidebar-sample</artifactId>
 
     <name>Vaadin4Spring Samples - Side Bar</name>
@@ -21,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>org.vaadin.spring</groupId>
-            <artifactId>spring-vaadin-stuff</artifactId>
+            <artifactId>spring-vaadin-sidebar</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

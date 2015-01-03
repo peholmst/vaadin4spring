@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>samples-parent-pom</artifactId>
         <groupId>org.vaadin.spring.samples</groupId>
@@ -54,8 +54,8 @@
                 <configuration>
                     <extraJvmArgs>-Xmx1g -Xss1024k</extraJvmArgs>
 
-                    <!-- We are doing "inplace" gwt compilation
-                    but into subdir VAADIN/widgetsets -->
+                    <!-- We are doing "inplace" gwt compilation but into 
+                        subdir VAADIN/widgetsets -->
                     <webappDirectory>${basedir}/src/main/resources/VAADIN/widgetsets
                     </webappDirectory>
                     <hostedWebapp>${basedir}/src/main/resources/VAADIN/widgetsets
@@ -67,15 +67,17 @@
                     <compileReport>true</compileReport>
                     <style>OBF</style>
                     <strict>true</strict>
-                    <!-- Symbol maps etc, not needed in vaadin app, just target them outside war -->
+                    <!-- Symbol maps etc, not needed in vaadin app, just 
+                        target them outside war -->
                     <deploy>${project.build.directory}/gwt-deploy</deploy>
                 </configuration>
                 <executions>
                     <execution>
                         <configuration>
-                            <!-- if you don't specify any modules, the plugin will find them -->
-                            <!-- <modules> <module>com.vaadin.demo.mobilemail.gwt.ColorPickerWidgetSet</module>
-                            </modules> -->
+                            <!-- if you don't specify any modules, the plugin 
+                                will find them -->
+                            <!-- <modules> <module>com.vaadin.demo.mobilemail.gwt.ColorPickerWidgetSet</module> 
+                                </modules> -->
                         </configuration>
                         <phase>
                             generate-resources
@@ -101,5 +103,43 @@
                 </configuration>
             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <!--This plugin's configuration is used to store Eclipse 
+                    m2e settings only. It has no influence on the Maven build itself. -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>com.vaadin</groupId>
+                                        <artifactId>
+                                            vaadin-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [7,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>resources</goal>
+                                            <goal>update-theme</goal>
+                                            <goal>update-widgetset</goal>
+                                            <goal>compile-theme</goal>
+                                            <goal>compile</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>

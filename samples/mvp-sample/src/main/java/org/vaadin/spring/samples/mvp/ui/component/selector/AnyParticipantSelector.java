@@ -19,6 +19,8 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 @VaadinView(name = AnyParticipantSelector.NAME)
 public class AnyParticipantSelector extends ParticipantSelector {
 
+    private static final long serialVersionUID = 601560875854451663L;
+
     public static final String NAME = "anyParticipantSelector";
 
     @Inject
@@ -37,6 +39,8 @@ public class AnyParticipantSelector extends ParticipantSelector {
 
 
     private class ParticipantSuggestingContainer extends SuggestingContainer<AssetOwnedDailyId, UiService> {
+
+        private static final long serialVersionUID = -2896828348082362946L;
 
         public ParticipantSuggestingContainer(
                 Class<? super AssetOwnedDailyId> type, UiService service)

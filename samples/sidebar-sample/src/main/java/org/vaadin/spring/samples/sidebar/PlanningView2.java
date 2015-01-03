@@ -22,8 +22,8 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.navigator.VaadinView;
-import org.vaadin.spring.stuff.sidebar.FontAwesomeIcon;
-import org.vaadin.spring.stuff.sidebar.SideBarItem;
+import org.vaadin.spring.sidebar.FontAwesomeIcon;
+import org.vaadin.spring.sidebar.SideBarItem;
 
 /**
  * Example view that shows up under the Planning section in the side bar.
@@ -38,6 +38,8 @@ import org.vaadin.spring.stuff.sidebar.SideBarItem;
 @VaadinUIScope
 public class PlanningView2 extends VerticalLayout implements View {
 
+    private static final long serialVersionUID = -5940176536863140421L;
+    
     public static final String VIEW_NAME = "planning2";
 
     public PlanningView2() {

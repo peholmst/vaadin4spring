@@ -24,6 +24,8 @@ import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 @VaadinComponent
 public class TabSelectedListener implements SelectedTabChangeListener {
 
+    private static final long serialVersionUID = -6279286514453567595L;
+
     @Inject
     ApplicationContext context;
 

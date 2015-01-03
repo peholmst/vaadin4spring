@@ -60,6 +60,7 @@ public abstract class Presenter<V extends View> {
      * A match is made if the ViewProvider finds a VaadinView annotated View whose name matches Presenter's viewName
      * @return an implementor of {@link View}
      */
+    @SuppressWarnings("unchecked")
     public V getView() {
         V result = null;
         if (viewName != null) {

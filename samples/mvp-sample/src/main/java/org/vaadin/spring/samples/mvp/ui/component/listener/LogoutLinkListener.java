@@ -21,7 +21,9 @@ import com.vaadin.ui.Button.ClickListener;
 @VaadinComponent
 public class LogoutLinkListener implements ClickListener {
 
-	@Inject
+    private static final long serialVersionUID = -1022565023996117634L;
+
+    @Inject
 	private Environment env;
 
 	@Override

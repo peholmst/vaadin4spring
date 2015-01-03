@@ -15,7 +15,9 @@
  */
 package org.vaadin.spring.security;
 
+import com.vaadin.navigator.View;
 import com.vaadin.ui.UI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.annotation.Secured;
@@ -41,9 +43,28 @@ public class SpringSecurityViewProviderAccessDelegate implements SpringViewProvi
         this.applicationContext = applicationContext;
     }
 
+    
     @Override
     public boolean isAccessGranted(String beanName, UI ui) {
-        Secured viewSecured = applicationContext.findAnnotationOnBean(beanName, Secured.class);
-        return !(viewSecured != null && !security.hasAnyAuthority(viewSecured.value()));
+    	
+    	Secured viewSecured = applicationContext.findAnnotationOnBean(beanName, Secured.class);
+        
+        if ( viewSecured == null )
+        	return true;
+        else if ( security.hasAccessDecisionManager() )
+        	return true; // Leave decision to the second hook
+        else
+        	return security.hasAnyAuthority(viewSecured.value());
+    }
+
+    @Override
+    public boolean isAccessGranted(View view, UI ui) {
+    	
+        Secured viewSecured = view.getClass().getAnnotation(Secured.class);
+        
+        if ( viewSecured == null || !security.hasAccessDecisionManager() )
+        	return true; // Decision is already done if there is no AccessDecisionManager
+        else
+        	return security.hasAccessToSecuredObject(view);
     }
 }

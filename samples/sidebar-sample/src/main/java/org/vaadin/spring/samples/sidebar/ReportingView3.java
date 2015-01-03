@@ -21,8 +21,8 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.navigator.VaadinView;
-import org.vaadin.spring.stuff.sidebar.SideBarItem;
-import org.vaadin.spring.stuff.sidebar.ThemeIcon;
+import org.vaadin.spring.sidebar.SideBarItem;
+import org.vaadin.spring.sidebar.ThemeIcon;
 
 /**
  * Example view that shows up under the Reporting section in the side bar.
@@ -36,6 +36,8 @@ import org.vaadin.spring.stuff.sidebar.ThemeIcon;
 @VaadinUIScope
 public class ReportingView3 extends VerticalLayout implements View {
 
+    private static final long serialVersionUID = 3349407981454517828L;
+    
     public static final String VIEW_NAME = "reporting3";
 
     public ReportingView3() {

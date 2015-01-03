@@ -15,6 +15,8 @@ import com.vaadin.ui.HorizontalSplitPanel;
 @VaadinView(name = BodyView.NAME)
 public class BodyView extends HorizontalSplitPanel implements View {
 
+    private static final long serialVersionUID = -1302741483256336480L;
+
     public static final String NAME = "body";
 
 

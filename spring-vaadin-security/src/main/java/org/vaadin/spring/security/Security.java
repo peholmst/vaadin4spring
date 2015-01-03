@@ -51,6 +51,7 @@ public class Security {
 
     private final AccessDecisionManager accessDecisionManager;
 
+    @SuppressWarnings("unused")
     private final ApplicationContext applicationContext;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -251,5 +252,15 @@ public class Security {
             }
         }
         return false;
+    }
+    
+    /** 
+     * Checks if the Security bean has an accessDecisionManager
+     * 
+     * @return true if the Security bean has an accessDecisionManager
+     */
+    public boolean hasAccessDecisionManager()
+    {
+    	return (accessDecisionManager != null);
     }
 }

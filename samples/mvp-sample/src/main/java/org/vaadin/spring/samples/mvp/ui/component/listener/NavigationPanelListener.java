@@ -18,6 +18,8 @@ import com.vaadin.shared.MouseEventDetails.MouseButton;
 @VaadinComponent
 public class NavigationPanelListener implements ItemClickListener {
 
+    private static final long serialVersionUID = -8657189602674122010L;
+
     @Inject
     @EventBusScope(EventScope.APPLICATION)
     private EventBus eventBus;

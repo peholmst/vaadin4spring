@@ -25,6 +25,8 @@ import com.vaadin.ui.TabSheet;
 @VaadinView(name = TabPanelView.NAME)
 public class TabPanelView extends TabSheet implements View {
 
+    private static final long serialVersionUID = -4866260647690189827L;
+
     private static Logger log = LoggerFactory.getLogger(TabPanelView.class);
 
     public static final String NAME = "tabPanel";

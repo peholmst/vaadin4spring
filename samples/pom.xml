@@ -41,7 +41,7 @@
             </dependency>
             <dependency>
                 <groupId>org.vaadin.spring</groupId>
-                <artifactId>spring-vaadin-stuff</artifactId>
+                <artifactId>spring-vaadin-sidebar</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
