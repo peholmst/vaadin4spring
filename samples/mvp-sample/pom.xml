@@ -31,7 +31,7 @@
 		<gson.version>2.2.4</gson.version>
 		<java.version>1.6</java.version>
 		<javax.inject.version>1</javax.inject.version>
-		<vaadin.version>7.3.6</vaadin.version>
+		<vaadin.version>7.3.7</vaadin.version>
 		<vaadin.boot.version>0.0.4-SNAPSHOT</vaadin.boot.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 	</properties>
@@ -164,7 +164,7 @@
 				<version>${vaadin.plugin.version}</version>
 				<configuration>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-					<!-- We are doing "inplace" but into subdir VAADIN/widgetsets. This 
+					<!-- We are doing "inplace" but into subdir VAADIN/widgetsets. This
 						way compatible with Vaadin eclipse plugin. -->
 					<webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets
 					</webappDirectory>
@@ -173,7 +173,7 @@
 					<!-- Most Vaadin apps don't need this stuff, guide that to target -->
 					<persistentunitcachedir>${project.build.directory}</persistentunitcachedir>
 					<deploy>${project.build.directory}/gwt-deploy</deploy>
-					<!-- Compile report is not typically needed either, saves hundreds of 
+					<!-- Compile report is not typically needed either, saves hundreds of
 						mb disk -->
 					<compileReport>false</compileReport>
 					<noServer>true</noServer>
@@ -203,5 +203,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 </project>
