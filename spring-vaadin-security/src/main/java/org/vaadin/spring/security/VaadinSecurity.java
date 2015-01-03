@@ -45,7 +45,7 @@ import java.util.Collection;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-public class Security {
+public class VaadinSecurity {
 
     private final AuthenticationManager authenticationManager;
 
@@ -56,7 +56,7 @@ public class Security {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired(required = false)
-    public Security(AuthenticationManager authenticationManager, AccessDecisionManager accessDecisionManager, ApplicationContext applicationContext) {
+    public VaadinSecurity(AuthenticationManager authenticationManager, AccessDecisionManager accessDecisionManager, ApplicationContext applicationContext) {
         this.authenticationManager = authenticationManager;
         if (authenticationManager == null) {
             logger.warn("No AuthenticationManager set! Some security methods will not be available.");

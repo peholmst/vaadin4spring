@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
-import org.vaadin.spring.security.Security;
+import org.vaadin.spring.security.VaadinSecurity;
 import org.vaadin.spring.security.annotation.EnableVaadinSecurity;
 
 /**
@@ -28,7 +28,7 @@ import org.vaadin.spring.security.annotation.EnableVaadinSecurity;
  * @see org.vaadin.spring.security.annotation.EnableVaadinSecurity
  */
 @Configuration
-@ConditionalOnClass(Security.class)
+@ConditionalOnClass(VaadinSecurity.class)
 public class VaadinSecurityAutoConfiguration {
 
     private static Logger logger = LoggerFactory.getLogger(VaadinSecurityAutoConfiguration.class);

@@ -8,13 +8,13 @@ import org.vaadin.spring.events.EventBusListenerMethod;
 import org.vaadin.spring.navigator.Presenter;
 import org.vaadin.spring.navigator.VaadinPresenter;
 import org.vaadin.spring.samples.mvp.ui.view.BannerView;
-import org.vaadin.spring.security.Security;
+import org.vaadin.spring.security.VaadinSecurity;
 
 @VaadinPresenter(viewName = BannerView.NAME)
 public class BannerPresenter extends Presenter<BannerView> {
 
 	@Inject
-	Security security;
+	VaadinSecurity security;
 
 	@EventBusListenerMethod(filter=StartupFilter.class)
 	public void onStartup(Action action) {

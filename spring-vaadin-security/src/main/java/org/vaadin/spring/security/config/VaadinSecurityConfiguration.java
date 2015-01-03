@@ -30,7 +30,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.vaadin.spring.security.Security;
+import org.vaadin.spring.security.VaadinSecurity;
 import org.vaadin.spring.security.SpringSecurityViewProviderAccessDelegate;
 
 /**
@@ -60,7 +60,7 @@ public class VaadinSecurityConfiguration implements ApplicationContextAware {
     }
 
     @Bean
-    Security security() {
+    VaadinSecurity security() {
         AuthenticationManager authenticationManager;
         try {
             authenticationManager = applicationContext.getBean(AuthenticationManager.class);
@@ -74,7 +74,7 @@ public class VaadinSecurityConfiguration implements ApplicationContextAware {
         } catch (NoSuchBeanDefinitionException ex) {
             accessDecisionManager = null;
         }
-        return new Security(authenticationManager, accessDecisionManager, applicationContext);
+        return new VaadinSecurity(authenticationManager, accessDecisionManager, applicationContext);
     }
 
     @Bean
