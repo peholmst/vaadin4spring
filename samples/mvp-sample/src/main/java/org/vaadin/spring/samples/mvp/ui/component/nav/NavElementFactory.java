@@ -16,6 +16,7 @@ import com.google.gwt.thirdparty.guava.common.reflect.TypeToken;
  */
 public class NavElementFactory {
 
+    @SuppressWarnings("serial")
     public List<NavElement> getNavElements(String resource) {
         Type collectionType = new TypeToken<Collection<NavElement>>(){}.getType();
         List<NavElement> result = JSONUtil.restoreFromJson(resource, collectionType);

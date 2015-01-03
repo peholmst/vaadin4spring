@@ -8,6 +8,8 @@ import com.vaadin.navigator.View;
 
 public abstract class ParticipantSelector extends SuggestingComboBox implements View {
 
+    private static final long serialVersionUID = -6972162433727711612L;
+
     private static final DateTime DEFAULT_MARKET_DAY = SSTimeUtil.getMarketStartDateTime();
     private static final String DEFAULT_CAPTION = "Participant";
 

@@ -24,6 +24,8 @@ import com.vaadin.ui.HorizontalLayout;
 @VaadinView(name = HeaderView.NAME)
 public class HeaderView extends HorizontalLayout implements View {
 
+    private static final long serialVersionUID = -3507331087453071116L;
+
     public static final String NAME = "header";
 
     @PostConstruct

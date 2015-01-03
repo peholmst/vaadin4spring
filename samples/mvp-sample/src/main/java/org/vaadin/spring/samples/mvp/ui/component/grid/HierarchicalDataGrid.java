@@ -11,6 +11,8 @@ import com.vaadin.ui.TreeTable;
  */
 public abstract class HierarchicalDataGrid<DTO> extends DataGrid<DTO, TreeTable> {
 
+    private static final long serialVersionUID = 4767979974675466140L;
+
     @Override
     public void populateGrid(List<DTO> data) {
         populateGrid(data, new TreeTable());

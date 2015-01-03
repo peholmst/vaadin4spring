@@ -41,6 +41,8 @@ import javax.annotation.PreDestroy;
 @Push(transport = Transport.LONG_POLLING)
 public class EventBusUI extends UI implements EventBusListener<Object> {
 
+    private static final long serialVersionUID = -6291309888986021672L;
+
     @Autowired
     EventBus eventBus;
 
@@ -55,27 +57,42 @@ public class EventBusUI extends UI implements EventBusListener<Object> {
 
         layout = new VerticalLayout(
                 new Button("Publish UI Event", new Button.ClickListener() {
+
+                    private static final long serialVersionUID = 8689690237641128195L;
+
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         eventBus.publish(EventBusUI.this, "Hello World from UI");
                     }
                 }),
                 new Button("Publish Session Event", new Button.ClickListener() {
+
+                    private static final long serialVersionUID = 8115889975902717197L;
+
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         eventBus.publish(EventScope.SESSION, EventBusUI.this, "Hello World from Session");
                     }
                 }),
                 new Button("Publish Application Event", new Button.ClickListener() {
+
+                    private static final long serialVersionUID = -48717169414706329L;
+
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         eventBus.publish(EventScope.APPLICATION, EventBusUI.this, "Hello World from Application");
                     }
                 }),
                 new Button("Publish Application Context Event", new Button.ClickListener() {
+
+                    private static final long serialVersionUID = 3611256983844824815L;
+
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         applicationContext.publishEvent(new ApplicationEvent("Hello World from ApplicationContext") {
+
+                            private static final long serialVersionUID = -3039286026590540225L;
+
                             @Override
                             public Object getSource() {
                                 return EventBusUI.this;

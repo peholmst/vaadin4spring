@@ -11,6 +11,8 @@ import com.vaadin.ui.ComboBox;
 
 public class DefaultSelector extends ComboBox {
 
+    private static final long serialVersionUID = -3103214555075605482L;
+
     public DefaultSelector(@NotNull String items[]) {
         this(null, items);
     }
@@ -32,16 +34,17 @@ public class DefaultSelector extends ComboBox {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public <E extends Enum<E>> DefaultSelector(E e, String accessor) throws Exception {
         Class<E> enumClass = (Class<E>) e.getClass();
         EnumSet<E> set = EnumSet.allOf(enumClass);
         String value;
         for (E item: set) {
-            value = (String) MethodUtils.invokeExactMethod(item, accessor, null);
+            value = (String) MethodUtils.invokeExactMethod(item, accessor, new Object[]{});
             addItem(value);
             setItemCaption(value, value);
         }
-        String selectedValue = (String) MethodUtils.invokeExactMethod(e, accessor, null);
+        String selectedValue = (String) MethodUtils.invokeExactMethod(e, accessor, new Object[]{});
         setValue(selectedValue);
 
         setNullSelectionAllowed(false);

@@ -38,6 +38,8 @@ import org.vaadin.spring.sidebar.SideBar;
 @VaadinUI
 public class SideBarUI extends UI {
 
+    private static final long serialVersionUID = -7747249047198990160L;
+
     @Autowired
     SpringViewProvider viewProvider;
 
@@ -53,6 +55,9 @@ public class SideBarUI extends UI {
         setContent(rootLayout);
 
         final Navigator navigator = new Navigator(this, new ViewDisplay() {
+
+            private static final long serialVersionUID = -6790174005086362171L;
+
             @Override
             public void showView(View view) {
                 System.out.println("Showing view " + view);
@@ -68,7 +73,9 @@ public class SideBarUI extends UI {
     }
 
     private class ErrorView extends VerticalLayout implements View {
-        private Label message;
+
+        private static final long serialVersionUID = -1349484555495574658L;
+       private Label message;
 
         ErrorView() {
             setMargin(true);

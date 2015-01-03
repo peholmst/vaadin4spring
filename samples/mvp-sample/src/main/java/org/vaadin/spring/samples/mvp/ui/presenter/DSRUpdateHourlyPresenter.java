@@ -63,6 +63,8 @@ public class DSRUpdateHourlyPresenter extends Presenter<DSRUpdateHourlyView> {
 
             ControlButton fetchBtn = new ControlButton("Fetch", new ClickListener() {
 
+                private static final long serialVersionUID = 6466059668727933204L;
+
                 @Override
                 public void buttonClick(ClickEvent event) {
                     Screen target = new Screen(screen.getViewName(), screen.getContext(), Action.GET_DATA);
@@ -76,6 +78,7 @@ public class DSRUpdateHourlyPresenter extends Presenter<DSRUpdateHourlyView> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @EventBusListenerMethod
     public void onFetch(Screen screen) {
         if (screen.getViewName().equals(DSRUpdateHourlyView.NAME) && screen.getAction().equals(Action.GET_DATA)) {
