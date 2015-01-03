@@ -27,59 +27,59 @@ import org.vaadin.spring.security.VaadinSecurityContextAware;
  */
 public class VaadinSecurityAwareProcessor implements ApplicationContextAware, BeanPostProcessor {
 
-	private ConfigurableApplicationContext applicationContext;
-	
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = (ConfigurableApplicationContext) applicationContext;
-	}
-	
-	@Override
-	public Object postProcessBeforeInitialization(final Object bean, String beanName) throws BeansException {
+    private ConfigurableApplicationContext applicationContext;
 
-		AccessControlContext acc = null;
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = (ConfigurableApplicationContext) applicationContext;
+    }
 
-		if ( System.getSecurityManager() != null && (bean instanceof VaadinSecurityAware) ) {
-			acc = this.applicationContext.getBeanFactory().getAccessControlContext();
-		}
-		
-		if (acc != null) {
-			AccessController.doPrivileged(new PrivilegedAction<Object>() {
-				
-				@Override
-				public Object run() {
-					invokeAwareInterfaces(bean);
-					return null;
-				}
-				
-			}, acc);
-		}
-		else {
-			invokeAwareInterfaces(bean);
-		}
+    @Override
+    public Object postProcessBeforeInitialization(final Object bean, String beanName) throws BeansException {
 
-		return bean;
-		
-	}
+        AccessControlContext acc = null;
 
-	@Override
-	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-		return bean;
-	}
-	
-	private void invokeAwareInterfaces(Object bean) {
-		
-		if ( bean instanceof Aware ) {
-			
-			if ( bean instanceof VaadinSecurityAware ) {
-				((VaadinSecurityAware) bean).setVaadinSecurity(this.applicationContext.getBean(VaadinSecurity.class));
-			}
-		
-			if ( bean instanceof VaadinSecurityContextAware ) {
-				((VaadinSecurityContextAware) bean).setVaadinSecurityContext(this.applicationContext.getBean(VaadinSecurityContext.class));
-			}
-		}
-		
-	}
+        if ( System.getSecurityManager() != null && (bean instanceof VaadinSecurityAware) ) {
+            acc = this.applicationContext.getBeanFactory().getAccessControlContext();
+        }
+
+        if (acc != null) {
+            AccessController.doPrivileged(new PrivilegedAction<Object>() {
+
+                @Override
+                public Object run() {
+                    invokeAwareInterfaces(bean);
+                    return null;
+                }
+
+            }, acc);
+        }
+        else {
+            invokeAwareInterfaces(bean);
+        }
+
+        return bean;
+
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        return bean;
+    }
+
+    private void invokeAwareInterfaces(Object bean) {
+
+        if ( bean instanceof Aware ) {
+
+            if ( bean instanceof VaadinSecurityAware ) {
+                ((VaadinSecurityAware) bean).setVaadinSecurity(this.applicationContext.getBean(VaadinSecurity.class));
+            }
+
+            if ( bean instanceof VaadinSecurityContextAware ) {
+                ((VaadinSecurityContextAware) bean).setVaadinSecurityContext(this.applicationContext.getBean(VaadinSecurityContext.class));
+            }
+        }
+
+    }
 
 }

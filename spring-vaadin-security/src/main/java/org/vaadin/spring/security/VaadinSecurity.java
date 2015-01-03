@@ -12,7 +12,7 @@ import org.springframework.security.core.AuthenticationException;
  */
 public interface VaadinSecurity extends VaadinSecurityContext {
 
-	/**
+    /**
      * Checks if the current user is authenticated.
      *
      * @return true if the current {@link org.springframework.security.core.context.SecurityContext} contains an {@link org.springframework.security.core.Authentication} token,
@@ -20,7 +20,7 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * @see org.springframework.security.core.Authentication#isAuthenticated()
      */
     boolean isAuthenticated();
-	
+
     /**
      * Tries to login using the specified authentication object. If authentication succeeds, this method
      * will return without exceptions.
@@ -29,7 +29,7 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * @throws org.springframework.security.core.AuthenticationException if authentication fails.
      */
     void login(Authentication authentication) throws AuthenticationException;
-    
+
     /**
      * Convenience method that invokes {@link #login(org.springframework.security.core.Authentication)} with a
      * {@link org.springframework.security.authentication.UsernamePasswordAuthenticationToken}-object.
@@ -39,13 +39,13 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * @throws AuthenticationException if authentication fails.
      */
     void login(String username, String password) throws AuthenticationException;
-    
+
     /**
      * Logs the user out, clearing the {@link org.springframework.security.core.context.SecurityContext} without
      * invalidating the session.
      */
     void logout();
-    
+
     /**
      * Checks if the current user has the specified authority. This method works with static authorities (such as roles).
      * If you need more dynamic authorization (such as ACLs or EL expressions), use {@link #hasAccessToObject(Object, String...)}.
@@ -57,14 +57,14 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * @see org.springframework.security.core.GrantedAuthority#getAuthority()
      */
     public boolean hasAuthority(String authority);
-    
+
     /**
      * Gets the authentication token of the current user.
      *
      * @return the {@link org.springframework.security.core.Authentication} token stored in the current {@link org.springframework.security.core.context.SecurityContext}, or {@code null}.
      */
     Authentication getAuthentication();
-    
+
     /**
      * Checks if the current user is authorized based on the specified security configuration attributes. The attributes
      * can be roles or Spring EL expressions (basically anything you can specify as values of the {@link org.springframework.security.access.annotation.Secured} annotation).
@@ -74,7 +74,7 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * @return true if the current user is authorized, false if not.
      */
     boolean hasAccessToObject(Object securedObject, String... securityConfigurationAttributes);
-    
+
     /**
      * Convenience method that invokes {@link #hasAccessToObject(Object, String...)}, using the {@link org.springframework.security.access.annotation.Secured} annotation of the secured object
      * to get the security configuration attributes.
@@ -83,7 +83,7 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * @return true if the current user is authorized, false if not.
      */
     boolean hasAccessToSecuredObject(Object securedObject);
-    
+
     /**
      * Uses the {@link org.springframework.security.access.annotation.Secured} annotation on the specified method to check if the current user has access to the secured object.
      *
@@ -94,7 +94,7 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * @see #hasAccessToSecuredObject(Object)
      */
     boolean hasAccessToSecuredMethod(Object securedObject, String methodName, Class<?>... methodParameterTypes);
-    
+
     /**
      * Checks if the current user has all required authorities.
      *
@@ -104,7 +104,7 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * @see #hasAnyAuthority(String...)
      */
     boolean hasAuthorities(String... authorities);
-    
+
     /**
      * Checks if the current user has at least one of the specified authorities.
      *
@@ -114,5 +114,5 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * @see #hasAuthorities(String...)
      */
     boolean hasAnyAuthority(String... authorities);
-    
+
 }

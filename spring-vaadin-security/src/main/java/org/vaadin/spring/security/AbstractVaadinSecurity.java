@@ -20,18 +20,18 @@ import org.springframework.util.Assert;
  */
 public abstract class AbstractVaadinSecurity implements ApplicationContextAware, InitializingBean, VaadinSecurityContext {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass());
-	
-	private ApplicationContext applicationContext;
-	private AuthenticationManager authenticationManager;
-	private AccessDecisionManager accessDecisionManager;
-	
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		Assert.notNull(applicationContext, "Failed to Autowire <ApplicationContext>");
-		
-		AuthenticationManager authenticationManager;
-    	try {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    private ApplicationContext applicationContext;
+    private AuthenticationManager authenticationManager;
+    private AccessDecisionManager accessDecisionManager;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        Assert.notNull(applicationContext, "Failed to Autowire <ApplicationContext>");
+
+        AuthenticationManager authenticationManager;
+        try {
             authenticationManager = applicationContext.getBean(AuthenticationManager.class);
         } catch (NoSuchBeanDefinitionException ex) {
             authenticationManager = null;
@@ -45,47 +45,47 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
             accessDecisionManager = null;
             logger.warn("No AccessDecisionManager set! Some security methods will not be available.");
         }
-        
+
         this.authenticationManager = authenticationManager;
         this.accessDecisionManager = accessDecisionManager;
-	}
+    }
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-	}
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ApplicationContext getApplicationContext() {
-		return applicationContext;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public AuthenticationManager getAuthenticationManager() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AuthenticationManager getAuthenticationManager() {
         if (authenticationManager == null) {
             throw new IllegalStateException("No AuthenticationManager has been set");
         }
         return authenticationManager;
     }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public AccessDecisionManager getAccessDecisionManager() {
-		return accessDecisionManager;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AccessDecisionManager getAccessDecisionManager() {
+        return accessDecisionManager;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean hasAccessDecisionManager() {
-       return (accessDecisionManager != null);
+        return (accessDecisionManager != null);
     }
 }

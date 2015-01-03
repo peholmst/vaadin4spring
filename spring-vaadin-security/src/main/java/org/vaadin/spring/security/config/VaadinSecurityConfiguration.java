@@ -41,22 +41,22 @@ import org.vaadin.spring.security.support.VaadinSecurityAwareProcessor;
  */
 @Configuration
 public class VaadinSecurityConfiguration {
-    
+
     public static final class Beans {
-        
+
         public static final String VAADIN_SECURITY                  = "vaadinSecurity";
         public static final String VAADIN_SECURITY_AWARE_PROCESSOR  = "vaadinSecurityProcessor";
         public static final String CURRENT_USER                     = "currentUser";
         public static final String ACCESS_DECISION_MANAGER          = "accessDecisionManager";
         public static final String AUTHENTICATION_MANAGER           = "authenticationManager";
-        
+
     }
-    
+
     @Bean(name = Beans.CURRENT_USER)
     Authentication currentUser() {
-        
+
         return ProxyFactory.getProxy(Authentication.class, new MethodInterceptor() {
-            
+
             @Override
             public Object invoke(MethodInvocation invocation) throws Throwable {
                 SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -66,16 +66,16 @@ public class VaadinSecurityConfiguration {
                 }
                 return invocation.getMethod().invoke(authentication, invocation.getArguments());
             }
-            
+
         });
-        
+
     }
 
     @Bean(name = Beans.VAADIN_SECURITY)
     VaadinSecurity vaadinSecurity() {
-       return new GenericVaadinSecurity();
+        return new GenericVaadinSecurity();
     }
-    
+
     @Bean(name = Beans.VAADIN_SECURITY_AWARE_PROCESSOR)
     VaadinSecurityAwareProcessor vaadinSecurityProcessor() {
         return new VaadinSecurityAwareProcessor();
@@ -105,13 +105,13 @@ public class VaadinSecurityConfiguration {
     @Configuration
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     static class GlobalMethodSecurity extends GlobalMethodSecurityConfiguration {
-        
+
         @Bean(name = VaadinSecurityConfiguration.Beans.ACCESS_DECISION_MANAGER)
         @Override
         protected AccessDecisionManager accessDecisionManager() {
             return super.accessDecisionManager();
         }
-        
+
     }
-    
+
 }

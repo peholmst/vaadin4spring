@@ -9,14 +9,14 @@ package org.vaadin.spring.security;
  */
 public interface VaadinSecurityContextAware {
 
-	/**
-	 * Set the VaadinSecurityContext.
-	 * <p>Invoked after population of normal bean properties but before an init callback such
-	 * as {@link org.springframework.beans.factory.InitializingBean#afterPropertiesSet()}
-	 * or a custom init-method.
-	 * 
-	 * @param vaadinSecurityContext the VaadinSecurityContext object.
-	 */
-	void setVaadinSecurityContext(VaadinSecurityContext vaadinSecurityContext);
-	
+    /**
+     * Set the VaadinSecurityContext.
+     * <p>Invoked after population of normal bean properties but before an init callback such
+     * as {@link org.springframework.beans.factory.InitializingBean#afterPropertiesSet()}
+     * or a custom init-method.
+     * 
+     * @param vaadinSecurityContext the VaadinSecurityContext object.
+     */
+    void setVaadinSecurityContext(VaadinSecurityContext vaadinSecurityContext);
+
 }

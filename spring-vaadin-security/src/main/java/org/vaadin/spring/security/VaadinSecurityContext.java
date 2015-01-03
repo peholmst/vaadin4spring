@@ -12,33 +12,33 @@ import org.springframework.security.authentication.AuthenticationManager;
  */
 public interface VaadinSecurityContext {
 
-	/**
-	 * Get the current Spring ApplicationContext
-	 * 
-	 * @return {@link org.springframework.context.ApplicationContext}
-	 */
-	ApplicationContext getApplicationContext();
-	
-	/**
-	 * Get the configured {@link org.springframework.security.authentication.AuthenticationManager}
-	 * return {@code null} if not available.
-	 * 
-	 * @return {@link org.springframework.security.authentication.AuthenticationManager}
-	 */
-	AuthenticationManager getAuthenticationManager();
-	
-	/**
-	 * Get the configured {@link org.springframework.security.access.AccessDecisionManager}
-	 * return {@code null} if not available.
-	 * 
-	 * @return {@link org.springframework.security.access.AccessDecisionManager}
-	 */
-	AccessDecisionManager getAccessDecisionManager();
-	
-	/** 
+    /**
+     * Get the current Spring ApplicationContext
+     * 
+     * @return {@link org.springframework.context.ApplicationContext}
+     */
+    ApplicationContext getApplicationContext();
+
+    /**
+     * Get the configured {@link org.springframework.security.authentication.AuthenticationManager}
+     * return {@code null} if not available.
+     * 
+     * @return {@link org.springframework.security.authentication.AuthenticationManager}
+     */
+    AuthenticationManager getAuthenticationManager();
+
+    /**
+     * Get the configured {@link org.springframework.security.access.AccessDecisionManager}
+     * return {@code null} if not available.
+     * 
+     * @return {@link org.springframework.security.access.AccessDecisionManager}
+     */
+    AccessDecisionManager getAccessDecisionManager();
+
+    /** 
      * Checks if the Security bean has an accessDecisionManager
      * 
      * @return true if the Security bean has an accessDecisionManager
      */
-	boolean hasAccessDecisionManager();
+    boolean hasAccessDecisionManager();
 }

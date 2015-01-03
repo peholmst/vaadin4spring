@@ -44,12 +44,12 @@ public class SpringSecurityViewProviderAccessDelegate implements VaadinSecurityA
         security = vaadinSecurity;
         applicationContext = security.getApplicationContext();
     }
-    
+
     @Override
     public boolean isAccessGranted(String beanName, UI ui) {
-        
+
         Secured viewSecured = applicationContext.findAnnotationOnBean(beanName, Secured.class);
-        
+
         if ( viewSecured == null ) {
             return true;
         } else if ( security.hasAccessDecisionManager() ) {
@@ -62,7 +62,7 @@ public class SpringSecurityViewProviderAccessDelegate implements VaadinSecurityA
     @Override
     public boolean isAccessGranted(View view, UI ui) {
         Secured viewSecured = view.getClass().getAnnotation(Secured.class);
-        
+
         if ( viewSecured == null || !security.hasAccessDecisionManager() ) {
             return true; // Decision is already done if there is no AccessDecisionManager
         } else {

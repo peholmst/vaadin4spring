@@ -91,13 +91,13 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
         if (authentication == null || !authentication.isAuthenticated()) {
             return false;
         }
-        
+
         for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
             if (authority.equals(grantedAuthority.getAuthority())) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -123,12 +123,12 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
             }
             return false;
         }
-        
+
         final Collection<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>(securityConfigurationAttributes.length);
         for (String securityConfigString : securityConfigurationAttributes) {
             configAttributes.add(new SecurityConfig(securityConfigString));
         }
-        
+
         try {
             getAccessDecisionManager().decide(authentication, securedObject, configAttributes);
             return true;
@@ -154,7 +154,7 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
      */
     @Override
     public boolean hasAccessToSecuredMethod(Object securedObject, String methodName, Class<?>... methodParameterTypes) {
-        
+
         try {
             final Method method = securedObject.getClass().getMethod(methodName, methodParameterTypes);
             final Secured secured = AnnotationUtils.findAnnotation(method, Secured.class);
@@ -163,7 +163,7 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
         } catch (NoSuchMethodException ex) {
             throw new IllegalArgumentException("Method " + methodName + " does not exist", ex);
         }
-        
+
     }
 
     /**
@@ -171,13 +171,13 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
      */
     @Override
     public boolean hasAuthorities(String... authorities) {
-        
+
         for (String authority : authorities) {
             if (!hasAuthority(authority)) {
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -186,13 +186,13 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
      */
     @Override
     public boolean hasAnyAuthority(String... authorities) {
-        
+
         for (String authority : authorities) {
             if (hasAuthority(authority)) {
                 return true;
             }
         }
-        
+
         return false;
     }
 }
