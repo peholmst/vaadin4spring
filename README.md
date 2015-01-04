@@ -162,9 +162,9 @@ The side bar can be used as a main menu in applications with many views. It is i
 More information can be found [here](spring-vaadin-sidebar/README.md)
 
 ## Security Support ##
-
-The Spring Security integration is still in very early stages of development. Do not assume it will work, and don't use
-it in your projects until the supported features are listed in this README.
+#### Experimental ####
+The Spring Security integration is still in very early stages of development. Do not assume it will work.
+More Information can be found [here](spring-vaadin-security/README.md)
 
 ## Testing
 
