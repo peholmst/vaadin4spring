@@ -8,7 +8,7 @@ Spring security for a Vaadin application can be enabled by the annotation ```@En
 <br><br>
 Because ```@PreAuthorize``` annotations are enabled a default ```AccessDecisionManager``` is created.
 
-### Override ```AccessDecisionManager``` ###
+#### Override ```AccessDecisionManager``` ####
 A custom ```AccessDecisionManager``` can be implemented by defining a AccessDecisionManager with either the id of ```VaadinSecurityConfiguration.Beans.ACCESS_DECISION_MANAGER``` or by providing your custom AccessDecisionManager with the annotation ```@Bean(name = VaadinSecurityConfiguration.Beans.ACCESS_DECISION_MANAGER```
 
 ## VaadinSecurityContext ###
