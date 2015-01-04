@@ -67,6 +67,12 @@ The VaadinSecurity interface provides access to commonly required Spring Securit
 -  ```boolean hasAuthorities(String... authorities);```
 -  ```boolean hasAnyAuthority(String... authorities);```
 
+##### Methods Inherited from VaadinSecurityContext #####
+- ```ApplicationContext getApplicationContext();```
+- ```AuthenticationManager getAuthenticationManager();```
+- ```AccessDecisionManager getAccessDecisionManager();```
+- ```boolean hasAccessDecisionManager();```
+
 #### Usage ####
 ```VaadinSecurity``` can be used by either use of ```@Autowired```. Or by the use of the ```VaadinSecurityAware``` interface. This works the same like the Spring ```ApplicationContextAware``` interface.
 
