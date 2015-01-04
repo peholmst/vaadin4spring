@@ -1,9 +1,6 @@
-Vaadin4Spring Security
+Vaadin4Spring Security (Experimental)
 ==========================
-
-# Implementation Notice
-This artifact is considerd experimental.
-
+<br>
 ## General ##
 Spring security for a Vaadin application can be enabled by the annotation ```@EnableVaadinSecurity```.
 <br><br>
