@@ -56,7 +56,7 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * @see org.springframework.security.core.Authentication#getAuthorities()
      * @see org.springframework.security.core.GrantedAuthority#getAuthority()
      */
-    public boolean hasAuthority(String authority);
+    boolean hasAuthority(String authority);
 
     /**
      * Gets the authentication token of the current user.
