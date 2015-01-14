@@ -13,7 +13,20 @@ Currently, there are three types of event buses that are attached to different s
 3. The Application scoped event bus is global to the web application. Events published on this event bus will propagate to
    all session scoped event buses (and all UI scoped event buses).
 
-Events published by Spring's own event publisher are automatically propagated to the application scoped event bus.
+Events published by Spring's own event publisher **are not automatically propagated** to the application scoped event bus.
+If this is what you want (the default behaviour up to and including version 0.0.3), you can easily enable it by
+creating a singleton instance of ```ApplicationContextEventBroker```:
+
+```java
+ @Autowired
+ @EventBusScope(value = EventScope.APPLICATION)
+ EventBus eventBus;
+ ...
+ @Bean
+ ApplicationContextEventBroker applicationContextEventBroker() {
+     return new ApplicationContextEventBroker(eventBus);
+ }
+```    
 
 # Injecting the Event Bus
 

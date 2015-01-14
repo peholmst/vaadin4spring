@@ -28,7 +28,6 @@ import org.vaadin.spring.context.VaadinApplicationContext;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusScope;
 import org.vaadin.spring.events.EventScope;
-import org.vaadin.spring.events.internal.ApplicationContextEventBroker;
 import org.vaadin.spring.events.internal.ScopedEventBus;
 import org.vaadin.spring.http.HttpResponseFactory;
 import org.vaadin.spring.http.HttpResponseFilter;
@@ -71,11 +70,6 @@ public class VaadinConfiguration implements ApplicationContextAware {
     @Bean
     SpringViewProvider viewProvider() {
         return new SpringViewProvider(applicationContext);
-    }
-
-    @Bean
-    ApplicationContextEventBroker applicationContextEventBroker() {
-        return new ApplicationContextEventBroker(applicationEventBus());
     }
 
     @Bean
