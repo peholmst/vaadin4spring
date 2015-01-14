@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>samples-parent-pom</artifactId>
 		<groupId>org.vaadin.spring.samples</groupId>
-		<version>0.0.3</version>
+		<version>0.0.3.1</version>
 	</parent>
 
 	<artifactId>mvp-sample</artifactId>
