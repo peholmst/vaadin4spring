@@ -26,7 +26,6 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusScope;
 import org.vaadin.spring.events.EventScope;
-import org.vaadin.spring.events.internal.ApplicationContextEventBroker;
 import org.vaadin.spring.events.internal.ScopedEventBus;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.internal.VaadinSessionScope;
@@ -64,11 +63,6 @@ public class VaadinConfiguration implements ApplicationContextAware {
     @Bean
     SpringViewProvider viewProvider() {
         return new SpringViewProvider(applicationContext);
-    }
-
-    @Bean
-    ApplicationContextEventBroker applicationContextEventBroker() {
-        return new ApplicationContextEventBroker(applicationEventBus());
     }
 
     @Bean
