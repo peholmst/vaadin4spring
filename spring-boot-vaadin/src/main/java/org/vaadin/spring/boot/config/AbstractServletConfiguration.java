@@ -16,6 +16,7 @@
 package org.vaadin.spring.boot.config;
 
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.server.Constants;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -101,6 +102,14 @@ abstract class AbstractServletConfiguration implements InitializingBean {
                 count++;
             }
         }
+
+        String propertyValue = environment.getProperty(getServletConfigurationParameterPrefix() + Constants.PARAMETER_VAADIN_RESOURCES);
+        if (propertyValue != null) {
+            getLogger().info("Found servlet init parameter [{}] = [{}]", Constants.PARAMETER_VAADIN_RESOURCES, propertyValue);
+            servletRegistrationBean.addInitParameter(Constants.PARAMETER_VAADIN_RESOURCES, propertyValue);
+            count++;
+        }
+
         if (count == 0) {
             getLogger().info("Found no servlet init parameters");
         }
