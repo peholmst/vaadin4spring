@@ -40,6 +40,7 @@ public abstract class AbstractSpringAwareUIProvider extends UIProvider {
     private static final long serialVersionUID = -6195911893325385491L;
     private final WebApplicationContext webApplicationContext;
     private final Map<String, Class<? extends UI>> pathToUIMap = new ConcurrentHashMap<String, Class<? extends UI>>();
+    private final Map<String, Class<? extends UI>> wildcardPathToUIMap = new ConcurrentHashMap<String, Class<? extends UI>>();
 
     public AbstractSpringAwareUIProvider(WebApplicationContext webApplicationContext) {
         this.webApplicationContext = webApplicationContext;
@@ -54,7 +55,15 @@ public abstract class AbstractSpringAwareUIProvider extends UIProvider {
     @Override
     public Class<? extends UI> getUIClass(UIClassSelectionEvent uiClassSelectionEvent) {
         final String path = extractUIPathFromPathInfo(uiClassSelectionEvent.getRequest().getPathInfo());
-        return pathToUIMap.get(path);
+        if (pathToUIMap.containsKey(path))
+            return pathToUIMap.get(path);
+
+        for (Map.Entry<String, Class<? extends UI>> entry : wildcardPathToUIMap.entrySet()) {
+            if (path.startsWith(entry.getKey()))
+                return entry.getValue();
+        }
+
+        return null;
     }
 
     private String extractUIPathFromPathInfo(String pathInfo) {
@@ -78,7 +87,10 @@ public abstract class AbstractSpringAwareUIProvider extends UIProvider {
     }
 
     protected void mapPathToUI(String path, Class<? extends UI> uiClass) {
-        pathToUIMap.put(path, uiClass);
+        if (path.endsWith("/*"))
+            wildcardPathToUIMap.put(path.substring(0, path.length() - 2), uiClass);
+        else
+            pathToUIMap.put(path, uiClass);
     }
 
     protected Class<? extends UI> getUIByPath(String path) {
