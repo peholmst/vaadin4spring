@@ -15,20 +15,20 @@
  */
 package org.vaadin.spring;
 
-import org.springframework.context.annotation.Scope;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.springframework.context.annotation.Scope;
+
 /**
  * Stereotype annotation for Spring's {@code @Scope("vaadin-session")}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@Scope("vaadin-session")
+@Scope(org.vaadin.spring.internal.VaadinSessionScope.VAADIN_SESSION_SCOPE_NAME)
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

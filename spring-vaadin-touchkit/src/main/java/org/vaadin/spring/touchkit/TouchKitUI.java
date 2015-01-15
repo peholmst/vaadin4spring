@@ -15,7 +15,7 @@
  */
 package org.vaadin.spring.touchkit;
 
-import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.VaadinComponent;
 
 import java.lang.annotation.Documented;
@@ -37,7 +37,7 @@ import java.lang.annotation.Target;
  *         // ...
  *     }
  *     </pre>
- * The annotated UI will automatically be placed in the {@link org.vaadin.spring.UIScope}, so there is no need to add that annotation explicitly.
+ * The annotated UI will automatically be placed in the {@link org.vaadin.spring.VaadinUIScope}, so there is no need to add that annotation explicitly.
  *
  * @author Petter Holmström (petter@vaadin.com)
  * @see org.vaadin.spring.VaadinUI
@@ -46,7 +46,7 @@ import java.lang.annotation.Target;
 @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 @Documented
 @VaadinComponent
-@UIScope
+@VaadinUIScope
 public @interface TouchKitUI {
 
     /**

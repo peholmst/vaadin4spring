@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.VaadinComponent;
 import org.vaadin.spring.samples.mvp.ui.view.BannerView;
 
@@ -17,7 +17,7 @@ import com.vaadin.ui.Button.ClickListener;
  * @author Chris Phillipson (fastnsilver@gmail.com)
  *
  */
-@UIScope
+@VaadinUIScope
 @VaadinComponent
 public class LogoutLinkListener implements ClickListener {
 

@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.vaadin.spring.EnableVaadin;
-import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.VaadinSessionScope;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusScope;
@@ -98,7 +98,7 @@ public class ExampleIntegrationTest {
     public static class Config {
 
         @Bean
-        @UIScope
+        @VaadinUIScope
         ExampleUIScopedObject exampleUIScopedObject() {
             return new ExampleUIScopedObject();
         }

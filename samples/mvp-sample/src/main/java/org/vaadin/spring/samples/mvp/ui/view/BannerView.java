@@ -3,7 +3,7 @@ package org.vaadin.spring.samples.mvp.ui.view;
 import javax.inject.Inject;
 
 import org.springframework.core.env.Environment;
-import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.navigator.VaadinView;
 import org.vaadin.spring.samples.mvp.security.config.Scheme;
 import org.vaadin.spring.samples.mvp.ui.component.listener.LogoutLinkListener;
@@ -18,7 +18,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Panel;
 
-@UIScope
+@VaadinUIScope
 @VaadinView(name = BannerView.NAME)
 public class BannerView extends Panel implements View {
 

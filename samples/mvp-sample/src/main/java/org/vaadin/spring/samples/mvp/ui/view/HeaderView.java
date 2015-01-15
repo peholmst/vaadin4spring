@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.navigator.VaadinView;
 import org.vaadin.spring.samples.mvp.ui.component.util.ControlsContext;
 
@@ -20,7 +20,7 @@ import com.vaadin.ui.HorizontalLayout;
  * @author Chris Phillipson (fastnsilver@gmail.com)
  *
  */
-@UIScope
+@VaadinUIScope
 @VaadinView(name = HeaderView.NAME)
 public class HeaderView extends HorizontalLayout implements View {
 

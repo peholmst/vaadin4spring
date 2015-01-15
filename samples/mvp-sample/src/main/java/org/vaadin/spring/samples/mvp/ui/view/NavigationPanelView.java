@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.navigator.VaadinView;
 import org.vaadin.spring.samples.mvp.ui.component.listener.NavigationPanelListener;
 import org.vaadin.spring.samples.mvp.ui.component.nav.NavContainerFactory;
@@ -23,7 +23,7 @@ import com.vaadin.ui.Tree;
  * @author Chris Phillipson (fastnsilver@gmail.com)
  *
  */
-@UIScope
+@VaadinUIScope
 @VaadinView(name = NavigationPanelView.NAME)
 public class NavigationPanelView extends Panel implements View {
 

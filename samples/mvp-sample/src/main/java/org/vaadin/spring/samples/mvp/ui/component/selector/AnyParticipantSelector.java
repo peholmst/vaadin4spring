@@ -7,7 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
-import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.navigator.VaadinView;
 import org.vaadin.spring.samples.mvp.dto.AssetOwnedDailyId;
 import org.vaadin.spring.samples.mvp.ui.service.UiService;
@@ -15,7 +15,7 @@ import org.vaadin.spring.samples.mvp.ui.service.UiService;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 
 
-@UIScope
+@VaadinUIScope
 @VaadinView(name = AnyParticipantSelector.NAME)
 public class AnyParticipantSelector extends ParticipantSelector {
 

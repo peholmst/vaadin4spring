@@ -29,7 +29,7 @@ public final class VaadinScopes {
     }
 
     /**
-     * Sets up {@link org.vaadin.spring.VaadinSessionScope} and {@link org.vaadin.spring.UIScope} to work as expected
+     * Sets up {@link org.vaadin.spring.VaadinSessionScope} and {@link org.vaadin.spring.VaadinUIScope} to work as expected
      * during the test. Please note, that both {@link com.vaadin.ui.UI#getCurrent()} and {@link com.vaadin.server.VaadinSession#getCurrent()} will
      * return null.
      */
@@ -39,7 +39,7 @@ public final class VaadinScopes {
     }
 
     /**
-     * Tears down {@link org.vaadin.spring.VaadinSessionScope} and {@link org.vaadin.spring.UIScope}, causing all scoped beans to be destroyed.
+     * Tears down {@link org.vaadin.spring.VaadinSessionScope} and {@link org.vaadin.spring.VaadinUIScope}, causing all scoped beans to be destroyed.
      */
     public static void tearDown() {
         VaadinUIScope.getBeanStoreRetrievalStrategy().getBeanStore().destroy();

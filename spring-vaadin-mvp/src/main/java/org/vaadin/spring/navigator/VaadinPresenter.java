@@ -4,8 +4,8 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
+import org.vaadin.spring.VaadinUIScope;
 
 /**
  * Annotation to be placed on {@link org.vaadin.spring.navigator.Presenter}-classes that employ a
@@ -30,7 +30,7 @@ import org.vaadin.spring.VaadinComponent;
 @Target({java.lang.annotation.ElementType.TYPE})
 @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 @Documented
-@UIScope
+@VaadinUIScope
 @VaadinComponent
 public @interface VaadinPresenter {
 

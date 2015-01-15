@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.navigator.SpringViewProvider;
 import org.vaadin.spring.navigator.VaadinView;
 import org.vaadin.spring.samples.mvp.ui.component.grid.DataGrid;
@@ -21,7 +21,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TabSheet;
 
-@UIScope
+@VaadinUIScope
 @VaadinView(name = TabPanelView.NAME)
 public class TabPanelView extends TabSheet implements View {
 

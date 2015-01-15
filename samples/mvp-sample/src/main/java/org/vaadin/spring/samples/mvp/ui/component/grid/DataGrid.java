@@ -17,7 +17,7 @@ import com.vaadin.ui.VerticalLayout;
  * Base class for all grid-based views.
  * Creates a layout comprised of a {@link Table} and controls to work with data within.
  * Derivatives must be annotated with both {@link org.vaadin.spring.navigator.VaadinView}
- * and {@link org.vaadin.spring.UIScope}.
+ * and {@link org.vaadin.spring.VaadinUIScope}.
  *
  * @author Chris Phillipson (fastnsilver@gmail.com)
  */
