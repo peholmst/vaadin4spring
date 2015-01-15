@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.http.HttpServlet;
+import java.util.Map;
 
 /**
  * Spring configuration that sets up a {@link org.vaadin.spring.boot.config.StaticContentServlet} to serve static content from /VAADIN/*.
@@ -69,5 +70,17 @@ public class StaticContentVaadinServletConfiguration extends AbstractServletConf
     @Bean
     ServletRegistrationBean staticContentVaadinServletRegistration() {
         return createServletRegistrationBean();
+    }
+
+    @Override
+    protected ServletRegistrationBean createServletRegistrationBean() {
+        String productionModeKey = "productionMode";
+
+        ServletRegistrationBean bean = super.createServletRegistrationBean();
+        Map<String, String> initParameters = bean.getInitParameters();
+        if (!initParameters.containsKey(productionModeKey))
+            initParameters.put(productionModeKey, "true");
+        bean.setInitParameters(initParameters);
+        return bean;
     }
 }
