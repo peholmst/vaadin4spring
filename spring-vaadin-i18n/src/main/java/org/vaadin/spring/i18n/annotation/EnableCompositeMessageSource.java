@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.i18n;
+package org.vaadin.spring.i18n.annotation;
 
 import org.springframework.context.annotation.Import;
+import org.vaadin.spring.i18n.CompositeMessageSource;
+import org.vaadin.spring.i18n.MessageProvider;
+import org.vaadin.spring.i18n.ResourceBundleMessageProvider;
 import org.vaadin.spring.i18n.config.CompositeMessageSourceConfiguration;
 
 import java.lang.annotation.*;
