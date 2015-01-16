@@ -155,5 +155,6 @@
         <module>eventbus-sample</module>
         <module>mvp-sample</module>
         <module>push-sample</module>
+        <module>security-sample</module>
     </modules>
 </project>
