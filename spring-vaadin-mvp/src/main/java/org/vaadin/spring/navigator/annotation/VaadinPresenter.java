@@ -6,7 +6,6 @@ import java.lang.annotation.Target;
 
 import org.vaadin.spring.annotation.VaadinComponent;
 import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.spring.navigator.Presenter;
 import org.vaadin.spring.navigator.SpringViewProvider;
 
 /**

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.sidebar;
+package org.vaadin.spring.sidebar.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -31,10 +31,10 @@ import java.lang.annotation.Target;
  *
  * @author Petter Holmström (petter@vaadin.com)
  * @see org.vaadin.spring.sidebar.SideBar
- * @see org.vaadin.spring.sidebar.SideBarSection
- * @see org.vaadin.spring.sidebar.FontAwesomeIcon
- * @see org.vaadin.spring.sidebar.ThemeIcon
- * @see org.vaadin.spring.sidebar.LocalizedThemeIcon
+ * @see org.vaadin.spring.sidebar.annotation.SideBarSection
+ * @see org.vaadin.spring.sidebar.annotation.FontAwesomeIcon
+ * @see org.vaadin.spring.sidebar.annotation.ThemeIcon
+ * @see org.vaadin.spring.sidebar.annotation.LocalizedThemeIcon
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

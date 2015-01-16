@@ -31,7 +31,7 @@ import org.vaadin.spring.sidebar.ThemeIconProvider;
  * Spring configuration for the {@link org.vaadin.spring.sidebar.SideBar} and its dependencies.
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.sidebar.EnableSideBar
+ * @see org.vaadin.spring.sidebar.annotation.EnableSideBar
  */
 @Configuration
 public class SideBarConfiguration {

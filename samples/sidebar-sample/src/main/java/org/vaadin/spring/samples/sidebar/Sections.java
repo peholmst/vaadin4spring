@@ -16,8 +16,8 @@
 package org.vaadin.spring.samples.sidebar;
 
 import org.springframework.stereotype.Component;
-import org.vaadin.spring.sidebar.SideBarSection;
-import org.vaadin.spring.sidebar.SideBarSections;
+import org.vaadin.spring.sidebar.annotation.SideBarSection;
+import org.vaadin.spring.sidebar.annotation.SideBarSections;
 
 /**
  * This is a Spring-managed bean that does not do anything. Its only purpose is to define

@@ -13,27 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.sidebar;
+package org.vaadin.spring.sidebar.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.vaadin.spring.sidebar.ThemeIconProvider;
+
 /**
- * This annotation is placed next to {@link SideBarItem}, instructing the side bar
- * to use a {@link com.vaadin.server.ThemeResource} icon for the item, but to look up the actual
- * resource ID from an {@link org.vaadin.spring.i18n.I18N}.
+ * This annotation is placed next to {@link org.vaadin.spring.sidebar.annotation.SideBarItem}, instructing the side bar
+ * to use a {@link com.vaadin.server.ThemeResource} icon for the item.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SideBarItemIcon(LocalizedThemeIconProvider.class)
-public @interface LocalizedThemeIcon {
+@SideBarItemIcon(ThemeIconProvider.class)
+public @interface ThemeIcon {
 
     /**
-     * The key to use when looking up the real resource ID from an {@link org.vaadin.spring.i18n.I18N}.
+     * The theme resource ID of the item icon.
      */
     String value();
 }

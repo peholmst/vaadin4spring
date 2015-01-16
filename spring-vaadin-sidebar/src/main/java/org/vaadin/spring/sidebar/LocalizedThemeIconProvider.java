@@ -17,10 +17,12 @@ package org.vaadin.spring.sidebar;
 
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
+
 import org.vaadin.spring.i18n.I18N;
+import org.vaadin.spring.sidebar.annotation.LocalizedThemeIcon;
 
 /**
- * Icon provider for {@link org.vaadin.spring.sidebar.LocalizedThemeIcon}.
+ * Icon provider for {@link org.vaadin.spring.sidebar.annotation.LocalizedThemeIcon}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */

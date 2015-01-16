@@ -13,31 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.sidebar;
+package org.vaadin.spring.sidebar.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.vaadin.spring.sidebar.LocalizedThemeIconProvider;
+
 /**
- * Meta annotation designed to be placed on icon annotations that are used to specify an icon of a {@link org.vaadin.spring.sidebar.SideBarItem}.
+ * This annotation is placed next to {@link SideBarItem}, instructing the side bar
+ * to use a {@link com.vaadin.server.ThemeResource} icon for the item, but to look up the actual
+ * resource ID from an {@link org.vaadin.spring.i18n.I18N}.
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.sidebar.FontAwesomeIcon
- * @see org.vaadin.spring.sidebar.ThemeIcon
- * @see org.vaadin.spring.sidebar.LocalizedThemeIcon
  */
-@Target(ElementType.ANNOTATION_TYPE)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SideBarItemIcon {
+@SideBarItemIcon(LocalizedThemeIconProvider.class)
+public @interface LocalizedThemeIcon {
 
     /**
-     * The class of the {@link org.vaadin.spring.sidebar.SideBarItemIconProvider} that knows how to provide
-     * the actual icon {@link com.vaadin.server.Resource}s. An instance of this class will be looked up from the
-     * Spring application context, so make sure your icon provider is Spring managed.
+     * The key to use when looking up the real resource ID from an {@link org.vaadin.spring.i18n.I18N}.
      */
-    @SuppressWarnings("rawtypes")
-    Class<? extends SideBarItemIconProvider> value();
-
+    String value();
 }

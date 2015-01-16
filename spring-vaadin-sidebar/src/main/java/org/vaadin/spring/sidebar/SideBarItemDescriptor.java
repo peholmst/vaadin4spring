@@ -21,11 +21,13 @@ import com.vaadin.ui.UI;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.navigator.annotation.VaadinView;
+import org.vaadin.spring.sidebar.annotation.SideBarItem;
+import org.vaadin.spring.sidebar.annotation.SideBarItemIcon;
 
 import java.lang.annotation.Annotation;
 
 /**
- * This is a class that describes a side bar item that has been declared using a {@link org.vaadin.spring.sidebar.SideBarItem} annotation.
+ * This is a class that describes a side bar item that has been declared using a {@link org.vaadin.spring.sidebar.annotation.SideBarItem} annotation.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
@@ -90,7 +92,7 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
     }
 
     /**
-     * Returns the caption of this side bar item. If the caption was specified using {@link org.vaadin.spring.sidebar.SideBarItem#captionCode()},
+     * Returns the caption of this side bar item. If the caption was specified using {@link org.vaadin.spring.sidebar.annotation.SideBarItem#captionCode()},
      * this method will fetch the string from {@link org.vaadin.spring.i18n.I18N}.
      *
      * @return a string, never {@code null}.

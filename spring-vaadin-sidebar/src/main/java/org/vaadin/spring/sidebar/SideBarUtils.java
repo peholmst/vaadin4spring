@@ -23,6 +23,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.navigator.annotation.VaadinView;
+import org.vaadin.spring.sidebar.annotation.SideBarItem;
+import org.vaadin.spring.sidebar.annotation.SideBarSection;
+import org.vaadin.spring.sidebar.annotation.SideBarSections;
 
 import java.util.ArrayList;
 import java.util.Collection;

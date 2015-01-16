@@ -15,10 +15,12 @@
  */
 package org.vaadin.spring.sidebar;
 
+import org.vaadin.spring.sidebar.annotation.FontAwesomeIcon;
+
 import com.vaadin.server.Resource;
 
 /**
- * Icon provider for {@link org.vaadin.spring.sidebar.FontAwesomeIcon}.
+ * Icon provider for {@link org.vaadin.spring.sidebar.annotation.FontAwesomeIcon}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */

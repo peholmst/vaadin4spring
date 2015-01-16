@@ -19,6 +19,8 @@ import com.vaadin.server.Resource;
 
 import java.lang.annotation.Annotation;
 
+import org.vaadin.spring.sidebar.annotation.SideBarItemIcon;
+
 /**
  * Interface defining a provider that maps a side bar item icon annotation to an actual {@link com.vaadin.server.Resource}.
  * Implementations of this interface should be Spring managed beans (typically singletons).
