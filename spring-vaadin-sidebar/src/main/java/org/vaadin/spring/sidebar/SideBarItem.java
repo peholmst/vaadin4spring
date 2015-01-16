@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
  * It can be placed on two types of beans:
  * <ol>
  * <li>{@link java.lang.Runnable}s - when the item is clicked, the runnable is executed</li>
- * <li>{@link com.vaadin.navigator.View Views}s that are also annotated with {@link org.vaadin.spring.navigator.VaadinView VaadinView} - when the item is clicked, the {@link com.vaadin.navigator.Navigator navigator} navigates to the view.
+ * <li>{@link com.vaadin.navigator.View Views}s that are also annotated with {@link org.vaadin.spring.navigator.annotation.VaadinView VaadinView} - when the item is clicked, the {@link com.vaadin.navigator.Navigator navigator} navigates to the view.
  * </ol>
  * Please note that the annotated class must be a Spring-managed bean - only adding this annotation is not enough.
  *

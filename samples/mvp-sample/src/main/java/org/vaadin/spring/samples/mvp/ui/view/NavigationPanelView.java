@@ -6,7 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.spring.samples.mvp.ui.component.listener.NavigationPanelListener;
 import org.vaadin.spring.samples.mvp.ui.component.nav.NavContainerFactory;
 import org.vaadin.spring.samples.mvp.ui.component.nav.NavElement;

@@ -23,7 +23,7 @@ import org.vaadin.spring.annotation.VaadinUIScope;
  * </code>
  * </pre>
  *
- * The <code>viewName</code> must match the <code>name</code> attribute of a {@link org.vaadin.spring.navigator.VaadinView} annotated {@link com.vaadin.navigator.View}.
+ * The <code>viewName</code> must match the <code>name</code> attribute of a {@link org.vaadin.spring.navigator.annotation.VaadinView} annotated {@link com.vaadin.navigator.View}.
  *
  * @author Chris Phillipson (fastnsilver@gmail.com)
  */

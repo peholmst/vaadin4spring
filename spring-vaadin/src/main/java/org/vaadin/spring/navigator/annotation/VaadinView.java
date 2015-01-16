@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.navigator;
+package org.vaadin.spring.navigator.annotation;
 
 import com.vaadin.ui.UI;
 
 import org.vaadin.spring.annotation.VaadinComponent;
+import org.vaadin.spring.navigator.SpringViewProvider;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

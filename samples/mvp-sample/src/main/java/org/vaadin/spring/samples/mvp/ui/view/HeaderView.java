@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.spring.samples.mvp.ui.component.util.ControlsContext;
 
 import com.vaadin.navigator.View;

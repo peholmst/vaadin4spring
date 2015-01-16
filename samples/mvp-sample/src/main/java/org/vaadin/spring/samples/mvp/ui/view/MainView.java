@@ -3,7 +3,7 @@ package org.vaadin.spring.samples.mvp.ui.view;
 import javax.annotation.PostConstruct;
 
 import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.navigator.annotation.VaadinView;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;

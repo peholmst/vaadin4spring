@@ -10,7 +10,7 @@ import org.vaadin.spring.annotation.VaadinComponent;
 import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.navigator.VaadinPresenter;
-import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.spring.samples.mvp.ui.component.util.ControlsContext;
 import org.vaadin.spring.samples.mvp.ui.presenter.Screen;
 import org.vaadin.spring.samples.mvp.ui.view.HeaderView;

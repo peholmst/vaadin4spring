@@ -17,9 +17,10 @@ package org.vaadin.spring.sidebar;
 
 import com.vaadin.server.Resource;
 import com.vaadin.ui.UI;
+
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.i18n.I18N;
-import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.navigator.annotation.VaadinView;
 
 import java.lang.annotation.Annotation;
 
