@@ -1,5 +1,7 @@
 package org.vaadin.spring.security;
 
+import org.springframework.beans.factory.Aware;
+
 /**
  * Interface to be implemented by any object that wishes to be notified
  * of the {@link org.vaadin.spring.security.VaadinSecurityContext}.
@@ -7,7 +9,7 @@ package org.vaadin.spring.security;
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  *
  */
-public interface VaadinSecurityContextAware {
+public interface VaadinSecurityContextAware extends Aware {
 
     /**
      * Set the VaadinSecurityContext.
