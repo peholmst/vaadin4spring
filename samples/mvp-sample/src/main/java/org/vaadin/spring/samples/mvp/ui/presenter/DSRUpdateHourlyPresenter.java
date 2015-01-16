@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.navigator.Presenter;
-import org.vaadin.spring.navigator.VaadinPresenter;
+import org.vaadin.spring.navigator.annotation.VaadinPresenter;
 import org.vaadin.spring.samples.mvp.dto.AssetOwnedDailyId;
 import org.vaadin.spring.samples.mvp.dto.DSRUpdateDTO;
 import org.vaadin.spring.samples.mvp.ui.component.ControlButton;

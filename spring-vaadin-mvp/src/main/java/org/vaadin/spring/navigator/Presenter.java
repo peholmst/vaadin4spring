@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.navigator.annotation.VaadinPresenter;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewProvider;
