@@ -29,8 +29,8 @@ import org.vaadin.spring.annotation.EnableVaadin;
 import org.vaadin.spring.annotation.VaadinSessionScope;
 import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventBusScope;
 import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.annotation.EventBusScope;
 
 import javax.inject.Provider;
 

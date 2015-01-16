@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.events;
+package org.vaadin.spring.events.annotation;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventScope;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

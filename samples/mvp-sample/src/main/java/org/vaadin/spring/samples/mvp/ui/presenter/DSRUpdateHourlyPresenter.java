@@ -11,7 +11,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
-import org.vaadin.spring.events.EventBusListenerMethod;
+import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.navigator.Presenter;
 import org.vaadin.spring.navigator.VaadinPresenter;
 import org.vaadin.spring.samples.mvp.dto.AssetOwnedDailyId;

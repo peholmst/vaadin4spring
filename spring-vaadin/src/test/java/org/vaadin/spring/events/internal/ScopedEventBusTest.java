@@ -21,8 +21,8 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.vaadin.spring.events.Event;
 import org.vaadin.spring.events.EventBusListener;
-import org.vaadin.spring.events.EventBusListenerMethod;
 import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;

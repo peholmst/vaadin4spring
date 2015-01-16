@@ -13,9 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.events;
+package org.vaadin.spring.events.annotation;
 
 import java.lang.annotation.*;
+
+import org.vaadin.spring.events.Event;
+import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventBusListener;
+import org.vaadin.spring.events.EventBusListenerMethodFilter;
+import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.NoEventBusListenerMethodFilter;
 
 /**
  * Annotation to be placed on event bus listener methods. A listener method must always conform to one of the following method signatures:

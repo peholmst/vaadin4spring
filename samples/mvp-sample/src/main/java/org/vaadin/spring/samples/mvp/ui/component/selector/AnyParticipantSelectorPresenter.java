@@ -2,7 +2,7 @@ package org.vaadin.spring.samples.mvp.ui.component.selector;
 
 import org.joda.time.DateTime;
 import org.vaadin.spring.events.Event;
-import org.vaadin.spring.events.EventBusListenerMethod;
+import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.navigator.Presenter;
 import org.vaadin.spring.navigator.VaadinPresenter;
 import org.vaadin.spring.samples.mvp.ui.component.listener.MarketDaySelectedListener;

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.annotation.VaadinComponent;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventBusListenerMethod;
+import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.mvp.FooView;
 import org.vaadin.spring.mvp.Presenter;
 

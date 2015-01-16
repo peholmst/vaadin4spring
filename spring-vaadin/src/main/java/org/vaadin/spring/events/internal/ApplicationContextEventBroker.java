@@ -21,8 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventBusScope;
 import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.annotation.EventBusScope;
 
 /**
  * An {@link org.springframework.context.ApplicationListener} that will forward all received events to an {@link org.vaadin.spring.events.EventBus}.

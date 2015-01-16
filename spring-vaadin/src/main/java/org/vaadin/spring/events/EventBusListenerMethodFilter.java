@@ -10,7 +10,7 @@ package org.vaadin.spring.events;
  * </p>
  * <p>
  * As a convenience, an implementation of this filter may be defined in
- * {@link org.vaadin.spring.events.EventBusListenerMethod#filter()}
+ * {@link org.vaadin.spring.events.annotation.EventBusListenerMethod#filter()}
  * and stand in place of such filtering code.
  * </p>
  * @author Chris Phillipson (fastnsilver@gmail.com)
