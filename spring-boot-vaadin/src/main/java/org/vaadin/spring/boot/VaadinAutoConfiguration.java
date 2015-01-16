@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.vaadin.spring.EnableVaadin;
 import org.vaadin.spring.VaadinUI;
+import org.vaadin.spring.boot.annotation.EnableVaadinServlet;
 import org.vaadin.spring.boot.config.StaticContentVaadinServletConfiguration;
 
 /**

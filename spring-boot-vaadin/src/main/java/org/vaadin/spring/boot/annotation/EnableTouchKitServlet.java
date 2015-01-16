@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.boot;
+package org.vaadin.spring.boot.annotation;
 
-import org.springframework.context.annotation.Import;
-import org.vaadin.spring.boot.config.VaadinServletConfiguration;
 
 import java.lang.annotation.*;
+import org.springframework.context.annotation.Import;
+import org.vaadin.spring.boot.config.PingServletConfiguration;
+import org.vaadin.spring.boot.config.TouchKitServletConfiguration;
 
 /**
- * Annotation for enabling the Vaadin servlet.
+ * Annotation for enabling the TouchKit servlet.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(VaadinServletConfiguration.class)
-public @interface EnableVaadinServlet {
+@Import({TouchKitServletConfiguration.class, PingServletConfiguration.class})
+public @interface EnableTouchKitServlet {
 }
