@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.i18n;
+package org.vaadin.spring.i18n.annotation;
 
 import java.lang.annotation.*;
 
@@ -28,7 +28,7 @@ import java.lang.annotation.*;
  * </pre>
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.i18n.TranslatedProperty
+ * @see org.vaadin.spring.i18n.annotation.TranslatedProperty
  */
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

@@ -17,7 +17,7 @@ package org.vaadin.spring.i18n.support;
 
 /**
  * Names of common Vaadin component properties that you might want to translate. These constants
- * are provided to reduce the risk of typos when specifying the {@link org.vaadin.spring.i18n.TranslatedProperty#property()} attribute.
+ * are provided to reduce the risk of typos when specifying the {@link org.vaadin.spring.i18n.annotation.TranslatedProperty#property()} attribute.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
