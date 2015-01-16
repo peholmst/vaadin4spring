@@ -1,10 +1,10 @@
 package org.vaadin.spring.mvp.autowired;
 
-import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
+import org.vaadin.spring.VaadinUIScope;
 import org.vaadin.spring.mvp.FooView;
 
-@UIScope
+@VaadinUIScope
 @VaadinComponent
 public class AnnotatedFooView extends FooView {
 
