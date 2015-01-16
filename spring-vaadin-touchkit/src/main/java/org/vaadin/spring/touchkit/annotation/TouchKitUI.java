@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.touchkit;
+package org.vaadin.spring.touchkit.annotation;
 
 import org.vaadin.spring.annotation.VaadinComponent;
 import org.vaadin.spring.annotation.VaadinUIScope;
