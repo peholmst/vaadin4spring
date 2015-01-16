@@ -4,8 +4,8 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.vaadin.spring.VaadinComponent;
-import org.vaadin.spring.VaadinUIScope;
+import org.vaadin.spring.annotation.VaadinComponent;
+import org.vaadin.spring.annotation.VaadinUIScope;
 
 /**
  * Annotation to be placed on {@link org.vaadin.spring.navigator.Presenter}-classes that employ a

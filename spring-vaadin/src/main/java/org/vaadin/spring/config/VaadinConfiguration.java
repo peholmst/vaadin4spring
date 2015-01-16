@@ -45,7 +45,7 @@ import org.vaadin.spring.navigator.SpringViewProvider;
  * @author Josh Long (josh@joshlong.com)
  * @author Petter Holmström (petter@vaadin.com)
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
- * @see org.vaadin.spring.EnableVaadin
+ * @see org.vaadin.spring.annotation.EnableVaadin
  */
 @Configuration
 public class VaadinConfiguration implements ApplicationContextAware {

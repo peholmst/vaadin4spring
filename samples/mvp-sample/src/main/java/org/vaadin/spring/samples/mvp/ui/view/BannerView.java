@@ -3,7 +3,7 @@ package org.vaadin.spring.samples.mvp.ui.view;
 import javax.inject.Inject;
 
 import org.springframework.core.env.Environment;
-import org.vaadin.spring.VaadinUIScope;
+import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.navigator.VaadinView;
 import org.vaadin.spring.samples.mvp.security.config.Scheme;
 import org.vaadin.spring.samples.mvp.ui.component.listener.LogoutLinkListener;

@@ -1,6 +1,6 @@
 package org.vaadin.spring.navigator;
 
-import org.vaadin.spring.VaadinUIScope;
+import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.events.EventBusListenerMethod;
 
 @VaadinUIScope

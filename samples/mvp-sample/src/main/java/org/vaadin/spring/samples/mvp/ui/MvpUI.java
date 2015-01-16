@@ -2,7 +2,7 @@ package org.vaadin.spring.samples.mvp.ui;
 
 import javax.inject.Inject;
 
-import org.vaadin.spring.VaadinUI;
+import org.vaadin.spring.annotation.VaadinUI;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.samples.mvp.ui.presenter.Action;

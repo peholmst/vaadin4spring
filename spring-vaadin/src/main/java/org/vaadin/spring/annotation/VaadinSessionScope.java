@@ -13,23 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring;
-
-import org.springframework.stereotype.Component;
+package org.vaadin.spring.annotation;
 
 import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.springframework.context.annotation.Scope;
+
 /**
- * Alias for {@link org.springframework.stereotype.Component} to prevent conflicts with {@link com.vaadin.ui.Component}.
+ * Stereotype annotation for Spring's {@code @Scope("vaadin-session")}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@Target({java.lang.annotation.ElementType.TYPE})
-@Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+@Scope(org.vaadin.spring.internal.VaadinSessionScope.VAADIN_SESSION_SCOPE_NAME)
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Component
-public @interface VaadinComponent {
-    String value() default "";
+public @interface VaadinSessionScope {
 }

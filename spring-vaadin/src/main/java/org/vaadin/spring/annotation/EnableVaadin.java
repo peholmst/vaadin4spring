@@ -13,24 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring;
+package org.vaadin.spring.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.springframework.context.annotation.Import;
+import org.vaadin.spring.config.VaadinConfiguration;
 
-import org.springframework.context.annotation.Scope;
+import java.lang.annotation.*;
 
 /**
- * Stereotype annotation for Spring's {@code @Scope("vaadin-session")}.
+ * Brings in the machinery to setup Spring + Vaadin applications.
  *
+ * @author Josh Long (josh@joshlong.com)
  * @author Petter Holmström (petter@vaadin.com)
  */
-@Scope(org.vaadin.spring.internal.VaadinSessionScope.VAADIN_SESSION_SCOPE_NAME)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface VaadinSessionScope {
+@Import(VaadinConfiguration.class)
+public @interface EnableVaadin {
 }

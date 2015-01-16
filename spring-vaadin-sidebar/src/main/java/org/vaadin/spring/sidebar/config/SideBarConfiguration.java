@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.vaadin.spring.VaadinUIScope;
+import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.sidebar.FontAwesomeIconProvider;
 import org.vaadin.spring.sidebar.LocalizedThemeIconProvider;

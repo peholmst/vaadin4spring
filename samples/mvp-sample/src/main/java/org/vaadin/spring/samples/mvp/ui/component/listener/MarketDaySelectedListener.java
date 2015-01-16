@@ -4,8 +4,8 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import org.vaadin.spring.VaadinUIScope;
-import org.vaadin.spring.VaadinComponent;
+import org.vaadin.spring.annotation.VaadinComponent;
+import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusScope;
 import org.vaadin.spring.events.EventScope;

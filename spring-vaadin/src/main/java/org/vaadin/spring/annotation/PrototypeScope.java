@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring;
+package org.vaadin.spring.annotation;
+
+import org.springframework.context.annotation.Scope;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -21,17 +23,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.context.annotation.Scope;
-
 /**
- * Stereotype annotation for Spring's {@code @Scope("vaadin-ui")}.
+ * Stereotype annotation for Spring's {@code @Scope("prototype")}. Include here for convenience since many Vaadin
+ * components will be using this scope.
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @author Josh Long (josh@joshlong.com)
  */
-@Scope(org.vaadin.spring.internal.VaadinUIScope.VAADIN_UI_SCOPE_NAME)
+@Scope("prototype")
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface VaadinUIScope {
+public @interface PrototypeScope {
 }

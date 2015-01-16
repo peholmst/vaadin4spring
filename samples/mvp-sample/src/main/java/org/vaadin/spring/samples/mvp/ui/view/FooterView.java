@@ -1,6 +1,6 @@
 package org.vaadin.spring.samples.mvp.ui.view;
 
-import org.vaadin.spring.VaadinUIScope;
+import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.navigator.VaadinView;
 
 import com.vaadin.navigator.View;
