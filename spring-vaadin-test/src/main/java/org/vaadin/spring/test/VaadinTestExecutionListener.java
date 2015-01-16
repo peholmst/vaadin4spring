@@ -21,11 +21,12 @@ import org.springframework.core.Conventions;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
+import org.vaadin.spring.test.annotation.VaadinAppConfiguration;
 
 /**
  * @author Petter Holmström (petter@vaadin.com)
  */
-class VaadinTestExecutionListener extends AbstractTestExecutionListener {
+public class VaadinTestExecutionListener extends AbstractTestExecutionListener {
 
     public static final String SET_UP_SCOPES_ATTRIBUTE = Conventions.getQualifiedAttributeName(
             VaadinTestExecutionListener.class, "setUpScopes");

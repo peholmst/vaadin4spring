@@ -40,7 +40,7 @@ import static org.junit.Assert.assertSame;
 
 /**
  * Example test that manually sets up and tears down the Vaadin scopes, for situations where you for some
- * reason cannot use the {@link org.vaadin.spring.test.VaadinAppConfiguration} annotation.
+ * reason cannot use the {@link org.vaadin.spring.test.annotation.VaadinAppConfiguration} annotation.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */

@@ -28,13 +28,14 @@ import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusScope;
+import org.vaadin.spring.test.annotation.VaadinAppConfiguration;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
 /**
- * Example test that uses the {@link org.vaadin.spring.test.VaadinAppConfiguration} annotation.
+ * Example test that uses the {@link org.vaadin.spring.test.annotation.VaadinAppConfiguration} annotation.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
