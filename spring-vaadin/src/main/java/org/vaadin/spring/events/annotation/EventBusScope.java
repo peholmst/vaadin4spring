@@ -16,7 +16,6 @@
 package org.vaadin.spring.events.annotation;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 
 import java.lang.annotation.Documented;

@@ -17,7 +17,6 @@ package org.vaadin.spring.events.annotation;
 
 import java.lang.annotation.*;
 
-import org.vaadin.spring.events.Event;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusListener;
 import org.vaadin.spring.events.EventBusListenerMethodFilter;
