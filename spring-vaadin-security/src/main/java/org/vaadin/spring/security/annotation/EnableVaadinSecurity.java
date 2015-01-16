@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.security;
+package org.vaadin.spring.security.annotation;
 
 import org.springframework.context.annotation.Import;
 import org.vaadin.spring.security.config.VaadinSecurityConfiguration;
