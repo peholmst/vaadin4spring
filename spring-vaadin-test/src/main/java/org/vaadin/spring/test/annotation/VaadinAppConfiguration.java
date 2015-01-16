@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.test;
+package org.vaadin.spring.test.annotation;
 
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.vaadin.spring.test.VaadinTestExecutionListener;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -31,7 +32,7 @@ import java.lang.annotation.Target;
  * <ul>
  * <li>are run with the {@link org.springframework.test.context.junit4.SpringJUnit4ClassRunner},</li>
  * <li>use autowiring to inject managed beans into the actual test, and</li>
- * <li>perform tests on beans that are {@link org.vaadin.spring.VaadinUIScope}d or {@link org.vaadin.spring.VaadinSessionScope}d</li>
+ * <li>perform tests on beans that are {@link org.vaadin.spring.annotation.VaadinUIScope}d or {@link org.vaadin.spring.annotation.VaadinSessionScope}d</li>
  * </ul>
  * With this annotation in place, all beans that are UI-scoped or VaadinSession-scoped will work as expected. The indented use case for this approach is
  * to test non-visual components like presenters or controllers. It is not usable for testing Vaadin components or

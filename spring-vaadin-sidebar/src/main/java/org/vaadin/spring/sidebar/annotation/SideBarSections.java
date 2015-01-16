@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.boot;
+package org.vaadin.spring.sidebar.annotation;
 
-import org.springframework.context.annotation.Import;
-import org.vaadin.spring.boot.config.VaadinServletConfiguration;
-
-import java.lang.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Annotation for enabling the Vaadin servlet.
+ * This annotation is used to declare multiple {@link org.vaadin.spring.sidebar.annotation.SideBarSection}s on the same
+ * bean. Please refer to the JavaDocs for {@link org.vaadin.spring.sidebar.annotation.SideBarSection} for more information.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Import(VaadinServletConfiguration.class)
-public @interface EnableVaadinServlet {
+public @interface SideBarSections {
+
+    SideBarSection[] value();
 }

@@ -13,22 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.sidebar;
+package org.vaadin.spring.sidebar.annotation;
 
-import org.springframework.context.annotation.Import;
-import org.vaadin.spring.sidebar.config.SideBarConfiguration;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.lang.annotation.*;
+import org.vaadin.spring.sidebar.ThemeIconProvider;
 
 /**
- * Add this annotation to your application configuration to enable the {@link org.vaadin.spring.sidebar.SideBar}
- * component. After that, just inject the side bar into your UIs.
+ * This annotation is placed next to {@link org.vaadin.spring.sidebar.annotation.SideBarItem}, instructing the side bar
+ * to use a {@link com.vaadin.server.ThemeResource} icon for the item.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Import(SideBarConfiguration.class)
-public @interface EnableSideBar {
+@SideBarItemIcon(ThemeIconProvider.class)
+public @interface ThemeIcon {
+
+    /**
+     * The theme resource ID of the item icon.
+     */
+    String value();
 }

@@ -25,12 +25,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.vaadin.spring.EnableVaadin;
-import org.vaadin.spring.VaadinUIScope;
-import org.vaadin.spring.VaadinSessionScope;
+import org.vaadin.spring.annotation.EnableVaadin;
+import org.vaadin.spring.annotation.VaadinSessionScope;
+import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventBusScope;
 import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.annotation.EventBusScope;
 
 import javax.inject.Provider;
 
@@ -40,7 +40,7 @@ import static org.junit.Assert.assertSame;
 
 /**
  * Example test that manually sets up and tears down the Vaadin scopes, for situations where you for some
- * reason cannot use the {@link org.vaadin.spring.test.VaadinAppConfiguration} annotation.
+ * reason cannot use the {@link org.vaadin.spring.test.annotation.VaadinAppConfiguration} annotation.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */

@@ -17,8 +17,11 @@ package org.vaadin.spring.i18n;
 
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
+
 import org.junit.Test;
 import org.springframework.context.MessageSource;
+import org.vaadin.spring.i18n.annotation.TranslatedProperties;
+import org.vaadin.spring.i18n.annotation.TranslatedProperty;
 import org.vaadin.spring.i18n.support.ComponentProperties;
 
 import java.util.Locale;

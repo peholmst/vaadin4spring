@@ -17,6 +17,8 @@ package org.vaadin.spring.i18n;
 
 import org.springframework.context.MessageSource;
 import org.springframework.util.StringUtils;
+import org.vaadin.spring.i18n.annotation.TranslatedProperties;
+import org.vaadin.spring.i18n.annotation.TranslatedProperty;
 import org.vaadin.spring.internal.ClassUtils;
 
 import java.io.IOException;
@@ -34,7 +36,7 @@ import static org.vaadin.spring.internal.ClassUtils.visitClassHierarchy;
 /**
  * This translator class has been designed with Vaadin UIs in mind, but it works with other classes as well. The idea is that
  * a UI component is composed of other components (e.g. labels and text fields) that contain properties that need to be translated (e.g. captions, descriptions).
- * These translatable properties can be mapped to {@link org.springframework.context.MessageSource} keys by using the {@link org.vaadin.spring.i18n.TranslatedProperty} annotation.
+ * These translatable properties can be mapped to {@link org.springframework.context.MessageSource} keys by using the {@link org.vaadin.spring.i18n.annotation.TranslatedProperty} annotation.
  * A {@code Translator} instance would then be created for the UI component (the target object). When the {@link #translate(java.util.Locale, org.springframework.context.MessageSource)}  method
  * is invoked, the translator will go through all fields and getter methods that are annotated and update the translated properties with values from the {@code MessageSource}.
  * <p>
@@ -50,8 +52,8 @@ import static org.vaadin.spring.internal.ClassUtils.visitClassHierarchy;
  * when necessary (normally on initial component setup and when the locale changes).
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.i18n.TranslatedProperties
- * @see org.vaadin.spring.i18n.TranslatedProperty
+ * @see org.vaadin.spring.i18n.annotation.TranslatedProperties
+ * @see org.vaadin.spring.i18n.annotation.TranslatedProperty
  */
 public class Translator implements Serializable {
 

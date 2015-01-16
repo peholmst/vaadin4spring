@@ -15,11 +15,13 @@
  */
 package org.vaadin.spring.sidebar;
 
+import org.vaadin.spring.sidebar.annotation.ThemeIcon;
+
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 
 /**
- * Icon provider for {@link org.vaadin.spring.sidebar.ThemeIcon}.
+ * Icon provider for {@link org.vaadin.spring.sidebar.annotation.ThemeIcon}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */

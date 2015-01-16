@@ -43,7 +43,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * default as the scope "{@value #VAADIN_UI_SCOPE_NAME}".
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.VaadinUIScope
+ * @see org.vaadin.spring.annotation.VaadinUIScope
  */
 public class VaadinUIScope implements Scope, BeanFactoryPostProcessor {
 

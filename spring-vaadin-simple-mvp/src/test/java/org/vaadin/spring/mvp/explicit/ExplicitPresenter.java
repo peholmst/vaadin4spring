@@ -1,7 +1,7 @@
 package org.vaadin.spring.mvp.explicit;
 
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventBusListenerMethod;
+import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.mvp.FooView;
 import org.vaadin.spring.mvp.Presenter;
 

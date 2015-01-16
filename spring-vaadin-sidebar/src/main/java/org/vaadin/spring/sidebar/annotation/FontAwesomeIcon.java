@@ -13,22 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.sidebar;
+package org.vaadin.spring.sidebar.annotation;
+
+import com.vaadin.server.FontAwesome;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.vaadin.spring.sidebar.FontAwesomeIconProvider;
+
 /**
- * This annotation is used to declare multiple {@link org.vaadin.spring.sidebar.SideBarSection}s on the same
- * bean. Please refer to the JavaDocs for {@link org.vaadin.spring.sidebar.SideBarSection} for more information.
+ * This annotation is placed next to {@link org.vaadin.spring.sidebar.annotation.SideBarItem}, instructing the side bar
+ * to use a {@link com.vaadin.server.FontAwesome} icon for the item.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SideBarSections {
+@SideBarItemIcon(FontAwesomeIconProvider.class)
+public @interface FontAwesomeIcon {
 
-    SideBarSection[] value();
+    /**
+     * The item icon.
+     */
+    FontAwesome value();
 }

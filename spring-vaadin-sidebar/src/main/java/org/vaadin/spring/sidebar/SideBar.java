@@ -45,8 +45,8 @@ import java.util.Collection;
  * |-------------|
  * </pre>
  * <p>
- * The sections and items are declared using the {@link org.vaadin.spring.sidebar.SideBarSection} and {@link org.vaadin.spring.sidebar.SideBarItem} annotations, respectively.
- * To use this side bar, simply enable it in your application configuration using the {@link org.vaadin.spring.sidebar.EnableSideBar} annotation,
+ * The sections and items are declared using the {@link org.vaadin.spring.sidebar.annotation.SideBarSection} and {@link org.vaadin.spring.sidebar.annotation.SideBarItem} annotations, respectively.
+ * To use this side bar, simply enable it in your application configuration using the {@link org.vaadin.spring.sidebar.annotation.EnableSideBar} annotation,
  * and inject it into your UI.
  * <p>
  * The side bar comes with a simple theme. In most cases, you probably want to change the styles to make the look and feel of the side bar more compatible with your application.

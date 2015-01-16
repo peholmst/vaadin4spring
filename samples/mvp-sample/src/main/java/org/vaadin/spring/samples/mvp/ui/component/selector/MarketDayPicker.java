@@ -8,8 +8,8 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.ArrayUtils;
 import org.joda.time.DateTime;
 import org.springframework.core.env.Environment;
-import org.vaadin.spring.VaadinUIScope;
-import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.annotation.VaadinUIScope;
+import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.spring.samples.mvp.util.SSTimeUtil;
 
 import com.vaadin.navigator.View;

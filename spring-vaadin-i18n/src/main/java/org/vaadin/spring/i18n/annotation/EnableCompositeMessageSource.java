@@ -13,27 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.sidebar;
+package org.vaadin.spring.i18n.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.springframework.context.annotation.Import;
+import org.vaadin.spring.i18n.config.CompositeMessageSourceConfiguration;
+
+import java.lang.annotation.*;
 
 /**
- * This annotation is placed next to {@link SideBarItem}, instructing the side bar
- * to use a {@link com.vaadin.server.ThemeResource} icon for the item, but to look up the actual
- * resource ID from an {@link org.vaadin.spring.i18n.I18N}.
+ * Add this annotation to your application configuration to enable the {@link org.vaadin.spring.i18n.CompositeMessageSource}.
+ * Please note that you also have to define {@link org.vaadin.spring.i18n.MessageProvider}s that can feed the message source with messages.
+ * You can use {@link org.vaadin.spring.i18n.ResourceBundleMessageProvider} or implement your own.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SideBarItemIcon(LocalizedThemeIconProvider.class)
-public @interface LocalizedThemeIcon {
-
-    /**
-     * The key to use when looking up the real resource ID from an {@link org.vaadin.spring.i18n.I18N}.
-     */
-    String value();
+@Documented
+@Import(CompositeMessageSourceConfiguration.class)
+public @interface EnableCompositeMessageSource {
 }

@@ -26,8 +26,8 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.context.request.RequestContextListener;
 import org.vaadin.spring.context.VaadinApplicationContext;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventBusScope;
 import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.annotation.EventBusScope;
 import org.vaadin.spring.events.internal.ScopedEventBus;
 import org.vaadin.spring.http.HttpResponseFactory;
 import org.vaadin.spring.http.HttpResponseFilter;
@@ -45,7 +45,7 @@ import org.vaadin.spring.navigator.SpringViewProvider;
  * @author Josh Long (josh@joshlong.com)
  * @author Petter Holmström (petter@vaadin.com)
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
- * @see org.vaadin.spring.EnableVaadin
+ * @see org.vaadin.spring.annotation.EnableVaadin
  */
 @Configuration
 public class VaadinConfiguration implements ApplicationContextAware {

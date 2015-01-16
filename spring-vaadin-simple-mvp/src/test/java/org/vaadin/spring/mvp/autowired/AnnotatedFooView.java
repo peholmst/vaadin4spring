@@ -1,7 +1,7 @@
 package org.vaadin.spring.mvp.autowired;
 
-import org.vaadin.spring.VaadinComponent;
-import org.vaadin.spring.VaadinUIScope;
+import org.vaadin.spring.annotation.VaadinComponent;
+import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.mvp.FooView;
 
 @VaadinUIScope

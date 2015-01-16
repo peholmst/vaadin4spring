@@ -16,13 +16,14 @@
 package org.vaadin.spring.servlet;
 
 import com.vaadin.ui.UI;
+
 import org.springframework.web.context.WebApplicationContext;
-import org.vaadin.spring.VaadinUI;
+import org.vaadin.spring.annotation.VaadinUI;
 import org.vaadin.spring.servlet.internal.AbstractSpringAwareUIProvider;
 
 /**
  * Vaadin {@link com.vaadin.server.UIProvider} that looks up UI classes from the Spring application context. The UI
- * classes must be annotated with {@link org.vaadin.spring.VaadinUI}.
+ * classes must be annotated with {@link org.vaadin.spring.annotation.VaadinUI}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */

@@ -13,23 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.i18n;
-
-import org.springframework.context.annotation.Import;
-import org.vaadin.spring.i18n.config.CompositeMessageSourceConfiguration;
+package org.vaadin.spring.i18n.annotation;
 
 import java.lang.annotation.*;
 
 /**
- * Add this annotation to your application configuration to enable the {@link org.vaadin.spring.i18n.CompositeMessageSource}.
- * Please note that you also have to define {@link org.vaadin.spring.i18n.MessageProvider}s that can feed the message source with messages.
- * You can use {@link org.vaadin.spring.i18n.ResourceBundleMessageProvider} or implement your own.
+ * Annotation that makes it possible to place multiple {@link TranslatedProperty} annotations on the same element. For example:
+ * <pre>
+ * &#64;TranslatedProperties({
+ *     &#64;TranslatedProperty(property = "caption", key = "myTextField.caption"),
+ *     &#64;TranslatedProperty(property = "description", key = "myTextField.description")
+ * })
+ * private TextField myTextField;
+ * </pre>
  *
  * @author Petter Holmström (petter@vaadin.com)
+ * @see org.vaadin.spring.i18n.annotation.TranslatedProperty
  */
-@Target(ElementType.TYPE)
+@Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(CompositeMessageSourceConfiguration.class)
-public @interface EnableCompositeMessageSource {
+public @interface TranslatedProperties {
+
+    TranslatedProperty[] value();
 }

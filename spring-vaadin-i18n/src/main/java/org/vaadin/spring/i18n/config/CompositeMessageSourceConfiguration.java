@@ -26,7 +26,7 @@ import org.vaadin.spring.i18n.CompositeMessageSource;
  * define {@link org.vaadin.spring.i18n.MessageProvider} beans that can serve the message source with messages.
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.i18n.EnableCompositeMessageSource
+ * @see org.vaadin.spring.i18n.annotation.EnableCompositeMessageSource
  */
 @Configuration
 public class CompositeMessageSourceConfiguration {

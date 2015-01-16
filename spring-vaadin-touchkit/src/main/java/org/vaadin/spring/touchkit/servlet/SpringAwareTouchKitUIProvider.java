@@ -16,13 +16,14 @@
 package org.vaadin.spring.touchkit.servlet;
 
 import com.vaadin.ui.UI;
+
 import org.springframework.web.context.WebApplicationContext;
 import org.vaadin.spring.servlet.internal.AbstractSpringAwareUIProvider;
-import org.vaadin.spring.touchkit.TouchKitUI;
+import org.vaadin.spring.touchkit.annotation.TouchKitUI;
 
 /**
  * Vaadin {@link com.vaadin.server.UIProvider} that looks up UI classes from the Spring application context. The UI
- * classes must be annotated with {@link org.vaadin.spring.touchkit.TouchKitUI}.
+ * classes must be annotated with {@link org.vaadin.spring.touchkit.annotation.TouchKitUI}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */

@@ -24,13 +24,13 @@ import java.lang.reflect.ParameterizedType;
 
 import org.vaadin.spring.events.Event;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventBusListenerMethod;
 import org.vaadin.spring.events.EventBusListenerMethodFilter;
 import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 
 /**
  * Implementation of {@link org.vaadin.spring.events.internal.AbstractListenerWrapper} that wraps an object
- * that contains a method annotated with {@link org.vaadin.spring.events.EventBusListenerMethod}. If the object
+ * that contains a method annotated with {@link org.vaadin.spring.events.annotation.EventBusListenerMethod}. If the object
  * contains multiple listener methods, multiple instances of this class should be created.
  *
  * @author Petter Holmström (petter@vaadin.com)

@@ -13,27 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.i18n;
+package org.vaadin.spring.annotation;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import org.springframework.context.annotation.Scope;
 
 /**
- * Annotation that makes it possible to place multiple {@link TranslatedProperty} annotations on the same element. For example:
- * <pre>
- * &#64;TranslatedProperties({
- *     &#64;TranslatedProperty(property = "caption", key = "myTextField.caption"),
- *     &#64;TranslatedProperty(property = "description", key = "myTextField.description")
- * })
- * private TextField myTextField;
- * </pre>
+ * Stereotype annotation for Spring's {@code @Scope("vaadin-ui")}.
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.i18n.TranslatedProperty
+ * @author Josh Long (josh@joshlong.com)
  */
-@Target({ElementType.FIELD, ElementType.METHOD})
+@Scope(org.vaadin.spring.internal.VaadinUIScope.VAADIN_UI_SCOPE_NAME)
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface TranslatedProperties {
-
-    TranslatedProperty[] value();
+public @interface VaadinUIScope {
 }

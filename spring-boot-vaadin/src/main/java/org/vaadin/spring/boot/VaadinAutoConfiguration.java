@@ -22,14 +22,15 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.vaadin.spring.EnableVaadin;
-import org.vaadin.spring.VaadinUI;
+import org.vaadin.spring.annotation.EnableVaadin;
+import org.vaadin.spring.annotation.VaadinUI;
+import org.vaadin.spring.boot.annotation.EnableVaadinServlet;
 import org.vaadin.spring.boot.config.StaticContentVaadinServletConfiguration;
 
 /**
  * @author Petter Holmström (petter@vaadin.com)
  * @author Josh Long (josh@joshlong.com)
- * @see org.vaadin.spring.EnableVaadin
+ * @see org.vaadin.spring.annotation.EnableVaadin
  */
 @Configuration
 @ConditionalOnClass(VaadinUI.class)

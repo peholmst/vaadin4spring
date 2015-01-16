@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.i18n;
+package org.vaadin.spring.i18n.annotation;
 
 import java.lang.annotation.*;
 

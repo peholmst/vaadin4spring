@@ -16,14 +16,16 @@
 package org.vaadin.spring.sidebar;
 
 import com.vaadin.ui.UI;
+
 import org.vaadin.spring.i18n.I18N;
+import org.vaadin.spring.sidebar.annotation.SideBarSection;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * This is a class that describes a side bar section that has been declared using a {@link org.vaadin.spring.sidebar.SideBarSection} annotation.
+ * This is a class that describes a side bar section that has been declared using a {@link org.vaadin.spring.sidebar.annotation.SideBarSection} annotation.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
@@ -46,7 +48,7 @@ public class SideBarSectionDescriptor implements Comparable<SideBarSectionDescri
     }
 
     /**
-     * Returns the caption of this side bar section. If the caption was specified using {@link org.vaadin.spring.sidebar.SideBarSection#captionCode()},
+     * Returns the caption of this side bar section. If the caption was specified using {@link org.vaadin.spring.sidebar.annotation.SideBarSection#captionCode()},
      * this method will fetch the string from {@link org.vaadin.spring.i18n.I18N}.
      *
      * @return a string, never {@code null}.

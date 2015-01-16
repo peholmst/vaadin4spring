@@ -18,7 +18,7 @@ package org.vaadin.spring.samples.sidebar;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
-import org.vaadin.spring.sidebar.EnableSideBar;
+import org.vaadin.spring.sidebar.annotation.EnableSideBar;
 
 /**
  * Main class for the side bar demo application.

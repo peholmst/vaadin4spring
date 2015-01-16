@@ -20,10 +20,11 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import org.vaadin.spring.VaadinUIScope;
-import org.vaadin.spring.navigator.VaadinView;
-import org.vaadin.spring.sidebar.FontAwesomeIcon;
-import org.vaadin.spring.sidebar.SideBarItem;
+
+import org.vaadin.spring.annotation.VaadinUIScope;
+import org.vaadin.spring.navigator.annotation.VaadinView;
+import org.vaadin.spring.sidebar.annotation.FontAwesomeIcon;
+import org.vaadin.spring.sidebar.annotation.SideBarItem;
 
 /**
  * Example view that shows up under the Planning section in the side bar.

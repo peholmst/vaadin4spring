@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.vaadin.spring.VaadinUIScope;
+import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.sidebar.FontAwesomeIconProvider;
 import org.vaadin.spring.sidebar.LocalizedThemeIconProvider;
@@ -31,7 +31,7 @@ import org.vaadin.spring.sidebar.ThemeIconProvider;
  * Spring configuration for the {@link org.vaadin.spring.sidebar.SideBar} and its dependencies.
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.sidebar.EnableSideBar
+ * @see org.vaadin.spring.sidebar.annotation.EnableSideBar
  */
 @Configuration
 public class SideBarConfiguration {

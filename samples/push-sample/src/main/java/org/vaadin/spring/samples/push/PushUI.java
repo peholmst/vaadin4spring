@@ -24,9 +24,11 @@ import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.ui.UI;
-import org.vaadin.spring.VaadinUI;
+
+import org.vaadin.spring.annotation.VaadinUI;
 
 import javax.annotation.PreDestroy;
+
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

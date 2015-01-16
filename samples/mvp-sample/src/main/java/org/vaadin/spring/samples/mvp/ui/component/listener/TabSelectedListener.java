@@ -6,11 +6,11 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.context.ApplicationContext;
-import org.vaadin.spring.VaadinUIScope;
-import org.vaadin.spring.VaadinComponent;
+import org.vaadin.spring.annotation.VaadinComponent;
+import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.navigator.VaadinPresenter;
-import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.navigator.annotation.VaadinPresenter;
+import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.spring.samples.mvp.ui.component.util.ControlsContext;
 import org.vaadin.spring.samples.mvp.ui.presenter.Screen;
 import org.vaadin.spring.samples.mvp.ui.view.HeaderView;

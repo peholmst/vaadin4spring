@@ -20,9 +20,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
 import org.vaadin.spring.events.*;
+import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.internal.ClassUtils;
 
 import javax.annotation.PreDestroy;
+
 import java.io.Serializable;
 import java.lang.reflect.Method;
 

@@ -13,22 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring;
+package org.vaadin.spring.boot.annotation;
 
 import org.springframework.context.annotation.Import;
-import org.vaadin.spring.config.VaadinConfiguration;
+import org.vaadin.spring.boot.config.VaadinServletConfiguration;
 
 import java.lang.annotation.*;
 
 /**
- * Brings in the machinery to setup Spring + Vaadin applications.
+ * Annotation for enabling the Vaadin servlet.
  *
- * @author Josh Long (josh@joshlong.com)
  * @author Petter Holmström (petter@vaadin.com)
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(VaadinConfiguration.class)
-public @interface EnableVaadin {
+@Import(VaadinServletConfiguration.class)
+public @interface EnableVaadinServlet {
 }

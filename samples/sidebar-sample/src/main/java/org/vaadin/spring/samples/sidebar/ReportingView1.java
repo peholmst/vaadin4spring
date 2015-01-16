@@ -19,10 +19,11 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import org.vaadin.spring.VaadinUIScope;
-import org.vaadin.spring.navigator.VaadinView;
-import org.vaadin.spring.sidebar.SideBarItem;
-import org.vaadin.spring.sidebar.ThemeIcon;
+
+import org.vaadin.spring.annotation.VaadinUIScope;
+import org.vaadin.spring.navigator.annotation.VaadinView;
+import org.vaadin.spring.sidebar.annotation.SideBarItem;
+import org.vaadin.spring.sidebar.annotation.ThemeIcon;
 
 /**
  * Example view that shows up under the Reporting section in the side bar.

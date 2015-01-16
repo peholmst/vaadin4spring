@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.touchkit;
+package org.vaadin.spring.touchkit.annotation;
 
-import org.vaadin.spring.VaadinUIScope;
-import org.vaadin.spring.VaadinComponent;
+import org.vaadin.spring.annotation.VaadinComponent;
+import org.vaadin.spring.annotation.VaadinUIScope;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * The TouchKit counterpart to {@link org.vaadin.spring.VaadinUI}. Use it like this:
+ * The TouchKit counterpart to {@link org.vaadin.spring.annotation.VaadinUI}. Use it like this:
  * <pre>
  *     &#64;VaadinUI
  *     public class MyRootTouchKitUI extends UI {
@@ -37,10 +37,10 @@ import java.lang.annotation.Target;
  *         // ...
  *     }
  *     </pre>
- * The annotated UI will automatically be placed in the {@link org.vaadin.spring.VaadinUIScope}, so there is no need to add that annotation explicitly.
+ * The annotated UI will automatically be placed in the {@link org.vaadin.spring.annotation.VaadinUIScope}, so there is no need to add that annotation explicitly.
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.VaadinUI
+ * @see org.vaadin.spring.annotation.VaadinUI
  */
 @Target({java.lang.annotation.ElementType.TYPE})
 @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)

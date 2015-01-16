@@ -13,25 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring;
+package org.vaadin.spring.sidebar.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.springframework.context.annotation.Import;
+import org.vaadin.spring.sidebar.config.SideBarConfiguration;
 
-import org.springframework.context.annotation.Scope;
+import java.lang.annotation.*;
 
 /**
- * Stereotype annotation for Spring's {@code @Scope("vaadin-ui")}.
+ * Add this annotation to your application configuration to enable the {@link org.vaadin.spring.sidebar.SideBar}
+ * component. After that, just inject the side bar into your UIs.
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @author Josh Long (josh@joshlong.com)
  */
-@Scope(org.vaadin.spring.internal.VaadinUIScope.VAADIN_UI_SCOPE_NAME)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface VaadinUIScope {
+@Import(SideBarConfiguration.class)
+public @interface EnableSideBar {
 }

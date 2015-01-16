@@ -13,28 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.sidebar;
+package org.vaadin.spring.boot.annotation;
 
-import com.vaadin.server.FontAwesome;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
+import org.springframework.context.annotation.Import;
+import org.vaadin.spring.boot.config.PingServletConfiguration;
+import org.vaadin.spring.boot.config.TouchKitServletConfiguration;
 
 /**
- * This annotation is placed next to {@link org.vaadin.spring.sidebar.SideBarItem}, instructing the side bar
- * to use a {@link com.vaadin.server.FontAwesome} icon for the item.
+ * Annotation for enabling the TouchKit servlet.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SideBarItemIcon(FontAwesomeIconProvider.class)
-public @interface FontAwesomeIcon {
-
-    /**
-     * The item icon.
-     */
-    FontAwesome value();
+@Documented
+@Import({TouchKitServletConfiguration.class, PingServletConfiguration.class})
+public @interface EnableTouchKitServlet {
 }

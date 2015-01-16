@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.sidebar;
+package org.vaadin.spring.sidebar.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -25,16 +25,16 @@ import java.lang.annotation.Target;
  * It can be placed on two types of beans:
  * <ol>
  * <li>{@link java.lang.Runnable}s - when the item is clicked, the runnable is executed</li>
- * <li>{@link com.vaadin.navigator.View Views}s that are also annotated with {@link org.vaadin.spring.navigator.VaadinView VaadinView} - when the item is clicked, the {@link com.vaadin.navigator.Navigator navigator} navigates to the view.
+ * <li>{@link com.vaadin.navigator.View Views}s that are also annotated with {@link org.vaadin.spring.navigator.annotation.VaadinView VaadinView} - when the item is clicked, the {@link com.vaadin.navigator.Navigator navigator} navigates to the view.
  * </ol>
  * Please note that the annotated class must be a Spring-managed bean - only adding this annotation is not enough.
  *
  * @author Petter Holmström (petter@vaadin.com)
  * @see org.vaadin.spring.sidebar.SideBar
- * @see org.vaadin.spring.sidebar.SideBarSection
- * @see org.vaadin.spring.sidebar.FontAwesomeIcon
- * @see org.vaadin.spring.sidebar.ThemeIcon
- * @see org.vaadin.spring.sidebar.LocalizedThemeIcon
+ * @see org.vaadin.spring.sidebar.annotation.SideBarSection
+ * @see org.vaadin.spring.sidebar.annotation.FontAwesomeIcon
+ * @see org.vaadin.spring.sidebar.annotation.ThemeIcon
+ * @see org.vaadin.spring.sidebar.annotation.LocalizedThemeIcon
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

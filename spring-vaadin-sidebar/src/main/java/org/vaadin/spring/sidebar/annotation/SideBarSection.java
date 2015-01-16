@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.sidebar;
+package org.vaadin.spring.sidebar.annotation;
 
 import com.vaadin.ui.UI;
 
@@ -28,8 +28,8 @@ import java.lang.annotation.Target;
  *
  * @author Petter Holmström (petter@vaadin.com)
  * @see org.vaadin.spring.sidebar.SideBar
- * @see org.vaadin.spring.sidebar.SideBarItem
- * @see org.vaadin.spring.sidebar.SideBarSections
+ * @see org.vaadin.spring.sidebar.annotation.SideBarItem
+ * @see org.vaadin.spring.sidebar.annotation.SideBarSections
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

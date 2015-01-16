@@ -4,9 +4,9 @@ import javax.inject.Inject;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
-import org.vaadin.spring.events.EventBusListenerMethod;
+import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.navigator.Presenter;
-import org.vaadin.spring.navigator.VaadinPresenter;
+import org.vaadin.spring.navigator.annotation.VaadinPresenter;
 import org.vaadin.spring.samples.mvp.ui.view.BannerView;
 import org.vaadin.spring.security.VaadinSecurity;
 

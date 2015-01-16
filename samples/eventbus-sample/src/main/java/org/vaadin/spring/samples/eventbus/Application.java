@@ -21,8 +21,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventBusScope;
 import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.annotation.EventBusScope;
 import org.vaadin.spring.events.internal.ApplicationContextEventBroker;
 
 /**

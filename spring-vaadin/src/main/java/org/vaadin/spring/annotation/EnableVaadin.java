@@ -13,26 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.sidebar;
+package org.vaadin.spring.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.springframework.context.annotation.Import;
+import org.vaadin.spring.config.VaadinConfiguration;
+
+import java.lang.annotation.*;
 
 /**
- * This annotation is placed next to {@link org.vaadin.spring.sidebar.SideBarItem}, instructing the side bar
- * to use a {@link com.vaadin.server.ThemeResource} icon for the item.
+ * Brings in the machinery to setup Spring + Vaadin applications.
  *
+ * @author Josh Long (josh@joshlong.com)
  * @author Petter Holmström (petter@vaadin.com)
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SideBarItemIcon(ThemeIconProvider.class)
-public @interface ThemeIcon {
-
-    /**
-     * The theme resource ID of the item icon.
-     */
-    String value();
+@Documented
+@Import(VaadinConfiguration.class)
+public @interface EnableVaadin {
 }
