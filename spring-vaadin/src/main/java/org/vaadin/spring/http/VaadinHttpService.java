@@ -1,5 +1,6 @@
 package org.vaadin.spring.http;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,7 +19,7 @@ public class VaadinHttpService implements HttpService {
     @Autowired
     private HttpServletRequest request;
 
-    @Autowired
+    @Resource(name = HttpResponseFactory.BEAN_NAME)
     private HttpServletResponse response;
 
     @Override
