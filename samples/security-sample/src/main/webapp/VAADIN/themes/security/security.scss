@@ -1,0 +1,10 @@
+@import "../valo/valo";
+@import "views/login";
+
+
+@mixin security {
+  
+  @include valo;
+  @include dashboard-login-view;
+  
+}
