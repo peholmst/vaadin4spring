@@ -1,0 +1,10 @@
+@import "security";
+
+/* This file prefixes all rules with the theme name to avoid causing conflicts with other themes. */
+/* The actual styles should be defined in valo.scss */
+
+.security {
+
+  // Include valo theme styles in your theme
+  @include security;
+}
