@@ -18,6 +18,7 @@ package org.vaadin.spring.security;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
@@ -30,22 +31,52 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.util.Assert;
+import org.vaadin.spring.http.HttpService;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 /**
  * Convenience class that provides the Spring Security operations that are most commonly required in a Vaadin application.
+ *
+ * Additional Code / Documentation from {@link HttpSessionSecurityContextRepository}
  *
  * @author Petter Holmström (petter@vaadin.com)
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  */
 public class GenericVaadinSecurity extends AbstractVaadinSecurity implements VaadinSecurity {
 
+    /**
+    * The default key under which the security context will be stored in the session.
+    * Used by {@link HttpSessionSecurityContextRepository}
+    * <br><br>
+    * If this is overriden by the user then also override {@code springSecurityContextKey} within {@link HttpSessionSecurityContextRepository}
+    * to match the new key. 
+    * <br><br>
+    * The key of {@link HttpSessionSecurityContextRepository} can be overriden with {@link HttpSessionSecurityContextRepository#setSpringSecurityContextKey}
+    * <br><br>
+    * The {@link SecurityContextPersistenceFilter} will use the configured key from {@link HttpSessionSecurityContextRepository}
+    */
+    public static final String SPRING_SECURITY_CONTEXT_KEY = "SPRING_SECURITY_CONTEXT";
+    
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    private String springSecurityContextKey = SPRING_SECURITY_CONTEXT_KEY;
+    
+    /**
+     * Current {@link HttpServletRequest} and {@link HttpServletResponse} are
+     * autowired through the {@link HttpService} proxy.
+     */
+    @Autowired
+    private HttpService httpRequestResponseHolder;
+    
     /**
      * {@inheritDoc}
      */
@@ -60,9 +91,50 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
      */
     @Override
     public void login(Authentication authentication) throws AuthenticationException {
-        final Authentication fullyAuthenticated = getAuthenticationManager().authenticate(authentication);
-        final SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(fullyAuthenticated);
+        
+        // Ensure SecurityContext is never null
+        SecurityContext context = SecurityContextHolder.getContext();
+        
+        try {
+            
+            final Authentication fullyAuthenticated = getAuthenticationManager().authenticate(authentication);
+            context.setAuthentication(fullyAuthenticated);
+            
+            /*
+             * Signal the SessionAuthenticationStrategy of the login
+             */
+            HttpServletRequest request = httpRequestResponseHolder.getCurrentRequest();
+            HttpServletResponse response = httpRequestResponseHolder.getCurrentResponse();
+            getSessionAuthenticationStrategy().onAuthentication(fullyAuthenticated, request, response);
+            
+        } catch(AuthenticationException e) {
+            
+            /**
+             * {@link DisabledException}            -> Optional
+             * {@link LockedException}              -> Optional
+             * {@link BadCredentialsException}      -> Required
+             * 
+             * Clear SecurityContext and throw the AuthenticationException
+             */
+            context = generateNewContext();
+            throw e;
+            
+        } finally {
+            
+            /**
+             * Store SecurityContext within the Session for the SecurityFilterChain
+             * On error this will store an emtpy context, which will cause
+             * the security filter chain to invalidate the authentication.
+             * 
+             * Context needs to be stored within the HttpSession so the {@link SecurityContextPersistenceFilter}
+             * can make a call to the default configured {@link HttpSessionSecurityContextRepository}
+             */
+            HttpSession session = httpRequestResponseHolder.getCurrentRequest().getSession();
+            session.setAttribute(springSecurityContextKey, context);
+            
+        }
+        
+        
     }
 
     /**
@@ -194,5 +266,25 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
         }
 
         return false;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setSpringSecurityContextKey(String springSecurityContextKey) {
+        Assert.hasText(springSecurityContextKey, "springSecurityContextKey cannot be empty");
+        this.springSecurityContextKey = springSecurityContextKey;
+    }
+    
+    /**
+     * By default, calls {@link SecurityContextHolder#createEmptyContext()} to obtain a new context (there should be
+     * no context present in the holder when this method is called). Using this approach the context creation
+     * strategy is decided by the {@link SecurityContextHolderStrategy} in use. The default implementations
+     * will return a new <tt>SecurityContextImpl</tt>.
+     *
+     * @return a new SecurityContext instance. Never null.
+     */
+    private SecurityContext generateNewContext() {
+        return SecurityContextHolder.createEmptyContext();
     }
 }
