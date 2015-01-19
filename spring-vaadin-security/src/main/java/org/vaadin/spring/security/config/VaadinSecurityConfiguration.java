@@ -22,13 +22,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.vaadin.spring.security.GenericVaadinSecurity;
 import org.vaadin.spring.security.VaadinSecurity;
+import org.vaadin.spring.security.context.VaadinSessionSecurityContextRepository;
 import org.vaadin.spring.security.provider.PreAuthorizeViewProviderAccessDelegate;
 import org.vaadin.spring.security.provider.SecuredViewProviderAccessDelegate;
 import org.vaadin.spring.security.support.VaadinSecurityAwareProcessor;
@@ -120,4 +124,13 @@ public class VaadinSecurityConfiguration {
 
     }
 
+    @Configuration
+    static class SecurityContextConfiguration extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
+        
+        @Override
+        public void configure(HttpSecurity builder) throws Exception {
+            builder.securityContext().securityContextRepository(new VaadinSessionSecurityContextRepository());
+        }
+        
+    }
 }
