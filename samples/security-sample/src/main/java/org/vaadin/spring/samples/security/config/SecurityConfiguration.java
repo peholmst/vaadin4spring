@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.vaadin.spring.security.annotation.EnableVaadinSecurity;
+import org.vaadin.spring.security.context.VaadinSessionSecurityContextRepository;
 
 @Configuration
 @ComponentScan
@@ -52,7 +53,9 @@ public class SecurityConfiguration {
                     .antMatchers("/**").authenticated()
                     .anyRequest().authenticated()
                 .and()
-                
+                .securityContext()
+                    .securityContextRepository(new VaadinSessionSecurityContextRepository())
+                .and()
                 .sessionManagement()
                     .sessionFixation()
                         .migrateSession()

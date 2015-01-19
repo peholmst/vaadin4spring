@@ -111,7 +111,7 @@ public class LoginView extends VerticalLayout implements View {
                 */
                 
                 security.login(username.getValue(), password.getValue());
-                security.saveSecurityContextInSession(SecurityContextHolder.getContext(), http.getCurrentRequest(), http.getCurrentResponse());
+                //security.saveSecurityContextInSession(SecurityContextHolder.getContext(), http.getCurrentRequest(), http.getCurrentResponse());
                 // TODO Register Remember me Token
                 
                 // Redirect to Main Application
