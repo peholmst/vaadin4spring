@@ -13,9 +13,6 @@ target/
 *.springBeans
 
 # Vaadin
-spring-boot-sample/src/main/public/VAADIN/widgetsets
-spring-boot-sample/src/main/resources/VAADIN/themes/sample/styles.css
-samples/push-sample/src/main/resources/VAADIN/widgetsets
-samples/mvp-sample/src/main/webapp/VAADIN/widgetsets
-samples/security-sample/src/main/webapp/VAADIN/widgetsets
-samples/security-sample/src/main/webapp/VAADIN/themes/security/styles.css
+samples/*-sample/src/main/webapp/VAADIN/themes/*.css
+samples/*-sample/src/main/webapp/VAADIN/themes/**/*.css
+samples/*-sample/src/main/webapp/VAADIN/widgetsets/
