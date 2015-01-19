@@ -71,8 +71,10 @@ public class VaadinSessionSecurityContextRepository implements SecurityContextRe
         
         if ( vaadinSession != null ) {
             // VaadinSession Present
+            logger.debug("HAS VAADIN SESSION OBJECT");
             hasVaadinSession = true;
         } else {
+            logger.debug("NO VAADIN SESSION");
             HttpSession httpSession = request.getSession(false);
         }
 

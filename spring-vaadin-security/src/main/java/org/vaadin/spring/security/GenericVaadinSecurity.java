@@ -18,6 +18,7 @@ package org.vaadin.spring.security;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
@@ -30,6 +31,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Method;
@@ -46,6 +48,9 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    @Autowired
+    private SessionAuthenticationStrategy sessionStrategy;
+    
     /**
      * {@inheritDoc}
      */

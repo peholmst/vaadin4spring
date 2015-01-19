@@ -53,9 +53,11 @@ public class SecurityConfiguration {
                     .antMatchers("/**").authenticated()
                     .anyRequest().authenticated()
                 .and()
+                /*
                 .securityContext()
                     .securityContextRepository(new VaadinSessionSecurityContextRepository())
                 .and()
+                */
                 .sessionManagement()
                     .sessionFixation()
                         .migrateSession()

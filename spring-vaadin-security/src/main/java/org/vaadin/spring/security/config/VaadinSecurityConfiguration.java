@@ -123,14 +123,4 @@ public class VaadinSecurityConfiguration {
         }
 
     }
-
-    @Configuration
-    static class SecurityContextConfiguration extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
-        
-        @Override
-        public void configure(HttpSecurity builder) throws Exception {
-            builder.securityContext().securityContextRepository(new VaadinSessionSecurityContextRepository());
-        }
-        
-    }
 }
