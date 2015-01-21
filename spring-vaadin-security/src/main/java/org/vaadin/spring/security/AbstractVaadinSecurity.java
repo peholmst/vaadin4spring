@@ -24,6 +24,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.util.Assert;
 
 /**
@@ -40,6 +42,7 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
     private ApplicationContext applicationContext;
     private AuthenticationManager authenticationManager;
     private AccessDecisionManager accessDecisionManager;
+    private SessionAuthenticationStrategy sessionAuthenticationStrategy;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -60,9 +63,17 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
             accessDecisionManager = null;
             logger.warn("No AccessDecisionManager set! Some security methods will not be available.");
         }
+        
+        SessionAuthenticationStrategy sessionAuthStrategy;
+        try {
+            sessionAuthStrategy = applicationContext.getBean(SessionAuthenticationStrategy.class);
+        } catch(NoSuchBeanDefinitionException e) {
+            sessionAuthStrategy = new NullAuthenticatedSessionStrategy();
+        }
 
         this.authenticationManager = authenticationManager;
         this.accessDecisionManager = accessDecisionManager;
+        this.sessionAuthenticationStrategy = sessionAuthStrategy;
     }
 
     @Override
@@ -95,6 +106,14 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
     @Override
     public AccessDecisionManager getAccessDecisionManager() {
         return accessDecisionManager;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SessionAuthenticationStrategy getSessionAuthenticationStrategy() {
+        return sessionAuthenticationStrategy;
     }
 
     /**

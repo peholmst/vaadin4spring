@@ -18,6 +18,7 @@ package org.vaadin.spring.security;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
 /**
  * Interface which provides access to basic Security Context objects.
@@ -50,6 +51,14 @@ public interface VaadinSecurityContext {
      */
     AccessDecisionManager getAccessDecisionManager();
 
+    /**
+     * Get the configured {@link SessionAuthenticationStrategy}
+     * return {@link NullAuthenticatedSessionStrategy} if not configured
+     * 
+     * @return {@link SessionAuthenticationStrategy}
+     */
+    SessionAuthenticationStrategy getSessionAuthenticationStrategy();
+    
     /** 
      * Checks if the Security bean has an accessDecisionManager
      * 
