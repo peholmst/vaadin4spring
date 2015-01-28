@@ -17,6 +17,8 @@ import org.vaadin.spring.security.annotation.EnableVaadinSecurity;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
+    // TODO Spring-Boot-Actuator
+    
     @Configuration
     @EnableVaadinSecurity
     public static class WebSecurityConfig extends WebSecurityConfigurerAdapter {
