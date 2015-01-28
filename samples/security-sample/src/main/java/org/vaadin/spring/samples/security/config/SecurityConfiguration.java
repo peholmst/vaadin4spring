@@ -27,11 +27,12 @@ public class SecurityConfiguration {
             return super.authenticationManagerBean();
         }
         
+        // TODO Disable SpringSecurityFilterChain DefaultFilters (/css, /jsm /images)
         @Override
         public void configure(WebSecurity web) throws Exception {
             web
                 .ignoring()
-                    .antMatchers("/VAADIN/**", "/UIDL/**", "/HEARTBEAT/**", "/beans/**");
+                    .antMatchers("/VAADIN/**", "/UIDL/**", "/HEARTBEAT/**");
         }
         
         @Override
@@ -52,11 +53,6 @@ public class SecurityConfiguration {
                     .antMatchers("/**").authenticated()
                     .anyRequest().authenticated()
                 .and()
-                /*
-                .securityContext()
-                    .securityContextRepository(new VaadinSessionSecurityContextRepository())
-                .and()
-                */
                 .sessionManagement()
                     .sessionFixation()
                         .migrateSession()
