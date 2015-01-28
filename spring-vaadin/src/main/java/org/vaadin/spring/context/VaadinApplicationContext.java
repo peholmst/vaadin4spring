@@ -15,12 +15,12 @@ import org.vaadin.spring.events.EventBus;
  * <p>An VaadinApplicationContext provides:
  * <ul>
  * <li>Access to the Spring {@link org.springframework.context.ApplicationContext}.
- * <li>Access to the Vaadin {@link org.vaadin.spring.event.EventBus}
+ * <li>Access to the Vaadin {@link org.vaadin.spring.events.EventBus}
  * </ul> * 
  * 
  * @author G.J.R. Timmer
  * @see org.springframework.context.ApplicationContext
- * @see org.vaadin.spring.event.EventBus
+ * @see org.vaadin.spring.events.EventBus
  */
 public class VaadinApplicationContext implements InitializingBean, ApplicationContextAware {
 
@@ -29,36 +29,36 @@ public class VaadinApplicationContext implements InitializingBean, ApplicationCo
 	private static ApplicationContext context;
 	
 	/**
-	 * @see {@link import org.springframework.context.ApplicationContextAware}
-	 */
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		context = applicationContext;
-	}
+     * Return the spring {@link org.springframework.context.ApplicationContext}
+     * @return the spring {@link org.springframework.context.ApplicationContext}
+     */
+    public static ApplicationContext getContext() {
+        return context;
+    }
 
 	/**
-	 * @see {@link org.springframework.beans.factory.InitializingBean}
-	 */
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		
-		logger.debug("{} initialized", getClass().getName());
-		
-	}
+     * Return the Vaadin4Spring {@link org.vaadin.spring.events.EventBus}
+     * @return the Vaadin4Spring {@link org.vaadin.spring.events.EventBus}
+     */
+    public static EventBus getEventBus() {
+        return context.getBean(EventBus.class);
+    }
 	
 	/**
-	 * Return the spring {@link org.springframework.context.ApplicationContext}
-	 * @return the spring {@link org.springframework.context.ApplicationContext}
-	 */
-	public static ApplicationContext getContext() {
-		return context;
-	}
+     * @see {@link import org.springframework.context.ApplicationContextAware}
+     */
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        context = applicationContext;
+    }
 
 	/**
-	 * Return the Vaadin4Spring {@link org.vaadin.spring.events.EventBus}
-	 * @return the Vaadin4Spring {@link org.vaadin.spring.events.EventBus}
-	 */
-	public static EventBus getEventBus() {
-		return context.getBean(EventBus.class);
+     * @see {@link org.springframework.beans.factory.InitializingBean}
+     */
+    @Override
+    public void afterPropertiesSet() throws Exception {
+
+        logger.debug("{} initialized", getClass().getName());
+
 	}
 }
