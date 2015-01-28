@@ -1,7 +1,5 @@
 package org.vaadin.spring.samples.security.ui.login;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.annotation.VaadinUI;
 import org.vaadin.spring.navigator.SpringViewProvider;
@@ -11,7 +9,6 @@ import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
 
 @VaadinUI(path = "/login")
@@ -21,8 +18,6 @@ import com.vaadin.ui.UI;
 public class LoginUI extends UI {
 
     private static final long serialVersionUID = 5310014981075920878L;
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     
     @Autowired
     private SpringViewProvider ViewProvider;
@@ -33,11 +28,6 @@ public class LoginUI extends UI {
         Navigator navigator = new Navigator(this, this);
         navigator.addProvider(ViewProvider);
         setNavigator(navigator);
-        
-        if ( VaadinSession.getCurrent() != null ) {
-            logger.debug("HAS VAADIN SESSION");
-            
-        }
     }
 
 }
