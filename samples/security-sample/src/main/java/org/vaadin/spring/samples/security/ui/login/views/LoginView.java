@@ -1,7 +1,6 @@
 package org.vaadin.spring.samples.security.ui.login.views;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.navigator.annotation.VaadinView;
@@ -59,10 +58,6 @@ public class LoginView extends VerticalLayout implements View {
     @Override
     public void enter(ViewChangeEvent event) {
         username.focus();
-        
-        //security.login("user", "user");
-        //security.saveSecurityContextInSession(SecurityContextHolder.getContext(), http.getCurrentRequest(), http.getCurrentResponse());
-        //getUI().getPage().setLocation("/");
     }
 
     private Component buildLoginForm() {
@@ -105,13 +100,8 @@ public class LoginView extends VerticalLayout implements View {
 
             @Override
             public void buttonClick(final ClickEvent event) {
-                /*
-                DashboardEventBus.post(new UserLoginRequestedEvent(username
-                        .getValue(), password.getValue()));
-                */
                 
                 security.login(username.getValue(), password.getValue());
-                //security.saveSecurityContextInSession(SecurityContextHolder.getContext(), http.getCurrentRequest(), http.getCurrentResponse());
                 // TODO Register Remember me Token
                 
                 // Redirect to Main Application
