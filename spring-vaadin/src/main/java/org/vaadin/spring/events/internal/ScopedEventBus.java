@@ -86,6 +86,8 @@ public class ScopedEventBus implements EventBus, Serializable {
 
     @PreDestroy
     void destroy() {
+        logger.trace("Destroying event bus [{}] and removing all listeners", this);
+        listeners.clear();
         if (parentEventBus != null) {
             parentEventBus.unsubscribe(parentListener);
         }
@@ -187,6 +189,6 @@ public class ScopedEventBus implements EventBus, Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s[id=%d, eventScope=%s, parentEventBus=%s]", getClass().getSimpleName(), System.identityHashCode(this), eventScope, parentEventBus);
+        return String.format("%s[id=%x, eventScope=%s, parentEventBus=%s]", getClass().getSimpleName(), System.identityHashCode(this), eventScope, parentEventBus);
     }
 }
