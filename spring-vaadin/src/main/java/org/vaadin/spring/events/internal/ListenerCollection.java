@@ -109,6 +109,15 @@ class ListenerCollection implements Serializable {
     }
 
     /**
+     * Removes all {@link org.vaadin.spring.events.internal.ListenerCollection.Listener}s from the collection.
+     */
+    public void clear() {
+        synchronized (listeners) {
+            listeners.clear();
+        }
+    }
+
+    /**
      * Publishes the specified {@code event} to all {@link org.vaadin.spring.events.internal.ListenerCollection.Listener}s that support it.
      *
      * @param event the event to publish, never {@code null}.
