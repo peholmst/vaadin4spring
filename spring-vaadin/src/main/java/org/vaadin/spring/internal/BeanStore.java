@@ -36,29 +36,28 @@ public class BeanStore implements Serializable {
 
     private final Map<String, Runnable> destructionCallbacks = new ConcurrentHashMap<String, Runnable>();
 
-    private final String identification;
+    private final String name;
 
     private final DestructionCallback destructionCallback;
 
     private boolean destroyed = false;
 
-    public BeanStore(String identification, DestructionCallback destructionCallback) {
-        LOGGER.debug("Initializing scope for [{}]", identification);
-        this.identification = identification;
+    public BeanStore(String name, DestructionCallback destructionCallback) {
+        this.name = name;
         this.destructionCallback = destructionCallback;
     }
 
-    public BeanStore(String identification) {
-        this(identification, null);
+    public BeanStore(String name) {
+        this(name, null);
     }
 
 
     public Object get(String s, ObjectFactory<?> objectFactory) {
-        LOGGER.trace("Getting bean with name [{}]", s);
+        LOGGER.trace("Getting bean with name [{}] from [{}]", s, this);
         Object bean = objectMap.get(s);
         if (bean == null) {
-            LOGGER.trace("Bean with name [{}] not found in store, creating new", s);
             bean = create(s, objectFactory);
+            LOGGER.trace("Added bean [{}] with name [{}] to [{}]", bean, s, this);
             objectMap.put(s, bean);
         }
         return bean;
@@ -67,7 +66,7 @@ public class BeanStore implements Serializable {
     protected Object create(String s, ObjectFactory<?> objectFactory) {
         final Object bean = objectFactory.getObject();
         if (!(bean instanceof Serializable)) {
-            LOGGER.warn("Storing non-serializable bean [{}] with name [{}]", bean, s);
+            LOGGER.warn("Storing non-serializable bean [{}] with name [{}] in [{}]", bean, s, this);
         }
         return bean;
     }
@@ -78,16 +77,17 @@ public class BeanStore implements Serializable {
     }
 
     public void registerDestructionCallback(String s, Runnable runnable) {
-        LOGGER.trace("Registering destruction callback for bean with name [{}]", s);
+        LOGGER.trace("Registering destruction callback for bean with name [{}] in [{}]", s, this);
         destructionCallbacks.put(s, runnable);
     }
 
     public void destroy() {
         if (destroyed) {
+            LOGGER.trace("[{}] has already been destroyed, ignoring", this);
             return;
         }
         try {
-            LOGGER.debug("Destroying scope for [{}]", identification);
+            LOGGER.debug("Destroying [{}]", this);
             for (Runnable destructionCallback : destructionCallbacks.values()) {
                 destructionCallback.run();
             }
@@ -99,6 +99,11 @@ public class BeanStore implements Serializable {
         } finally {
             destroyed = true;
         }
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s[id=%x, name=%s]", getClass().getSimpleName(), System.identityHashCode(this), name);
     }
 
     /**

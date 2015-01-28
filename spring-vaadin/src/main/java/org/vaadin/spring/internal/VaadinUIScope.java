@@ -128,33 +128,7 @@ public class VaadinUIScope implements Scope, BeanFactoryPostProcessor {
             try {
                 UIStore uiStore = session.getAttribute(UIStore.class);
                 if (uiStore == null) {
-                    uiStore = new UIStore();
-                    session.setAttribute(UIStore.class, uiStore);
-                    final UIStore theStore = uiStore;
-                    session.getService().addSessionDestroyListener(new SessionDestroyListener() {
-                        @Override
-                        public void sessionDestroy(SessionDestroyEvent event) {
-                            if (event.getSession().equals(session)) {
-                                try {
-                                    LOGGER.debug("Vaadin session {} has been destroyed, destroying UI store {}", session, theStore);
-                                    theStore.destroy();
-                                } finally {
-                                    event.getService().removeSessionDestroyListener(this);
-                                }
-                            }
-                        }
-                    });
-                    session.getService().addServiceDestroyListener(new ServiceDestroyListener() {
-                        @Override
-                        public void serviceDestroy(ServiceDestroyEvent event) {
-                            try {
-                                LOGGER.debug("Vaadin service has been destroyed, destroying UI store {}", theStore);
-                                theStore.destroy();
-                            } finally {
-                                event.getSource().removeServiceDestroyListener(this);
-                            }
-                        }
-                    });
+                    uiStore = new UIStore(session);
                 }
                 return uiStore;
             } finally {
@@ -184,52 +158,79 @@ public class VaadinUIScope implements Scope, BeanFactoryPostProcessor {
         }
     }
 
-    static class UIStore implements Serializable {
+    static class UIStore implements SessionDestroyListener, ServiceDestroyListener, Serializable {
 
         private static final Logger LOGGER = LoggerFactory.getLogger(UIStore.class);
 
         private final Map<UIID, BeanStore> beanStoreMap = new ConcurrentHashMap<UIID, BeanStore>();
+        private final VaadinSession session;
+        private final String sessionId;
 
-        UIStore() {
+        UIStore(VaadinSession session) {
+            this.sessionId = session.getSession().getId();
+            this.session = session;
+            this.session.getService().addSessionDestroyListener(this);
+            this.session.getService().addServiceDestroyListener(this);
+            this.session.setAttribute(UIStore.class, this);
         }
 
         BeanStore getBeanStore(final UIID uiid) {
-            LOGGER.trace("Getting bean store for UI ID [{}]", uiid);
             BeanStore beanStore = beanStoreMap.get(uiid);
             if (beanStore == null) {
-                LOGGER.trace("Bean store for UI ID [{}] not found, creating new", uiid);
-                beanStore = new UIBeanStore("UI " + uiid, new BeanStore.DestructionCallback() {
+                beanStore = new UIBeanStore(uiid, new BeanStore.DestructionCallback() {
                     @Override
                     public void beanStoreDestoyed(BeanStore beanStore) {
                         removeBeanStore(uiid);
                     }
                 });
+                LOGGER.trace("Added [{}] to [{}]", beanStore, this);
                 beanStoreMap.put(uiid, beanStore);
             }
             return beanStore;
         }
 
         void removeBeanStore(UIID uiid) {
-            LOGGER.trace("Removing bean store for UI ID [{}]", uiid);
-            beanStoreMap.remove(uiid);
+            BeanStore removed = beanStoreMap.remove(uiid);
+            if (removed != null) {
+                LOGGER.trace("Removed [{}] from [{}]", removed, this);
+            }
         }
 
         void destroy() {
+            LOGGER.trace("Destroying [{}]", this);
+            session.setAttribute(BeanStore.class, null);
+            session.getService().removeSessionDestroyListener(this);
+            session.getService().removeServiceDestroyListener(this);
             for (BeanStore beanStore : new HashSet<BeanStore>(beanStoreMap.values())) {
                 beanStore.destroy();
             }
             Assert.isTrue(beanStoreMap.isEmpty(), "beanStore should have been emptied by the destruction callbacks");
         }
+
+        @Override
+        public void serviceDestroy(ServiceDestroyEvent event) {
+            LOGGER.debug("Vaadin service has been destroyed, destroying [{}]", this);
+            destroy();
+        }
+
+        @Override
+        public void sessionDestroy(SessionDestroyEvent event) {
+            if (event.getSession().equals(session)) {
+                LOGGER.debug("Vaadin session has been destroyed, destroying [{}]", this);
+                destroy();
+            }
+        }
+
+        @Override
+        public String toString() {
+            return String.format("%s[id=%x, sessionId=%s]", getClass().getSimpleName(), System.identityHashCode(this), sessionId);
+        }
     }
 
     static class UIBeanStore extends BeanStore implements ClientConnector.DetachListener {
 
-        public UIBeanStore(String identification, DestructionCallback destructionCallback) {
-            super(identification, destructionCallback);
-        }
-
-        public UIBeanStore(String identification) {
-            super(identification);
+        UIBeanStore(UIID uuid, DestructionCallback destructionCallback) {
+            super(uuid.toString(), destructionCallback);
         }
 
         @Override
@@ -243,6 +244,7 @@ public class VaadinUIScope implements Scope, BeanFactoryPostProcessor {
 
         @Override
         public void detach(ClientConnector.DetachEvent event) {
+            LOGGER.debug("UI [{}] has been detached, destroying [{}]", event.getSource(), this);
             destroy();
         }
     }
