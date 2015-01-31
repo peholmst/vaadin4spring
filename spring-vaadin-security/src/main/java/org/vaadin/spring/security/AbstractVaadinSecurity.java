@@ -24,6 +24,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.util.Assert;
@@ -43,6 +45,8 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
     private AuthenticationManager authenticationManager;
     private AccessDecisionManager accessDecisionManager;
     private SessionAuthenticationStrategy sessionAuthenticationStrategy;
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
+    private AuthenticationFailureHandler authenticationFailureHandler;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -74,6 +78,10 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
         this.authenticationManager = authenticationManager;
         this.accessDecisionManager = accessDecisionManager;
         this.sessionAuthenticationStrategy = sessionAuthStrategy;
+        
+        // Setup Authentication Handlers
+        this.authenticationSuccessHandler = null;
+        this.authenticationFailureHandler = null;
     }
 
     @Override
@@ -121,5 +129,55 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
      */
     public boolean hasAccessDecisionManager() {
         return (accessDecisionManager != null);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addAuthenticationSuccessHandler(AuthenticationSuccessHandler handler) {
+        this.authenticationSuccessHandler = handler;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean hasAuthenticationSuccessHandlerConfigured() {
+        return (this.authenticationSuccessHandler != null ? true : false);
+    }
+    
+    /**
+     * Get the authentication success handler
+     * 
+     * @return {@link AuthenticationSuccessHandler} if configured else return <code>null</code>
+     */
+    protected AuthenticationSuccessHandler getAuthenticationSuccessHandler() {
+        return this.authenticationSuccessHandler;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addAuthenticationFailureHandler(AuthenticationFailureHandler handler) {
+        this.authenticationFailureHandler = handler;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean hasAuthenticationFailureHandlerConfigured() {
+        return (this.authenticationFailureHandler != null ? true : false);
+    }
+    
+    /**
+     * Get the authentication failure handler
+     * 
+     * @return {@link AuthenticationFailureHandler} if configured else return <code>null</code>
+     */
+    protected AuthenticationFailureHandler getAuthenticationFailureHandler() {
+        return this.authenticationFailureHandler;
     }
 }
