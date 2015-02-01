@@ -33,6 +33,8 @@ import org.springframework.security.web.WebAttributes;
  */
 public class VaadinUrlAuthenticationSuccessHandler extends AbstractVaadinAuthenticationTargetUrlRequestHandler implements VaadinAuthenticationSuccessHandler {
 
+    public VaadinUrlAuthenticationSuccessHandler() {}
+    
     public VaadinUrlAuthenticationSuccessHandler(String defaultTargetUrl) {
         setDefaultTargetUrl(defaultTargetUrl);
     }
