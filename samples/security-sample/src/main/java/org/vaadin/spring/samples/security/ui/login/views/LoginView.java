@@ -16,6 +16,7 @@
 package org.vaadin.spring.samples.security.ui.login.views;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.AuthenticationException;
 import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.navigator.annotation.VaadinView;
@@ -116,14 +117,28 @@ public class LoginView extends VerticalLayout implements View {
             @Override
             public void buttonClick(final ClickEvent event) {
                 
-                security.login(username.getValue(), password.getValue());
+                try {
+                    
+                    security.login(username.getValue(), password.getValue());
+                    
+                } catch(AuthenticationException e) {
+                    e.printStackTrace();
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
                 // TODO Register Remember me Token
                 
-                // Redirect to Main Application
-                getUI().getPage().setLocation("/");
-                
+                /*
+                 * Redirect is handled by the VaadinRedirectStrategy
+                 * User is redirected to either always the default
+                 * or the URL the user request before authentication
+                 * 
+                 * Strategy is configured within SecurityConfiguration
+                 * Defaults to User request URL.
+                 */
             }
         });
+        
         return fields;
     }
 
