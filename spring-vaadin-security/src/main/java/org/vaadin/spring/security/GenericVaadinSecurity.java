@@ -35,12 +35,10 @@ import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.util.Assert;
 import org.vaadin.spring.http.HttpService;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -90,9 +88,10 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
 
     /**
      * {@inheritDoc}
+     * @throws Exception
      */
     @Override
-    public void login(Authentication authentication) throws AuthenticationException, IOException, ServletException {
+    public void login(Authentication authentication) throws AuthenticationException, Exception {
         
         // Ensure SecurityContext is never null
         SecurityContext context = SecurityContextHolder.getContext();
@@ -115,7 +114,7 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
              * Process AuthenticationSuccessHandler if configured
              */
             if ( hasAuthenticationSuccessHandlerConfigured() ) {
-                getAuthenticationSuccessHandler().onAuthenticationSuccess(request, response, authentication);
+                getAuthenticationSuccessHandler().onAuthenticationSuccess(authentication);
             }
             
         } catch(AuthenticationException e) {
@@ -135,7 +134,7 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
              * Process AuthenticationFailureHandler if configured
              */
             if ( hasAuthenticationFailureHandlerConfigured() ) {
-                getAuthenticationFailureHandler().onAuthenticationFailure(request, response, e);
+                getAuthenticationFailureHandler().onAuthenticationFailure(e);
             } else {
                 throw e;
             }
@@ -162,7 +161,7 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
      * {@inheritDoc}
      */
     @Override
-    public void login(String username, String password) throws AuthenticationException, IOException, ServletException {
+    public void login(String username, String password) throws AuthenticationException, Exception {
         login(new UsernamePasswordAuthenticationToken(username, password));
     }
 
