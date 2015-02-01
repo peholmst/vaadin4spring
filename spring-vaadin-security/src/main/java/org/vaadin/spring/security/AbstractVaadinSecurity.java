@@ -29,6 +29,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.util.Assert;
+import org.vaadin.spring.security.web.authentication.VaadinAuthenticationFailureHandler;
+import org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccessHandler;
 
 /**
  * Abstract implementation for the {@link org.vaadin.spring.security.VaadinSecurity}
@@ -45,8 +47,8 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
     private AuthenticationManager authenticationManager;
     private AccessDecisionManager accessDecisionManager;
     private SessionAuthenticationStrategy sessionAuthenticationStrategy;
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
-    private AuthenticationFailureHandler authenticationFailureHandler;
+    private VaadinAuthenticationSuccessHandler authenticationSuccessHandler;
+    private VaadinAuthenticationFailureHandler authenticationFailureHandler;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -135,7 +137,7 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
      * {@inheritDoc}
      */
     @Override
-    public void addAuthenticationSuccessHandler(AuthenticationSuccessHandler handler) {
+    public void addAuthenticationSuccessHandler(VaadinAuthenticationSuccessHandler handler) {
         this.authenticationSuccessHandler = handler;
     }
     
@@ -152,7 +154,7 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
      * 
      * @return {@link AuthenticationSuccessHandler} if configured else return <code>null</code>
      */
-    protected AuthenticationSuccessHandler getAuthenticationSuccessHandler() {
+    protected VaadinAuthenticationSuccessHandler getAuthenticationSuccessHandler() {
         return this.authenticationSuccessHandler;
     }
     
@@ -160,7 +162,7 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
      * {@inheritDoc}
      */
     @Override
-    public void addAuthenticationFailureHandler(AuthenticationFailureHandler handler) {
+    public void addAuthenticationFailureHandler(VaadinAuthenticationFailureHandler handler) {
         this.authenticationFailureHandler = handler;
     }
     
@@ -177,7 +179,7 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
      * 
      * @return {@link AuthenticationFailureHandler} if configured else return <code>null</code>
      */
-    protected AuthenticationFailureHandler getAuthenticationFailureHandler() {
+    protected VaadinAuthenticationFailureHandler getAuthenticationFailureHandler() {
         return this.authenticationFailureHandler;
     }
 }

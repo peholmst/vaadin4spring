@@ -21,6 +21,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.vaadin.spring.security.web.authentication.VaadinAuthenticationFailureHandler;
+import org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccessHandler;
 
 /**
  * Interface which provides access to basic Security Context objects.
@@ -73,7 +75,7 @@ public interface VaadinSecurityContext {
      * <br><br>
      * Set to <code>null</code> to deactivate
      */
-    void addAuthenticationSuccessHandler(AuthenticationSuccessHandler handler);
+    void addAuthenticationSuccessHandler(VaadinAuthenticationSuccessHandler handler);
     
     /**
      * Check if {@link AuthenticationSuccessHandler} is configured
@@ -87,7 +89,7 @@ public interface VaadinSecurityContext {
      * <br><br>
      * Set to <code>null</code> to deactivate
      */
-    void addAuthenticationFailureHandler(AuthenticationFailureHandler handler);
+    void addAuthenticationFailureHandler(VaadinAuthenticationFailureHandler handler);
     
     /**
      * Check if {@link AuthenticationFailureHandler} is configured
