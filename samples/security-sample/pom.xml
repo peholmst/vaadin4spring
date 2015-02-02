@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>security-sample</artifactId>
-    <name>Vaadin4Spring Samples - Security-SingleUI</name>
+    <name>Vaadin4Spring Samples - Security-MultiUI</name>
     <packaging>jar</packaging>
 
     <properties>
@@ -72,13 +72,6 @@
             <artifactId>spring-vaadin-security</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- 
-        <dependency>
-            <groupId>org.vaadin.spring</groupId>
-            <artifactId>spring-vaadin-security</artifactId> 
-            <version>${spring4vaadin.version}</version>
-        </dependency> 
-        -->
         <dependency>
             <groupId>org.vaadin.spring</groupId>
             <artifactId>spring-vaadin-mvp</artifactId>
