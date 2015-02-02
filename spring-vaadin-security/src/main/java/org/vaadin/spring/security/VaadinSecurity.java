@@ -63,8 +63,16 @@ public interface VaadinSecurity extends VaadinSecurityContext {
     void login(String username, String password) throws AuthenticationException, Exception;
 
     /**
-     * Logs the user out, clearing the {@link org.springframework.security.core.context.SecurityContext} without
-     * invalidating the session.
+     * Set the logout processing URL, defaults to '/logout'.
+     * This property should match the configured value with HttpSecurity configuration.
+     * 
+     * @param logoutUrl the use url at which the logout is configured with HttpSecurity
+     */
+    void setLogoutProcessingUrl(String logoutUrl);
+    
+    /**
+     * Logs the user out, and have Spring-Security handle the logout with the configured
+     * LogoutConfigurer of the HttpSecurity.
      */
     void logout();
 

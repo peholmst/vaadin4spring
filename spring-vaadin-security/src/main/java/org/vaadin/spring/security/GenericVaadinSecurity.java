@@ -34,6 +34,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.util.Assert;
 import org.vaadin.spring.http.HttpService;
+import org.vaadin.spring.security.web.VaadinRedirectStrategy;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -69,6 +70,7 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private String springSecurityContextKey = SPRING_SECURITY_CONTEXT_KEY;
+    private String logoutProcessingUrl = "/logout";
     
     /**
      * Current {@link HttpServletRequest} and {@link HttpServletResponse} are
@@ -76,6 +78,9 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
      */
     @Autowired
     private HttpService httpRequestResponseHolder;
+    
+    @Autowired
+    private VaadinRedirectStrategy redirectStrategy;
     
     /**
      * {@inheritDoc}
@@ -169,9 +174,21 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
      * {@inheritDoc}
      */
     @Override
+    public void setLogoutProcessingUrl(String logoutUrl) {
+        logoutProcessingUrl = logoutUrl;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void logout() {
-        final SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(null);
+        
+        /*
+         * Redirect user to the logout URL and have the configured LogoutFilter
+         * with {@link LogoutHandlers} handle the logout.
+         */
+        redirectStrategy.sendRedirect(logoutProcessingUrl);
     }
 
     /**
