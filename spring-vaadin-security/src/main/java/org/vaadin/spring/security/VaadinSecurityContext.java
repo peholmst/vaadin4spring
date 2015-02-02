@@ -18,7 +18,11 @@ package org.vaadin.spring.security;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.vaadin.spring.security.web.authentication.VaadinAuthenticationFailureHandler;
+import org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccessHandler;
 
 /**
  * Interface which provides access to basic Security Context objects.
@@ -65,4 +69,32 @@ public interface VaadinSecurityContext {
      * @return true if the Security bean has an accessDecisionManager
      */
     boolean hasAccessDecisionManager();
+    
+    /**
+     * Add {@link AuthenticationSuccessHandler}
+     * <br><br>
+     * Set to <code>null</code> to deactivate
+     */
+    void addAuthenticationSuccessHandler(VaadinAuthenticationSuccessHandler handler);
+    
+    /**
+     * Check if {@link AuthenticationSuccessHandler} is configured
+     * <br><br>
+     * @return <code>true</code> if configured, else <code>false</code>
+     */
+    boolean hasAuthenticationSuccessHandlerConfigured();
+    
+    /**
+     * Add {@link AuthenticationFailureHandler}
+     * <br><br>
+     * Set to <code>null</code> to deactivate
+     */
+    void addAuthenticationFailureHandler(VaadinAuthenticationFailureHandler handler);
+    
+    /**
+     * Check if {@link AuthenticationFailureHandler} is configured
+     * <br><br>
+     * @return <code>true</code> if configured, else <code>false</code>
+     */
+    boolean hasAuthenticationFailureHandlerConfigured();
 }

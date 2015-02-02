@@ -15,6 +15,10 @@
  */
 package org.vaadin.spring.security;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
@@ -42,8 +46,9 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      *
      * @param authentication the authentication object to authenticate, must not be {@code null}.
      * @throws org.springframework.security.core.AuthenticationException if authentication fails.
+     * @throws Exception 
      */
-    void login(Authentication authentication) throws AuthenticationException;
+    void login(Authentication authentication) throws AuthenticationException, Exception;
 
     /**
      * Convenience method that invokes {@link #login(org.springframework.security.core.Authentication)} with a
@@ -52,8 +57,10 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * @param username the username to use, must not be {@code null}.
      * @param password the password to use, must not be {@code null}.
      * @throws AuthenticationException if authentication fails.
+     * @throws ServletException if Authentication{Success/Failure}Handler fails
+     * @throws IOException if Authentication{Success/Failure}Handler fails
      */
-    void login(String username, String password) throws AuthenticationException;
+    void login(String username, String password) throws AuthenticationException, Exception;
 
     /**
      * Logs the user out, clearing the {@link org.springframework.security.core.context.SecurityContext} without

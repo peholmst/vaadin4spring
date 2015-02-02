@@ -15,6 +15,8 @@
  */
 package org.vaadin.spring.samples.security.config;
 
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +27,15 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.RequestCacheAwareFilter;
+import org.vaadin.spring.security.VaadinSecurityContext;
 import org.vaadin.spring.security.annotation.EnableVaadinSecurity;
+import org.vaadin.spring.security.web.VaadinDefaultRedirectStrategy;
+import org.vaadin.spring.security.web.VaadinRedirectStrategy;
+import org.vaadin.spring.security.web.authentication.SavedRequestAwareVaadinAuthenticationSuccessHandler;
+import org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccessHandler;
 
 @Configuration
 @ComponentScan
@@ -36,12 +46,65 @@ public class SecurityConfiguration {
     
     @Configuration
     @EnableVaadinSecurity
-    public static class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    public static class WebSecurityConfig extends WebSecurityConfigurerAdapter implements InitializingBean {
         
-        @Bean(name="authenticationManager")
+        @Autowired
+        private VaadinSecurityContext vaadinSecurityContext;
+
+        /*
+         * (non-Javadoc)
+         * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+         * 
+         * Configure the redirectSaveHandler bean as a VaadinAuthenticationSuccessHandler
+         */
+        @Override
+        public void afterPropertiesSet() throws Exception {
+            this.vaadinSecurityContext.addAuthenticationSuccessHandler(redirectSaveHandler());
+        }
+        
+        @Bean(name = "authenticationManager")
         @Override
         public AuthenticationManager authenticationManagerBean() throws Exception {
             return super.authenticationManagerBean();
+        }
+
+        /*
+         * The HttpSessionRequestCache is where the initial request before
+         * redirect to the login is cached so it can be used after successful login
+         */
+        @Bean
+        public RequestCache requestCache() {
+            RequestCache requestCache = new HttpSessionRequestCache();
+            return requestCache;
+        }
+
+        /*
+         * The RequestCacheAwareFilter is responsible for storing the initial request
+         */
+        @Bean
+        public RequestCacheAwareFilter requestCacheAwareFilter() {
+            RequestCacheAwareFilter filter = new RequestCacheAwareFilter(requestCache());
+            return filter;
+        }
+
+        /*
+         * The VaadinRedirectStategy
+         */
+        @Bean
+        public VaadinRedirectStrategy vaadinRedirectStrategy() {
+            return new VaadinDefaultRedirectStrategy();
+        }
+
+        @Bean
+        public VaadinAuthenticationSuccessHandler redirectSaveHandler() {
+            SavedRequestAwareVaadinAuthenticationSuccessHandler handler = new SavedRequestAwareVaadinAuthenticationSuccessHandler();
+
+            handler.setRedirectStrategy(vaadinRedirectStrategy());
+            handler.setRequestCache(requestCache());
+            handler.setDefaultTargetUrl("/");
+            handler.setTargetUrlParameter("r");
+
+            return handler;
         }
         
         // TODO Disable SpringSecurityFilterChain DefaultFilters (/css, /jsm /images)
@@ -80,6 +143,8 @@ public class SecurityConfiguration {
                 .exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
             
         }
+
+        
         
     }
     

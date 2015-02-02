@@ -88,12 +88,17 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
 
     /**
      * {@inheritDoc}
+     * @throws Exception
      */
     @Override
-    public void login(Authentication authentication) throws AuthenticationException {
+    public void login(Authentication authentication) throws AuthenticationException, Exception {
         
         // Ensure SecurityContext is never null
         SecurityContext context = SecurityContextHolder.getContext();
+        
+        // Retrieve HttpServletRequest / HttpServletResponse from RequestScope
+        HttpServletRequest request = httpRequestResponseHolder.getCurrentRequest();
+        HttpServletResponse response = httpRequestResponseHolder.getCurrentResponse();
         
         try {
             
@@ -103,9 +108,14 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
             /*
              * Signal the SessionAuthenticationStrategy of the login
              */
-            HttpServletRequest request = httpRequestResponseHolder.getCurrentRequest();
-            HttpServletResponse response = httpRequestResponseHolder.getCurrentResponse();
             getSessionAuthenticationStrategy().onAuthentication(fullyAuthenticated, request, response);
+            
+            /*
+             * Process AuthenticationSuccessHandler if configured
+             */
+            if ( hasAuthenticationSuccessHandlerConfigured() ) {
+                getAuthenticationSuccessHandler().onAuthenticationSuccess(authentication);
+            }
             
         } catch(AuthenticationException e) {
             
@@ -114,10 +124,20 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
              * {@link LockedException}              -> Optional
              * {@link BadCredentialsException}      -> Required
              * 
-             * Clear SecurityContext and throw the AuthenticationException
+             * Clear SecurityContext and handler Authentication Failure
+             * If AuthenticationFailureHandler is configured, use it else
+             * throw {@link AuthenticationFailureHandler}
              */
             context = generateNewContext();
-            throw e;
+            
+            /*
+             * Process AuthenticationFailureHandler if configured
+             */
+            if ( hasAuthenticationFailureHandlerConfigured() ) {
+                getAuthenticationFailureHandler().onAuthenticationFailure(e);
+            } else {
+                throw e;
+            }
             
         } finally {
             
@@ -141,7 +161,7 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
      * {@inheritDoc}
      */
     @Override
-    public void login(String username, String password) throws AuthenticationException {
+    public void login(String username, String password) throws AuthenticationException, Exception {
         login(new UsernamePasswordAuthenticationToken(username, password));
     }
 
