@@ -33,7 +33,6 @@ import org.vaadin.spring.http.HttpResponseFactory;
 import org.vaadin.spring.http.HttpResponseFilter;
 import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.http.VaadinHttpService;
-import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.internal.VaadinSessionScope;
 import org.vaadin.spring.internal.VaadinUIScope;
 import org.vaadin.spring.navigator.SpringViewProvider;
@@ -60,11 +59,6 @@ public class VaadinConfiguration implements ApplicationContextAware {
     @Bean
     static VaadinUIScope vaadinUIScope() {
         return new VaadinUIScope();
-    }
-
-    @Bean
-    I18N i18n() {
-        return new I18N(applicationContext);
     }
 
     @Bean
