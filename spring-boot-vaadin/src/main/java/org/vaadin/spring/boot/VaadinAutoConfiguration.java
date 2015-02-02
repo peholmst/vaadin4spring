@@ -42,6 +42,7 @@ public class VaadinAutoConfiguration {
     @EnableVaadin
     @Import(StaticContentVaadinServletConfiguration.class)
     static class EnableVaadinConfiguration implements InitializingBean {
+        
         @Override
         public void afterPropertiesSet() throws Exception {
             logger.debug("{} initialized", getClass().getName());
@@ -52,6 +53,7 @@ public class VaadinAutoConfiguration {
     @EnableVaadinServlet
     @ConditionalOnMissingClass(name = "org.vaadin.spring.touchkit.TouchKitUI")
     static class EnableVaadinServletConfiguration implements InitializingBean {
+        
         @Override
         public void afterPropertiesSet() throws Exception {
             logger.debug("{} initialized", getClass().getName());
