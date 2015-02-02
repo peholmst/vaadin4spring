@@ -32,6 +32,8 @@ import org.vaadin.spring.security.VaadinSecurity;
 import org.vaadin.spring.security.provider.PreAuthorizeViewProviderAccessDelegate;
 import org.vaadin.spring.security.provider.SecuredViewProviderAccessDelegate;
 import org.vaadin.spring.security.support.VaadinSecurityAwareProcessor;
+import org.vaadin.spring.security.web.VaadinDefaultRedirectStrategy;
+import org.vaadin.spring.security.web.VaadinRedirectStrategy;
 
 /**
  * Spring configuration for setting up the Spring Security integration.
@@ -50,6 +52,7 @@ public class VaadinSecurityConfiguration {
         public static final String CURRENT_USER                     = "currentUser";
         public static final String ACCESS_DECISION_MANAGER          = "accessDecisionManager";
         public static final String AUTHENTICATION_MANAGER           = "authenticationManager";
+        public static final String VAADIN_REDIRECT_STRATEGY         = "vaadinRedirectStrategy";
 
     }
 
@@ -72,6 +75,11 @@ public class VaadinSecurityConfiguration {
 
     }
 
+    @Bean(name = Beans.VAADIN_REDIRECT_STRATEGY)
+    VaadinRedirectStrategy vaadinRedirectStrategy() {
+        return new VaadinDefaultRedirectStrategy();
+    }
+    
     @Bean(name = Beans.VAADIN_SECURITY)
     VaadinSecurity vaadinSecurity() {
         return new GenericVaadinSecurity();
