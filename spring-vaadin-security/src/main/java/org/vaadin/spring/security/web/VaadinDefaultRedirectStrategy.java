@@ -55,7 +55,6 @@ public class VaadinDefaultRedirectStrategy implements VaadinRedirectStrategy {
         }
 
         // Change to Vaadin Redirect
-        //response.sendRedirect(redirectUrl);
         UI.getCurrent().getPage().setLocation(redirectUrl);
     }
     
