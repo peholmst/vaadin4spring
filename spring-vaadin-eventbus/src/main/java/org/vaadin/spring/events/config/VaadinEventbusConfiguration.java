@@ -24,6 +24,7 @@ import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusScope;
 import org.vaadin.spring.events.internal.ScopedEventBus;
+import org.vaadin.spring.events.support.VaadinEventBusAwareProcessor;
 import org.vaadin.spring.internal.VaadinSessionScope;
 import org.vaadin.spring.internal.VaadinUIScope;
 
@@ -35,7 +36,12 @@ import org.vaadin.spring.internal.VaadinUIScope;
  */
 @Configuration
 public class VaadinEventbusConfiguration {
-
+    
+    @Bean
+    VaadinEventBusAwareProcessor vaadinEventBusProcessor() {
+        return new VaadinEventBusAwareProcessor();
+    }
+    
     @Bean
     @EventBusScope(EventScope.APPLICATION)
     EventBus applicationEventBus() {
