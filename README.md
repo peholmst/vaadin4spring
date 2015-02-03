@@ -127,11 +127,19 @@ Please see the JavaDocs and the sample application for more information.
 
 ## The Event Bus ##
 
-The event bus has its own README, you can find it [here](spring-vaadin/src/main/java/org/vaadin/spring/events/README.md).
+An Event Bus is oftend used to communicate change of state within the whole
+application or just within the UI.  Vaadin4Spring provides a addon for this
+usecase.
 
-## Internationalization ##
+More information can be found [here](spring-vaadin-eventbus/README.md).
 
-The internationalization support has its own README, you can find it [here](spring-vaadin/src/main/java/org/vaadin/spring/i18n/README.md).
+## Internationalization (i18n) ##
+
+Internationalization in a Vaadin4Spring application is very much handled by
+the I18N features of Spring itself. However, to make it a bit easier to use,
+there is an addon, that provides a helper.
+
+More information can be found [here](spring-vaadin-i18n/README.md).
 
 ## TouchKit Support ##
 
@@ -152,10 +160,6 @@ If you want to customize the TouchKit servlet, extend
 ```org.vaadin.spring.touchkit.servlet.SpringAwareTouchKitServlet``` and make it available as a Spring bean.
 
 Finally, please note that TouchKit is a commercial Vaadin product. It can, however, also be used in AGPL projects.
-
-## i18n ##
-This package contains some classes to make it easier to work with internationalization. They are not related to Vaadin, but might still be useful in applications that use Vaadin4Spring.
-More information can be found [here](spring-vaadin-i18n/README.md).
 
 ## Sidebar ##
 The side bar can be used as a main menu in applications with many views. It is implemented as a Vaadin accordion and divided into sections. Every section contains clickable menu items. Both sections and menu items are added declaratively using annotations.
