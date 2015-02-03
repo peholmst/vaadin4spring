@@ -21,7 +21,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.vaadin.spring.events.EventBus;
 
 /**
  * VaadinApplicationContext allows static access to the {@link org.springframework.context.ApplicationContext}.
@@ -49,14 +48,6 @@ public class VaadinApplicationContext implements InitializingBean, ApplicationCo
      */
     public static ApplicationContext getContext() {
         return context;
-    }
-
-	/**
-     * Return the Vaadin4Spring {@link org.vaadin.spring.events.EventBus}
-     * @return the Vaadin4Spring {@link org.vaadin.spring.events.EventBus}
-     */
-    public static EventBus getEventBus() {
-        return context.getBean(EventBus.class);
     }
 	
 	/**
