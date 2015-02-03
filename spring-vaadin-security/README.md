@@ -97,3 +97,55 @@ public class Dummy implements VaadinSecurityAware {
 ...
 }
 ```
+
+## Remember Me ##
+
+Implementation Notice:<br>
+When implementing remember me functionality the ```RememberMeServices``` bean has to be created before the ```@EnableVaadinSecurity```. The ```VaadinSecurity``` object has a non-required dependency on ```RememberMeServices```. If a ```RememberMeServices``` bean is found and created within the ```@Configuration``` class which has ```@EnableVaadinSecurity``` on it, you could end up with an exception because the ```@EnableVaadinSecurity``` creates the ```VaadinSecurity``` object and the ```RememeberServices``` bean might be created after the annotation.
+
+The following configuration will not work, because the ```RememberMeServices``` bean is created within the class which has ```@EnableVaadinSecurity``` on it.
+
+
+```java
+@Configuration
+@ComponentScan
+public class SecurityConfiguration {
+
+    ...
+
+    @Configuration
+    @EnableVaadinSecurity
+    public static class WebSecurityConfig extends WebSecurityConfigurerAdapter implements InitializingBean {
+
+        @Autowired
+        private VaadinSecurityContext vaadinSecurityContext;
+
+        @Autowired
+        private VaadinRedirectStrategy redirectStrategy;
+
+        @Autowired
+        JdbcUserDetailsService userDetailsService;
+
+        @Autowired
+        DataSource dataSource;
+	
+	    @Bean
+	    public PersistentTokenRepository jdbcTokenRepository() {
+	        JdbcTokenRepositoryImpl repository = new JdbcTokenRepositoryImpl();
+	        repository.setCreateTableOnStartup(false);
+	        repository.setDataSource(dataSource);
+	        return repository;
+	    }
+	
+	    @Bean
+	    public RememberMeServices persistentTokenBasedRememberMeServices() {
+	        VaadinPersistentTokenBasedRememberMeServices services = new VaadinPersistentTokenBasedRememberMeServices(
+	                "vaadin4spring",
+	                userDetailsService,
+	                jdbcTokenRepository());
+	        services.setCookieName("REMEMBERME");
+	        return services;
+	    }
+
+    ...
+```

@@ -45,6 +45,19 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * will return without exceptions.
      *
      * @param authentication the authentication object to authenticate, must not be {@code null}.
+     * @param rememberMe boolean to indicate if remember me authentication should be activated
+     * @throws org.springframework.security.core.AuthenticationException if authentication fails.
+     * @throws Exception 
+     */
+    void login(Authentication authentication, boolean rememberMe) throws AuthenticationException, Exception;
+    
+    /**
+     * Tries to login using the specified authentication object. If authentication succeeds, this method
+     * will return without exceptions.
+     * <p>
+     * Remember Me authentication is ignored
+     *
+     * @param authentication the authentication object to authenticate, must not be {@code null}.
      * @throws org.springframework.security.core.AuthenticationException if authentication fails.
      * @throws Exception 
      */
@@ -54,6 +67,21 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * Convenience method that invokes {@link #login(org.springframework.security.core.Authentication)} with a
      * {@link org.springframework.security.authentication.UsernamePasswordAuthenticationToken}-object.
      *
+     * @param username the username to use, must not be {@code null}.
+     * @param password the password to use, must not be {@code null}.
+     * @param rememberMe boolean to set remember me authentication
+     * @throws AuthenticationException if authentication fails.
+     * @throws ServletException if Authentication{Success/Failure}Handler fails
+     * @throws IOException if Authentication{Success/Failure}Handler fails
+     */
+    void login(String username, String password, boolean rememberMe) throws AuthenticationException, Exception;
+    
+    /**
+     * Convenience method that invokes {@link #login(org.springframework.security.core.Authentication)} with a
+     * {@link org.springframework.security.authentication.UsernamePasswordAuthenticationToken}-object.
+     * <p>
+     * Remember me authentication is ignored
+     * 
      * @param username the username to use, must not be {@code null}.
      * @param password the password to use, must not be {@code null}.
      * @throws AuthenticationException if authentication fails.
