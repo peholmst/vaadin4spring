@@ -2,4 +2,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 org.vaadin.spring.boot.VaadinAutoConfiguration,\
 org.vaadin.spring.boot.VaadinSecurityAutoConfiguration,\
-org.vaadin.spring.boot.VaadinI18NAutoConfiguration
+org.vaadin.spring.boot.VaadinI18NAutoConfiguration,\
+org.vaadin.spring.boot.VaadinEventBusAutoConfiguration
