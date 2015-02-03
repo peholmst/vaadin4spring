@@ -15,21 +15,25 @@
  */
 package org.vaadin.spring.i18n.annotation;
 
-import org.springframework.context.annotation.Import;
-import org.vaadin.spring.i18n.config.CompositeMessageSourceConfiguration;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.lang.annotation.*;
+import org.springframework.context.annotation.Import;
+import org.vaadin.spring.i18n.config.VaadinI18NConfiguration;
 
 /**
- * Add this annotation to your application configuration to enable the {@link org.vaadin.spring.i18n.CompositeMessageSource}.
- * Please note that you also have to define {@link org.vaadin.spring.i18n.MessageProvider}s that can feed the message source with messages.
- * You can use {@link org.vaadin.spring.i18n.ResourceBundleMessageProvider} or implement your own.
+ * Add this annotation to your application configuration to enable the {@link I18N} internationalization support.
+ * 
+ * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  *
- * @author Petter Holmström (petter@vaadin.com)
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(CompositeMessageSourceConfiguration.class)
-public @interface EnableCompositeMessageSource {
+@Import(VaadinI18NConfiguration.class)
+public @interface EnableVaadinI18N {
+
 }

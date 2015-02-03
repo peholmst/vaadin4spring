@@ -1,4 +1,5 @@
 # Auto Configure Vaadin's Spring integration layer.
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 org.vaadin.spring.boot.VaadinAutoConfiguration,\
-org.vaadin.spring.boot.VaadinSecurityAutoConfiguration
+org.vaadin.spring.boot.VaadinSecurityAutoConfiguration,\
+org.vaadin.spring.boot.VaadinI18NAutoConfiguration

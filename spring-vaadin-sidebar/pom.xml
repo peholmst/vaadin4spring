@@ -25,5 +25,10 @@
             <artifactId>spring-vaadin</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>spring-vaadin-i18n</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

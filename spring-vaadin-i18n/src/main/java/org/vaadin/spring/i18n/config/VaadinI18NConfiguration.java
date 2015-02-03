@@ -15,27 +15,48 @@
  */
 package org.vaadin.spring.i18n.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.Assert;
 import org.vaadin.spring.i18n.CompositeMessageSource;
+import org.vaadin.spring.i18n.I18N;
 
 /**
+ * Configuration class used by {@literal @}EnableVaadinI18N
+ * 
  * Spring configuration for the {@link org.vaadin.spring.i18n.CompositeMessageSource}. Please remember to
  * define {@link org.vaadin.spring.i18n.MessageProvider} beans that can serve the message source with messages.
- *
- * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.i18n.annotation.EnableCompositeMessageSource
+ * 
+ * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
+ * @see org.vaadin.spring.i18n.I18N
+ * @see org.vaadin.spring.i18n.CompositeMessageSource
  */
 @Configuration
-public class CompositeMessageSourceConfiguration {
-
-    @Autowired
-    ApplicationContext applicationContext;
+public class VaadinI18NConfiguration implements ApplicationContextAware, InitializingBean {
+    
+    private ApplicationContext context;
+    
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.context = applicationContext;
+    }
+    
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        Assert.notNull(context, "Failed to autowire 'ApplicationContext");
+    }
+    
+    @Bean
+    I18N i18n() {
+        return new I18N(context);
+    }
 
     @Bean
     CompositeMessageSource messageSource() {
-        return new CompositeMessageSource(applicationContext);
+        return new CompositeMessageSource(context);
     }
 }

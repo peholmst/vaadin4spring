@@ -28,6 +28,12 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>spring-vaadin-i18n</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>spring-vaadin-touchkit</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
