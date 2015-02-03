@@ -310,5 +310,6 @@
         <module>spring-vaadin-simple-mvp</module>
         <module>spring-vaadin-sidebar</module>
         <module>spring-vaadin-i18n</module>
+        <module>spring-vaadin-eventbus</module>
     </modules>
 </project>
