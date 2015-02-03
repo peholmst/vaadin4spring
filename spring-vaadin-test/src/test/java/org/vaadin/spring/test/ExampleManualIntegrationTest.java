@@ -30,6 +30,7 @@ import org.vaadin.spring.annotation.VaadinSessionScope;
 import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.annotation.EnableVaadinEventBus;
 import org.vaadin.spring.events.annotation.EventBusScope;
 
 import javax.inject.Provider;
@@ -115,6 +116,7 @@ public class ExampleManualIntegrationTest {
 
     @Configuration
     @EnableVaadin
+    @EnableVaadinEventBus
     public static class Config {
 
         @Bean

@@ -17,8 +17,10 @@ package org.vaadin.spring.mvp.autowired;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.vaadin.spring.annotation.EnableVaadin;
+import org.vaadin.spring.events.annotation.EnableVaadinEventBus;
 
 @ComponentScan
 @EnableVaadin
+@EnableVaadinEventBus
 public class ScanConfig {
 }
