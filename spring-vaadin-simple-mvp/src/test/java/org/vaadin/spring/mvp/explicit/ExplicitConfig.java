@@ -21,10 +21,12 @@ import org.springframework.context.annotation.Configuration;
 import org.vaadin.spring.annotation.EnableVaadin;
 import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.annotation.EnableVaadinEventBus;
 import org.vaadin.spring.mvp.FooView;
 
 @Configuration
 @EnableVaadin
+@EnableVaadinEventBus
 public class ExplicitConfig {
 
     @Autowired

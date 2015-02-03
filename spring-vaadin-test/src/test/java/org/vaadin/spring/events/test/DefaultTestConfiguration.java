@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.mvp.autowired;
+package org.vaadin.spring.events.test;
 
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.vaadin.spring.annotation.EnableVaadin;
 import org.vaadin.spring.events.annotation.EnableVaadinEventBus;
 
-@ComponentScan
+@Configuration
 @EnableVaadin
 @EnableVaadinEventBus
-public class ScanConfig {
+public class DefaultTestConfiguration {
+    
 }

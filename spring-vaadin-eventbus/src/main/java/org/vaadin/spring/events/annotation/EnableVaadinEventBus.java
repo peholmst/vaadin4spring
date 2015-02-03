@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.mvp.autowired;
+package org.vaadin.spring.events.annotation;
 
-import org.springframework.context.annotation.ComponentScan;
-import org.vaadin.spring.annotation.EnableVaadin;
-import org.vaadin.spring.events.annotation.EnableVaadinEventBus;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@ComponentScan
-@EnableVaadin
-@EnableVaadinEventBus
-public class ScanConfig {
+import org.springframework.context.annotation.Import;
+import org.vaadin.spring.events.config.VaadinEventbusConfiguration;
+
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Import(VaadinEventbusConfiguration.class)
+public @interface EnableVaadinEventBus {
+
 }
