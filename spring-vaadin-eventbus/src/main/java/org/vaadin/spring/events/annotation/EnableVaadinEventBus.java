@@ -28,6 +28,6 @@ import org.vaadin.spring.events.config.VaadinEventbusConfiguration;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Import(VaadinEventbusConfiguration.class)
-public @interface EnableVaadinEventbus {
+public @interface EnableVaadinEventBus {
 
 }
