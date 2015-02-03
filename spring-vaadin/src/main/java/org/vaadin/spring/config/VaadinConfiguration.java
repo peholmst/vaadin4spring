@@ -25,10 +25,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.context.request.RequestContextListener;
 import org.vaadin.spring.context.VaadinApplicationContext;
-import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventScope;
-import org.vaadin.spring.events.annotation.EventBusScope;
-import org.vaadin.spring.events.internal.ScopedEventBus;
 import org.vaadin.spring.http.HttpResponseFactory;
 import org.vaadin.spring.http.HttpResponseFilter;
 import org.vaadin.spring.http.HttpService;
@@ -64,41 +60,6 @@ public class VaadinConfiguration implements ApplicationContextAware {
     @Bean
     SpringViewProvider viewProvider() {
         return new SpringViewProvider(applicationContext);
-    }
-
-    @Bean
-    @EventBusScope(EventScope.APPLICATION)
-    EventBus applicationEventBus() {
-        return new ScopedEventBus(EventScope.APPLICATION);
-    }
-
-    @Bean
-    @Scope(value = VaadinSessionScope.VAADIN_SESSION_SCOPE_NAME, proxyMode = ScopedProxyMode.INTERFACES)
-    @EventBusScope(value = EventScope.SESSION, proxy = true)
-    EventBus proxiedSessionEventBus() {
-        return sessionEventBus();
-    }
-
-    @Bean
-    @Scope(value = VaadinSessionScope.VAADIN_SESSION_SCOPE_NAME, proxyMode = ScopedProxyMode.NO)
-    @EventBusScope(EventScope.SESSION)
-    EventBus sessionEventBus() {
-        return new ScopedEventBus(EventScope.SESSION, applicationEventBus());
-    }
-
-    @Bean
-    @Scope(value = VaadinUIScope.VAADIN_UI_SCOPE_NAME, proxyMode = ScopedProxyMode.INTERFACES)
-    @EventBusScope(value = EventScope.UI, proxy = true)
-    EventBus proxiedUiEventBus() {
-        return uiEventBus();
-    }
-
-    @Bean
-    @Scope(value = VaadinUIScope.VAADIN_UI_SCOPE_NAME, proxyMode = ScopedProxyMode.NO)
-    @Primary
-    @EventBusScope(EventScope.UI)
-    EventBus uiEventBus() {
-        return new ScopedEventBus(EventScope.UI, sessionEventBus());
     }
 
     @Override
