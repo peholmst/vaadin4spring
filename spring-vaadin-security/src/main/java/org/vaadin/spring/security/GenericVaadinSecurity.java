@@ -32,6 +32,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.util.Assert;
 import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.security.web.VaadinRedirectStrategy;
@@ -82,6 +84,10 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
     @Autowired
     private VaadinRedirectStrategy redirectStrategy;
     
+    @Autowired(required = false)
+    private RememberMeServices rememberMeService;
+    
+    
     /**
      * {@inheritDoc}
      */
@@ -93,10 +99,9 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
 
     /**
      * {@inheritDoc}
-     * @throws Exception
      */
     @Override
-    public void login(Authentication authentication) throws AuthenticationException, Exception {
+    public void login(Authentication authentication, boolean rememberMe) throws AuthenticationException, Exception {
         
         // Ensure SecurityContext is never null
         SecurityContext context = SecurityContextHolder.getContext();
@@ -107,8 +112,42 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
         
         try {
             
+            /*
+             * Try to authenticate user
+             */
             final Authentication fullyAuthenticated = getAuthenticationManager().authenticate(authentication);
+            
+            /*
+             * Store Authentication within SecurityContext
+             */
             context.setAuthentication(fullyAuthenticated);
+            
+            /*
+             * Handle RememberMe
+             */
+            if ( rememberMe ) {
+                
+                /*
+                 * Locate RememberMeService
+                 */
+                if ( rememberMeService != null ) {
+                    
+                    /*
+                     * Store RememberMe within HttpServletRequest
+                     */
+                    logger.debug("Registering RememberMe in request");
+                    request.setAttribute(AbstractRememberMeServices.DEFAULT_PARAMETER, rememberMe);
+                    
+                    /*
+                     * Signal the RememberMeService of the login
+                     */
+                    rememberMeService.loginSuccess(request, response, authentication);
+                    
+                } else {
+                    logger.error("RememberMe Request while no <RememberMeServices> found within <ApplicationContext>");
+                }
+                
+            }
             
             /*
              * Signal the SessionAuthenticationStrategy of the login
@@ -134,6 +173,15 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
              * throw {@link AuthenticationFailureHandler}
              */
             context = generateNewContext();
+            
+            /*
+             * Handle RememberMe authentication Failure
+             * No need to check if it is being used; 
+             * on failure invalidate all remember-me-tokens.
+             */
+            if ( rememberMeService != null ) {
+                rememberMeService.loginFail(request, response);
+            }
             
             /*
              * Process AuthenticationFailureHandler if configured
@@ -162,6 +210,20 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
         
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void login(Authentication authentication) throws AuthenticationException, Exception {
+        login(authentication, false);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void login(String username, String password, boolean rememberMe) throws AuthenticationException, Exception {
+        login(new UsernamePasswordAuthenticationToken(username, password), rememberMe);
+    }
+    
     /**
      * {@inheritDoc}
      */
