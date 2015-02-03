@@ -181,7 +181,7 @@ public class VaadinUIScope implements Scope, BeanFactoryPostProcessor {
             if (beanStore == null) {
                 beanStore = new UIBeanStore(uiid, new BeanStore.DestructionCallback() {
                     @Override
-                    public void beanStoreDestoyed(BeanStore beanStore) {
+                    public void beanStoreDestroyed(BeanStore beanStore) {
                         removeBeanStore(uiid);
                     }
                     
