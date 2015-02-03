@@ -162,6 +162,7 @@ If you want to customize the TouchKit servlet, extend
 Finally, please note that TouchKit is a commercial Vaadin product. It can, however, also be used in AGPL projects.
 
 ## Sidebar ##
+
 The side bar can be used as a main menu in applications with many views. It is implemented as a Vaadin accordion and divided into sections. Every section contains clickable menu items. Both sections and menu items are added declaratively using annotations.
 More information can be found [here](spring-vaadin-sidebar/README.md)
 
@@ -172,4 +173,8 @@ More Information can be found [here](spring-vaadin-security/README.md)
 
 ## Testing
 
-The testing module has its own REAMDE, you can find it [here](spring-vaadin-test/README.md).
+Vaadin4Spring provides helpers to test UI scoped objects, especially when
+following the Model, Controller or Presenter patterns.
+
+The testing module has its own README, you can find it
+[here](spring-vaadin-test/README.md).
