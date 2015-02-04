@@ -29,6 +29,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.util.Assert;
+import org.vaadin.spring.security.config.VaadinSecurityConfiguration;
 import org.vaadin.spring.security.web.authentication.VaadinAuthenticationFailureHandler;
 import org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccessHandler;
 
@@ -64,8 +65,9 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
 
         AccessDecisionManager accessDecisionManager;
         try {
-            accessDecisionManager = applicationContext.getBean(AccessDecisionManager.class);
-        } catch (NoSuchBeanDefinitionException ex) {
+            accessDecisionManager = applicationContext.getBean(VaadinSecurityConfiguration.Beans.ACCESS_DECISION_MANAGER, AccessDecisionManager.class);
+        }
+        catch (NoSuchBeanDefinitionException ex) {
             accessDecisionManager = null;
             logger.warn("No AccessDecisionManager set! Some security methods will not be available.");
         }
