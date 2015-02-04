@@ -277,9 +277,43 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
      */
     @Override
     public Authentication getAuthentication() {
+
+        /*
+         * Fetch the Authentication object.
+         * Authentication is not available within the SecurityContextHolder.
+         * 
+         * The SecurityContextHolder only holds the Authentication when its
+         * processing the securityFilterChain. After it completes the chain
+         * it clears the context holder due to security reasons.
+         * 
+         * Therefor the Authentication object can be retrieved from the
+         * location where the securityFilterChain or VaadinSecurity has left it,
+         * within the HttpSession.
+         * 
+         * Due to work flow or maybe access to the Authentication object through
+         * VaadinSecurity form custom changes to the securityFilterChain, first the
+         * securityContextHolder is checked.
+         */
+        
+        // Check SecurityContextHolder
         final SecurityContext securityContext = SecurityContextHolder.getContext();
-        final Authentication authentication = securityContext.getAuthentication();
+        Authentication authentication = securityContext.getAuthentication();
+        
+        if ( authentication == null ) {
+            
+            
+            /*
+             * Fetch the Current HttpSession from the RequestScope
+             * because the chain already was completed and therefor
+             * the SecurityContextHolder cleared
+             */
+            HttpSession httpSession = httpRequestResponseHolder.getCurrentRequest().getSession(); 
+            authentication = ((org.springframework.security.core.context.SecurityContextImpl) httpSession.getAttribute(springSecurityContextKey)).getAuthentication();
+            
+        }
+        
         return authentication;
+
     }
 
     /**
