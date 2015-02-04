@@ -66,6 +66,7 @@ The VaadinSecurity interface provides access to commonly required Spring Securit
 -  ```boolean hasAccessToSecuredMethod(Object securedObject, String methodName, Class<?>... methodParameterTypes);```
 -  ```boolean hasAuthorities(String... authorities);```
 -  ```boolean hasAnyAuthority(String... authorities);```
+-  ```void setSpringSecurityContextKey(String springSecurityContextKey);```
 
 ##### Methods Inherited from VaadinSecurityContext #####
 - ```ApplicationContext getApplicationContext();```
@@ -98,20 +99,66 @@ public class Dummy implements VaadinSecurityAware {
 }
 ```
 
+## SpringSecurityContextKey ##
+Default Spring-Security uses a ```SPRING_SECURITY_CONTEXT_KEY``` with value of ```"SPRING_SECURITY_CONTEXT"```. This key is used throughout the springSecurityFilterChain. The ```HttpSessionSecurityContextRepository``` uses this key to search for a available ```Authentication``` object within the ```HttpSession```. 
+
+Some users like to change this key.
+
+#### Changing SpringSecurityContextKey ####
+When you implement your own ```HttpSessionSecurityContextRepository``` or you overwrite the default implementation and you change the ```SPRING_SECURITY_CONTEXT_KEY```, you need to set the same key to ```VaadinSecurity```.
+
+This can be done with the method ```.setSpringSecurityContextKey(String springSecurityContextKey)``` on the ```VaadinSecurity``` object.
+
+This ensures that ```VaadinSecurity``` and the ```HttpSessionSecurityContextRepository``` don't go out of sync.
+
+
+
 ## Remember Me ##
 
 Implementation Notice:<br>
-When implementing remember me functionality the ```RememberMeServices``` bean has to be created before the ```@EnableVaadinSecurity```. The ```VaadinSecurity``` object has a non-required dependency on ```RememberMeServices```. If a ```RememberMeServices``` bean is found and created within the ```@Configuration``` class which has ```@EnableVaadinSecurity``` on it, you could end up with an exception because the ```@EnableVaadinSecurity``` creates the ```VaadinSecurity``` object and the ```RememeberServices``` bean might be created after the annotation.
+When implementing remember me functionality the ```RememberMeServices``` bean has to be created before the ```@EnableVaadinSecurity```. 
 
-The following configuration will not work, because the ```RememberMeServices``` bean is created within the class which has ```@EnableVaadinSecurity``` on it.
+The ```VaadinSecurity``` object has a non-required dependency on ```RememberMeServices```. 
+
+If a ```RememberMeServices``` bean is found and created within the ```@Configuration``` class which has ```@EnableVaadinSecurity``` on it, you could end up with an exception.
+
+The ```RememberMeServices``` bean need to be available before the ```@EnableVaadinSecurity``` annotation is called.
+
+
+Within the same below the ```RememberMeServices``` bean is created before the ```@EnableVaadinSecurity``` annotation is called.
+
+When using spring-boot using a ```@AutoConfigureBefore``` is also a good solution.
 
 
 ```java
+
 @Configuration
 @ComponentScan
 public class SecurityConfiguration {
 
-    ...
+    @Autowired
+    JdbcUserDetailsService userDetailsService;
+
+    @Autowired
+    DataSource dataSource;
+
+    @Bean
+    public PersistentTokenRepository jdbcTokenRepository() {
+        JdbcTokenRepositoryImpl repository = new JdbcTokenRepositoryImpl();
+        repository.setCreateTableOnStartup(false);
+        repository.setDataSource(dataSource);
+        return repository;
+    }
+
+    @Bean
+    public RememberMeServices persistentTokenBasedRememberMeServices() {
+        VaadinPersistentTokenBasedRememberMeServices services = new VaadinPersistentTokenBasedRememberMeServices(
+                "vaadin4spring",
+                userDetailsService,
+                jdbcTokenRepository());
+        services.setCookieName("REMEMBERME");
+        return services;
+    }
 
     @Configuration
     @EnableVaadinSecurity
@@ -128,24 +175,23 @@ public class SecurityConfiguration {
 
         @Autowired
         DataSource dataSource;
-	
-	    @Bean
-	    public PersistentTokenRepository jdbcTokenRepository() {
-	        JdbcTokenRepositoryImpl repository = new JdbcTokenRepositoryImpl();
-	        repository.setCreateTableOnStartup(false);
-	        repository.setDataSource(dataSource);
-	        return repository;
-	    }
-	
-	    @Bean
-	    public RememberMeServices persistentTokenBasedRememberMeServices() {
-	        VaadinPersistentTokenBasedRememberMeServices services = new VaadinPersistentTokenBasedRememberMeServices(
-	                "vaadin4spring",
-	                userDetailsService,
-	                jdbcTokenRepository());
-	        services.setCookieName("REMEMBERME");
-	        return services;
-	    }
+
+
+		// Autowire the Earlier created bean, so it can be used.
+        @Autowired
+        RememberMeServices rememberMeServices;
+
+        @Override
+        public void afterPropertiesSet() throws Exception {
+            ...
+        }
+
+        @Bean(name = "authenticationManager")
+        @Override
+        public AuthenticationManager authenticationManagerBean() throws Exception {
+            return super.authenticationManagerBean();
+        }
 
     ...
+
 ```
