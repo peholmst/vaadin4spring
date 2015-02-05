@@ -39,6 +39,8 @@ import java.util.Map;
  */
 public class ViewCache implements Serializable {
 
+    private static final long serialVersionUID = 4634842615905376953L;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewCache.class);
 
     private Map<String, ViewBeanStore> beanStores = new HashMap<String, ViewBeanStore>();
@@ -121,6 +123,9 @@ public class ViewCache implements Serializable {
                 throw new IllegalStateException("No UI bound to current thread");
             }
             beanStore = new ViewBeanStore(ui, viewName, new BeanStore.DestructionCallback() {
+
+                private static final long serialVersionUID = 5580606280246825742L;
+
                 @Override
                 public void beanStoreDestroyed(BeanStore beanStore) {
                     beanStores.remove(viewName);
@@ -141,6 +146,7 @@ public class ViewCache implements Serializable {
 
     class ViewBeanStore extends BeanStore implements ViewChangeListener {
 
+        private static final long serialVersionUID = -7655740852919880134L;
         private final String viewName;
         private final Navigator navigator;
 
