@@ -24,11 +24,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Stereotype annotation for Spring's {@code @Scope("vaadin-view)}.
+ * Stereotype annotation for Spring's {@code @Scope("vaadin-view)}. The lifecycle of a bean in this scope starts when
+ * a user navigates to a view that refers to the bean, and ends when the user navigates out of the view (or the Vaadin UI
+ * itself is destroyed). Please note that the {@link com.vaadin.navigator.View class} itself must also be in this scope. In other words,
+ * it is <b>not</b> possible to use view scoped beans inside a prototype or {@link org.vaadin.spring.internal.VaadinUIScope UI} scoped view.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@Scope(org.vaadin.spring.navigator.internal.VaadinViewScope.VAADIN_UI_SCOPE_NAME)
+@Scope(org.vaadin.spring.navigator.internal.VaadinViewScope.VAADIN_VIEW_SCOPE_NAME)
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

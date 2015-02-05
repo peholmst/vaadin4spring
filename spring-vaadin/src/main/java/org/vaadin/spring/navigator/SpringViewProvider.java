@@ -23,9 +23,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 import org.vaadin.spring.navigator.annotation.VaadinView;
+import org.vaadin.spring.navigator.internal.VaadinViewScope;
+import org.vaadin.spring.navigator.internal.ViewCache;
 
 import javax.annotation.PostConstruct;
 
@@ -70,11 +74,13 @@ public class SpringViewProvider implements ViewProvider {
     // We can have multiple views with the same view name, as long as they belong to different UI subclasses
     private final Map<String, Set<String>> viewNameToBeanNamesMap = new ConcurrentHashMap<String, Set<String>>();
     private final ApplicationContext applicationContext;
+    private final BeanDefinitionRegistry beanDefinitionRegistry;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    public SpringViewProvider(ApplicationContext applicationContext) {
+    public SpringViewProvider(ApplicationContext applicationContext, BeanDefinitionRegistry beanDefinitionRegistry) {
         this.applicationContext = applicationContext;
+        this.beanDefinitionRegistry = beanDefinitionRegistry;
     }
 
     @PostConstruct
@@ -189,16 +195,41 @@ public class SpringViewProvider implements ViewProvider {
         if (beanNames != null) {
             for (String beanName : beanNames) {
                 if (isViewBeanNameValidForCurrentUI(beanName)) {
-                    View view = (View) applicationContext.getBean(beanName);
-                    if (isAccessGrantedToViewInstance(view)) {
-                        return view;
-                    }
+                    return getViewFromApplicationContext(viewName, beanName);
                 }
             }
         }
         logger.warn("Found no view with name [{}]", viewName);
         return null;
     }
+
+    private View getViewFromApplicationContext(String viewName, String beanName) {
+        BeanDefinition beanDefinition = beanDefinitionRegistry.getBeanDefinition(beanName);
+        if (beanDefinition.getScope().equals(VaadinViewScope.VAADIN_VIEW_SCOPE_NAME)) {
+            logger.trace("View [{}] is view scoped, activating scope", viewName);
+            final ViewCache viewCache = applicationContext.getBean(ViewCache.class);
+            viewCache.creatingView(viewName);
+            View view = null;
+            try {
+                view = getViewFromApplicationContextAndCheckAccess(beanName);
+                return view;
+            } finally {
+                viewCache.viewCreated(viewName, view);
+            }
+        } else {
+            return getViewFromApplicationContextAndCheckAccess(beanName);
+        }
+    }
+
+    private View getViewFromApplicationContextAndCheckAccess(String beanName) {
+        final View view = (View) applicationContext.getBean(beanName);
+        if (isAccessGrantedToViewInstance(view)) {
+            return view;
+        } else {
+            return null;
+        }
+    }
+
 
     private boolean isAccessGrantedToViewInstance(View view) {
         final UI currentUI = UI.getCurrent();
