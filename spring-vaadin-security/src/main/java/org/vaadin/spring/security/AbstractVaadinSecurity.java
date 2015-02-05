@@ -66,8 +66,7 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
         AccessDecisionManager accessDecisionManager;
         try {
             accessDecisionManager = applicationContext.getBean(VaadinSecurityConfiguration.Beans.ACCESS_DECISION_MANAGER, AccessDecisionManager.class);
-        }
-        catch (NoSuchBeanDefinitionException ex) {
+        } catch (NoSuchBeanDefinitionException ex) {
             accessDecisionManager = null;
             logger.warn("No AccessDecisionManager set! Some security methods will not be available.");
         }
