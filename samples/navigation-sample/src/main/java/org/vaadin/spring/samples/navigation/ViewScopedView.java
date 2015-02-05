@@ -43,6 +43,10 @@ public class ViewScopedView extends VerticalLayout implements View {
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewScopedView.class);
     @Autowired
     UIScopedBusinessObject uiScopedBusinessObject; // You can inject UI scoped beans into a view scoped bean
+    @Autowired
+    ViewScopedBusinessObject viewScopedBusinessObject; // You can inject other view scoped beans into a view scoped bean.
+    @Autowired
+    ViewScopedComponent viewScopedComponent;
 
     @PostConstruct
     void init() {
@@ -61,12 +65,18 @@ public class ViewScopedView extends VerticalLayout implements View {
                 addComponent(new Label(uiScopedBusinessObject.sayHello()));
             }
         }));
+        addComponent(viewScopedComponent);
+        addComponent(new Button("Invoke a view scoped business object", new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                addComponent(new Label(viewScopedBusinessObject.sayHello()));
+            }
+        }));
     }
 
     @PreDestroy
     void destroy() {
-        // This method will get called when the UI is destroyed. If you want to try it out, wait for the session to expire
-        // and check the logs.
+        // This method will get called when the user navigates away from the view. Try it out and check the logs.
         LOGGER.info("I'm being destroyed: {}", this);
     }
 
