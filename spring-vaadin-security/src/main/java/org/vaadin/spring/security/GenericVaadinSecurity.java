@@ -49,7 +49,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Convenience class that provides the Spring Security operations that are most commonly required in a Vaadin application.
  *
- * Additional Code / Documentation from {@link HttpSessionSecurityContextRepository}
+ * Additional Code / Documentation from {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository}
  *
  * @author Petter Holmström (petter@vaadin.com)
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
@@ -58,14 +58,14 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
 
     /**
     * The default key under which the security context will be stored in the session.
-    * Used by {@link HttpSessionSecurityContextRepository}
+    * Used by {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository}
     * <br><br>
-    * If this is overriden by the user then also override {@code springSecurityContextKey} within {@link HttpSessionSecurityContextRepository}
+    * If this is overriden by the user then also override {@code springSecurityContextKey} within {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository}
     * to match the new key. 
     * <br><br>
-    * The key of {@link HttpSessionSecurityContextRepository} can be overriden with {@link HttpSessionSecurityContextRepository#setSpringSecurityContextKey}
+    * The key of {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository} can be overriden with {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository#setSpringSecurityContextKey}
     * <br><br>
-    * The {@link SecurityContextPersistenceFilter} will use the configured key from {@link HttpSessionSecurityContextRepository}
+    * The {@link org.springframework.security.web.context.SecurityContextPersistenceFilter} will use the configured key from {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository}
     */
     public static final String SPRING_SECURITY_CONTEXT_KEY = "SPRING_SECURITY_CONTEXT";
     

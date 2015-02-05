@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
  * <p>
  * Typical behaviour might be to redirect the user to the authentication page (in the case of a form login) to
  * allow them to try again. More sophisticated logic might be implemented depending on the type of the exception.
- * For example, a {@link CredentialsExpiredException} might cause a redirect to a web controller which allowed the
+ * For example, a {@link org.springframework.security.authentication.CredentialsExpiredException} might cause a redirect to a web controller which allowed the
  * user to change their password.
  * <p>
  * Vaadin Specific Strategy of {@link AuthenticationFailureHandler}

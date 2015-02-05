@@ -29,7 +29,7 @@ import org.vaadin.spring.security.web.VaadinRedirectStrategy;
 
 /**
  * An authentication success strategy which can make use of the {@link VaadinRedirectStrategy} which may have been stored in
- * the session by the {@link ExceptionTranslationFilter}. When such a request is intercepted and requires authentication,
+ * the session by the {@link org.springframework.security.web.access.ExceptionTranslationFilter}. When such a request is intercepted and requires authentication,
  * the request data is stored to record the original destination before the authentication process commenced, and to
  * allow the request to be reconstructed when a redirect to the same URL occurs. This class is responsible for
  * performing the redirect to the original URL if appropriate.
@@ -46,11 +46,10 @@ import org.vaadin.spring.security.web.VaadinRedirectStrategy;
  * Any {@code DefaultSavedRequest} will again be removed.
  * </li>
  * <li>
- * If a {@link SavedRequest} is found in the {@code RequestCache} (as set by the {@link ExceptionTranslationFilter} to
+ * If a {@link SavedRequest} is found in the {@code RequestCache} (as set by the {@link org.springframework.security.web.access.ExceptionTranslationFilter} to
  * record the original destination before the authentication process commenced), a redirect will be performed to the
  * Url of that original destination. The {@code SavedRequest} object will remain cached and be picked up
- * when the redirected request is received
- * (See {@link org.springframework.security.web.savedrequest.SavedRequestAwareWrapper SavedRequestAwareWrapper}).
+ * when the redirected request is received.
  * </li>
  * <li>
  * If no {@code SavedRequest} is found, it will delegate to the base class.

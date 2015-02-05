@@ -177,7 +177,6 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * Allows the session attribute name to be customized for this repository instance.
      *
      * @param springSecurityContextKey the key under which the security context will be stored. Defaults to
-     * {@link #SPRING_SECURITY_CONTEXT_KEY}.
      */
     void setSpringSecurityContextKey(String springSecurityContextKey);
 }

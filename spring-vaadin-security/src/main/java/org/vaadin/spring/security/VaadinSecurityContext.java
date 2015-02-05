@@ -57,7 +57,7 @@ public interface VaadinSecurityContext {
 
     /**
      * Get the configured {@link SessionAuthenticationStrategy}
-     * return {@link NullAuthenticatedSessionStrategy} if not configured
+     * return {@link org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy} if not configured
      * 
      * @return {@link SessionAuthenticationStrategy}
      */

@@ -29,12 +29,10 @@ import org.springframework.context.ApplicationContextAware;
  * <p>An VaadinApplicationContext provides:
  * <ul>
  * <li>Access to the Spring {@link org.springframework.context.ApplicationContext}.
- * <li>Access to the Vaadin {@link org.vaadin.spring.events.EventBus}
- * </ul> * 
+ * </ul>
  * 
  * @author G.J.R. Timmer
  * @see org.springframework.context.ApplicationContext
- * @see org.vaadin.spring.events.EventBus
  */
 public class VaadinApplicationContext implements InitializingBean, ApplicationContextAware {
 
@@ -51,7 +49,7 @@ public class VaadinApplicationContext implements InitializingBean, ApplicationCo
     }
 	
 	/**
-     * @see {@link import org.springframework.context.ApplicationContextAware}
+     * @see org.springframework.context.ApplicationContextAware
      */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -59,7 +57,7 @@ public class VaadinApplicationContext implements InitializingBean, ApplicationCo
     }
 
 	/**
-     * @see {@link org.springframework.beans.factory.InitializingBean}
+     * @see org.springframework.beans.factory.InitializingBean
      */
     @Override
     public void afterPropertiesSet() throws Exception {

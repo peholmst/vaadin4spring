@@ -16,7 +16,6 @@
 package org.vaadin.spring.security.web.authentication;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 /**
  * Strategy used to handle a successful user authentication.
@@ -26,7 +25,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
  * login form, the application needs to decide where they should be redirected to afterwards.
  * Other logic may also be included if required.
  * <p>
- * Vaadin Specific Strategy of {@link AuthenticationSuccessHandler}
+ * Vaadin Specific Strategy of {@link org.springframework.security.web.authentication.AuthenticationSuccessHandler}
  *
  */
 public interface VaadinAuthenticationSuccessHandler {

@@ -35,7 +35,7 @@ import org.vaadin.spring.security.web.VaadinRedirectStrategy;
 /**
 * Base class containing the logic used by strategies which handle redirection to a URL and
 * are passed an {@code Authentication} object as part of the contract.
-* See {@link AuthenticationSuccessHandler} and
+* See {@link org.springframework.security.web.authentication.AuthenticationSuccessHandler} and
 * {@link org.springframework.security.web.authentication.logout.LogoutSuccessHandler LogoutSuccessHandler}, for example.
 * <p>
 * Uses the following logic sequence to determine how it should handle the forward/redirect
