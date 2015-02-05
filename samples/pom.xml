@@ -11,7 +11,7 @@
 
     <groupId>org.vaadin.spring.samples</groupId>
     <artifactId>samples-parent-pom</artifactId>
-    <version>0.0.4.RELEASE</version>
+    <version>0.0.5-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Vaadin4Spring Samples</name>

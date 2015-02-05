@@ -6,7 +6,7 @@
     <parent>
         <artifactId>parent-pom</artifactId>
         <groupId>org.vaadin.spring</groupId>
-        <version>0.0.4.RELEASE</version>
+        <version>0.0.5-SNAPSHOT</version>
     </parent>
     <artifactId>spring-vaadin-simple-mvp</artifactId>
     <name>Vaadin4Spring Simple MVP</name>
