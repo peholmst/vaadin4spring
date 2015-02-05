@@ -30,6 +30,8 @@ import java.io.Serializable;
 @Component
 public class ViewScopedObject implements Serializable {
 
+    private static final long serialVersionUID = 6953901452873875085L;
+
     public String foo() {
         return "Hello, I'm " + this;
     }

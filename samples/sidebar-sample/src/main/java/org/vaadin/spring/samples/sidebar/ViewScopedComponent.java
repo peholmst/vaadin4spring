@@ -32,6 +32,8 @@ import javax.annotation.PostConstruct;
 @VaadinViewScope
 public class ViewScopedComponent extends Label {
 
+    private static final long serialVersionUID = -2420586442848741377L;
+    
     @Autowired
     ViewScopedObject viewScopedObject;
 

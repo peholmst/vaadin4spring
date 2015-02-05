@@ -180,6 +180,9 @@ public class VaadinUIScope implements Scope, BeanFactoryPostProcessor {
             BeanStore beanStore = beanStoreMap.get(uiid);
             if (beanStore == null) {
                 beanStore = new UIBeanStore(uiid, new BeanStore.DestructionCallback() {
+
+                    private static final long serialVersionUID = 1144746290662669344L;
+
                     @Override
                     public void beanStoreDestroyed(BeanStore beanStore) {
                         removeBeanStore(uiid);
@@ -231,6 +234,8 @@ public class VaadinUIScope implements Scope, BeanFactoryPostProcessor {
     }
 
     static class UIBeanStore extends BeanStore implements ClientConnector.DetachListener {
+
+        private static final long serialVersionUID = 3725012349138935693L;
 
         UIBeanStore(UIID uuid, DestructionCallback destructionCallback) {
             super(uuid.toString(), destructionCallback);

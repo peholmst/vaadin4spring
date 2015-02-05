@@ -137,6 +137,7 @@ public class VaadinSessionScope implements Scope, BeanFactoryPostProcessor {
 
     static class SessionAwareBeanStore extends BeanStore implements SessionDestroyListener, ServiceDestroyListener {
 
+        private static final long serialVersionUID = -8170074251720975071L;
         private static final Logger LOGGER = LoggerFactory.getLogger(SessionAwareBeanStore.class);
         private final VaadinSession session;
 

@@ -22,7 +22,6 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.spring.navigator.annotation.VaadinViewScope;
 import org.vaadin.spring.sidebar.annotation.FontAwesomeIcon;
