@@ -38,7 +38,6 @@ import org.vaadin.spring.security.VaadinSecurityContextAware;
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  * @since 12.23.2014
  * @see org.vaadin.spring.security.VaadinSecurityAware
- * @see org.springframework.context.support.ApplicationContextAwareProcessor
  */
 public class VaadinSecurityAwareProcessor implements ApplicationContextAware, BeanPostProcessor {
 

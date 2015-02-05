@@ -35,7 +35,7 @@ import com.vaadin.ui.UI;
  */
 public class VaadinDefaultRedirectStrategy implements VaadinRedirectStrategy {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
     
     private boolean contextRelative;
     

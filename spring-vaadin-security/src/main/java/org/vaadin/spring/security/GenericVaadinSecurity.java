@@ -49,7 +49,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Convenience class that provides the Spring Security operations that are most commonly required in a Vaadin application.
  *
- * Additional Code / Documentation from {@link HttpSessionSecurityContextRepository}
+ * Additional Code / Documentation from {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository}
  *
  * @author Petter Holmström (petter@vaadin.com)
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
@@ -58,14 +58,14 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
 
     /**
     * The default key under which the security context will be stored in the session.
-    * Used by {@link HttpSessionSecurityContextRepository}
+    * Used by {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository}
     * <br><br>
-    * If this is overriden by the user then also override {@code springSecurityContextKey} within {@link HttpSessionSecurityContextRepository}
+    * If this is overriden by the user then also override {@code springSecurityContextKey} within {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository}
     * to match the new key. 
     * <br><br>
-    * The key of {@link HttpSessionSecurityContextRepository} can be overriden with {@link HttpSessionSecurityContextRepository#setSpringSecurityContextKey}
+    * The key of {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository} can be overriden with {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository#setSpringSecurityContextKey}
     * <br><br>
-    * The {@link SecurityContextPersistenceFilter} will use the configured key from {@link HttpSessionSecurityContextRepository}
+    * The {@link org.springframework.security.web.context.SecurityContextPersistenceFilter} will use the configured key from {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository}
     */
     public static final String SPRING_SECURITY_CONTEXT_KEY = "SPRING_SECURITY_CONTEXT";
     
@@ -277,9 +277,43 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
      */
     @Override
     public Authentication getAuthentication() {
+
+        /*
+         * Fetch the Authentication object.
+         * Authentication is not available within the SecurityContextHolder.
+         * 
+         * The SecurityContextHolder only holds the Authentication when its
+         * processing the securityFilterChain. After it completes the chain
+         * it clears the context holder due to security reasons.
+         * 
+         * Therefor the Authentication object can be retrieved from the
+         * location where the securityFilterChain or VaadinSecurity has left it,
+         * within the HttpSession.
+         * 
+         * Due to work flow or maybe access to the Authentication object through
+         * VaadinSecurity form custom changes to the securityFilterChain, first the
+         * securityContextHolder is checked.
+         */
+        
+        // Check SecurityContextHolder
         final SecurityContext securityContext = SecurityContextHolder.getContext();
-        final Authentication authentication = securityContext.getAuthentication();
+        Authentication authentication = securityContext.getAuthentication();
+        
+        if ( authentication == null ) {
+            
+            
+            /*
+             * Fetch the Current HttpSession from the RequestScope
+             * because the chain already was completed and therefor
+             * the SecurityContextHolder cleared
+             */
+            HttpSession httpSession = httpRequestResponseHolder.getCurrentRequest().getSession(); 
+            authentication = ((org.springframework.security.core.context.SecurityContextImpl) httpSession.getAttribute(springSecurityContextKey)).getAuthentication();
+            
+        }
+        
         return authentication;
+
     }
 
     /**

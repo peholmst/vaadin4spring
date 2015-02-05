@@ -28,7 +28,7 @@ import org.springframework.security.web.WebAttributes;
  * <p>
  * Must be used as a bean because of autowiring within parent class.
  * 
- * @author Luke Taylor (original source code of {@link AuthenticationSuccessHandler})
+ * @author Luke Taylor (original source code of {@link org.springframework.security.web.authentication.AuthenticationSuccessHandler})
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com) (Vaadin specific implementation)
  */
 public class VaadinUrlAuthenticationSuccessHandler extends AbstractVaadinAuthenticationTargetUrlRequestHandler implements VaadinAuthenticationSuccessHandler {

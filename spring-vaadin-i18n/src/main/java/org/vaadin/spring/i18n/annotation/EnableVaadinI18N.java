@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Import;
 import org.vaadin.spring.i18n.config.VaadinI18NConfiguration;
 
 /**
- * Add this annotation to your application configuration to enable the {@link I18N} internationalization support.
+ * Add this annotation to your application configuration to enable the {@link org.vaadin.spring.i18n.I18N} internationalization support.
  * 
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  *
