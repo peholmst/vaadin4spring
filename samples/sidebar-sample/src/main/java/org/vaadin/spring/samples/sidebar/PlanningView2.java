@@ -23,6 +23,7 @@ import com.vaadin.ui.VerticalLayout;
 
 import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.navigator.annotation.VaadinView;
+import org.vaadin.spring.navigator.annotation.VaadinViewScope;
 import org.vaadin.spring.sidebar.annotation.FontAwesomeIcon;
 import org.vaadin.spring.sidebar.annotation.SideBarItem;
 
@@ -36,7 +37,7 @@ import org.vaadin.spring.sidebar.annotation.SideBarItem;
         caption = "View 2",
         order = 2)
 @FontAwesomeIcon(FontAwesome.AMBULANCE)
-@VaadinUIScope
+@VaadinViewScope
 public class PlanningView2 extends VerticalLayout implements View {
 
     private static final long serialVersionUID = -5940176536863140421L;

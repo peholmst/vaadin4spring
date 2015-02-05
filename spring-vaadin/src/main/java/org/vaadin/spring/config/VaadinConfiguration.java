@@ -16,12 +16,14 @@
 package org.vaadin.spring.config;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextListener;
 import org.vaadin.spring.context.VaadinApplicationContext;
 import org.vaadin.spring.http.HttpResponseFactory;
@@ -31,6 +33,8 @@ import org.vaadin.spring.http.VaadinHttpService;
 import org.vaadin.spring.internal.VaadinSessionScope;
 import org.vaadin.spring.internal.VaadinUIScope;
 import org.vaadin.spring.navigator.SpringViewProvider;
+import org.vaadin.spring.navigator.internal.VaadinViewScope;
+import org.vaadin.spring.navigator.internal.ViewCache;
 
 /**
  * Spring configuration for registering the custom Vaadin scopes,
@@ -57,8 +61,19 @@ public class VaadinConfiguration implements ApplicationContextAware {
     }
 
     @Bean
+    static VaadinViewScope vaadinViewScope() {
+        return new VaadinViewScope();
+    }
+
+    @Bean
     SpringViewProvider viewProvider() {
-        return new SpringViewProvider(applicationContext);
+        return new SpringViewProvider(applicationContext, (BeanDefinitionRegistry) applicationContext);
+    }
+
+    @Bean
+    @org.vaadin.spring.annotation.VaadinUIScope
+    ViewCache viewCache() {
+        return new ViewCache();
     }
 
     @Override

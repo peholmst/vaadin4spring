@@ -21,13 +21,18 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.navigator.annotation.VaadinView;
+import org.vaadin.spring.navigator.annotation.VaadinViewScope;
 import org.vaadin.spring.sidebar.annotation.FontAwesomeIcon;
 import org.vaadin.spring.sidebar.annotation.SideBarItem;
 
+import javax.annotation.PostConstruct;
+
 /**
- * Example view that shows up under the Planning section in the side bar.
+ * Example view that shows up under the Planning section in the side bar. This view also demonstrates the
+ * behavior of the view scope.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
@@ -36,15 +41,24 @@ import org.vaadin.spring.sidebar.annotation.SideBarItem;
         caption = "View 1",
         order = 1)
 @FontAwesomeIcon(FontAwesome.ANDROID)
-@VaadinUIScope
+@VaadinViewScope
 public class PlanningView1 extends VerticalLayout implements View {
 
     private static final long serialVersionUID = 2217814051618370412L;
     
     public static final String VIEW_NAME = "planning1";
 
-    public PlanningView1() {
+    @Autowired
+    ViewScopedComponent viewScopedComponent;
+
+    @Autowired
+    ViewScopedObject viewScopedObject;
+
+    @PostConstruct
+    void init() {
         addComponent(new Label("Planning View 1"));
+        addComponent(viewScopedComponent);
+        addComponent(new Label("From ViewScopedObject: " + viewScopedObject.foo()));
     }
 
     @Override
