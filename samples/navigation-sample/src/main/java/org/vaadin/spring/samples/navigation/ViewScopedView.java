@@ -24,25 +24,25 @@ import com.vaadin.ui.VerticalLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.spring.annotation.PrototypeScope;
 import org.vaadin.spring.navigator.annotation.VaadinView;
+import org.vaadin.spring.navigator.annotation.VaadinViewScope;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 /**
- * Example of a view that uses the {@link org.vaadin.spring.annotation.PrototypeScope}.
+ * Example of a view that uses the {@link org.vaadin.spring.navigator.annotation.VaadinViewScope}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@PrototypeScope
-@VaadinView(name = PrototypeScopedView.VIEW_NAME)
-public class PrototypeScopedView extends VerticalLayout implements View {
+@VaadinViewScope
+@VaadinView(name = ViewScopedView.VIEW_NAME)
+public class ViewScopedView extends VerticalLayout implements View {
 
-    public static final String VIEW_NAME = "prototype";
-    private static final Logger LOGGER = LoggerFactory.getLogger(PrototypeScopedView.class);
+    public static final String VIEW_NAME = "view";
+    private static final Logger LOGGER = LoggerFactory.getLogger(ViewScopedView.class);
     @Autowired
-    UIScopedBusinessObject uiScopedBusinessObject; // You can inject UI scoped beans into a prototype scoped bean
+    UIScopedBusinessObject uiScopedBusinessObject; // You can inject UI scoped beans into a view scoped bean
 
     @PostConstruct
     void init() {
@@ -50,7 +50,7 @@ public class PrototypeScopedView extends VerticalLayout implements View {
         setMargin(true);
         setSpacing(true);
 
-        final Label label = new Label(String.format("This is a prototype scoped view. A new instance is created every time this view is shown. " +
+        final Label label = new Label(String.format("This is a view scoped view. A new instance is created every time this view is shown. " +
                 "This particular instance is <b>%s</b>. If you navigate away from this view and back, you'll notice that the instance changes every time.", this));
         label.setContentMode(ContentMode.HTML);
         addComponent(label);
@@ -65,8 +65,9 @@ public class PrototypeScopedView extends VerticalLayout implements View {
 
     @PreDestroy
     void destroy() {
-        // This method will never get called since this view is prototype scoped and hence not lifecycle managed.
-        LOGGER.info("I will never get destroyed :-( : {}", this);
+        // This method will get called when the UI is destroyed. If you want to try it out, wait for the session to expire
+        // and check the logs.
+        LOGGER.info("I'm being destroyed: {}", this);
     }
 
     @Override
