@@ -6,6 +6,10 @@ depending on your point of view ;-).
 
 This project is not yet an official Vaadin Spring add-on, but a Vaadin R&D prototype that I work on whenever I have time. I'm also using the add-on in several customer projects to make sure it meets the requirements of a real-world project.
 
+**Please note! As of February 2015, Vaadin is working on an official Spring add-on which will be a small subset of Vaadin4Spring. 
+Once the official add-on is released, Vaadin4Spring will be converted into a set of add-ons that provide features that the
+official add-on does not have. You can follow the progress of the official add-on here: https://github.com/vaadin/spring**
+
 ## Quick start ##
 
 There are three ways of getting this add-on. You can either clone this repository and build it yourself,
@@ -83,7 +87,18 @@ The Vaadin servlet init parameters can also be configured in this way. Just pref
 ```vaadin.servlet.params.```. For example, to turn on production mode, you would add
 ```vaadin.servlet.params.productionMode=true``` to the file.
 
-## Customizing the Vaadin servlet ##
+### Supported configuration parameters ###
+
+At the time of writing, the following configuration parameters are supported:
+
+- ```vaadin.servlet.params.productionMode```
+- ```vaadin.servlet.params.resourceCacheTime```
+- ```vaadin.servlet.params.heartbeatInterval```
+- ```vaadin.servlet.params.closeIdleSessions```
+- ```vaadin.servlet.params.widgetset```
+- ```vaadin.servlet.params.Resources```
+
+### Customizing the Vaadin servlet ###
 
 If you want to customize the Vaadin servlet, just extend ```org.vaadin.spring.servlet.SpringAwareVaadinServlet``` and
 make it available as a Spring bean. The add-on will automatically discover your custom servlet and use that in place
@@ -97,47 +112,99 @@ init parameters must be prefixed with ```vaadin.static.servlet.params.```.
 
 If anybody wonders why a separate servlet is used, it was added after it became possible to use both TouchKit and
 "desktop" Vaadin in the same Spring application. Deciding which servlet to serve the static content was a bit tricky, so
-adding a separate servlet was the easiest solution. This might change in the future, if I come up with something
+adding a separate servlet was the easiest solution. This will hopefully change in the future, if/when I come up with something
 better.
 
-## The UI Scope ##
+## Provided Scopes ##
 
-This add-on provides a custom scope that binds the bean to the current UI instance. You can use it by adding the
- ```@UIScope``` annotation to the bean. The lifecycle of the bean will automatically follow the lifecycle of the UI
-instance, so you can also use ```@PostConstruct``` and ```@PreDestroy```. Please note, however, that UI scoped beans
-cannot currently be ```ApplicationListener```s. Also, no Vaadin components can be proxied.
+Vaadin4Spring provides three custom scopes that can be used in your Vaadin applications. In addition to these scopes,
+there are also occasions where the prototype scope can be useful.
 
-## The Vaadin Session Scope
+### The Vaadin Session Scope ###
 
-This add-on provides a custom scope that binds the bean to the current Vaadin session. You can use it by adding the 
-```@VaadinSessionScope``` annotation to the bean. The lifecycle of the bean will automatically follow the lifecycle of
-the Vaadin session, so you can also use ```@PostConstruct``` and ```@PreDestroy```. Please note, however, that Vaadin
-session scoped beans cannot currently be ```ApplicationListener```s. Also, do not make any Vaadin components session scoped
-since a component can only belong to exactly one UI instance.
+This scope binds the bean to the lifecycle of the Vaadin session (as opposed to the HTTP session; it is possible to
+have multiple Vaadin sessions within the same HTTP session). You use it by adding the ```@VaadinSessionScope``` annotation
+to your class. 
 
-## Navigator API integration ##
+**Intended use case:** Storing session specific context information that needs to be shared across all the UI instances of
+the session.
 
-This add-on provides support for the Vaadin Navigator API. To use it:
+**Known limitations:**
 
-1. Annotate your views with ```@VaadinView``` and make them either ```ui``` scoped or ```prototype``` scoped.
+- Do not use this scope for Vaadin UI components, since a UI component can only belong to exactly one UI instance.
+- Beans in this scope cannot be ```ApplicationListener```s.
+
+### The Vaadin UI Scope ###
+
+This scope binds the bean to the lifecycle of a Vaadin UI instance. This is also the scope of the UI instance itself.
+You use it by adding the ```@VaadinUIScope``` annotation to your class.
+
+**Intended use case:** The UI instance itself, all components (both UI and non-UI) that share the lifecycle of the UI.
+ 
+**Known limitations:**
+
+- Vaadin UI components cannot be proxied.
+- Beans in this scope cannot be ```ApplicationListener```s.
+
+### The Vaadin View Scope ###
+
+This scope binds the bean to the lifecycle of a Vaadin View (from the Navigation API). The lifecycle starts when a user 
+navigates into the view and ends when the user leaves the view. In addition, the scope is active while the view is being created. In theory,
+this means that there can be two view scopes active at the same time since the new view is created before the old view
+is deactivated. Normally, this should not cause any conflicts but you should be aware of it anyway, especially if you
+have multiple threads that might interact with the navigation API at the same time.
+
+You use this scope by adding the ```@VaadinViewScope``` to your View class. In addition, you need to configure your
+application to use Spring4Vaadin's view provider (see below for details).
+
+**Intended use case:** Views, all components (both UI and non-UI) that share the lifecycle of a view.
+
+**Known limitations:**
+
+- Vaadin UI components cannot be proxied.
+- Beans in this scope cannot be ```ApplicationListener```s.
+- The view scope will only work if the View instance itself is also view scoped and it is being created by a ```SpringViewProvider```.
+
+### When to use the Spring prototype scope? ###
+
+The prototype scope works perfectly with Vaadin applications. You can use it both for UI and non-UI components. You
+only need to be aware of the fact that prototype scoped beans *are not lifecycle managed*. This means for example that
+you will not be able to use ```@PreDestroy``` methods to clean up resources, stop background threads, etc.
+ 
+If you decide you will need to use the prototype scope for UI components, and you need to do resource allocation and release, 
+it is recommended to handle these in the ```attach()``` and ```detach()``` methods of your component. This will mean
+that resources are allocated when the component is added to a UI and released when the component is removed or the UI is destroyed.
+Be aware, however, that if your application is deployed as a WAR in a servlet container, and you undeploy the application, no ```detach()``` methods
+will be called.
+
+Since the prototype scope is many times useful in a Vaadin application, Vaadin4Spring provides a ```@PrototypeScope``` annotation
+for convenience.
+
+**Intended use case:** UI components that are used in many places of your application
+
+## Vaadin Navigation API support ##
+
+This add-on provides support for the Vaadin Navigator API by making it possible to add new views by simply annotating them.
+To set it up, follow these instructions:
+
+1. Annotate your views with ```@VaadinView``` and put them into either the ```@VaadinUIScope```, the ```@VaadinViewScope``` or the ```@PrototypeScope```. 
 2. Inject an instance of ```SpringViewProvider``` into your UI and add it as a view provider to your ```Navigator```
 instance.
 
-Please see the JavaDocs and the sample application for more information.
+Please see the JavaDocs and the [sample application](samples/navigation-sample) for more information.
 
 ## The Event Bus ##
 
-An Event Bus is oftend used to communicate change of state within the whole
-application or just within the UI.  Vaadin4Spring provides a addon for this
-usecase.
+Vaadin4Spring provides an event bus that can be used in addition to the Spring provided event bus. The event bus
+supports scoping events to the current UI instance, the current Vaadin session or the entire application.
 
 More information can be found [here](spring-vaadin-eventbus/README.md).
 
 ## Internationalization (i18n) ##
 
 Internationalization in a Vaadin4Spring application is very much handled by
-the I18N features of Spring itself. However, to make it a bit easier to use,
-there is an addon, that provides a helper.
+the I18N features of Spring itself. However, Spring4Vaadin provides some helper classes
+to make it easier.
 
 More information can be found [here](spring-vaadin-i18n/README.md).
 
@@ -161,10 +228,11 @@ If you want to customize the TouchKit servlet, extend
 
 Finally, please note that TouchKit is a commercial Vaadin product. It can, however, also be used in AGPL projects.
 
-## Sidebar ##
+## The Side Bar ##
 
 The side bar can be used as a main menu in applications with many views. It is implemented as a Vaadin accordion and divided into sections. Every section contains clickable menu items. Both sections and menu items are added declaratively using annotations.
-More information can be found [here](spring-vaadin-sidebar/README.md)
+
+More information can be found [here](spring-vaadin-sidebar/README.md).
 
 ## Security Support ##
 #### Experimental ####
