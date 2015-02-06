@@ -8,7 +8,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>security-sample</artifactId>
+    <artifactId>security-sample-multi</artifactId>
     <name>Vaadin4Spring Samples - Security-MultiUI</name>
     <packaging>jar</packaging>
 
