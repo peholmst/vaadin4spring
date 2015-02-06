@@ -20,14 +20,10 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.spring.navigator.annotation.VaadinViewScope;
 import org.vaadin.spring.sidebar.annotation.FontAwesomeIcon;
 import org.vaadin.spring.sidebar.annotation.SideBarItem;
-
-import javax.annotation.PostConstruct;
 
 /**
  * Example view that shows up under the Planning section in the side bar. This view also demonstrates the
@@ -43,21 +39,11 @@ import javax.annotation.PostConstruct;
 @VaadinViewScope
 public class PlanningView1 extends VerticalLayout implements View {
 
-    private static final long serialVersionUID = 2217814051618370412L;
-    
     public static final String VIEW_NAME = "planning1";
+    private static final long serialVersionUID = 2217814051618370412L;
 
-    @Autowired
-    ViewScopedComponent viewScopedComponent;
-
-    @Autowired
-    ViewScopedObject viewScopedObject;
-
-    @PostConstruct
-    void init() {
+    public PlanningView1() {
         addComponent(new Label("Planning View 1"));
-        addComponent(viewScopedComponent);
-        addComponent(new Label("From ViewScopedObject: " + viewScopedObject.foo()));
     }
 
     @Override

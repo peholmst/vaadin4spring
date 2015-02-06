@@ -157,13 +157,13 @@ public class ViewCache implements Serializable {
             if (navigator == null) {
                 throw new IllegalStateException("UI has no Navigator");
             }
-            LOGGER.debug("Adding [{}} as view change listener to [{}]", this, navigator);
+            LOGGER.trace("Adding [{}} as view change listener to [{}]", this, navigator);
             navigator.addViewChangeListener(this);
         }
 
         @Override
         public void destroy() {
-            LOGGER.debug("Removing [{}] as view change listener from [{}]", this, navigator);
+            LOGGER.trace("Removing [{}] as view change listener from [{}]", this, navigator);
             navigator.removeViewChangeListener(this);
             super.destroy();
         }
