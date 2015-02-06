@@ -129,9 +129,7 @@ public class SecurityConfiguration {
             
             http
                 .authorizeRequests()
-                    .antMatchers("/login/**").permitAll()
-                    .antMatchers("/**").authenticated()
-                    .anyRequest().authenticated()
+                    .antMatchers("/**").permitAll()
                 .and()
                 .sessionManagement()
                     .sessionFixation()
