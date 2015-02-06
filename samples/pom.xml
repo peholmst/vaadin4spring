@@ -161,6 +161,7 @@
         <module>mvp-sample</module>
         <module>push-sample</module>
         <module>security-sample-multi</module>
+        <module>security-sample-single</module>
         <module>navigation-sample</module>
     </modules>
 </project>
