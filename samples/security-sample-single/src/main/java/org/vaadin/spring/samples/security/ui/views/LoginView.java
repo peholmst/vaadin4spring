@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.samples.security.ui.login.views;
+package org.vaadin.spring.samples.security.ui.views;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.navigator.annotation.VaadinView;
-import org.vaadin.spring.samples.security.ui.login.LoginUI;
 import org.vaadin.spring.security.VaadinSecurity;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -42,7 +41,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-@VaadinView(name = LoginView.NAME, ui = LoginUI.class)
+@VaadinView(name = LoginView.NAME)
 @VaadinUIScope
 public class LoginView extends VerticalLayout implements View {
 
