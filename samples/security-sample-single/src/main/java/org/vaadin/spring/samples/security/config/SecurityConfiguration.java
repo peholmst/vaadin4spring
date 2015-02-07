@@ -138,8 +138,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .headers()
                     .frameOptions().disable()
-                .exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
-            
+                .exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/#!login"));
         }
 
         
