@@ -30,8 +30,8 @@ Configuration
 	<logger name="ch.qos.logback" 					level="OFF" />
 	<logger name="org.springframework"				level="INFO" />
     <logger name="org.springframework.security"     level="DEBUG" />
-    <logger name="org.vaadin"                       level="DEBUG" />
-    <logger name="org.vaadin.spring"                level="DEBUG" />
+    <logger name="org.vaadin"                       level="TRACE" />
+    <logger name="org.vaadin.spring"                level="TRACE" />
 
 	<!-- Logback Root Appender -->
 	<root level="OFF">
