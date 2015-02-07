@@ -35,7 +35,7 @@ import org.vaadin.spring.security.VaadinSecurityAware;
  * @see VaadinSecurity#hasAnyAuthority(String...)
  */
 public class SecuredViewProviderAccessDelegate implements VaadinSecurityAware, ViewProviderAccessDelegate {
-
+    
     private VaadinSecurity security;
     private ApplicationContext applicationContext;
 
@@ -50,10 +50,8 @@ public class SecuredViewProviderAccessDelegate implements VaadinSecurityAware, V
 
         Secured viewSecured = applicationContext.findAnnotationOnBean(beanName, Secured.class);
 
-        if ( viewSecured == null ) {
+        if ( viewSecured == null || !security.hasAccessDecisionManager() ) {
             return true;
-        } else if ( security.hasAccessDecisionManager() ) {
-            return true; // Leave decision to the second hook
         } else {
             return security.hasAnyAuthority(viewSecured.value());
         }
