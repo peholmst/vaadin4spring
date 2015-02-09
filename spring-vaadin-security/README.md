@@ -50,6 +50,24 @@ public class Dummy implements VaadinSecurityContextAware {
 }
 ```
 
+## SecuredUI / Single-UI##
+To create a secured Vaadin UI, with single page security support; one can now extend from ```SecuredUI``` instead of the default ```UI```.
+This gives you a default secured UI with a embedded ```SecuredNavigator```.
+
+When using this 2 methods are required to implement.
+
+- ```String defaultAuthenticationView()```
+- ```String notFoundView()```
+
+With ```defaultAuthenticationView()``` you must return the view name of the Authentication view which shows the login view to the user.
+
+With ```notFoundView()``` you must return the view name of the view which shows some kind of 404 View not found.
+
+See [Security Single-UI Sample](../samples/security-sample-single) for a working example.
+
+
+
+
 ## VaadinSecurity ##
 The VaadinSecurity interface provides access to commonly required Spring Security operations in a Vaadin application. It also extends ```VaadinSecurityContext```.
 
