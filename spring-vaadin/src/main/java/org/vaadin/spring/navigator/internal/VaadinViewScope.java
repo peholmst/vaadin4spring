@@ -18,6 +18,7 @@ package org.vaadin.spring.navigator.internal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -40,7 +41,27 @@ public class VaadinViewScope implements Scope, BeanFactoryPostProcessor {
 
     public static final String VAADIN_VIEW_SCOPE_NAME = "vaadin-view";
 
+    private static ViewCacheRetrievalStrategy viewCacheRetrievalStrategy = new BeanFactoryContextViewCacheRetrievalStrategy();
+
     private ConfigurableListableBeanFactory beanFactory;
+
+    /**
+     * Sets the {@link org.vaadin.spring.navigator.internal.ViewCacheRetrievalStrategy} to use.
+     */
+    public static synchronized void setViewCacheRetrievalStrategy(ViewCacheRetrievalStrategy viewCacheRetrievalStrategy) {
+        if (viewCacheRetrievalStrategy == null) {
+            viewCacheRetrievalStrategy = new BeanFactoryContextViewCacheRetrievalStrategy();
+        }
+        VaadinViewScope.viewCacheRetrievalStrategy = viewCacheRetrievalStrategy;
+    }
+
+    /**
+     * Returns the {@link org.vaadin.spring.navigator.internal.ViewCacheRetrievalStrategy} to use.
+     * By default, {@link org.vaadin.spring.navigator.internal.VaadinViewScope.BeanFactoryContextViewCacheRetrievalStrategy} is used.
+     */
+    public static synchronized ViewCacheRetrievalStrategy getViewCacheRetrievalStrategy() {
+        return viewCacheRetrievalStrategy;
+    }
 
     @Override
     public Object get(String name, ObjectFactory<?> objectFactory) {
@@ -69,7 +90,7 @@ public class VaadinViewScope implements Scope, BeanFactoryPostProcessor {
 
     private ViewCache getViewCache() {
         Assert.notNull(beanFactory, "beanFactory has not been set yet");
-        return beanFactory.getBean(ViewCache.class);
+        return viewCacheRetrievalStrategy.getViewCache(beanFactory);
     }
 
     @Override
@@ -79,4 +100,16 @@ public class VaadinViewScope implements Scope, BeanFactoryPostProcessor {
         beanFactory.registerScope(VAADIN_VIEW_SCOPE_NAME, this);
     }
 
+    /**
+     * Implementation of {@link org.vaadin.spring.navigator.internal.ViewCacheRetrievalStrategy} that
+     * fetches the {@link org.vaadin.spring.navigator.internal.ViewCache} instance from the provided
+     * bean factory.
+     */
+    public static class BeanFactoryContextViewCacheRetrievalStrategy implements ViewCacheRetrievalStrategy {
+
+        @Override
+        public ViewCache getViewCache(BeanFactory beanFactory) {
+            return beanFactory.getBean(ViewCache.class);
+        }
+    }
 }

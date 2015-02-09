@@ -13,29 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.samples.push;
+package org.vaadin.spring.navigator.internal;
 
-import org.atmosphere.cpr.SessionSupport;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.beans.factory.BeanFactory;
 
 /**
- * Main class for the push sample application.
+ * Strategy interface for getting the {@link org.vaadin.spring.navigator.internal.ViewCache}. The strategy pattern
+ * is used to make it easier to mock the {@link org.vaadin.spring.navigator.internal.VaadinViewScope view scope} while doing testing. For internal use only.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@EnableAutoConfiguration
-@ComponentScan
-public class Application {
+public interface ViewCacheRetrievalStrategy {
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class);
-    }
-
-    @Bean
-    public SessionSupport atmosphereSessionSupport() {
-        return new SessionSupport();
-    }
+    /**
+     * Returns the current bean store (never {@code null}).
+     */
+    ViewCache getViewCache(BeanFactory beanFactory);
 }
