@@ -42,7 +42,7 @@ import org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccess
  */
 public abstract class AbstractVaadinSecurity implements ApplicationContextAware, InitializingBean, VaadinSecurityContext {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
     private ApplicationContext applicationContext;
     private AuthenticationManager authenticationManager;
