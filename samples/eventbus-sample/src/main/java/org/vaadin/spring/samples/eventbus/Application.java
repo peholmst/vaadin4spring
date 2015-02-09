@@ -15,6 +15,7 @@
  */
 package org.vaadin.spring.samples.eventbus;
 
+import org.atmosphere.cpr.SessionSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -44,6 +45,11 @@ public class Application {
     @Bean
     ApplicationContextEventBroker applicationContextEventBroker() {
         return new ApplicationContextEventBroker(applicationEventBus);
+    }
+
+    @Bean
+    public SessionSupport atmosphereSessionSupport() {
+        return new SessionSupport();
     }
 
     public static void main(String[] args) throws Exception {

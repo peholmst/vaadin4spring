@@ -39,7 +39,7 @@ import javax.annotation.PreDestroy;
  * @author Petter Holmström (petter@vaadin.com)
  */
 @VaadinUI
-@Push(transport = Transport.LONG_POLLING)
+@Push(transport = Transport.WEBSOCKET)
 public class EventBusUI extends UI implements EventBusListener<Object> {
 
     private static final long serialVersionUID = -6291309888986021672L;
