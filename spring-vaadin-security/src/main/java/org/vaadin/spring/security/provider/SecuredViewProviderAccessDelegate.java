@@ -20,7 +20,7 @@ import com.vaadin.ui.UI;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.annotation.Secured;
-import org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate;
+import org.vaadin.spring.navigator.ViewProviderAccessDelegate;
 import org.vaadin.spring.security.VaadinSecurity;
 import org.vaadin.spring.security.VaadinSecurityAware;
 

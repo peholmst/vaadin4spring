@@ -35,7 +35,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.util.MethodInvocationUtils;
 import org.springframework.util.ClassUtils;
-import org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate;
+import org.vaadin.spring.navigator.ViewProviderAccessDelegate;
 import org.vaadin.spring.security.VaadinSecurity;
 import org.vaadin.spring.security.VaadinSecurityAware;
 
