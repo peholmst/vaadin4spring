@@ -29,8 +29,11 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.security.GenericVaadinSecurity;
 import org.vaadin.spring.security.VaadinSecurity;
+import org.vaadin.spring.security.navigator.provider.NavigatorProvider;
+import org.vaadin.spring.security.navigator.provider.SecuredNavigatorProvider;
 import org.vaadin.spring.security.provider.PreAuthorizeViewProviderAccessDelegate;
 import org.vaadin.spring.security.provider.SecuredViewProviderAccessDelegate;
+import org.vaadin.spring.security.support.SecuredNavigatorProviderAwareProcessor;
 import org.vaadin.spring.security.support.VaadinSecurityAwareProcessor;
 import org.vaadin.spring.security.web.VaadinDefaultRedirectStrategy;
 import org.vaadin.spring.security.web.VaadinRedirectStrategy;
@@ -47,12 +50,14 @@ public class VaadinSecurityConfiguration {
 
     public static final class Beans {
 
-        public static final String VAADIN_SECURITY                  = "vaadinSecurity";
-        public static final String VAADIN_SECURITY_AWARE_PROCESSOR  = "vaadinSecurityProcessor";
-        public static final String CURRENT_USER                     = "currentUser";
-        public static final String ACCESS_DECISION_MANAGER          = "accessDecisionManager";
-        public static final String AUTHENTICATION_MANAGER           = "authenticationManager";
-        public static final String VAADIN_REDIRECT_STRATEGY         = "vaadinRedirectStrategy";
+        public static final String VAADIN_SECURITY                              = "vaadinSecurity";
+        public static final String VAADIN_SECURITY_AWARE_PROCESSOR              = "vaadinSecurityProcessor";
+        public static final String CURRENT_USER                                 = "currentUser";
+        public static final String ACCESS_DECISION_MANAGER                      = "accessDecisionManager";
+        public static final String AUTHENTICATION_MANAGER                       = "authenticationManager";
+        public static final String VAADIN_REDIRECT_STRATEGY                     = "vaadinRedirectStrategy";
+        public static final String SECURED_NAVIGATOR_PROVIDER                   = "securedNavigatorProvider";
+        public static final String SECURED_NAVIGATOR_PROVIDER_AWARE_PROCESSOR   = "securedNavigatorProviderProcessor"; 
 
     }
 
@@ -88,6 +93,16 @@ public class VaadinSecurityConfiguration {
     @Bean(name = Beans.VAADIN_SECURITY_AWARE_PROCESSOR)
     VaadinSecurityAwareProcessor vaadinSecurityProcessor() {
         return new VaadinSecurityAwareProcessor();
+    }
+    
+    @Bean(name = Beans.SECURED_NAVIGATOR_PROVIDER_AWARE_PROCESSOR)
+    SecuredNavigatorProviderAwareProcessor navigatorAwareProcessor() {
+        return new SecuredNavigatorProviderAwareProcessor();
+    }
+    
+    @Bean(name = Beans.SECURED_NAVIGATOR_PROVIDER)
+    NavigatorProvider securedNavigatorProvider() {
+        return new SecuredNavigatorProvider();
     }
 
     @Bean
