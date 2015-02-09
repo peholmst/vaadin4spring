@@ -16,7 +16,6 @@
 package org.vaadin.spring.config;
 
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -66,7 +65,7 @@ public class VaadinConfiguration implements ApplicationContextAware {
 
     @Bean
     SpringViewProvider viewProvider() {
-        return new SpringViewProvider(applicationContext, (BeanDefinitionRegistry) applicationContext);
+        return new SpringViewProvider();
     }
 
     @Bean
