@@ -25,9 +25,11 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.ui.UI;
 
+import org.atmosphere.cpr.SessionSupport;
 import org.vaadin.spring.annotation.VaadinUI;
 
 import javax.annotation.PreDestroy;
+import javax.servlet.annotation.WebListener;
 
 import java.util.Random;
 import java.util.concurrent.Executors;
@@ -41,7 +43,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@Push(transport = Transport.LONG_POLLING)
+@Push(transport = Transport.WEBSOCKET)
 @Widgetset("org.vaadin.spring.samples.push.AppWidgetSet")
 @Title("Push Demo")
 @VaadinUI
@@ -84,5 +86,10 @@ public class PushUI extends UI {
     @PreDestroy
     void destroy() {
         jobHandle.cancel(true);
+    }
+
+    @WebListener
+    public static class AtmosphereSessionSupport extends SessionSupport{
+
     }
 }
