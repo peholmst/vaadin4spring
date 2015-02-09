@@ -47,7 +47,7 @@ public class LoginView extends VerticalLayout implements View {
 
     private static final long serialVersionUID = -4430276235082912377L;
 
-    public static final String NAME = "";
+    public static final String NAME = "login";
     
     @Autowired
     private VaadinSecurity security;
@@ -125,7 +125,6 @@ public class LoginView extends VerticalLayout implements View {
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
-                // TODO Register Remember me Token
                 
                 /*
                  * Redirect is handled by the VaadinRedirectStrategy

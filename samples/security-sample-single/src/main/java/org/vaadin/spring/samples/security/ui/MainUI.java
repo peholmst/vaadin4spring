@@ -18,19 +18,20 @@ package org.vaadin.spring.samples.security.ui;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.annotation.VaadinUI;
 import org.vaadin.spring.navigator.SpringViewProvider;
+import org.vaadin.spring.samples.security.ui.views.LoginView;
+import org.vaadin.spring.samples.security.ui.views.NotFoundView;
+import org.vaadin.spring.security.ui.SecuredUI;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
-import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.UI;
 
 @VaadinUI
-@Title("Vaadin Spring-Security Sample")
+@Title("Vaadin Spring-Security Single-UI Sample")
 @Theme("security")
 @Widgetset("org.vaadin.spring.samples.security.Widgetset")
-public class MainUI extends UI {
+public class MainUI extends SecuredUI {
 
     private static final long serialVersionUID = 5310014981075920878L;
 
@@ -40,9 +41,16 @@ public class MainUI extends UI {
     @Override
     protected void init(VaadinRequest request) {
         
-        Navigator navigator = new Navigator(this, this);
-        navigator.addProvider(ViewProvider);
-        setNavigator(navigator);
     }
+
+    @Override
+    public String defaultAuthenticationView() {
+        return LoginView.NAME;
+    }
+
+	@Override
+	public String notFoundView() {
+		return NotFoundView.NAME;
+	}
 
 }
