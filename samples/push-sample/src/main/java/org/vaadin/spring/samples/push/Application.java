@@ -15,8 +15,10 @@
  */
 package org.vaadin.spring.samples.push;
 
+import org.atmosphere.cpr.SessionSupport;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
@@ -32,4 +34,8 @@ public class Application {
         SpringApplication.run(Application.class);
     }
 
+    @Bean
+    public SessionSupport atmosphereSessionSupport() {
+        return new SessionSupport();
+    }
 }
