@@ -118,7 +118,7 @@ public class ViewCache implements Serializable {
     private ViewBeanStore getOrCreateBeanStore(final String viewName) {
         ViewBeanStore beanStore = beanStores.get(viewName);
         if (beanStore == null) {
-            UI ui = UI.getCurrent();
+            UI ui = getCurrentUI();
             if (ui == null) {
                 throw new IllegalStateException("No UI bound to current thread");
             }
@@ -134,6 +134,13 @@ public class ViewCache implements Serializable {
             beanStores.put(viewName, beanStore);
         }
         return beanStore;
+    }
+
+    /**
+     * Returns the current UI.
+     */
+    protected UI getCurrentUI() {
+        return UI.getCurrent();
     }
 
     private ViewBeanStore getBeanStore(String viewName) {

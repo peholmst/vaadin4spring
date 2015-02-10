@@ -27,21 +27,21 @@ import org.vaadin.spring.events.internal.ScopedEventBus;
 import org.vaadin.spring.events.support.VaadinEventBusAwareProcessor;
 import org.vaadin.spring.internal.VaadinSessionScope;
 import org.vaadin.spring.internal.VaadinUIScope;
+import org.vaadin.spring.navigator.internal.VaadinViewScope;
 
 /**
  * Configuration class to configure the Spring Vaadin Eventbus
- * 
- * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  *
+ * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  */
 @Configuration
 public class VaadinEventbusConfiguration {
-    
+
     @Bean
     VaadinEventBusAwareProcessor vaadinEventBusProcessor() {
         return new VaadinEventBusAwareProcessor();
     }
-    
+
     @Bean
     @EventBusScope(EventScope.APPLICATION)
     EventBus applicationEventBus() {
@@ -75,5 +75,19 @@ public class VaadinEventbusConfiguration {
     @EventBusScope(EventScope.UI)
     EventBus uiEventBus() {
         return new ScopedEventBus(EventScope.UI, sessionEventBus());
+    }
+
+    @Bean
+    @Scope(value = VaadinViewScope.VAADIN_VIEW_SCOPE_NAME, proxyMode = ScopedProxyMode.INTERFACES)
+    @EventBusScope(EventScope.VIEW)
+    EventBus proxiedViewEventBus() {
+        return viewEventBus();
+    }
+
+    @Bean
+    @Scope(value = VaadinViewScope.VAADIN_VIEW_SCOPE_NAME, proxyMode = ScopedProxyMode.NO)
+    @EventBusScope(EventScope.VIEW)
+    EventBus viewEventBus() {
+        return new ScopedEventBus(EventScope.VIEW, uiEventBus());
     }
 }
