@@ -83,9 +83,14 @@ public class VaadinViewScope implements Scope, BeanFactoryPostProcessor {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This implementation always returns {@code null}.
+     */
     @Override
     public String getConversationId() {
-        return getViewCache().getCurrentConversationId();
+        return null;
     }
 
     private ViewCache getViewCache() {

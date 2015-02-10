@@ -32,6 +32,7 @@ import org.vaadin.spring.http.VaadinHttpService;
 import org.vaadin.spring.internal.VaadinSessionScope;
 import org.vaadin.spring.internal.VaadinUIScope;
 import org.vaadin.spring.navigator.SpringViewProvider;
+import org.vaadin.spring.navigator.internal.DefaultViewCache;
 import org.vaadin.spring.navigator.internal.VaadinViewScope;
 import org.vaadin.spring.navigator.internal.ViewCache;
 
@@ -72,7 +73,7 @@ public class VaadinConfiguration implements ApplicationContextAware {
     @Bean
     @org.vaadin.spring.annotation.VaadinUIScope
     ViewCache viewCache() {
-        return new ViewCache();
+        return new DefaultViewCache();
     }
 
     @Override
