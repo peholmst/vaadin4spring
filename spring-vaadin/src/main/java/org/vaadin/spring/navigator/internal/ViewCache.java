@@ -25,7 +25,7 @@ import java.io.Serializable;
  * corresponding {@link org.vaadin.spring.internal.BeanStore}. It is also responsible for cleaning up views that have gone
  * out of scope. Used as a delegate by {@link org.vaadin.spring.navigator.internal.VaadinViewScope}.
  * For internal use only.
- * 
+ *
  * @author Petter Holmström (petter@vaadin.com)
  */
 public interface ViewCache extends Serializable {

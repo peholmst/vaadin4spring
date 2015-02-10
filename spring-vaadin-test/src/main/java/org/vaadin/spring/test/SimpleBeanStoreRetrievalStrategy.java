@@ -21,6 +21,8 @@ import org.vaadin.spring.internal.BeanStoreRetrievalStrategy;
 /**
  * Simple implementation of {@link org.vaadin.spring.internal.BeanStoreRetrievalStrategy} that always returns
  * the same {@link org.vaadin.spring.internal.BeanStore} instance.
+ *
+ * @author Petter Holmström (petter@vaadin.com)
  */
 class SimpleBeanStoreRetrievalStrategy implements BeanStoreRetrievalStrategy {
 

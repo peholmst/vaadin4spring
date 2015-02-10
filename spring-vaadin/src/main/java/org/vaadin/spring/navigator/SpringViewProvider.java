@@ -207,7 +207,7 @@ public class SpringViewProvider implements ViewProvider {
         BeanDefinition beanDefinition = beanDefinitionRegistry.getBeanDefinition(beanName);
         if (beanDefinition.getScope().equals(VaadinViewScope.VAADIN_VIEW_SCOPE_NAME)) {
             LOGGER.trace("View [{}] is view scoped, activating scope", viewName);
-            final ViewCache viewCache = applicationContext.getBean(ViewCache.class);
+            final ViewCache viewCache = VaadinViewScope.getViewCacheRetrievalStrategy().getViewCache(applicationContext);
             viewCache.creatingView(viewName);
             View view = null;
             try {
