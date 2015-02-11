@@ -22,8 +22,10 @@ import org.vaadin.spring.navigator.annotation.VaadinView;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
@@ -42,17 +44,19 @@ public class MainView extends VerticalLayout implements View {
         setSpacing(true);
         setMargin(true);
         
-        Button button = new Button("Click Me");
-        button.addClickListener(new Button.ClickListener() {
+        addComponent(new Label("<h2>Main View</h2>", ContentMode.HTML));
+        
+        Button goToSecuredView = new Button("Go To Secured View");
+        goToSecuredView.addClickListener(new Button.ClickListener() {
+			
+			private static final long serialVersionUID = -2896151918118631378L;
 
-            private static final long serialVersionUID = 8086462724732012808L;
-
-            @Override
-            public void buttonClick(ClickEvent event) {
-                addComponent(new Label("Thank you for clicking"));
-            }
-        });
-        addComponent(button);
+			@Override
+			public void buttonClick(ClickEvent event) {
+				UI.getCurrent().getNavigator().navigateTo(SecuredView.NAME);				
+			}
+		});
+        addComponent(goToSecuredView);
     }
     
     @Override
