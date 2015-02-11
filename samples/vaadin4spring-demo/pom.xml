@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.2.1.RELEASE</version>
+    </parent>
+
+    <groupId>org.vaadin.spring.demo</groupId>
+    <artifactId>vaadin4spring-demo</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0.RELEASE</version>
+    <name>Vaadin4Spring Demo</name>
+
+    <properties>
+        <!-- Java -->
+        <project.source.version>1.8</project.source.version>
+        <project.target.version>1.8</project.target.version>
+        <project.encoding>UTF-8</project.encoding>
+
+        <!-- Vaadin -->
+        <vaadin.version>7.3.10</vaadin.version>
+        <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
+        <spring4vaadin.version>0.0.5-SNAPSHOT</spring4vaadin.version>
+
+        <!-- jetty -->
+        <jetty.plugin.version>9.2.3.v20140905</jetty.plugin.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <encoding>${project.encoding}</encoding>
+                    <source>${project.source.version}</source>
+                    <target>${project.target.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <encoding>${project.encoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>2.3</version>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.vaadin</groupId>
+                    <artifactId>vaadin-maven-plugin</artifactId>
+                    <version>${vaadin.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.5</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.0.1</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-server</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-push</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-client</artifactId>
+                <version>${vaadin.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-client-compiler</artifactId>
+                <version>${vaadin.version}</version>
+                <scope>provided</scope>
+                <exclusions>
+
+                    <!--
+                        Excluded Jetty
+                        Reason: Will conflict with the default container (Tomcat)
+                        loaded by Spring-boot
+
+                        This is not related to 'mvn jetty:run' as described within README
+                    -->
+
+                    <exclusion>
+                        <artifactId>jetty-servlet</artifactId>
+                        <groupId>org.eclipse.jetty</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>jetty-xml</artifactId>
+                        <groupId>org.eclipse.jetty</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>jetty-plus</artifactId>
+                        <groupId>org.eclipse.jetty</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>jetty-util</artifactId>
+                        <groupId>org.eclipse.jetty</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>jetty-servlets</artifactId>
+                        <groupId>org.eclipse.jetty</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>jetty-security</artifactId>
+                        <groupId>org.eclipse.jetty</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>jetty-client</artifactId>
+                        <groupId>org.eclipse.jetty</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>jetty-webapp</artifactId>
+                        <groupId>org.eclipse.jetty</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>jetty-io</artifactId>
+                        <groupId>org.eclipse.jetty</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>jetty-server</artifactId>
+                        <groupId>org.eclipse.jetty</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>jetty-continuation</artifactId>
+                        <groupId>org.eclipse.jetty</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>jetty-annotations</artifactId>
+                        <groupId>org.eclipse.jetty</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>jetty-jndi</artifactId>
+                        <groupId>org.eclipse.jetty</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>jetty-http</artifactId>
+                        <groupId>org.eclipse.jetty</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-themes</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+
+            <!-- Spring4Vaadin -->
+            <dependency>
+                <groupId>org.vaadin.spring</groupId>
+                <artifactId>spring-boot-vaadin</artifactId>
+                <version>${spring4vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.vaadin.spring</groupId>
+                <artifactId>spring-vaadin</artifactId>
+                <version>${spring4vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.vaadin.spring</groupId>
+                <artifactId>spring-vaadin-security</artifactId>
+                <version>${spring4vaadin.version}</version>
+            </dependency>
+
+            <!-- Logging -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>vaadin-addons</id>
+            <url>http://maven.vaadin.com/vaadin-addons</url>
+        </repository>
+        <repository>
+            <id>vaadin-snapshots</id>
+            <url>http://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+            </snapshots>
+        </repository>
+
+    </repositories>
+    <modules>
+        <module>vaadin4spring-demo-widgetset</module>
+        <module>vaadin4spring-demo-ui</module>
+        <module>vaadin4spring-demo-production</module>
+    </modules>
+</project>
