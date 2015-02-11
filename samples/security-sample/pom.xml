@@ -33,15 +33,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -75,7 +67,7 @@
         <dependency>
             <groupId>org.vaadin.spring</groupId>
             <artifactId>spring-vaadin-mvp</artifactId>
-            </dependency>
+        </dependency>
         
         <!-- Vaadin -->
         <dependency>

@@ -112,7 +112,7 @@ public class SecurityConfiguration {
         public void configure(WebSecurity web) throws Exception {
             web
                 .ignoring()
-                    .antMatchers("/VAADIN/**", "/UIDL/**", "/HEARTBEAT/**");
+                    .antMatchers("/VAADIN/**");
         }
         
         @Override
@@ -130,6 +130,8 @@ public class SecurityConfiguration {
             http
                 .authorizeRequests()
                     .antMatchers("/login/**").permitAll()
+                    .antMatchers("/UIDL/**").permitAll()
+                    .antMatchers("/HEARTBEAT/**").authenticated()
                     .antMatchers("/**").authenticated()
                     .anyRequest().authenticated()
                 .and()
