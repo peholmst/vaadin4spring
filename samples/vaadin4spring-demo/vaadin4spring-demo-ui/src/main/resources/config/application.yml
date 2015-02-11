@@ -1,0 +1,68 @@
+# Copyright 2015 Gert-Jan Timmer <gjr.timmer@gmail.com>.
+---
+
+info.build.artifact: @project.artifactId@
+info.build.name: @project.name@
+info.build.description: @project.description@
+info.build.version: @project.version@
+
+async:
+    corePoolSize: 2
+    maxPoolSize: 50
+    queueCapacity: 10000
+
+spring:
+    resources:
+        add-mappings: true
+
+    http:
+        encoding:
+            charset: UTF-8
+            enabled: true
+            force: true
+
+    jpa:
+        #database-platform: <DIALECT>
+        #database: MYSQL
+        #openInView: true
+        #generate-ddl: false
+        #hibernate:
+        #    ddl-auto: none
+        #    naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+        #properties:
+        #    hibernate.cache.use_second_level_cache: true
+        #    hibernate.cache.use_query_cache: false
+        #    hibernate.generate_statistics: fakse
+        #    hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+        #    org.hibernate.envers.audit_table_prefix: revision__
+        #   org.hibernate.envers.audit_table_suffix:
+        #   org.hibernate.envers.store_data_at_delete: true
+
+    messageSource:
+        cacheSeconds: 1
+
+# Calimero Properties
+vaadin4springDemo:
+    title: Vaadin4Spring Demo
+    security:
+        remembermekey: vaadin4spring
+
+# ----------------------------------------
+# ACTUATOR PROPERTIES
+# ----------------------------------------
+management.security.enabled: true
+security.basic.enabled: false
+endpoints.enabled: true
+endpoints.jolokia.enabled: false
+endpoints.shutdown.enabled: true
+
+# HEALTH INDICATORS (previously health.*)
+management.health.db.enabled: true
+management.health.diskspace.enabled: true
+management.health.mongo.enabled: true
+management.health.rabbit.enabled: true
+management.health.redis.enabled: true
+management.health.solr.enabled: true
+management.health.diskspace.path: .
+management.health.diskspace.threshold: 10485760
+management.health.status.order: DOWN, OUT_OF_SERVICE, UNKNOWN, UP

@@ -1,0 +1,51 @@
+## YAML Template.
+---
+server:
+    port: 8080
+    address: localhost
+
+spring:
+    profiles: prod
+    #datasource:
+    #    dataSourceClassName: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+    #    url: jdbc:mysql://localhost:3306/vaadin4spring
+    #    databaseName:
+    #    serverName:
+    #    username: ********
+    #    password: ********
+    #    cachePrepStmts: true
+    #    prepStmtCacheSize: 250
+    #    prepStmtCacheSqlLimit: 2048
+    #    useServerPrepStmts: true
+
+    jpa:
+        show_sql: false
+
+    mail:
+        host: localhost
+        port: 25
+        user:
+        password:
+        protocol: smtp
+        tls: false
+        auth: false
+        from: demo@localhost
+        baseUrl: http://localhost:8080
+
+metrics:
+    jmx.enabled: true
+    spark:
+        enabled: false
+        host: localhost
+        port: 9999
+    graphite:
+        enabled: false
+        host: localhost
+        port: 2003
+        prefix: jhipster
+
+cache:
+    timeToLiveSeconds: 3600
+    ehcache:
+        maxBytesLocalHeap: 256M
+

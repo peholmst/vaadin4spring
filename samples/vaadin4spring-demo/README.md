@@ -3,6 +3,9 @@ vaadin4spring-demo
 
 Template for a full-blown Vaadin application that only requires a Servlet 3.0 container to run (no other JEE dependencies).
 
+Important:
+This project uses [Lombok](http://projectlombok.org) please add lombok to your IDE.
+
 
 Project Structure
 =================
