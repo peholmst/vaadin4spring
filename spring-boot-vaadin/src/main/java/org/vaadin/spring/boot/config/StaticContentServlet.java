@@ -25,7 +25,7 @@ import java.io.IOException;
 /**
  * Servlet for serving static Vaadin content.
  */
-class StaticContentServlet extends VaadinServlet {
+public class StaticContentServlet extends VaadinServlet {
 
     private static final long serialVersionUID = 5436303277198728952L;
 
