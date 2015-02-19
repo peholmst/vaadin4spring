@@ -18,6 +18,8 @@ package org.vaadin.spring.security.provider;
 import com.vaadin.navigator.View;
 import com.vaadin.ui.UI;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.annotation.Secured;
 import org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate;
@@ -36,6 +38,8 @@ import org.vaadin.spring.security.VaadinSecurityAware;
  */
 public class SecuredViewProviderAccessDelegate implements VaadinSecurityAware, ViewProviderAccessDelegate {
 
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	
     private VaadinSecurity security;
     private ApplicationContext applicationContext;
 
@@ -51,10 +55,13 @@ public class SecuredViewProviderAccessDelegate implements VaadinSecurityAware, V
         Secured viewSecured = applicationContext.findAnnotationOnBean(beanName, Secured.class);
 
         if ( viewSecured == null ) {
+        	logger.trace("@Secured annotation not present on view");
             return true;
         } else if ( security.hasAccessDecisionManager() ) {
+        	logger.trace("Second hook will handle decision");
             return true; // Leave decision to the second hook
         } else {
+        	logger.trace("Check authority");
             return security.hasAnyAuthority(viewSecured.value());
         }
     }
