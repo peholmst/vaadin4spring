@@ -45,7 +45,7 @@ public abstract class Presenter<V extends View> {
     private SpringViewProvider viewProvider;
 
     @Autowired
-    private EventBus eventBus;
+    private EventBus.UIEventBus eventBus;
     
     private String viewName;
 

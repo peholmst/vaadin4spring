@@ -42,7 +42,7 @@ public class PresenterTest {
     private SpringViewProvider provider;
 
     @Autowired
-    private EventBus eventBus;
+    private EventBus.UIEventBus eventBus;
 
     @Test
     public void testValidPresenter() {
