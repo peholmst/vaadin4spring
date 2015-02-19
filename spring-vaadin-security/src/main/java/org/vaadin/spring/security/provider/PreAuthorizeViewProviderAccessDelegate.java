@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -55,6 +57,8 @@ import com.vaadin.ui.UI;
  */
 public class PreAuthorizeViewProviderAccessDelegate implements ApplicationContextAware, VaadinSecurityAware, ViewProviderAccessDelegate {
 
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	
     private VaadinSecurity security;
     private ApplicationContext applicationContext;
 
@@ -74,9 +78,12 @@ public class PreAuthorizeViewProviderAccessDelegate implements ApplicationContex
         PreAuthorize viewSecured = applicationContext.findAnnotationOnBean(beanName, PreAuthorize.class);
 
         if ( viewSecured == null ) {
+        	logger.trace("@PreAuthorize annotation not present on view");
             return true;
         } else if ( security.hasAccessDecisionManager() ) {
 
+        	logger.trace("DecisionManager present");
+        	
             final Class<?> targetClass = AopUtils.getTargetClass(applicationContext.getBean(beanName));
             final Method method = ClassUtils.getMethod(AopUtils.getTargetClass(applicationContext.getBean(beanName)), "enter", com.vaadin.navigator.ViewChangeListener.ViewChangeEvent.class);
             final MethodInvocation methodInvocation = MethodInvocationUtils.createFromClass(targetClass, method.getName());
@@ -89,6 +96,7 @@ public class PreAuthorizeViewProviderAccessDelegate implements ApplicationContex
             atributi.add(attributeFactory.createPreInvocationAttribute(null, null, viewSecured.value()));
 
             try {
+            	logger.trace("Requesting decision from decisionmanager");
                 accessDecisionManager.decide(authentication, methodInvocation, atributi);
                 return true;
             } catch (InsufficientAuthenticationException e) {
@@ -98,6 +106,7 @@ public class PreAuthorizeViewProviderAccessDelegate implements ApplicationContex
             }
 
         } else {
+        	logger.trace("Decision manager is required for @PreAuthorize; defaulting to 'true'");
             return true; // Access decision manager required for @PreAuthorize()
         }
 
@@ -108,6 +117,7 @@ public class PreAuthorizeViewProviderAccessDelegate implements ApplicationContex
      */
     @Override
     public boolean isAccessGranted(View view, UI ui) {
-        return true;
+        logger.trace("Decision already made");
+    	return true;
     }
 }
