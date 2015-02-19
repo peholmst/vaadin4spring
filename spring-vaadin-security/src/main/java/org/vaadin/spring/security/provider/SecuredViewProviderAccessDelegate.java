@@ -68,6 +68,8 @@ public class SecuredViewProviderAccessDelegate implements VaadinSecurityAware, V
 
     @Override
     public boolean isAccessGranted(View view, UI ui) {
+        logger.trace("Instance: {} | Class: {} | IsAnnotated: {}", view.toString(), view.getClass(), view.getClass().getAnnotation(Secured.class));
+
         Secured viewSecured = view.getClass().getAnnotation(Secured.class);
 
         if ( viewSecured == null || !security.hasAccessDecisionManager() ) {
