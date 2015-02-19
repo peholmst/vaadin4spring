@@ -22,9 +22,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventScope;
-import org.vaadin.spring.events.annotation.EventBusScope;
-import org.vaadin.spring.events.internal.ApplicationContextEventBroker;
+import org.vaadin.spring.events.support.ApplicationContextEventBroker;
 
 /**
  * Main class for the event bus demo application.
@@ -36,11 +34,10 @@ import org.vaadin.spring.events.internal.ApplicationContextEventBroker;
 public class Application {
 
     @Autowired
-    @EventBusScope(EventScope.APPLICATION)
-    EventBus applicationEventBus;
+    EventBus.ApplicationEventBus applicationEventBus;
 
     /**
-     * Forward {@link org.springframework.context.ApplicationEvent}s to the {@link EventScope#APPLICATION} scoped {@link org.vaadin.spring.events.EventBus}.
+     * Forward {@link org.springframework.context.ApplicationEvent}s to the {@link org.vaadin.spring.events.EventBus.ApplicationEventBus}.
      */
     @Bean
     ApplicationContextEventBroker applicationContextEventBroker() {
