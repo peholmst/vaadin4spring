@@ -16,7 +16,6 @@
 package org.vaadin.spring.events.annotation;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.vaadin.spring.events.EventScope;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -26,7 +25,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Qualifier to be used to specify which type of {@link org.vaadin.spring.events.EventBus} to inject.
+ * Qualifier to be used to indicate that a proxy of an {@link org.vaadin.spring.events.EventBus} should be injected.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
@@ -35,17 +34,5 @@ import java.lang.annotation.Target;
 @Inherited
 @Documented
 @Qualifier
-public @interface EventBusScope {
-    /**
-     * The scope of the event bus.
-     */
-    EventScope value();
-
-    /**
-     * Whether the event bus should be proxied or not. Typically, if you are injecting the event bus
-     * into a singleton, you want this to be set to true. In all other cases, you want to use false.
-     * Please note, that the {@link EventScope#APPLICATION} scoped event bus can never be proxied since it is
-     * a singleton itself.
-     */
-    boolean proxy() default false;
+public @interface EventBusProxy {
 }

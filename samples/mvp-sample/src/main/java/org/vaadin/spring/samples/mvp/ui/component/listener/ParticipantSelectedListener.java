@@ -21,7 +21,7 @@ import org.vaadin.spring.annotation.VaadinComponent;
 import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
-import org.vaadin.spring.events.annotation.EventBusScope;
+import org.vaadin.spring.events.annotation.EventBusProxy;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -33,8 +33,7 @@ public class ParticipantSelectedListener implements ValueChangeListener {
     private static final long serialVersionUID = 331391425040065709L;
 
     @Inject
-    @EventBusScope(EventScope.APPLICATION)
-    private EventBus eventBus;
+    private EventBus.UIEventBus eventBus;
 
     @Override
     public void valueChange(ValueChangeEvent event) {

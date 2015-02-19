@@ -39,7 +39,7 @@ public class ExplicitPresenterIT {
     private ExplicitPresenter explicitPresenter;
 
     @Autowired
-    private EventBus eventBus;
+    private EventBus.UIEventBus eventBus;
 
     @Test
     public void should_listen_to_message() {

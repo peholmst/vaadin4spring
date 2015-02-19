@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.vaadin.spring.events.Event;
+import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusListener;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
@@ -34,8 +35,8 @@ import static org.mockito.Mockito.*;
  */
 public class ScopedEventBusTest {
 
-    ScopedEventBus applicationEventBus;
-    ScopedEventBus sessionEventBus;
+    ScopedEventBus.DefaultApplicationEventBus applicationEventBus;
+    ScopedEventBus.DefaultSessionEventBus sessionEventBus;
 
     interface StringListener extends EventBusListener<String> {
     }
@@ -84,8 +85,8 @@ public class ScopedEventBusTest {
 
     @Before
     public void setUp() {
-        applicationEventBus = new ScopedEventBus(EventScope.APPLICATION);
-        sessionEventBus = new ScopedEventBus(EventScope.SESSION, applicationEventBus);
+        applicationEventBus = new ScopedEventBus.DefaultApplicationEventBus();
+        sessionEventBus = new ScopedEventBus.DefaultSessionEventBus(applicationEventBus);
     }
 
     @After

@@ -30,7 +30,7 @@ import org.vaadin.spring.mvp.FooView;
 public class ExplicitConfig {
 
     @Autowired
-    private EventBus eventBus;
+    private EventBus.UIEventBus eventBus;
 
     @Bean
     @VaadinUIScope

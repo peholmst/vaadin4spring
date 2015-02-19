@@ -21,8 +21,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventScope;
-import org.vaadin.spring.events.annotation.EventBusScope;
+import org.vaadin.spring.events.annotation.EventBusProxy;
 import org.vaadin.spring.events.internal.ScopedEventBus;
 import org.vaadin.spring.events.support.VaadinEventBusAwareProcessor;
 import org.vaadin.spring.internal.VaadinSessionScope;
@@ -43,51 +42,49 @@ public class VaadinEventbusConfiguration {
     }
 
     @Bean
-    @EventBusScope(EventScope.APPLICATION)
-    EventBus applicationEventBus() {
-        return new ScopedEventBus(EventScope.APPLICATION);
+    EventBus.ApplicationEventBus applicationEventBus() {
+        return new ScopedEventBus.DefaultApplicationEventBus();
     }
 
     @Bean
     @Scope(value = VaadinSessionScope.VAADIN_SESSION_SCOPE_NAME, proxyMode = ScopedProxyMode.INTERFACES)
-    @EventBusScope(value = EventScope.SESSION, proxy = true)
-    EventBus proxiedSessionEventBus() {
+    @EventBusProxy
+    EventBus.SessionEventBus proxiedSessionEventBus() {
         return sessionEventBus();
     }
 
     @Bean
     @Scope(value = VaadinSessionScope.VAADIN_SESSION_SCOPE_NAME, proxyMode = ScopedProxyMode.NO)
-    @EventBusScope(EventScope.SESSION)
-    EventBus sessionEventBus() {
-        return new ScopedEventBus(EventScope.SESSION, applicationEventBus());
+    @Primary
+    EventBus.SessionEventBus sessionEventBus() {
+        return new ScopedEventBus.DefaultSessionEventBus(applicationEventBus());
     }
 
     @Bean
     @Scope(value = VaadinUIScope.VAADIN_UI_SCOPE_NAME, proxyMode = ScopedProxyMode.INTERFACES)
-    @EventBusScope(value = EventScope.UI, proxy = true)
-    EventBus proxiedUiEventBus() {
+    @EventBusProxy
+    EventBus.UIEventBus proxiedUiEventBus() {
         return uiEventBus();
     }
 
     @Bean
     @Scope(value = VaadinUIScope.VAADIN_UI_SCOPE_NAME, proxyMode = ScopedProxyMode.NO)
     @Primary
-    @EventBusScope(EventScope.UI)
-    EventBus uiEventBus() {
-        return new ScopedEventBus(EventScope.UI, sessionEventBus());
+    EventBus.UIEventBus uiEventBus() {
+        return new ScopedEventBus.DefaultUIEventBus(sessionEventBus());
     }
 
     @Bean
     @Scope(value = VaadinViewScope.VAADIN_VIEW_SCOPE_NAME, proxyMode = ScopedProxyMode.INTERFACES)
-    @EventBusScope(EventScope.VIEW)
-    EventBus proxiedViewEventBus() {
+    @EventBusProxy
+    EventBus.ViewEventBus proxiedViewEventBus() {
         return viewEventBus();
     }
 
     @Bean
     @Scope(value = VaadinViewScope.VAADIN_VIEW_SCOPE_NAME, proxyMode = ScopedProxyMode.NO)
-    @EventBusScope(EventScope.VIEW)
-    EventBus viewEventBus() {
-        return new ScopedEventBus(EventScope.VIEW, uiEventBus());
+    @Primary
+    EventBus.ViewEventBus viewEventBus() {
+        return new ScopedEventBus.DefualtViewEventBus(uiEventBus());
     }
 }

@@ -3,24 +3,32 @@ The Vaadin4Spring Event Bus
 
 This add-on provides its own event bus framework, with the intention of complementing Spring's own event publisher.
 
+**Please note, that the Event Bus API changed in version 0.0.5.** From now on, you have to declare which event bus
+to inject by using a specific interface (previously, everything was ```EventBus``` and you used an annotation to specify
+which bus to get). The reasons for this change were:
+ 
+* to make it easier to fetch the correct event bus from the application context programmatically, and
+* to work around a problem that arose when not all of the scopes were active at the time of injection of the event bus
+
 # Event Bus Scopes
 
-Currently, there are three types of event buses that are attached to different scopes:
+Currently, there are four types of event buses that are attached to different scopes:
 
-1. The UI scoped event bus is specific to the current UI instance.
-2. The Session scoped event bus is specific to the current Vaadin session. Events published on this event bus will propagate
-   to all UI scoped event buses that are part of the session.
-3. The Application scoped event bus is global to the web application. Events published on this event bus will propagate to
-   all session scoped event buses (and all UI scoped event buses).
+1. The View event bus is specific to the current view instance.
+2. The UI event bus is specific to the current UI instance. If there is a view active, and it uses a view 
+   event bus, events published on this event bus will propagate to the view event bus as well.
+3. The Session event bus is specific to the current Vaadin session. Events published on this event bus will propagate
+   to all UI event buses that are part of the session.
+4. The Application event bus is global to the web application. Events published on this event bus will propagate to
+   all session event buses (and all UI event buses).
 
-Events published by Spring's own event publisher **are not automatically propagated** to the application scoped event bus.
+Events published by Spring's own event publisher **are not automatically propagated** to the application event bus.
 If this is what you want (the default behaviour up to and including version 0.0.3), you can easily enable it by
 creating a singleton instance of ```ApplicationContextEventBroker```:
 
 ```java
  @Autowired
- @EventBusScope(value = EventScope.APPLICATION)
- EventBus eventBus;
+ EventBus.ApplicationEventBUs eventBus;
  ...
  @Bean
  ApplicationContextEventBroker applicationContextEventBroker() {
@@ -31,35 +39,44 @@ creating a singleton instance of ```ApplicationContextEventBroker```:
 # Injecting the Event Bus
 
 The event bus is automatically enabled when you enable the Spring4Vaadin add-on. You can just autowire in an instance
-of the ```EventBus``` interface, like this:
+of any of the subinterfaces of ```EventBus```, depending on which event bus you want, like this:
 
 ```java
  @Autowired
- EventBus eventBus;
+ EventBus.ApplicationEventBus applicationEventBus;
+ 
+ @Autowired
+ EventBus.SessionEventBus sessionEventBus;
+ 
+ @Autowired
+ EventBus.UIEventBus uiEventBus;
+ 
+ @Autowired
+ EventBus.ViewEventBus viewEventBus; 
 ```
 
-By default, this will inject the actual instance of the UI scoped event bus. You can tweak the injection using the
-```@EventBusScope``` annotation. For example, if you want a proxy that delegates to the session scoped event bus
-of the currently executing thread, you could use:
+By default, you will inject the actual instance of the event bus. If you want to inject a proxy instead, you can use:
 
 ```java
  @Autowired
- @EventBusScope(value = EventScope.SESSION, proxy = true)
- EventBus eventBus;
+ @EventBusProxy
+ EventBus.SessionEventBus eventBus;
 ```
+
+All event buses except the application event bus can be proxied.
 
 # Publishing Events
 
 You can publish any kind of object as an event on the event bus by invoking one of the ```publish(...)``` methods.
 Currently, you can either choose to publish the event on the event bus itself, or on any of its parent event buses.
-In other words, even though you have injected the UI scoped event bus, you can still use it to publish events on the
-session or application scoped event buses.
+For example, even though you have injected the UI event bus, you can still use it to publish events on the
+session or application event buses.
 
 Example:
 
 ```java
  @Autowired
- EventBus myUIScopedEventBus;
+ EventBus.UIEventBus myUIScopedEventBus;
  ...
  myUIScopedEventBus.publish(this, "This will be published on the UI scoped event bus");
  myUIScopedEventBus.publish(EventScope.SESSION, this, "This will be published on the session scoped event bus");

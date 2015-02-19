@@ -29,7 +29,7 @@ import org.vaadin.spring.mvp.Presenter;
 public class AutowiredPresenter extends Presenter<FooView> {
 
     @Autowired
-    public AutowiredPresenter(FooView view, EventBus eventBus) {
+    public AutowiredPresenter(FooView view, EventBus.UIEventBus eventBus) {
         super(view, eventBus);
     }
 

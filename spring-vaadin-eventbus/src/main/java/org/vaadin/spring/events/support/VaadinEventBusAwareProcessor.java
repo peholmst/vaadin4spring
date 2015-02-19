@@ -15,27 +15,25 @@
  */
 package org.vaadin.spring.events.support;
 
-import java.security.AccessControlContext;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.Aware;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.VaadinEventBusAware;
+import org.vaadin.spring.events.EventBusAware;
+
+import java.security.AccessControlContext;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 /**
  * {@link org.springframework.beans.factory.config.BeanPostProcessor}
- * implementation that passes the EventBus to beans that
- * implement the {@link org.vaadin.spring.events.VaadinEventBusAware} interface
- * 
+ * implementation that passes the corresponding EventBus to beans that
+ * implement the one of the {@link org.vaadin.spring.events.EventBusAware} interfaces
+ *
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
- * @since 12.23.2014
- * @see org.vaadin.spring.events.VaadinEventBusAware
+ * @author Petter Holmström (petter@vaadin.com)
  */
 public class VaadinEventBusAwareProcessor implements ApplicationContextAware, BeanPostProcessor {
 
@@ -48,10 +46,9 @@ public class VaadinEventBusAwareProcessor implements ApplicationContextAware, Be
 
     @Override
     public Object postProcessBeforeInitialization(final Object bean, String beanName) throws BeansException {
-
         AccessControlContext acc = null;
 
-        if ( System.getSecurityManager() != null && (bean instanceof VaadinEventBusAware) ) {
+        if (System.getSecurityManager() != null && (bean instanceof EventBusAware)) {
             acc = this.applicationContext.getBeanFactory().getAccessControlContext();
         }
 
@@ -65,13 +62,11 @@ public class VaadinEventBusAwareProcessor implements ApplicationContextAware, Be
                 }
 
             }, acc);
-        }
-        else {
+        } else {
             invokeAwareInterfaces(bean);
         }
 
         return bean;
-
     }
 
     @Override
@@ -80,15 +75,21 @@ public class VaadinEventBusAwareProcessor implements ApplicationContextAware, Be
     }
 
     private void invokeAwareInterfaces(Object bean) {
+        if (bean instanceof EventBusAware) {
 
-        if ( bean instanceof Aware ) {
-
-            if ( bean instanceof VaadinEventBusAware ) {
-                ((VaadinEventBusAware) bean).setVaadinEventBus(this.applicationContext.getBean(EventBus.class));
+            if (bean instanceof EventBusAware.ApplicationEventBusAware) {
+                ((EventBusAware.ApplicationEventBusAware) bean).setApplicationEventBus(this.applicationContext.getBean(EventBus.ApplicationEventBus.class));
             }
-            
+            if (bean instanceof EventBusAware.SessionEventBusAware) {
+                ((EventBusAware.SessionEventBusAware) bean).setSessionEventBus(this.applicationContext.getBean(EventBus.SessionEventBus.class));
+            }
+            if (bean instanceof EventBusAware.UIEventBusAware) {
+                ((EventBusAware.UIEventBusAware) bean).setUIEventBus(this.applicationContext.getBean(EventBus.UIEventBus.class));
+            }
+            if (bean instanceof EventBusAware.ViewEventBusAware) {
+                ((EventBusAware.ViewEventBusAware) bean).setViewEventBus(this.applicationContext.getBean(EventBus.ViewEventBus.class));
+            }
+
         }
-
     }
-
 }

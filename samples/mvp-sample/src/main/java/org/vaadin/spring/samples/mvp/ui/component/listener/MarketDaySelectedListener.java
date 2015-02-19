@@ -23,7 +23,7 @@ import org.vaadin.spring.annotation.VaadinComponent;
 import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
-import org.vaadin.spring.events.annotation.EventBusScope;
+import org.vaadin.spring.events.annotation.EventBusProxy;
 import org.vaadin.spring.samples.mvp.util.SSTimeUtil;
 
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -36,8 +36,7 @@ public class MarketDaySelectedListener implements ValueChangeListener {
     private static final long serialVersionUID = -123053805576375573L;
 
     @Inject
-    @EventBusScope(EventScope.APPLICATION)
-    private EventBus eventBus;
+    private EventBus.UIEventBus eventBus;
 
     @Override
     public void valueChange(ValueChangeEvent event) {

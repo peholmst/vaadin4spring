@@ -18,12 +18,13 @@ package org.vaadin.spring.events.internal;
 import org.junit.Test;
 import org.springframework.context.ApplicationEvent;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.support.ApplicationContextEventBroker;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 /**
- * Test case for {@link org.vaadin.spring.events.internal.ApplicationContextEventBroker}.
+ * Test case for {@link org.vaadin.spring.events.support.ApplicationContextEventBroker}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
