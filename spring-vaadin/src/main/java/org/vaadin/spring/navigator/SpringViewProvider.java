@@ -18,7 +18,6 @@ package org.vaadin.spring.navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewProvider;
 import com.vaadin.ui.UI;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -32,7 +31,6 @@ import org.vaadin.spring.navigator.internal.VaadinViewScope;
 import org.vaadin.spring.navigator.internal.ViewCache;
 
 import javax.annotation.PostConstruct;
-
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,7 +39,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 /**
  * A Vaadin {@link ViewProvider} that fetches the views from the Spring application context. The views
  * must implement the {@link View} interface and be annotated with the {@link VaadinView} annotation.
- * <p>
+ * <p/>
  * Use like this:
  * <pre>
  *         &#64;VaadinUI
@@ -59,6 +57,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
  *     </pre>
  *
  * View-based security can be provided by creating a Spring bean that implements the {@link org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate} interface.
+ * It is also possible to se an 'Access Denied' view by using {@link #setAccessDeniedViewClass(Class)}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  * @see VaadinView
@@ -77,10 +76,34 @@ public class SpringViewProvider implements ViewProvider {
     private final BeanDefinitionRegistry beanDefinitionRegistry;
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringViewProvider.class);
 
+    private Class<? extends View> accessDeniedViewClass;
+
     @Autowired
     public SpringViewProvider(ApplicationContext applicationContext, BeanDefinitionRegistry beanDefinitionRegistry) {
         this.applicationContext = applicationContext;
         this.beanDefinitionRegistry = beanDefinitionRegistry;
+    }
+
+    /**
+     * Returns the class of the access denied view. If set, a bean of this type will be fetched from
+     * the application context and showed to the user when a {@link org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate}
+     * denies access to a view.
+     *
+     * @return the access denied view class, or {@code null} if not set.
+     */
+    public Class<? extends View> getAccessDeniedViewClass() {
+        return accessDeniedViewClass;
+    }
+
+    /**
+     * Sets the class of the access denied view. If set, a bean of this type will be fetched from
+     * the application context and showed to the user when a {@link org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate}
+     * denies access to a view.
+     *
+     * @param accessDeniedViewClass the access denied view class, may be {@code null}.
+     */
+    public void setAccessDeniedViewClass(Class<? extends View> accessDeniedViewClass) {
+        this.accessDeniedViewClass = accessDeniedViewClass;
     }
 
     @PostConstruct
@@ -164,14 +187,6 @@ public class SpringViewProvider implements ViewProvider {
 
             Assert.notNull(annotation, "class did not have a VaadinView annotation");
 
-            final Map<String, ViewProviderAccessDelegate> accessDelegates = applicationContext.getBeansOfType(ViewProviderAccessDelegate.class);
-            for (ViewProviderAccessDelegate accessDelegate : accessDelegates.values()) {
-                if (!accessDelegate.isAccessGranted(beanName, currentUI)) {
-                    LOGGER.debug("Access delegate [{}] denied access to view class [{}]", accessDelegate, type.getCanonicalName());
-                    return false;
-                }
-            }
-
             if (annotation.ui().length == 0) {
                 LOGGER.trace("View class [{}] with view name [{}] is available for all UI subclasses", type.getCanonicalName(), annotation.name());
                 return true;
@@ -204,20 +219,27 @@ public class SpringViewProvider implements ViewProvider {
     }
 
     private View getViewFromApplicationContext(String viewName, String beanName) {
-        BeanDefinition beanDefinition = beanDefinitionRegistry.getBeanDefinition(beanName);
-        if (beanDefinition.getScope().equals(VaadinViewScope.VAADIN_VIEW_SCOPE_NAME)) {
-            LOGGER.trace("View [{}] is view scoped, activating scope", viewName);
-            final ViewCache viewCache = VaadinViewScope.getViewCacheRetrievalStrategy().getViewCache(applicationContext);
-            viewCache.creatingView(viewName);
-            View view = null;
-            try {
+        View view = null;
+        if (isAccessGrantedToBeanName(beanName)) {
+            final BeanDefinition beanDefinition = beanDefinitionRegistry.getBeanDefinition(beanName);
+            if (beanDefinition.getScope().equals(VaadinViewScope.VAADIN_VIEW_SCOPE_NAME)) {
+                LOGGER.trace("View [{}] is view scoped, activating scope", viewName);
+                final ViewCache viewCache = VaadinViewScope.getViewCacheRetrievalStrategy().getViewCache(applicationContext);
+                viewCache.creatingView(viewName);
+                try {
+                    view = getViewFromApplicationContextAndCheckAccess(beanName);
+                    return view;
+                } finally {
+                    viewCache.viewCreated(viewName, view);
+                }
+            } else {
                 view = getViewFromApplicationContextAndCheckAccess(beanName);
-                return view;
-            } finally {
-                viewCache.viewCreated(viewName, view);
             }
+        }
+        if (view != null) {
+            return view;
         } else {
-            return getViewFromApplicationContextAndCheckAccess(beanName);
+            return getAccessDeniedView();
         }
     }
 
@@ -230,6 +252,25 @@ public class SpringViewProvider implements ViewProvider {
         }
     }
 
+    private View getAccessDeniedView() {
+        if (accessDeniedViewClass != null) {
+            return applicationContext.getBean(accessDeniedViewClass);
+        } else {
+            return null;
+        }
+    }
+
+    private boolean isAccessGrantedToBeanName(String beanName) {
+        final UI currentUI = UI.getCurrent();
+        final Map<String, ViewProviderAccessDelegate> accessDelegates = applicationContext.getBeansOfType(ViewProviderAccessDelegate.class);
+        for (ViewProviderAccessDelegate accessDelegate : accessDelegates.values()) {
+            if (!accessDelegate.isAccessGranted(beanName, currentUI)) {
+                LOGGER.debug("Access delegate [{}] denied access to view with bean name [{}]", accessDelegate, beanName);
+                return false;
+            }
+        }
+        return true;
+    }
 
     private boolean isAccessGrantedToViewInstance(View view) {
         final UI currentUI = UI.getCurrent();
@@ -246,7 +287,7 @@ public class SpringViewProvider implements ViewProvider {
     /**
      * Interface to be implemented by Spring beans that will be consulted before the Spring View provider
      * provides a view. If any of the view providers deny access, the view provider will act like no such
-     * view ever existed.
+     * view ever existed, or show an {@link org.vaadin.spring.navigator.SpringViewProvider#setAccessDeniedViewClass(Class) access denied view}.
      */
     public interface ViewProviderAccessDelegate {
 
@@ -261,7 +302,7 @@ public class SpringViewProvider implements ViewProvider {
 
         /**
          * Checks if the current user has access to the specified view instance and UI. This method is invoked
-         * after {@link #isAccessGranted(com.vaadin.navigator.View, com.vaadin.ui.UI)}, when the view instance
+         * after {@link #isAccessGranted(String, com.vaadin.ui.UI)}, when the view instance
          * has already been created, but before it has been returned by the view provider.
          *
          * @param view the view instance, never {@code null}.

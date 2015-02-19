@@ -20,6 +20,7 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Label;
@@ -28,8 +29,12 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.spring.annotation.PrototypeScope;
+import org.vaadin.spring.annotation.VaadinComponent;
 import org.vaadin.spring.annotation.VaadinUI;
 import org.vaadin.spring.navigator.SpringViewProvider;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Main UI of the navigation sample UI. The UI contains three different views with different scopes. The user
@@ -61,6 +66,7 @@ public class NavigationUI extends UI {
         navigationBar.addComponent(createNavigationButton("Prototype Scoped View", PrototypeScopedView.VIEW_NAME));
         navigationBar.addComponent(createNavigationButton("UI Scoped View", UIScopedView.VIEW_NAME));
         navigationBar.addComponent(createNavigationButton("View Scoped View", ViewScopedView.VIEW_NAME));
+        navigationBar.addComponent(createNavigationButton("Access Control", AccessControlView.VIEW_NAME));
         root.addComponent(navigationBar);
 
         final Panel viewContainer = new Panel();
@@ -68,8 +74,10 @@ public class NavigationUI extends UI {
         root.addComponent(viewContainer);
         root.setExpandRatio(viewContainer, 1.0f);
 
+        viewProvider.setAccessDeniedViewClass(AccessDeniedView.class);
+
         Navigator navigator = new Navigator(this, viewContainer);
-        navigator.setErrorView(new ErrorView()); // You can still create the view yourself if you want to.
+        navigator.setErrorView(new ErrorView()); // You can still create the error view yourself if you want to.
         navigator.addProvider(viewProvider);
     }
 
@@ -97,6 +105,26 @@ public class NavigationUI extends UI {
 
         @Override
         public void enter(ViewChangeListener.ViewChangeEvent event) {
+        }
+    }
+
+    @VaadinComponent
+    @PrototypeScope
+    public static class AccessDeniedView extends VerticalLayout implements View {
+
+        private Label message;
+
+        @PostConstruct
+        void init() {
+            setMargin(true);
+            addComponent(message = new Label());
+            message.addStyleName(ValoTheme.LABEL_FAILURE);
+            message.setContentMode(ContentMode.HTML);
+        }
+
+        @Override
+        public void enter(ViewChangeListener.ViewChangeEvent event) {
+            message.setValue(String.format("Sorry, but you don't have access to the view <b>%s</b>.", event.getViewName()));
         }
     }
 }
