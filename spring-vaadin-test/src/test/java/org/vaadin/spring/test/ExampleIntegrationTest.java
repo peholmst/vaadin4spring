@@ -28,7 +28,7 @@ import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EnableVaadinEventBus;
-import org.vaadin.spring.events.annotation.EventBusScope;
+import org.vaadin.spring.events.annotation.EventBusProxy;
 import org.vaadin.spring.navigator.annotation.VaadinViewScope;
 import org.vaadin.spring.test.annotation.VaadinAppConfiguration;
 
@@ -53,17 +53,13 @@ public class ExampleIntegrationTest {
     @Autowired
     ExampleViewScopedObject exampleViewScopedObject;
     @Autowired
-    @EventBusScope(EventScope.APPLICATION)
-    EventBus applicationEvenBus;
+    EventBus.ApplicationEventBus applicationEvenBus;
     @Autowired
-    @EventBusScope(EventScope.SESSION)
-    EventBus sessionEventBus;
+    EventBus.SessionEventBus sessionEventBus;
     @Autowired
-    @EventBusScope(EventScope.UI)
-    EventBus uiEventBus;
+    EventBus.UIEventBus uiEventBus;
     @Autowired
-    @EventBusScope(EventScope.VIEW)
-    EventBus viewEventBus;
+    EventBus.ViewEventBus viewEventBus;
 
     @Test
     public void testAutowiring() {

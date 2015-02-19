@@ -37,7 +37,7 @@ public class ExampleUIScopedObject implements EventBusListener<String> {
     private final static Logger logger = LoggerFactory.getLogger(ExampleUIScopedObject.class);
 
     @Autowired
-    EventBus uiEventBus;
+    EventBus.UIEventBus uiEventBus;
 
     @Autowired
     ExampleSessionData exampleSessionData;

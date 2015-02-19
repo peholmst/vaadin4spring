@@ -22,7 +22,7 @@ import org.vaadin.spring.events.Event;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusListener;
 import org.vaadin.spring.events.EventScope;
-import org.vaadin.spring.events.annotation.EventBusScope;
+import org.vaadin.spring.events.annotation.EventBusProxy;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -39,8 +39,7 @@ public class ExampleViewScopedObject implements EventBusListener<String> {
     private final static Logger logger = LoggerFactory.getLogger(ExampleViewScopedObject.class);
 
     @Autowired
-    @EventBusScope(EventScope.VIEW)
-    EventBus viewEventBus;
+    EventBus.ViewEventBus viewEventBus;
 
     Event<String> lastReceivedEvent;
 

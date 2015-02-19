@@ -34,7 +34,7 @@ import java.lang.reflect.Method;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-public class ScopedEventBus implements EventBus, Serializable {
+public abstract class ScopedEventBus implements EventBus, Serializable {
 
     private static final long serialVersionUID = 1637290543180920954L;
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -190,5 +190,45 @@ public class ScopedEventBus implements EventBus, Serializable {
     @Override
     public String toString() {
         return String.format("%s[id=%x, eventScope=%s, parentEventBus=%s]", getClass().getSimpleName(), System.identityHashCode(this), eventScope, parentEventBus);
+    }
+
+    /**
+     * Default implementation of {@link org.vaadin.spring.events.EventBus.ApplicationEventBus}.
+     */
+    public static class DefaultApplicationEventBus extends ScopedEventBus implements ApplicationEventBus {
+
+        public DefaultApplicationEventBus() {
+            super(EventScope.APPLICATION);
+        }
+    }
+
+    /**
+     * Default implementation of {@link org.vaadin.spring.events.EventBus.SessionEventBus}.
+     */
+    public static class DefaultSessionEventBus extends ScopedEventBus implements SessionEventBus {
+
+        public DefaultSessionEventBus(ApplicationEventBus parentEventBus) {
+            super(EventScope.SESSION, parentEventBus);
+        }
+    }
+
+    /**
+     * Default implementation of {@link org.vaadin.spring.events.EventBus.UIEventBus}.
+     */
+    public static class DefaultUIEventBus extends ScopedEventBus implements UIEventBus {
+
+        public DefaultUIEventBus(SessionEventBus parentEventBus) {
+            super(EventScope.UI, parentEventBus);
+        }
+    }
+
+    /**
+     * Default implementation of {@link org.vaadin.spring.events.EventBus.ViewEventBus}.
+     */
+    public static class DefualtViewEventBus extends ScopedEventBus implements ViewEventBus {
+
+        public DefualtViewEventBus(UIEventBus parentEventBus) {
+            super(EventScope.VIEW, parentEventBus);
+        }
     }
 }
