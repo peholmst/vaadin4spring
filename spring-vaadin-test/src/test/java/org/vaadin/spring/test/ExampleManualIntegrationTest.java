@@ -31,7 +31,7 @@ import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EnableVaadinEventBus;
-import org.vaadin.spring.events.annotation.EventBusScope;
+import org.vaadin.spring.events.annotation.EventBusProxy;
 
 import javax.inject.Provider;
 
@@ -55,14 +55,13 @@ public class ExampleManualIntegrationTest {
     @Autowired
     Provider<ExampleUIScopedObject> exampleUIScopedObject;
     @Autowired
-    @EventBusScope(EventScope.APPLICATION)
-    EventBus applicationEvenBus;
+    EventBus.ApplicationEventBus applicationEvenBus;
     @Autowired
-    @EventBusScope(value = EventScope.SESSION, proxy = true)
-    EventBus sessionEventBus;
+    @EventBusProxy
+    EventBus.SessionEventBus sessionEventBus;
     @Autowired
-    @EventBusScope(value = EventScope.UI, proxy = true)
-    EventBus uiEventBus;
+    @EventBusProxy
+    EventBus.UIEventBus uiEventBus;
 
     @Before
     public void setUp() {

@@ -43,7 +43,7 @@ public class DependecyInjectionTest {
     ApplicationContext applicationContext;
     
     @Autowired
-    EventBus eventBus;
+    EventBus.ApplicationEventBus eventBus;
     
     @Autowired
     EventBusAwareClass eventBusAwareClass;
@@ -52,12 +52,12 @@ public class DependecyInjectionTest {
     public void testSecurityAutowiring() {
         assertNotNull(eventBus);
         assertNotNull(eventBusAwareClass);
-        assertNotNull(eventBusAwareClass.getEventbus());
+        assertNotNull(eventBusAwareClass.getEventBus());
     }
     
     @Test
     public void testSecurityAware() {
-        EventBus eventBus = eventBusAwareClass.getEventbus();
+        EventBus eventBus = eventBusAwareClass.getEventBus();
         assertNotNull(eventBus);
     }
     

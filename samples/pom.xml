@@ -17,7 +17,7 @@
     <name>Vaadin4Spring Samples</name>
 
     <properties>
-        <vaadin.version>7.3.10</vaadin.version>
+        <vaadin.version>7.4.0</vaadin.version>
         <tomcat.version>7.0.55</tomcat.version>
         <!-- Server push is not yet working with Tomcat 8, at least not when using Spring Boot -->
     </properties>

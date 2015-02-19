@@ -45,7 +45,7 @@ public class EventBusUI extends UI implements EventBusListener<Object> {
     private static final long serialVersionUID = -6291309888986021672L;
 
     @Autowired
-    EventBus eventBus;
+    EventBus.UIEventBus eventBus;
 
     @Autowired
     ApplicationContext applicationContext;
