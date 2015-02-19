@@ -228,7 +228,6 @@ public class SpringViewProvider implements ViewProvider {
                 viewCache.creatingView(viewName);
                 try {
                     view = getViewFromApplicationContextAndCheckAccess(beanName);
-                    return view;
                 } finally {
                     viewCache.viewCreated(viewName, view);
                 }
