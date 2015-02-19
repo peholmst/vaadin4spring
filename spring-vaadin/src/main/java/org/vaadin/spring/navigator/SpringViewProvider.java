@@ -75,7 +75,7 @@ public class SpringViewProvider implements ViewProvider {
     private final Map<String, Set<String>> viewNameToBeanNamesMap = new ConcurrentHashMap<String, Set<String>>();
     private final ApplicationContext applicationContext;
     private final BeanDefinitionRegistry beanDefinitionRegistry;
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpringViewProvider.class);
 
     @Autowired
     public SpringViewProvider(ApplicationContext applicationContext, BeanDefinitionRegistry beanDefinitionRegistry) {
@@ -85,7 +85,7 @@ public class SpringViewProvider implements ViewProvider {
 
     @PostConstruct
     void init() {
-        logger.info("Looking up VaadinViews");
+        LOGGER.info("Looking up VaadinViews");
         int count = 0;
         final String[] viewBeanNames = applicationContext.getBeanNamesForAnnotation(VaadinView.class);
         for (String beanName : viewBeanNames) {
@@ -93,7 +93,7 @@ public class SpringViewProvider implements ViewProvider {
             if (View.class.isAssignableFrom(type)) {
                 final VaadinView annotation = applicationContext.findAnnotationOnBean(beanName, VaadinView.class);
                 final String viewName = annotation.name();
-                logger.debug("Found VaadinView bean [{}] with view name [{}]", beanName, viewName);
+                LOGGER.debug("Found VaadinView bean [{}] with view name [{}]", beanName, viewName);
                 if (applicationContext.isSingleton(beanName)) {
                     throw new IllegalStateException("VaadinView bean [" + beanName + "] must not be a singleton");
                 }
@@ -107,17 +107,17 @@ public class SpringViewProvider implements ViewProvider {
             }
         }
         if (count == 0) {
-            logger.warn("No VaadinViews found");
+            LOGGER.warn("No VaadinViews found");
         } else if (count == 1) {
-            logger.info("1 VaadinView found");
+            LOGGER.info("1 VaadinView found");
         } else {
-            logger.info("{} VaadinViews found", count);
+            LOGGER.info("{} VaadinViews found", count);
         }
     }
 
     @Override
     public String getViewName(String viewAndParameters) {
-        logger.trace("Extracting view name from [{}]", viewAndParameters);
+        LOGGER.trace("Extracting view name from [{}]", viewAndParameters);
         String viewName = null;
         if (isViewNameValidForCurrentUI(viewAndParameters)) {
             viewName = viewAndParameters;
@@ -126,7 +126,7 @@ public class SpringViewProvider implements ViewProvider {
             String viewPart = viewAndParameters;
             while ((lastSlash = viewPart.lastIndexOf('/')) > -1) {
                 viewPart = viewPart.substring(0, lastSlash);
-                logger.trace("Checking if [{}] is a valid view", viewPart);
+                LOGGER.trace("Checking if [{}] is a valid view", viewPart);
                 if (isViewNameValidForCurrentUI(viewPart)) {
                     viewName = viewPart;
                     break;
@@ -134,9 +134,9 @@ public class SpringViewProvider implements ViewProvider {
             }
         }
         if (viewName == null) {
-            logger.trace("Found no view name in [{}]", viewAndParameters);
+            LOGGER.trace("Found no view name in [{}]", viewAndParameters);
         } else {
-            logger.trace("[{}] is a valid view", viewName);
+            LOGGER.trace("[{}] is a valid view", viewName);
         }
         return viewName;
     }
@@ -167,18 +167,18 @@ public class SpringViewProvider implements ViewProvider {
             final Map<String, ViewProviderAccessDelegate> accessDelegates = applicationContext.getBeansOfType(ViewProviderAccessDelegate.class);
             for (ViewProviderAccessDelegate accessDelegate : accessDelegates.values()) {
                 if (!accessDelegate.isAccessGranted(beanName, currentUI)) {
-                    logger.debug("Access delegate [{}] denied access to view class [{}]", accessDelegate, type.getCanonicalName());
+                    LOGGER.debug("Access delegate [{}] denied access to view class [{}]", accessDelegate, type.getCanonicalName());
                     return false;
                 }
             }
 
             if (annotation.ui().length == 0) {
-                logger.trace("View class [{}] with view name [{}] is available for all UI subclasses", type.getCanonicalName(), annotation.name());
+                LOGGER.trace("View class [{}] with view name [{}] is available for all UI subclasses", type.getCanonicalName(), annotation.name());
                 return true;
             } else {
                 for (Class<? extends UI> validUI : annotation.ui()) {
                     if (validUI == currentUI.getClass()) {
-                        logger.trace("View class [%s] with view name [{}] is available for UI subclass [{}]", type.getCanonicalName(), annotation.name(), validUI.getCanonicalName());
+                        LOGGER.trace("View class [%s] with view name [{}] is available for UI subclass [{}]", type.getCanonicalName(), annotation.name(), validUI.getCanonicalName());
                         return true;
                     }
                 }
@@ -199,15 +199,15 @@ public class SpringViewProvider implements ViewProvider {
                 }
             }
         }
-        logger.warn("Found no view with name [{}]", viewName);
+        LOGGER.warn("Found no view with name [{}]", viewName);
         return null;
     }
 
     private View getViewFromApplicationContext(String viewName, String beanName) {
         BeanDefinition beanDefinition = beanDefinitionRegistry.getBeanDefinition(beanName);
         if (beanDefinition.getScope().equals(VaadinViewScope.VAADIN_VIEW_SCOPE_NAME)) {
-            logger.trace("View [{}] is view scoped, activating scope", viewName);
-            final ViewCache viewCache = applicationContext.getBean(ViewCache.class);
+            LOGGER.trace("View [{}] is view scoped, activating scope", viewName);
+            final ViewCache viewCache = VaadinViewScope.getViewCacheRetrievalStrategy().getViewCache(applicationContext);
             viewCache.creatingView(viewName);
             View view = null;
             try {
@@ -236,7 +236,7 @@ public class SpringViewProvider implements ViewProvider {
         final Map<String, ViewProviderAccessDelegate> accessDelegates = applicationContext.getBeansOfType(ViewProviderAccessDelegate.class);
         for (ViewProviderAccessDelegate accessDelegate : accessDelegates.values()) {
             if (!accessDelegate.isAccessGranted(view, currentUI)) {
-                logger.debug("Access delegate [{}] denied access to view [{}]", accessDelegate, view);
+                LOGGER.debug("Access delegate [{}] denied access to view [{}]", accessDelegate, view);
                 return false;
             }
         }

@@ -15,171 +15,42 @@
  */
 package org.vaadin.spring.navigator.internal;
 
-import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.UI;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
 import org.vaadin.spring.internal.BeanStore;
 
-import javax.annotation.PreDestroy;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 
 /**
- * UI scoped bean that keeps track of the currently active {@link com.vaadin.navigator.View view} and its
- * corresponding {@link org.vaadin.spring.internal.BeanStore}. Used as a delegate by {@link org.vaadin.spring.navigator.internal.VaadinViewScope}.
+ * A view cache is used to keep track of the currently active {@link com.vaadin.navigator.View view} and its
+ * corresponding {@link org.vaadin.spring.internal.BeanStore}. It is also responsible for cleaning up views that have gone
+ * out of scope. Used as a delegate by {@link org.vaadin.spring.navigator.internal.VaadinViewScope}.
  * For internal use only.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-public class ViewCache implements Serializable {
-
-    private static final long serialVersionUID = 4634842615905376953L;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ViewCache.class);
-
-    private Map<String, ViewBeanStore> beanStores = new HashMap<String, ViewBeanStore>();
-
-    private String viewUnderConstruction = null;
-
-    private String activeView = null;
+public interface ViewCache extends Serializable {
 
     /**
-     * Called by {@link org.vaadin.spring.navigator.SpringViewProvider} when a view scoped view is about to be created.
+     * Called by the view provider before a view with the specified name will be created.
      *
-     * @param viewName the {@link org.vaadin.spring.navigator.annotation.VaadinView#name() name} of the view (not the bean name).
+     * @param viewName the name of the view (not the name of the Spring bean).
+     * @see org.vaadin.spring.navigator.annotation.VaadinView#name()
      */
-    public void creatingView(String viewName) {
-        LOGGER.trace("Creating view [{}] in cache [{}]", viewName, this);
-        getOrCreateBeanStore(viewName);
-        viewUnderConstruction = viewName;
-    }
+    void creatingView(String viewName);
 
     /**
-     * Called by {@link org.vaadin.spring.navigator.SpringViewProvider} when a view scoped view has been created.
+     * Called by the view provider after a view with the specified name has been created.
      *
-     * @param viewName     the {@link org.vaadin.spring.navigator.annotation.VaadinView#name() name} of the view (not the bean name).
-     * @param viewInstance the created view instance, or {@code null} if the view could not be created.
+     * @param viewName     the name of the view (not the name of the Spring bean).
+     * @param viewInstance the created view instance, or {@code null} if the instance could not be created for some reason.
+     * @see org.vaadin.spring.navigator.annotation.VaadinView#name()
      */
-    public void viewCreated(String viewName, View viewInstance) {
-        LOGGER.trace("View [{}] created in cache [{}]", viewName, this);
-        viewUnderConstruction = null;
-        ViewBeanStore beanStore = getOrCreateBeanStore(viewName);
-        if (viewInstance == null) {
-            LOGGER.trace("There was a problem creating the view [{}] in cache [{)], destroying its bean store", viewName, this);
-            beanStore.destroy();
-        }
-    }
+    void viewCreated(String viewName, View viewInstance);
 
-    private void viewActivated(String viewName) {
-        LOGGER.trace("View [{}] activated in cache [{}]", viewName, this);
-        activeView = viewName;
-    }
-
-    private void viewDeactivated(String viewName) {
-        LOGGER.trace("View [{}] deactivated in cache [{}], destroying its bean store", viewName, this);
-        if (viewName.equals(activeView)) {
-            activeView = null;
-        }
-        getBeanStore(viewName).destroy();
-        LOGGER.trace("Bean stores stored in cache [{}]: {}", this, beanStores.size());
-    }
-
-    ViewBeanStore getCurrentViewBeanStore() {
-        if (viewUnderConstruction != null) {
-            LOGGER.trace("Currently the view [{}] is under construction in cache [{}], returning its bean store", viewUnderConstruction, this);
-            return getBeanStore(viewUnderConstruction);
-        } else if (activeView != null) {
-            LOGGER.trace("Currently the view [{}] is active in cache [{}], returning its bean store", activeView, this);
-            return getBeanStore(activeView);
-        } else {
-            throw new IllegalStateException("No active view");
-        }
-    }
-
-    String getCurrentConversationId() {
-        return null; // TODO Maybe implement later
-    }
-
-    @PreDestroy
-    void destroy() {
-        LOGGER.trace("View cache [{}] has been destroyed, destroying all bean stores");
-        for (ViewBeanStore beanStore : new HashSet<ViewBeanStore>(beanStores.values())) {
-            beanStore.destroy();
-        }
-        Assert.isTrue(beanStores.isEmpty(), "beanStores should have been emptied by the destruction callbacks");
-    }
-
-    private ViewBeanStore getOrCreateBeanStore(final String viewName) {
-        ViewBeanStore beanStore = beanStores.get(viewName);
-        if (beanStore == null) {
-            UI ui = UI.getCurrent();
-            if (ui == null) {
-                throw new IllegalStateException("No UI bound to current thread");
-            }
-            beanStore = new ViewBeanStore(ui, viewName, new BeanStore.DestructionCallback() {
-
-                private static final long serialVersionUID = 5580606280246825742L;
-
-                @Override
-                public void beanStoreDestroyed(BeanStore beanStore) {
-                    beanStores.remove(viewName);
-                }
-            });
-            beanStores.put(viewName, beanStore);
-        }
-        return beanStore;
-    }
-
-    private ViewBeanStore getBeanStore(String viewName) {
-        ViewBeanStore beanStore = beanStores.get(viewName);
-        if (beanStore == null) {
-            throw new IllegalStateException("The view " + viewName + " has not been created");
-        }
-        return beanStore;
-    }
-
-    class ViewBeanStore extends BeanStore implements ViewChangeListener {
-
-        private static final long serialVersionUID = -7655740852919880134L;
-        private final String viewName;
-        private final Navigator navigator;
-
-        ViewBeanStore(UI ui, String viewName, DestructionCallback destructionCallback) {
-            super(ui.getId() + ":" + viewName, destructionCallback);
-            this.viewName = viewName;
-            navigator = ui.getNavigator();
-            if (navigator == null) {
-                throw new IllegalStateException("UI has no Navigator");
-            }
-            LOGGER.trace("Adding [{}} as view change listener to [{}]", this, navigator);
-            navigator.addViewChangeListener(this);
-        }
-
-        @Override
-        public void destroy() {
-            LOGGER.trace("Removing [{}] as view change listener from [{}]", this, navigator);
-            navigator.removeViewChangeListener(this);
-            super.destroy();
-        }
-
-        @Override
-        public boolean beforeViewChange(ViewChangeEvent viewChangeEvent) {
-            return true;
-        }
-
-        @Override
-        public void afterViewChange(ViewChangeEvent viewChangeEvent) {
-            if (viewName.equals(viewChangeEvent.getViewName())) {
-                viewActivated(viewName);
-            } else {
-                viewDeactivated(viewName);
-            }
-        }
-    }
+    /**
+     * Returns the bean store for the currently active view.
+     *
+     * @throws java.lang.IllegalStateException if there is no active view.
+     */
+    BeanStore getCurrentViewBeanStore() throws IllegalStateException;
 }

@@ -17,6 +17,7 @@ package org.vaadin.spring.test;
 
 import org.vaadin.spring.internal.VaadinSessionScope;
 import org.vaadin.spring.internal.VaadinUIScope;
+import org.vaadin.spring.navigator.internal.VaadinViewScope;
 
 /**
  * Helper class to set up the Vaadin scopes for testing.
@@ -36,14 +37,17 @@ public final class VaadinScopes {
     public static void setUp() {
         VaadinSessionScope.setBeanStoreRetrievalStrategy(new SimpleBeanStoreRetrievalStrategy("mock session scope"));
         VaadinUIScope.setBeanStoreRetrievalStrategy(new SimpleBeanStoreRetrievalStrategy("mock UI scope"));
+        VaadinViewScope.setViewCacheRetrievalStrategy(new SimpleViewCacheRetrievalStrategy("mock view scope"));
     }
 
     /**
      * Tears down {@link org.vaadin.spring.annotation.VaadinSessionScope} and {@link org.vaadin.spring.annotation.VaadinUIScope}, causing all scoped beans to be destroyed.
      */
     public static void tearDown() {
+        VaadinViewScope.getViewCacheRetrievalStrategy().getViewCache(null).getCurrentViewBeanStore().destroy();
         VaadinUIScope.getBeanStoreRetrievalStrategy().getBeanStore().destroy();
         VaadinSessionScope.getBeanStoreRetrievalStrategy().getBeanStore().destroy();
+        VaadinViewScope.setViewCacheRetrievalStrategy(null);
         VaadinUIScope.setBeanStoreRetrievalStrategy(null);
         VaadinSessionScope.setBeanStoreRetrievalStrategy(null);
     }
