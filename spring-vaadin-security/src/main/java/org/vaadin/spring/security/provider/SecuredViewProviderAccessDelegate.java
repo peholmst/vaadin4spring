@@ -71,8 +71,10 @@ public class SecuredViewProviderAccessDelegate implements VaadinSecurityAware, V
         Secured viewSecured = view.getClass().getAnnotation(Secured.class);
 
         if ( viewSecured == null || !security.hasAccessDecisionManager() ) {
-            return true; // Decision is already done if there is no AccessDecisionManager
+            logger.trace("Decision already done or no decision manager present");
+        	return true; // Decision is already done if there is no AccessDecisionManager
         } else {
+        	logger.trace("Requesting decision from decisionmanager");
             return security.hasAccessToSecuredObject(view);
         }
     }
