@@ -15,33 +15,9 @@
  */
 package org.vaadin.spring.security.provider;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.support.AopUtils;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.security.access.AccessDecisionManager;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.ConfigAttribute;
-import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
-import org.springframework.security.access.expression.method.ExpressionBasedAnnotationAttributeFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.util.MethodInvocationUtils;
-import org.springframework.util.ClassUtils;
-import org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate;
-import org.vaadin.spring.security.VaadinSecurity;
-import org.vaadin.spring.security.VaadinSecurityAware;
-
-import com.vaadin.navigator.View;
 import com.vaadin.ui.UI;
 
 /**
@@ -55,22 +31,9 @@ import com.vaadin.ui.UI;
  * <br><br>
  * Initial code:<a href="https://github.com/markoradinovic/Vaadin4Spring-MVP-Sample-SpringSecurity">https://github.com/markoradinovic/Vaadin4Spring-MVP-Sample-SpringSecurity</a>
  */
-public class PreAuthorizeViewProviderAccessDelegate implements ApplicationContextAware, VaadinSecurityAware, ViewProviderAccessDelegate {
+public class PreAuthorizeViewProviderAccessDelegate extends AbstractAnnotationAccessDelegate {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
-	
-    private VaadinSecurity security;
-    private ApplicationContext applicationContext;
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
-
-    @Override
-    public void setVaadinSecurity(VaadinSecurity vaadinSecurity) {
-        this.security = vaadinSecurity;
-    }
 
     @Override
     public boolean isAccessGranted(String beanName, UI ui) {
@@ -81,43 +44,12 @@ public class PreAuthorizeViewProviderAccessDelegate implements ApplicationContex
         	logger.trace("@PreAuthorize annotation not present on view");
             return true;
         } else if ( security.hasAccessDecisionManager() ) {
-
-        	logger.trace("DecisionManager present");
-        	
-            final Class<?> targetClass = AopUtils.getTargetClass(applicationContext.getBean(beanName));
-            final Method method = ClassUtils.getMethod(AopUtils.getTargetClass(applicationContext.getBean(beanName)), "enter", com.vaadin.navigator.ViewChangeListener.ViewChangeEvent.class);
-            final MethodInvocation methodInvocation = MethodInvocationUtils.createFromClass(targetClass, method.getName());
-
-            final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            final AccessDecisionManager accessDecisionManager = security.getAccessDecisionManager();
-            final ExpressionBasedAnnotationAttributeFactory attributeFactory = new ExpressionBasedAnnotationAttributeFactory(new DefaultMethodSecurityExpressionHandler());
-
-            Collection<ConfigAttribute> atributi = new ArrayList<ConfigAttribute>();
-            atributi.add(attributeFactory.createPreInvocationAttribute(null, null, viewSecured.value()));
-
-            try {
-            	logger.trace("Requesting decision from decisionmanager");
-                accessDecisionManager.decide(authentication, methodInvocation, atributi);
-                return true;
-            } catch (InsufficientAuthenticationException e) {
-                return false;
-            } catch (AccessDeniedException e) {
-                return false;
-            }
-
+        	logger.trace("Request decision from access decision manager");
+        	return isAccessGrantedForAnnotation(beanName, ui, PreAuthorize.class, "value");
         } else {
         	logger.trace("Decision manager is required for @PreAuthorize; defaulting to 'true'");
             return true; // Access decision manager required for @PreAuthorize()
         }
 
-    }
-
-    /*
-     * If there is an access manager then the decision is already made 
-     */
-    @Override
-    public boolean isAccessGranted(View view, UI ui) {
-        logger.trace("Decision already made");
-    	return true;
     }
 }
