@@ -282,32 +282,4 @@ public class SpringViewProvider implements ViewProvider {
         }
         return true;
     }
-
-    /**
-     * Interface to be implemented by Spring beans that will be consulted before the Spring View provider
-     * provides a view. If any of the view providers deny access, the view provider will act like no such
-     * view ever existed, or show an {@link org.vaadin.spring.navigator.SpringViewProvider#setAccessDeniedViewClass(Class) access denied view}.
-     */
-    public interface ViewProviderAccessDelegate {
-
-        /**
-         * Checks if the current user has access to the specified view and UI.
-         *
-         * @param beanName the bean name of the view, never {@code null}.
-         * @param ui       the UI, never {@code null}.
-         * @return true if access is granted, false if access is denied.
-         */
-        boolean isAccessGranted(String beanName, UI ui);
-
-        /**
-         * Checks if the current user has access to the specified view instance and UI. This method is invoked
-         * after {@link #isAccessGranted(String, com.vaadin.ui.UI)}, when the view instance
-         * has already been created, but before it has been returned by the view provider.
-         *
-         * @param view the view instance, never {@code null}.
-         * @param ui   the UI, never {@code null}.
-         * @return true if access is granted, false if access is denied.
-         */
-        boolean isAccessGranted(View view, UI ui);
-    }
 }

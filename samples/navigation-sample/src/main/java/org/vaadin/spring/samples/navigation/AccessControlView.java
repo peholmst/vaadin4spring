@@ -22,13 +22,16 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.navigator.SpringViewProvider;
+import org.vaadin.spring.navigator.ViewProviderAccessDelegate;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 
 import javax.annotation.PostConstruct;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,7 +45,7 @@ import java.util.Set;
  */
 @VaadinUIScope
 @VaadinView(name = AccessControlView.VIEW_NAME)
-public class AccessControlView extends VerticalLayout implements View, SpringViewProvider.ViewProviderAccessDelegate {
+public class AccessControlView extends VerticalLayout implements View, ViewProviderAccessDelegate {
 
     public static final String VIEW_NAME = "access";
 
