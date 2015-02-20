@@ -244,7 +244,7 @@ public class SpringViewProvider implements ViewProvider {
 
     private View getViewFromApplicationContextAndCheckAccess(String beanName) {
         final View view = (View) applicationContext.getBean(beanName);
-        if (isAccessGrantedToViewInstance(view)) {
+        if (isAccessGrantedToViewInstance(beanName, view)) {
             return view;
         } else {
             return null;
@@ -271,11 +271,11 @@ public class SpringViewProvider implements ViewProvider {
         return true;
     }
 
-    private boolean isAccessGrantedToViewInstance(View view) {
+    private boolean isAccessGrantedToViewInstance(String beanName, View view) {
         final UI currentUI = UI.getCurrent();
         final Map<String, ViewProviderAccessDelegate> accessDelegates = applicationContext.getBeansOfType(ViewProviderAccessDelegate.class);
         for (ViewProviderAccessDelegate accessDelegate : accessDelegates.values()) {
-            if (!accessDelegate.isAccessGranted(view, currentUI)) {
+            if (!accessDelegate.isAccessGranted(beanName, view, currentUI)) {
                 LOGGER.debug("Access delegate [{}] denied access to view [{}]", accessDelegate, view);
                 return false;
             }

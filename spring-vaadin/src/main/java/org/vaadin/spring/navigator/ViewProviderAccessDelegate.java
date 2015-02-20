@@ -43,5 +43,5 @@ public interface ViewProviderAccessDelegate {
      * @param ui   the UI, never {@code null}.
      * @return true if access is granted, false if access is denied.
      */
-    boolean isAccessGranted(View view, UI ui);
+    boolean isAccessGranted(String beanName, View view, UI ui);
 }
