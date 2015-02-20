@@ -55,7 +55,7 @@ public class SecuredViewProviderAccessDelegate extends AbstractAnnotationAccessD
     }
 
 	@Override
-	public boolean isAccessGranted(String beanName, View view, UI ui) {
+	public boolean isAccessGranted(String beanName, UI ui, View view) {
 				
 		if ( !security.hasAccessDecisionManager() ) {
 			return true; // Decision is already done if there is no AccessDecisionManager

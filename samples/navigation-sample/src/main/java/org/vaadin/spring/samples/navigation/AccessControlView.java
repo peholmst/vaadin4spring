@@ -100,7 +100,7 @@ public class AccessControlView extends VerticalLayout implements View, ViewProvi
     }
 
     @Override
-    public boolean isAccessGranted(String beanName, View view, UI ui) {
+    public boolean isAccessGranted(String beanName, UI ui, View view) {
         // All the security checks are handled in the above method
         return true;
     }
