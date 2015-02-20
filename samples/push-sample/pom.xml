@@ -34,11 +34,6 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-push</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.vaadin.addon</groupId>
-            <artifactId>vaadin-charts</artifactId>
-            <version>2.0.0</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -46,61 +41,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>com.vaadin</groupId>
-                <artifactId>vaadin-maven-plugin</artifactId>
-                <version>${vaadin.version}</version>
-                <configuration>
-                    <extraJvmArgs>-Xmx1g -Xss1024k</extraJvmArgs>
-
-                    <!-- We are doing "inplace" gwt compilation but into 
-                        subdir VAADIN/widgetsets -->
-                    <webappDirectory>${basedir}/src/main/resources/VAADIN/widgetsets
-                    </webappDirectory>
-                    <hostedWebapp>${basedir}/src/main/resources/VAADIN/widgetsets
-                    </hostedWebapp>
-                    <noServer>true</noServer>
-                    <!-- Remove draftCompile when project is ready -->
-                    <draftCompile>true</draftCompile>
-                    <persistentunitcachedir>${project.build.directory}/gwtdirt</persistentunitcachedir>
-                    <compileReport>true</compileReport>
-                    <style>OBF</style>
-                    <strict>true</strict>
-                    <!-- Symbol maps etc, not needed in vaadin app, just 
-                        target them outside war -->
-                    <deploy>${project.build.directory}/gwt-deploy</deploy>
-                </configuration>
-                <executions>
-                    <execution>
-                        <configuration>
-                            <!-- if you don't specify any modules, the plugin 
-                                will find them -->
-                            <!-- <modules> <module>com.vaadin.demo.mobilemail.gwt.ColorPickerWidgetSet</module> 
-                                </modules> -->
-                        </configuration>
-                        <phase>
-                            generate-resources
-                        </phase>
-                        <goals>
-                            <goal>resources</goal>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- As we are doing "inplace" GWT compilation, ensure the widgetset -->
-            <!-- directory is cleaned properly -->
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${basedir}/src/main/resources/VAADIN/widgetsets</directory>
-                        </fileset>
-                    </filesets>
-                </configuration>
             </plugin>
         </plugins>
         <pluginManagement>
@@ -111,33 +51,6 @@
                     <groupId>org.eclipse.m2e</groupId>
                     <artifactId>lifecycle-mapping</artifactId>
                     <version>1.0.0</version>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>com.vaadin</groupId>
-                                        <artifactId>
-                                            vaadin-maven-plugin
-                                        </artifactId>
-                                        <versionRange>
-                                            [7,)
-                                        </versionRange>
-                                        <goals>
-                                            <goal>resources</goal>
-                                            <goal>update-theme</goal>
-                                            <goal>update-widgetset</goal>
-                                            <goal>compile-theme</goal>
-                                            <goal>compile</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore></ignore>
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
