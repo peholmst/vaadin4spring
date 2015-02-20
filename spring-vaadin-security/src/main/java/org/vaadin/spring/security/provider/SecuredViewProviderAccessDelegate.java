@@ -15,6 +15,7 @@
  */
 package org.vaadin.spring.security.provider;
 
+import com.vaadin.navigator.View;
 import com.vaadin.ui.UI;
 
 import org.slf4j.Logger;
@@ -45,12 +46,23 @@ public class SecuredViewProviderAccessDelegate extends AbstractAnnotationAccessD
     		logger.trace("@Secured annotation not present on view");
             return true;
     	} else if (security.hasAccessDecisionManager()) {
-    		logger.trace("Request decision from access decision manager");
-    		return isAccessGrantedForAnnotation(beanName, ui, Secured.class, "value");
+    		logger.trace("Leave decision to second hook");
+    		return true;
     	} else {
     		logger.trace("Checking authority");
             return security.hasAnyAuthority(viewSecured.value());
     	}
     }
+
+	@Override
+	public boolean isAccessGranted(String beanName, View view, UI ui) {
+				
+		if ( !security.hasAccessDecisionManager() ) {
+			return true; // Decision is already done if there is no AccessDecisionManager
+		} else {
+			return isAccessGrantedForAnnotation(beanName, ui, Secured.class, "value");
+		}
+		
+	}
 
 }

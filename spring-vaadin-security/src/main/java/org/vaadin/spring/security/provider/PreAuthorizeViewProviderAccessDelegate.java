@@ -18,6 +18,8 @@ package org.vaadin.spring.security.provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
+
+import com.vaadin.navigator.View;
 import com.vaadin.ui.UI;
 
 /**
@@ -44,12 +46,23 @@ public class PreAuthorizeViewProviderAccessDelegate extends AbstractAnnotationAc
         	logger.trace("@PreAuthorize annotation not present on view");
             return true;
         } else if ( security.hasAccessDecisionManager() ) {
-        	logger.trace("Request decision from access decision manager");
-        	return isAccessGrantedForAnnotation(beanName, ui, PreAuthorize.class, "value");
+        	logger.trace("Leave decision to second hook");
+    		return true;
         } else {
         	logger.trace("Decision manager is required for @PreAuthorize; defaulting to 'true'");
             return true; // Access decision manager required for @PreAuthorize()
         }
 
     }
+
+	@Override
+	public boolean isAccessGranted(String beanName, View view, UI ui) {
+		
+		if ( !security.hasAccessDecisionManager() ) {
+			return true; // Decision is already done if there is no AccessDecisionManager
+		} else {
+			return isAccessGrantedForAnnotation(beanName, ui, PreAuthorize.class, "value");
+		}
+		
+	}
 }
