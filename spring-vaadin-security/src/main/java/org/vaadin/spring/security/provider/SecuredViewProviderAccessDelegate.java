@@ -20,6 +20,8 @@ import com.vaadin.ui.UI;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.Advised;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.annotation.Secured;
 import org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate;
@@ -69,15 +71,42 @@ public class SecuredViewProviderAccessDelegate implements VaadinSecurityAware, V
     @Override
     public boolean isAccessGranted(View view, UI ui) {
         logger.trace("Instance: {} | Class: {} | IsAnnotated: {}", view.toString(), view.getClass(), view.getClass().getAnnotation(Secured.class));
-
+        
         Secured viewSecured = view.getClass().getAnnotation(Secured.class);
+        if ( AopUtils.isJdkDynamicProxy(view) ) {
+        	try {
+        		viewSecured = ((Advised) view).getTargetSource().getTarget().getClass().getAnnotation(Secured.class);
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		viewSecured = null;
+        	}
+        	
+        	/*
+        	Object proxyView = view;
+            while( AopUtils.isJdkDynamicProxy(proxyView) ) {
+            	proxyView = AopUtils.getTargetClass(proxyView);
+            }
+            viewSecured = ((Advised) proxyView).get
+            Class<?> secured = proxyView.getClass();
+            if ( secured.isAnnotationPresent(Secured.class) ) {
+            	logger.trace("@Secured present on view");
+            }
+            */
+            //viewSecured = proxyView.getClass().is getAnnotation(Secured.class);
+        }
 
         if ( viewSecured == null || !security.hasAccessDecisionManager() ) {
             logger.trace("Decision already done or no decision manager present");
         	return true; // Decision is already done if there is no AccessDecisionManager
         } else {
         	logger.trace("Requesting decision from decisionmanager");
-            return security.hasAccessToSecuredObject(view);
+            try {
+				return security.hasAccessToSecuredObject(view);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            return true;
         }
     }
 }
