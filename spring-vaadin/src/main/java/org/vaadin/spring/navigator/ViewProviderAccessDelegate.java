@@ -19,10 +19,10 @@ import com.vaadin.navigator.View;
 import com.vaadin.ui.UI;
 
 /**
- * Interface to be implemented by Spring beans that will be consulted before the Spring View provider
- * provides a view. If any of the view providers deny access, the view provider will act like no such
- * view ever existed.
- */
+* Interface to be implemented by Spring beans that will be consulted before the Spring View provider
+* provides a view. If any of the view providers deny access, the view provider will act like no such
+* view ever existed, or show an {@link org.vaadin.spring.navigator.SpringViewProvider#setAccessDeniedViewClass(Class) access denied view}.
+*/
 public interface ViewProviderAccessDelegate {
 
     /**
