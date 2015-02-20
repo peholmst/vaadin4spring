@@ -43,7 +43,6 @@ import org.vaadin.spring.navigator.ViewProviderAccessDelegate;
 import org.vaadin.spring.security.VaadinSecurity;
 import org.vaadin.spring.security.VaadinSecurityAware;
 
-import com.vaadin.navigator.View;
 import com.vaadin.ui.UI;
 
 /**
@@ -156,11 +155,4 @@ public abstract class AbstractAnnotationAccessDelegate implements ApplicationCon
 		}
 	}
 	
-	/**
-	 * If there is an access manager then the decision is already made
-	 */
-	@Override
-	public boolean isAccessGranted(View view, UI ui) {
-		return true;
-	}
 }
