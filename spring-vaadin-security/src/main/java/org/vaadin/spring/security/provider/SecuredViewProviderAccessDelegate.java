@@ -20,12 +20,12 @@ import com.vaadin.ui.UI;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.annotation.Secured;
-import org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate;
+import org.vaadin.spring.navigator.ViewProviderAccessDelegate;
 import org.vaadin.spring.security.VaadinSecurity;
 import org.vaadin.spring.security.VaadinSecurityAware;
 
 /**
- * Implementation of {@link org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate} that
+ * Implementation of {@link org.vaadin.spring.navigator.ViewProviderAccessDelegate} that
  * checks if a view has the {@link org.springframework.security.access.annotation.Secured} annotation and if so,
  * uses the {@link org.vaadin.spring.security.VaadinSecurity} instance to check if the current user is authorized to
  * access the view.
@@ -60,7 +60,7 @@ public class SecuredViewProviderAccessDelegate implements VaadinSecurityAware, V
     }
 
     @Override
-    public boolean isAccessGranted(View view, UI ui) {
+    public boolean isAccessGranted(String beanName, UI ui, View view) {
         Secured viewSecured = view.getClass().getAnnotation(Secured.class);
 
         if ( viewSecured == null || !security.hasAccessDecisionManager() ) {

@@ -25,7 +25,7 @@ import com.vaadin.ui.VerticalLayout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.spring.navigator.SpringViewProvider;
+import org.vaadin.spring.navigator.ViewProviderAccessDelegate;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 
 import javax.annotation.PostConstruct;
@@ -34,7 +34,7 @@ import java.util.Set;
 
 
 /**
- * A view that demonstrates how {@link org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate}s can be used
+ * A view that demonstrates how {@link org.vaadin.spring.navigator.ViewProviderAccessDelegate}s can be used
  * to control access to views. In this example, the access delegate is the UI scoped view, but you can also use e.g. singleton
  * access delegates.
  *
@@ -42,7 +42,7 @@ import java.util.Set;
  */
 @VaadinUIScope
 @VaadinView(name = AccessControlView.VIEW_NAME)
-public class AccessControlView extends VerticalLayout implements View, SpringViewProvider.ViewProviderAccessDelegate {
+public class AccessControlView extends VerticalLayout implements View, ViewProviderAccessDelegate {
 
     public static final String VIEW_NAME = "access";
 
@@ -97,7 +97,7 @@ public class AccessControlView extends VerticalLayout implements View, SpringVie
     }
 
     @Override
-    public boolean isAccessGranted(View view, UI ui) {
+    public boolean isAccessGranted(String beanName, UI ui, View view) {
         // All the security checks are handled in the above method
         return true;
     }
