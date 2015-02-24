@@ -16,7 +16,9 @@
 package org.vaadin.spring.config;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -46,9 +48,10 @@ import org.vaadin.spring.navigator.internal.ViewCache;
  * @see org.vaadin.spring.annotation.EnableVaadin
  */
 @Configuration
-public class VaadinConfiguration implements ApplicationContextAware {
+public class VaadinConfiguration implements ApplicationContextAware, BeanDefinitionRegistryPostProcessor {
 
     private ApplicationContext applicationContext;
+    private BeanDefinitionRegistry beanDefinitionRegistry;
 
     @Bean
     static VaadinSessionScope vaadinSessionScope() {
@@ -67,7 +70,7 @@ public class VaadinConfiguration implements ApplicationContextAware {
 
     @Bean
     SpringViewProvider viewProvider() {
-        return new SpringViewProvider(applicationContext, (BeanDefinitionRegistry) applicationContext);
+        return new SpringViewProvider(applicationContext, beanDefinitionRegistry);
     }
 
     @Bean
@@ -120,5 +123,15 @@ public class VaadinConfiguration implements ApplicationContextAware {
     @Scope(value = org.springframework.web.context.WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)
     HttpService httpService() {
         return new VaadinHttpService();
+    }
+
+    @Override
+    public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
+        this.beanDefinitionRegistry = registry;
+    }
+
+    @Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        // NOP
     }
 }
