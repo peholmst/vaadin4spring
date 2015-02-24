@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.navigator.annotation.VaadinView;
-import org.vaadin.spring.navigator.annotation.VaadinViewScope;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -35,8 +34,7 @@ import javax.annotation.PreDestroy;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@VaadinViewScope
-@VaadinView(name = ViewScopedView.VIEW_NAME)
+@VaadinView(name = ViewScopedView.VIEW_NAME) // View scope is used by default
 public class ViewScopedView extends VerticalLayout implements View {
 
     public static final String VIEW_NAME = "view";
