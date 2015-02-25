@@ -17,7 +17,6 @@ package org.vaadin.spring.samples.security.ui.login.views;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
-import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.spring.samples.security.ui.login.LoginUI;

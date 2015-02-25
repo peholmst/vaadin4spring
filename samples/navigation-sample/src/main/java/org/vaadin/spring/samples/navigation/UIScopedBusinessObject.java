@@ -16,7 +16,6 @@
 package org.vaadin.spring.samples.navigation;
 
 import org.springframework.stereotype.Component;
-import org.vaadin.spring.annotation.VaadinUIScope;
 
 import java.io.Serializable;
 

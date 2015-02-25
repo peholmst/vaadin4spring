@@ -15,10 +15,10 @@
  */
 package org.vaadin.spring.touchkit.servlet;
 
+import com.vaadin.spring.servlet.internal.AbstractSpringAwareUIProvider;
 import com.vaadin.ui.UI;
 
 import org.springframework.web.context.WebApplicationContext;
-import org.vaadin.spring.servlet.internal.AbstractSpringAwareUIProvider;
 import org.vaadin.spring.touchkit.annotation.TouchKitUI;
 
 /**

@@ -15,12 +15,12 @@
  */
 package org.vaadin.spring.test;
 
+import com.vaadin.spring.navigator.internal.ViewCache;
+import com.vaadin.spring.navigator.internal.ViewCacheRetrievalStrategy;
 import org.springframework.beans.factory.BeanFactory;
-import org.vaadin.spring.navigator.internal.ViewCache;
-import org.vaadin.spring.navigator.internal.ViewCacheRetrievalStrategy;
 
 /**
- * Simple implementation of {@link org.vaadin.spring.navigator.internal.ViewCacheRetrievalStrategy} that always
+ * Simple implementation of {@link com.vaadin.spring.navigator.internal.ViewCacheRetrievalStrategy} that always
  * returns the same instance of {@link org.vaadin.spring.test.SimpleViewCache}. This effectively means that exactly
  * one view scope is always active.
  *

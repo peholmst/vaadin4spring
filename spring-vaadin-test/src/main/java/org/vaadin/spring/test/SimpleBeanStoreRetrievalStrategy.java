@@ -15,12 +15,12 @@
  */
 package org.vaadin.spring.test;
 
-import org.vaadin.spring.internal.BeanStore;
-import org.vaadin.spring.internal.BeanStoreRetrievalStrategy;
+import com.vaadin.spring.internal.BeanStore;
+import com.vaadin.spring.internal.BeanStoreRetrievalStrategy;
 
 /**
- * Simple implementation of {@link org.vaadin.spring.internal.BeanStoreRetrievalStrategy} that always returns
- * the same {@link org.vaadin.spring.internal.BeanStore} instance.
+ * Simple implementation of {@link com.vaadin.spring.internal.BeanStoreRetrievalStrategy} that always returns
+ * the same {@link com.vaadin.spring.internal.BeanStore} instance.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */

@@ -26,7 +26,7 @@
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-server</artifactId>
+            <artifactId>vaadin-spring</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

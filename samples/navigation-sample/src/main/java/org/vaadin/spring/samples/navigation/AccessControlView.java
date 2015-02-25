@@ -24,7 +24,6 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.navigator.ViewProviderAccessDelegate;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 

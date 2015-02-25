@@ -15,23 +15,25 @@
  */
 package org.vaadin.spring.annotation;
 
+import org.springframework.context.annotation.Import;
+import org.vaadin.spring.config.Vaadin4SpringConfiguration;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.context.annotation.Scope;
-
 /**
- * Stereotype annotation for Spring's {@code @Scope("vaadin-ui")}.
+ * Enables the official Vaadin Spring add-on and brings in some additional features provided
+ * by Vaadin4Spring.
  *
- * @author Petter Holmström (petter@vaadin.com)
  * @author Josh Long (josh@joshlong.com)
+ * @author Petter Holmström (petter@vaadin.com)
  */
-@Scope(org.vaadin.spring.internal.VaadinUIScope.VAADIN_UI_SCOPE_NAME)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface VaadinUIScope {
+@Import(Vaadin4SpringConfiguration.class)
+public @interface EnableVaadin4Spring {
 }

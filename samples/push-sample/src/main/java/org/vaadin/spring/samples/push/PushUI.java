@@ -27,7 +27,6 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.spring.annotation.VaadinUI;
 
 import javax.annotation.PreDestroy;
 import java.util.Date;

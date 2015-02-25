@@ -16,6 +16,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-spring-boot</artifactId>
+        </dependency>
+        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>spring-vaadin</artifactId>
             <version>${project.version}</version>

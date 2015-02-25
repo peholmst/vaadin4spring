@@ -18,8 +18,6 @@ package org.vaadin.spring.mvp.explicit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.vaadin.spring.annotation.EnableVaadin;
-import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.annotation.EnableVaadinEventBus;
 import org.vaadin.spring.mvp.FooView;

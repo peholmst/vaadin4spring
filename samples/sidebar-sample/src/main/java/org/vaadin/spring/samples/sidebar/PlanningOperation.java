@@ -19,7 +19,6 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Notification;
 
 import org.springframework.stereotype.Component;
-import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.sidebar.annotation.FontAwesomeIcon;
 import org.vaadin.spring.sidebar.annotation.SideBarItem;
 

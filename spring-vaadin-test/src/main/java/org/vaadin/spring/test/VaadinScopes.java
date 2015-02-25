@@ -15,9 +15,9 @@
  */
 package org.vaadin.spring.test;
 
+import com.vaadin.spring.internal.VaadinUIScope;
+import com.vaadin.spring.navigator.internal.VaadinViewScope;
 import org.vaadin.spring.internal.VaadinSessionScope;
-import org.vaadin.spring.internal.VaadinUIScope;
-import org.vaadin.spring.navigator.internal.VaadinViewScope;
 
 /**
  * Helper class to set up the Vaadin scopes for testing.
@@ -30,7 +30,7 @@ public final class VaadinScopes {
     }
 
     /**
-     * Sets up {@link org.vaadin.spring.annotation.VaadinSessionScope} and {@link org.vaadin.spring.annotation.VaadinUIScope} to work as expected
+     * Sets up {@link org.vaadin.spring.annotation.VaadinSessionScope}, {@link com.vaadin.spring.annotation.VaadinUIScope} and {@link com.vaadin.spring.navigator.annotation.VaadinViewScope} to work as expected
      * during the test. Please note, that both {@link com.vaadin.ui.UI#getCurrent()} and {@link com.vaadin.server.VaadinSession#getCurrent()} will
      * return null.
      */
@@ -41,7 +41,7 @@ public final class VaadinScopes {
     }
 
     /**
-     * Tears down {@link org.vaadin.spring.annotation.VaadinSessionScope} and {@link org.vaadin.spring.annotation.VaadinUIScope}, causing all scoped beans to be destroyed.
+     * Tears down {@link org.vaadin.spring.annotation.VaadinSessionScope}, {@link com.vaadin.spring.annotation.VaadinUIScope} and {@link com.vaadin.spring.navigator.annotation.VaadinViewScope}, causing all scoped beans to be destroyed.
      */
     public static void tearDown() {
         VaadinViewScope.getViewCacheRetrievalStrategy().getViewCache(null).getCurrentViewBeanStore().destroy();

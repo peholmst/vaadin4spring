@@ -30,8 +30,6 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.annotation.PrototypeScope;
-import org.vaadin.spring.annotation.VaadinComponent;
-import org.vaadin.spring.annotation.VaadinUI;
 import org.vaadin.spring.navigator.SpringViewProvider;
 
 import javax.annotation.PostConstruct;

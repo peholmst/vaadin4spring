@@ -23,7 +23,6 @@ import javax.inject.Inject;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.navigator.SpringViewProvider;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.spring.samples.mvp.ui.component.grid.DataGrid;

@@ -15,6 +15,7 @@
  */
 package org.vaadin.spring.test;
 
+import com.vaadin.spring.annotation.VaadinUIScope;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,11 +26,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.vaadin.spring.annotation.EnableVaadin;
+import org.vaadin.spring.annotation.EnableVaadin4Spring;
 import org.vaadin.spring.annotation.VaadinSessionScope;
-import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EnableVaadinEventBus;
 import org.vaadin.spring.events.annotation.EventBusProxy;
 
@@ -114,7 +113,7 @@ public class ExampleManualIntegrationTest {
     }
 
     @Configuration
-    @EnableVaadin
+    @EnableVaadin4Spring
     @EnableVaadinEventBus
     public static class Config {
 

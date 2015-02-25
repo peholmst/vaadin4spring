@@ -15,12 +15,7 @@
  */
 package org.vaadin.spring.config;
 
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import com.vaadin.spring.annotation.EnableVaadin;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -32,26 +27,19 @@ import org.vaadin.spring.http.HttpResponseFilter;
 import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.http.VaadinHttpService;
 import org.vaadin.spring.internal.VaadinSessionScope;
-import org.vaadin.spring.internal.VaadinUIScope;
-import org.vaadin.spring.navigator.SpringViewProvider;
-import org.vaadin.spring.navigator.internal.DefaultViewCache;
-import org.vaadin.spring.navigator.internal.VaadinViewScope;
-import org.vaadin.spring.navigator.internal.ViewCache;
 
 /**
- * Spring configuration for registering the custom Vaadin scopes,
- * the {@link SpringViewProvider view provider} and some other stuff.
+ * Spring configuration for the Vaadin4Spring beans.
  *
  * @author Josh Long (josh@joshlong.com)
  * @author Petter Holmström (petter@vaadin.com)
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
- * @see org.vaadin.spring.annotation.EnableVaadin
+ * @see org.vaadin.spring.annotation.EnableVaadin4Spring
+ * @see com.vaadin.spring.annotation.EnableVaadin
  */
 @Configuration
-public class VaadinConfiguration implements ApplicationContextAware, BeanDefinitionRegistryPostProcessor {
-
-    private ApplicationContext applicationContext;
-    private BeanDefinitionRegistry beanDefinitionRegistry;
+@EnableVaadin
+public class Vaadin4SpringConfiguration {
 
     @Bean
     static VaadinSessionScope vaadinSessionScope() {
@@ -59,36 +47,10 @@ public class VaadinConfiguration implements ApplicationContextAware, BeanDefinit
     }
 
     @Bean
-    static VaadinUIScope vaadinUIScope() {
-        return new VaadinUIScope();
-    }
-
-    @Bean
-    static VaadinViewScope vaadinViewScope() {
-        return new VaadinViewScope();
-    }
-
-    @Bean
-    SpringViewProvider viewProvider() {
-        return new SpringViewProvider(applicationContext, beanDefinitionRegistry);
-    }
-
-    @Bean
-    @org.vaadin.spring.annotation.VaadinUIScope
-    ViewCache viewCache() {
-        return new DefaultViewCache();
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
-    
-    @Bean
     VaadinApplicationContext vaadinApplicationContext() {
-    	return new VaadinApplicationContext();
+        return new VaadinApplicationContext();
     }
-    
+
     /**
      * Allow access to the current HttpServletRequest
      * through autowiring
@@ -97,16 +59,16 @@ public class VaadinConfiguration implements ApplicationContextAware, BeanDefinit
     RequestContextListener requestContextListener() {
         return new RequestContextListener();
     }
-    
+
     /**
      * Allow injection of HttpServletResponse
      * Required by {@link HttpResponseFactory}
      */
     @Bean
     HttpResponseFilter httpResponseFilter() {
-        return new HttpResponseFilter();        
+        return new HttpResponseFilter();
     }
-    
+
     /**
      * Allow injection of HttpServletResponse
      */
@@ -114,7 +76,7 @@ public class VaadinConfiguration implements ApplicationContextAware, BeanDefinit
     HttpResponseFactory httpResponseFactory() {
         return new HttpResponseFactory();
     }
-    
+
     /**
      * Vaadin Http Service
      * Allow access to HttpRequest / HttpResponse
@@ -123,15 +85,5 @@ public class VaadinConfiguration implements ApplicationContextAware, BeanDefinit
     @Scope(value = org.springframework.web.context.WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)
     HttpService httpService() {
         return new VaadinHttpService();
-    }
-
-    @Override
-    public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-        this.beanDefinitionRegistry = registry;
-    }
-
-    @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        // NOP
     }
 }

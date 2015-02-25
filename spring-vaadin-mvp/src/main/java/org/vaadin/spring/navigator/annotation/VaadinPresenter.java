@@ -19,8 +19,6 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.vaadin.spring.annotation.VaadinComponent;
-import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.navigator.SpringViewProvider;
 
 /**

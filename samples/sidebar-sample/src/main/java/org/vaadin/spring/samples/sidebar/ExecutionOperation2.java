@@ -18,7 +18,6 @@ package org.vaadin.spring.samples.sidebar;
 import com.vaadin.ui.Notification;
 
 import org.springframework.stereotype.Component;
-import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.sidebar.annotation.SideBarItem;
 import org.vaadin.spring.sidebar.annotation.ThemeIcon;
 

@@ -15,6 +15,8 @@
  */
 package org.vaadin.spring.events.config;
 
+import com.vaadin.spring.internal.VaadinUIScope;
+import com.vaadin.spring.navigator.internal.VaadinViewScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -25,8 +27,6 @@ import org.vaadin.spring.events.annotation.EventBusProxy;
 import org.vaadin.spring.events.internal.ScopedEventBus;
 import org.vaadin.spring.events.support.VaadinEventBusAwareProcessor;
 import org.vaadin.spring.internal.VaadinSessionScope;
-import org.vaadin.spring.internal.VaadinUIScope;
-import org.vaadin.spring.navigator.internal.VaadinViewScope;
 
 /**
  * Configuration class to configure the Spring Vaadin Eventbus

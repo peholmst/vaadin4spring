@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.spring.samples.mvp.dto.DSRUpdateHourlyDTO;
 import org.vaadin.spring.samples.mvp.ui.component.grid.HierarchicalDataGrid;

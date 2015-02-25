@@ -20,6 +20,8 @@ import com.vaadin.server.ServiceDestroyListener;
 import com.vaadin.server.SessionDestroyEvent;
 import com.vaadin.server.SessionDestroyListener;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.spring.internal.BeanStore;
+import com.vaadin.spring.internal.BeanStoreRetrievalStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;

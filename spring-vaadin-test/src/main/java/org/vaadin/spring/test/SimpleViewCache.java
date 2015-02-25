@@ -16,12 +16,12 @@
 package org.vaadin.spring.test;
 
 import com.vaadin.navigator.View;
-import org.vaadin.spring.internal.BeanStore;
-import org.vaadin.spring.navigator.internal.ViewCache;
+import com.vaadin.spring.internal.BeanStore;
+import com.vaadin.spring.navigator.internal.ViewCache;
 
 /**
- * Simple implementation of {@link org.vaadin.spring.navigator.internal.ViewCache} that always returns
- * the same {@link org.vaadin.spring.internal.BeanStore} instance. This effectively means that exactly one
+ * Simple implementation of {@link com.vaadin.spring.navigator.internal.ViewCache} that always returns
+ * the same {@link com.vaadin.spring.internal.BeanStore} instance. This effectively means that exactly one
  * view scope is always active. The view provider callbacks {@link #creatingView(String)} and {@link #viewCreated(String, com.vaadin.navigator.View)} do not do anything.
  *
  * @author Petter Holmström (petter@vaadin.com)

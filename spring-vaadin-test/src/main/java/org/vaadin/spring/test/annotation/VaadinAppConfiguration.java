@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
  * <ul>
  * <li>are run with the {@link org.springframework.test.context.junit4.SpringJUnit4ClassRunner},</li>
  * <li>use autowiring to inject managed beans into the actual test, and</li>
- * <li>perform tests on beans that are {@link org.vaadin.spring.annotation.VaadinUIScope}d or {@link org.vaadin.spring.annotation.VaadinSessionScope}d</li>
+ * <li>perform tests on beans that are {@link com.vaadin.spring.navigator.annotation.VaadinViewScope view scoped}, {@link com.vaadin.spring.annotation.VaadinUIScope UI scoped} or {@link org.vaadin.spring.annotation.VaadinSessionScope session scoped}</li>
  * </ul>
  * With this annotation in place, all beans that are UI-scoped or VaadinSession-scoped will work as expected. The indented use case for this approach is
  * to test non-visual components like presenters or controllers. It is not usable for testing Vaadin components or

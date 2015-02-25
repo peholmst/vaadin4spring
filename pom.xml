@@ -16,8 +16,7 @@
 
     <name>Vaadin4Spring</name>
     <description>
-        Spring, Spring Boot and Spring Security support for Vaadin applications
-        (or the other way around, depending on your point of view).
+        Additions to the official Vaadin Spring add-on.
     </description>
     <url>https://github.com/peholmst/vaadin4spring</url>
 
@@ -76,6 +75,7 @@
         <project.build.source>1.6</project.build.source>
         <vaadin.version>7.4.0</vaadin.version>
         <vaadin-touchkit.version>4.0.0</vaadin-touchkit.version>
+        <vaadin-spring.version>0.0.1-SNAPSHOT</vaadin-spring.version>
         <spring.version>4.1.4.RELEASE</spring.version>
         <spring-boot.version>1.2.1.RELEASE</spring-boot.version>
         <spring-security.version>3.2.5.RELEASE</spring-security.version>
@@ -139,6 +139,16 @@
                 <groupId>com.vaadin.addon</groupId>
                 <artifactId>vaadin-touchkit-agpl</artifactId>
                 <version>${vaadin-touchkit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-spring</artifactId>
+                <version>${vaadin-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin.</groupId>
+                <artifactId>vaadin-spring-boot</artifactId>
+                <version>${vaadin-spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>

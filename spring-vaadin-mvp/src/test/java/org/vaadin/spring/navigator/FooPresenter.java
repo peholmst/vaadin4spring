@@ -15,7 +15,6 @@
  */
 package org.vaadin.spring.navigator;
 
-import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.navigator.annotation.VaadinPresenter;
 

@@ -19,11 +19,7 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import org.vaadin.spring.annotation.VaadinComponent;
-import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventScope;
-import org.vaadin.spring.events.annotation.EventBusProxy;
 import org.vaadin.spring.samples.mvp.util.SSTimeUtil;
 
 import com.vaadin.data.Property.ValueChangeEvent;
