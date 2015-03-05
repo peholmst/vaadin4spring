@@ -154,8 +154,9 @@ this means that there can be two view scopes active at the same time since the n
 is deactivated. Normally, this should not cause any conflicts but you should be aware of it anyway, especially if you
 have multiple threads that might interact with the navigation API at the same time.
 
-You use this scope by adding the ```@VaadinViewScope``` to your View class. In addition, you need to configure your
-application to use Spring4Vaadin's view provider (see below for details).
+You use this scope by adding the ```@VaadinViewScope``` to your class. In addition, you need to configure your
+application to use Spring4Vaadin's view provider (see below for details). Please note that all Views are view scoped
+by default unless explicitly put in another scope.
 
 **Intended use case:** Views, all components (both UI and non-UI) that share the lifecycle of a view.
 
@@ -187,7 +188,7 @@ for convenience.
 This add-on provides support for the Vaadin Navigator API by making it possible to add new views by simply annotating them.
 To set it up, follow these instructions:
 
-1. Annotate your views with ```@VaadinView``` and put them into either the ```@VaadinUIScope```, the ```@VaadinViewScope``` or the ```@PrototypeScope```. 
+1. Annotate your views with ```@VaadinView``` and put them into either the ```@VaadinViewScope``` (default, need not be explicitly declared), the ```@VaadinUIScope```, or the ```@PrototypeScope```. 
 2. Inject an instance of ```SpringViewProvider``` into your UI and add it as a view provider to your ```Navigator```
 instance.
 

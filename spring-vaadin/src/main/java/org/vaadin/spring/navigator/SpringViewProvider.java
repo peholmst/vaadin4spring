@@ -56,7 +56,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
  *         }
  *     </pre>
  *
- * View-based security can be provided by creating a Spring bean that implements the {@link org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate} interface.
+ * View-based security can be provided by creating a Spring bean that implements the {@link ViewProviderAccessDelegate} interface.
  * It is also possible to se an 'Access Denied' view by using {@link #setAccessDeniedViewClass(Class)}.
  *
  * @author Petter Holmström (petter@vaadin.com)
@@ -86,7 +86,7 @@ public class SpringViewProvider implements ViewProvider {
 
     /**
      * Returns the class of the access denied view. If set, a bean of this type will be fetched from
-     * the application context and showed to the user when a {@link org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate}
+     * the application context and showed to the user when a {@link ViewProviderAccessDelegate}
      * denies access to a view.
      *
      * @return the access denied view class, or {@code null} if not set.
@@ -97,7 +97,7 @@ public class SpringViewProvider implements ViewProvider {
 
     /**
      * Sets the class of the access denied view. If set, a bean of this type will be fetched from
-     * the application context and showed to the user when a {@link org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate}
+     * the application context and showed to the user when a {@link ViewProviderAccessDelegate}
      * denies access to a view.
      *
      * @param accessDeniedViewClass the access denied view class, may be {@code null}.
@@ -282,4 +282,5 @@ public class SpringViewProvider implements ViewProvider {
         }
         return true;
     }
+
 }

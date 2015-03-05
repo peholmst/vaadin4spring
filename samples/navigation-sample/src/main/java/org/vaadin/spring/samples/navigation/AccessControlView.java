@@ -22,22 +22,19 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.spring.navigator.SpringViewProvider;
 import org.vaadin.spring.navigator.ViewProviderAccessDelegate;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 
 import javax.annotation.PostConstruct;
-
 import java.util.HashSet;
 import java.util.Set;
 
 
 /**
- * A view that demonstrates how {@link org.vaadin.spring.navigator.SpringViewProvider.ViewProviderAccessDelegate}s can be used
+ * A view that demonstrates how {@link org.vaadin.spring.navigator.ViewProviderAccessDelegate}s can be used
  * to control access to views. In this example, the access delegate is the UI scoped view, but you can also use e.g. singleton
  * access delegates.
  *

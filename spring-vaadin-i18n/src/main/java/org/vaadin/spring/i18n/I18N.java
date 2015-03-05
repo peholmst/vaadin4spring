@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.NoSuchMessageException;
 
-import java.io.Serializable;
 import java.util.Locale;
 
 /**
@@ -46,11 +45,11 @@ import java.util.Locale;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-public class I18N implements Serializable {
+public class I18N {
 
-    private static final long serialVersionUID = 7729662803476642498L;
     private final ApplicationContext applicationContext;
     private final Logger logger = LoggerFactory.getLogger(getClass());
+    private boolean revertToDefaultBundle = true;
 
     /**
      * @param applicationContext the application context to read messages from, never {@code null}.
@@ -58,6 +57,21 @@ public class I18N implements Serializable {
     @Autowired
     public I18N(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
+    }
+
+    /**
+     * Returns whether {@code I18N} will try the default bundle if a message cannot be resolved for the
+     * current locale. By default, this is true.
+     */
+    public boolean isRevertToDefaultBundle() {
+        return revertToDefaultBundle;
+    }
+
+    /**
+     * See {@link #isRevertToDefaultBundle()}.
+     */
+    public void setRevertToDefaultBundle(boolean revertToDefaultBundle) {
+        this.revertToDefaultBundle = revertToDefaultBundle;
     }
 
     /**
@@ -71,7 +85,7 @@ public class I18N implements Serializable {
      */
     public String get(String code, Object... arguments) {
         try {
-            return applicationContext.getMessage(code, arguments, getLocale());
+            return getMessage(code, arguments);
         } catch (NoSuchMessageException ex) {
             logger.warn("Tried to retrieve message with code [{}] that does not exist", code);
             return "!" + code;
@@ -89,7 +103,23 @@ public class I18N implements Serializable {
      * @see #getLocale()
      */
     public String getWithDefault(String code, String defaultMessage, Object... arguments) {
-        return applicationContext.getMessage(code, arguments, defaultMessage, getLocale());
+        try {
+            return getMessage(code, arguments);
+        } catch (NoSuchMessageException ex) {
+            return defaultMessage;
+        }
+    }
+
+    private String getMessage(String code, Object... arguments) {
+        try {
+            return applicationContext.getMessage(code, arguments, getLocale());
+        } catch (NoSuchMessageException ex) {
+            if (isRevertToDefaultBundle()) {
+                return applicationContext.getMessage(code, arguments, null);
+            } else {
+                throw ex;
+            }
+        }
     }
 
     /**
