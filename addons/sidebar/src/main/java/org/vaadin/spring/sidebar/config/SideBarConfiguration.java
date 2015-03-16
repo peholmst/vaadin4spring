@@ -15,6 +15,7 @@
  */
 package org.vaadin.spring.sidebar.config;
 
+import com.vaadin.spring.annotation.UIScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -45,7 +46,7 @@ public class SideBarConfiguration {
     SideBar.ItemComponentFactory itemComponentFactory;
 
     @Bean
-    @VaadinUIScope
+    @UIScope
     SideBar sideBar() {
         return new SideBar(sideBarUtils(), sectionComponentFactory, itemComponentFactory);
     }

@@ -334,5 +334,6 @@
         <module>extensions/test</module>
         <module>addons/eventbus</module>
         <module>addons/i18n</module>
+        <module>addons/sidebar</module>
     </modules>
 </project>

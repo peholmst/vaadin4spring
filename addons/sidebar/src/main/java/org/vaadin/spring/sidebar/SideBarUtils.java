@@ -16,13 +16,13 @@
 package org.vaadin.spring.sidebar;
 
 import com.vaadin.navigator.View;
+import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.UI;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.i18n.I18N;
-import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.spring.sidebar.annotation.SideBarItem;
 import org.vaadin.spring.sidebar.annotation.SideBarSection;
 import org.vaadin.spring.sidebar.annotation.SideBarSections;
@@ -89,7 +89,7 @@ public class SideBarUtils {
             if (Runnable.class.isAssignableFrom(beanType)) {
                 logger.debug("Adding side bar item for action [{}]", beanType);
                 this.items.add(new SideBarItemDescriptor.ActionItemDescriptor(beanName, applicationContext));
-            } else if (View.class.isAssignableFrom(beanType) && beanType.isAnnotationPresent(VaadinView.class)) {
+            } else if (View.class.isAssignableFrom(beanType) && beanType.isAnnotationPresent(SpringView.class)) {
                 logger.debug("Adding side bar item for view [{}]", beanType);
                 this.items.add(new SideBarItemDescriptor.ViewItemDescriptor(beanName, applicationContext));
             }

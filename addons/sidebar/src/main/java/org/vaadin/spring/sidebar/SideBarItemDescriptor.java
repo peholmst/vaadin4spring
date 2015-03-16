@@ -20,7 +20,7 @@ import com.vaadin.ui.UI;
 
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.i18n.I18N;
-import org.vaadin.spring.navigator.annotation.VaadinView;
+import com.vaadin.spring.annotation.SpringView;
 import org.vaadin.spring.sidebar.annotation.SideBarItem;
 import org.vaadin.spring.sidebar.annotation.SideBarItemIcon;
 
@@ -175,7 +175,7 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
      */
     public static class ViewItemDescriptor extends SideBarItemDescriptor {
 
-        private final VaadinView vaadinView;
+        private final SpringView vaadinView;
 
         /**
          * You should never need to create instances of this class directly.
@@ -185,7 +185,7 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
          */
         public ViewItemDescriptor(String beanName, ApplicationContext applicationContext) {
             super(beanName, applicationContext);
-            this.vaadinView = applicationContext.findAnnotationOnBean(beanName, VaadinView.class);
+            this.vaadinView = applicationContext.findAnnotationOnBean(beanName, SpringView.class);
         }
 
         /**
