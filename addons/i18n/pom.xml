@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>org.vaadin.spring.addons</groupId>
-    <artifactId>i18n</artifactId>
+    <artifactId>vaadin-spring-addon-i18n</artifactId>
     <packaging>jar</packaging>
 
     <name>Vaadin4Spring Add-ons - I18N</name>
