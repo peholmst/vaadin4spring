@@ -11,7 +11,7 @@
 
     <groupId>org.vaadin.spring</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.6-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Vaadin4Spring</name>
@@ -320,7 +320,7 @@
         </pluginRepositories> -->
 
     <modules>
-        <module>spring-boot-vaadin</module>
+<!--        <module>spring-boot-vaadin</module>
         <module>spring-vaadin</module>
         <module>spring-vaadin-security</module>
         <module>spring-vaadin-touchkit</module>
@@ -329,7 +329,10 @@
         <module>samples</module>
         <module>spring-vaadin-simple-mvp</module>
         <module>spring-vaadin-sidebar</module>
-        <module>spring-vaadin-i18n</module>
-        <module>spring-vaadin-eventbus</module>
+        <module>spring-vaadin-i18n</module>-->
+        <module>extensions/core</module>
+        <module>extensions/test</module>
+        <module>addons/eventbus</module>
+        <module>addons/i18n</module>
     </modules>
 </project>
