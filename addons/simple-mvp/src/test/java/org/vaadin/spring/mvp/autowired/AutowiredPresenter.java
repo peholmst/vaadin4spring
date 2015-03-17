@@ -13,32 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.mvp.explicit;
+package org.vaadin.spring.mvp.autowired;
 
+import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.UIScope;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.annotation.EnableVaadinEventBus;
-import org.vaadin.spring.mvp.FooView;
 
-@Configuration
-@EnableVaadin
-@EnableVaadinEventBus
-public class ExplicitConfig {
+import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.annotation.EventBusListenerMethod;
+import org.vaadin.spring.mvp.FooView;
+import org.vaadin.spring.mvp.Presenter;
+
+@UIScope
+@SpringComponent
+public class AutowiredPresenter extends Presenter<FooView> {
 
     @Autowired
-    private EventBus.UIEventBus eventBus;
-
-    @Bean
-    @VaadinUIScope
-    public FooView fooView() {
-        return new FooView();
+    public AutowiredPresenter(FooView view, EventBus.UIEventBus eventBus) {
+        super(view, eventBus);
     }
 
-    @Bean
-    @VaadinUIScope
-    public ExplicitPresenter fooPresenter() {
-        return new ExplicitPresenter(fooView(), eventBus);
+    @EventBusListenerMethod
+    public void onNewCaption(String caption) {
+        getView().setCaption(caption);
     }
 }

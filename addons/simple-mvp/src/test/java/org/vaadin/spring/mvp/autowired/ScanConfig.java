@@ -15,12 +15,12 @@
  */
 package org.vaadin.spring.mvp.autowired;
 
-import org.vaadin.spring.mvp.FooView;
+import com.vaadin.spring.annotation.EnableVaadin;
+import org.springframework.context.annotation.ComponentScan;
+import org.vaadin.spring.events.annotation.EnableEventBus;
 
-@VaadinUIScope
-@VaadinComponent
-public class AnnotatedFooView extends FooView {
-
-    private static final long serialVersionUID = -4497836114697117034L;
- 
+@ComponentScan
+@EnableVaadin
+@EnableEventBus
+public class ScanConfig {
 }

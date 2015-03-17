@@ -15,24 +15,14 @@
  */
 package org.vaadin.spring.mvp.autowired;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.annotation.EventBusListenerMethod;
+import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.UIScope;
 import org.vaadin.spring.mvp.FooView;
-import org.vaadin.spring.mvp.Presenter;
 
-@VaadinUIScope
-@VaadinComponent
-public class AutowiredPresenter extends Presenter<FooView> {
+@UIScope
+@SpringComponent
+public class AnnotatedFooView extends FooView {
 
-    @Autowired
-    public AutowiredPresenter(FooView view, EventBus.UIEventBus eventBus) {
-        super(view, eventBus);
-    }
+    private static final long serialVersionUID = -4497836114697117034L;
 
-    @EventBusListenerMethod
-    public void onNewCaption(String caption) {
-        getView().setCaption(caption);
-    }
 }

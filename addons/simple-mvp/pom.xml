@@ -6,10 +6,14 @@
     <parent>
         <artifactId>parent-pom</artifactId>
         <groupId>org.vaadin.spring</groupId>
-        <version>0.0.5-SNAPSHOT</version>
+        <version>0.0.6-SNAPSHOT</version>
+        <relativePath>../../</relativePath>
     </parent>
-    <artifactId>spring-vaadin-simple-mvp</artifactId>
-    <name>Vaadin4Spring Simple MVP</name>
+
+    <groupId>org.vaadin.spring.addons</groupId>
+    <artifactId>vaadin-spring-addon-simple-mvp</artifactId>
+    <name>Vaadin4Spring Add-ons - Simple MVP</name>
+
     <developers>
         <developer>
             <name>Nicolas Frankel</name>
@@ -34,13 +38,12 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>spring-vaadin</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-spring</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>spring-vaadin-eventbus</artifactId>
+            <artifactId>vaadin-spring-addon-eventbus</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -49,8 +52,8 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>spring-vaadin-test</artifactId>
+            <groupId>org.vaadin.spring.extensions</groupId>
+            <artifactId>vaadin-spring-ext-test</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
