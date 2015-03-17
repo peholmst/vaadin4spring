@@ -18,6 +18,7 @@ package org.vaadin.spring.navigator;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import com.vaadin.spring.navigator.SpringViewProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

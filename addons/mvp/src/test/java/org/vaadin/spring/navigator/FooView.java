@@ -15,14 +15,15 @@
  */
 package org.vaadin.spring.navigator;
 
-import org.vaadin.spring.navigator.annotation.VaadinView;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Panel;
 
-@VaadinUIScope
-@VaadinView(name = FooView.NAME)
+@UIScope
+@SpringView(name = FooView.NAME)
 class FooView extends Panel implements View {
 
     private static final long serialVersionUID = 3893006670519931367L;
@@ -34,7 +35,7 @@ class FooView extends Panel implements View {
     /**
      * Sets this Panel's caption
      * (and also sets state of foo variable)
-     * @param someFoo a caption
+     * @param foo a caption
      */
     public void setFoo(String foo) {
         this.foo = foo;

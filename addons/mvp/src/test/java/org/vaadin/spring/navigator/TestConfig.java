@@ -15,11 +15,12 @@
  */
 package org.vaadin.spring.navigator;
 
+import com.vaadin.spring.annotation.EnableVaadin;
 import org.springframework.context.annotation.ComponentScan;
-import org.vaadin.spring.events.annotation.EnableVaadinEventBus;
+import org.vaadin.spring.events.annotation.EnableEventBus;
 
 @EnableVaadin
-@EnableVaadinEventBus
+@EnableEventBus
 @ComponentScan
 class TestConfig {
 

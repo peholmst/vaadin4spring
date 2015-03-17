@@ -19,11 +19,12 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.vaadin.spring.navigator.SpringViewProvider;
+import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.UIScope;
 
 /**
  * Annotation to be placed on {@link org.vaadin.spring.navigator.Presenter}-classes that employ a
- * {@link SpringViewProvider} and an {@link org.vaadin.spring.events.EventBus}.
+ * {@link com.vaadin.spring.navigator.SpringViewProvider} and an {@link org.vaadin.spring.events.EventBus}.
  * <p>
  * This annotation is also a stereotype annotation, so Spring will automatically detect the annotated classes.
  * <p>
@@ -37,15 +38,15 @@ import org.vaadin.spring.navigator.SpringViewProvider;
  * </code>
  * </pre>
  *
- * The <code>viewName</code> must match the <code>name</code> attribute of a {@link org.vaadin.spring.navigator.annotation.VaadinView} annotated {@link com.vaadin.navigator.View}.
+ * The <code>viewName</code> must match the <code>name</code> attribute of a {@link com.vaadin.spring.annotation.SpringView} annotated {@link com.vaadin.navigator.View}.
  *
  * @author Chris Phillipson (fastnsilver@gmail.com)
  */
 @Target({java.lang.annotation.ElementType.TYPE})
 @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 @Documented
-@VaadinUIScope
-@VaadinComponent
+@UIScope
+@SpringComponent
 public @interface VaadinPresenter {
 
     /**

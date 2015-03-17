@@ -15,10 +15,11 @@
  */
 package org.vaadin.spring.navigator;
 
+import com.vaadin.spring.annotation.UIScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.navigator.annotation.VaadinPresenter;
 
-@VaadinUIScope
+@UIScope
 @VaadinPresenter(viewName=FooView.NAME)
 class FooPresenter extends Presenter<FooView> {
 

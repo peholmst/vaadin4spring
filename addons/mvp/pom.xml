@@ -5,14 +5,16 @@
     <parent>
         <artifactId>parent-pom</artifactId>
         <groupId>org.vaadin.spring</groupId>
-        <version>0.0.5.RELEASE</version>
+        <version>0.0.6-SNAPSHOT</version>
+        <relativePath>../../</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>spring-vaadin-mvp</artifactId>
+    <groupId>org.vaadin.spring.addons</groupId>
+    <artifactId>vaadin-spring-addon-mvp</artifactId>
     <packaging>jar</packaging>
 
-    <name>Vaadin4Spring MVP</name>
+    <name>Vaadin4Spring Add-ons - MVP</name>
     
     <developers>
         <developer>
@@ -28,19 +30,18 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>spring-vaadin</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-spring</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>spring-vaadin-eventbus</artifactId>
+            <artifactId>vaadin-spring-addon-eventbus</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>spring-vaadin-test</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.vaadin.spring.extensions</groupId>
+            <artifactId>vaadin-spring-ext-test</artifactId>
+            <version>${pom.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

@@ -15,6 +15,7 @@
  */
 package org.vaadin.spring.navigator;
 
+import com.vaadin.spring.navigator.SpringViewProvider;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
