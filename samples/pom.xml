@@ -5,19 +5,19 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.2.1.RELEASE</version>
+        <version>1.2.2.RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.vaadin.spring.samples</groupId>
     <artifactId>samples-parent-pom</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.5.RELEASE</version>
     <packaging>pom</packaging>
 
     <name>Vaadin4Spring Samples</name>
 
     <properties>
-        <vaadin.version>7.4.0</vaadin.version>
+        <vaadin.version>7.4.1</vaadin.version>
         <tomcat.version>7.0.55</tomcat.version>
         <!-- Server push is not yet working with Tomcat 8, at least not when using Spring Boot -->
     </properties>

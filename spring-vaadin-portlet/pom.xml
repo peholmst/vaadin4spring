@@ -8,7 +8,7 @@
   <parent>
     <groupId>org.vaadin.spring</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.5.RELEASE</version>
   </parent>
 
   <artifactId>spring-vaadin-portlet</artifactId>
@@ -27,6 +27,11 @@
     <dependency>
       <groupId>javax.portlet</groupId>
       <artifactId>portlet-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

@@ -11,7 +11,7 @@
 
     <groupId>org.vaadin.spring</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.5.RELEASE</version>
     <packaging>pom</packaging>
 
     <name>Vaadin4Spring</name>
