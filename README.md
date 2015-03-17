@@ -29,3 +29,7 @@ I am currently in the process of migrating the old project to the new directory 
 been migrated yet. It is not my intention to delete anything that has not been migrated to the official add-on,
 so if your module has not been migrated yet, just be patient. Also, some of the READMEs of the already migrated modules
 have not been updated yet.
+
+There is a separate [branch](https://github.com/peholmst/vaadin4spring/tree/legacy) for the old codebase (pre 0.0.6)
+in case you need it. However, if you have any pull requests, I kindly ask you to do them against the new codebase,
+if only possible.
