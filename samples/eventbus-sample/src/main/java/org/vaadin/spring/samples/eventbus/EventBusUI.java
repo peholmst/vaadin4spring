@@ -16,13 +16,16 @@
 package org.vaadin.spring.samples.eventbus;
 
 import com.vaadin.annotations.Push;
+import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ui.Transport;
+import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
@@ -37,8 +40,9 @@ import javax.annotation.PreDestroy;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@VaadinUI
+@SpringUI
 @Push(transport = Transport.WEBSOCKET)
+@Theme(ValoTheme.THEME_NAME)
 public class EventBusUI extends UI implements EventBusListener<Object> {
 
     private static final long serialVersionUID = -6291309888986021672L;
@@ -102,6 +106,7 @@ public class EventBusUI extends UI implements EventBusListener<Object> {
                 })
         );
         layout.setSpacing(true);
+        layout.setMargin(true);
         setContent(layout);
     }
 

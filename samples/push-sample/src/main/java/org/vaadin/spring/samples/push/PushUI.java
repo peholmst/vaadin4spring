@@ -22,6 +22,7 @@ import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ui.Transport;
+import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
@@ -43,7 +44,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Push(transport = Transport.WEBSOCKET)
 @Title("Push Demo")
-@VaadinUI
+@SpringUI
 @Theme(ValoTheme.THEME_NAME)
 public class PushUI extends UI {
 

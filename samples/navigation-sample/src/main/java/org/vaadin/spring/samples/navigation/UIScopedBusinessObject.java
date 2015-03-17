@@ -15,6 +15,7 @@
  */
 package org.vaadin.spring.samples.navigation;
 
+import com.vaadin.spring.annotation.UIScope;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -24,7 +25,7 @@ import java.io.Serializable;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@VaadinUIScope
+@UIScope
 @Component
 public class UIScopedBusinessObject implements Serializable {
 

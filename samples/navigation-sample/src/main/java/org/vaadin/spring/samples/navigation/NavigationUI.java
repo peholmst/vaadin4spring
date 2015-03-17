@@ -20,7 +20,8 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.spring.annotation.SpringUI;
+import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Label;
@@ -29,10 +30,6 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.spring.annotation.PrototypeScope;
-import org.vaadin.spring.navigator.SpringViewProvider;
-
-import javax.annotation.PostConstruct;
 
 /**
  * Main UI of the navigation sample UI. The UI contains three different views with different scopes. The user
@@ -40,7 +37,7 @@ import javax.annotation.PostConstruct;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@VaadinUI
+@SpringUI
 @Theme(ValoTheme.THEME_NAME)
 public class NavigationUI extends UI {
 
@@ -106,23 +103,4 @@ public class NavigationUI extends UI {
         }
     }
 
-    @VaadinComponent
-    @PrototypeScope
-    public static class AccessDeniedView extends VerticalLayout implements View {
-
-        private Label message;
-
-        @PostConstruct
-        void init() {
-            setMargin(true);
-            addComponent(message = new Label());
-            message.addStyleName(ValoTheme.LABEL_FAILURE);
-            message.setContentMode(ContentMode.HTML);
-        }
-
-        @Override
-        public void enter(ViewChangeListener.ViewChangeEvent event) {
-            message.setValue(String.format("Sorry, but you don't have access to the view <b>%s</b>.", event.getViewName()));
-        }
-    }
 }

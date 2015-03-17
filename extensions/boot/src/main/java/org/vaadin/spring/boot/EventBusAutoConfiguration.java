@@ -20,24 +20,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
-import org.vaadin.spring.i18n.I18N;
-import org.vaadin.spring.i18n.annotation.EnableVaadinI18N;
+import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.annotation.EnableEventBus;
 
 /**
- * Autoconfiguration Vaadin I18N
- * 
+ * Auto configuration for the Event Bus.
+ *
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
- * @see org.vaadin.spring.i18n.annotation.EnableVaadinI18N
+ * @see org.vaadin.spring.events.annotation.EnableEventBus
  */
 @Configuration
-@ConditionalOnClass(I18N.class)
-public class VaadinI18NAutoConfiguration {
+@ConditionalOnClass(EventBus.class)
+public class EventBusAutoConfiguration {
 
-    private static Logger logger = LoggerFactory.getLogger(VaadinI18NAutoConfiguration.class);
-    
+    private static Logger logger = LoggerFactory.getLogger(EventBusAutoConfiguration.class);
+
     @Configuration
-    @EnableVaadinI18N
-    static class EnableVaadinI18NConfiguration implements InitializingBean {
+    @EnableEventBus
+    static class EnableEventBusConfiguration implements InitializingBean {
 
         @Override
         public void afterPropertiesSet() throws Exception {

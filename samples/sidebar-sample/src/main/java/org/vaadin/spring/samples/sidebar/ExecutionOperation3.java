@@ -15,6 +15,7 @@
  */
 package org.vaadin.spring.samples.sidebar;
 
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Notification;
 
 import org.springframework.stereotype.Component;
@@ -32,7 +33,7 @@ import java.io.Serializable;
         caption = "Operation 3")
 @ThemeIcon("../runo/icons/64/note.png")
 @Component
-@VaadinUIScope
+@UIScope
 public class ExecutionOperation3 implements Runnable, Serializable {
 
     private static final long serialVersionUID = 6936718554616209000L;

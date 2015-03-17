@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.vaadin.spring.boot.I18NAutoConfiguration,\
+org.vaadin.spring.boot.EventBusAutoConfiguration

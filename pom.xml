@@ -76,10 +76,10 @@
         <vaadin.version>7.4.1</vaadin.version>
         <vaadin-touchkit.version>4.0.0</vaadin-touchkit.version>
         <vaadin-spring.version>0.0.1-SNAPSHOT</vaadin-spring.version>
-        <spring.version>4.1.4.RELEASE</spring.version>
-        <spring-boot.version>1.2.1.RELEASE</spring-boot.version>
-        <spring-security.version>3.2.5.RELEASE</spring-security.version>
-        <slf4j.version>1.7.7</slf4j.version>
+        <spring.version>4.1.5.RELEASE</spring.version>
+        <spring-boot.version>1.2.2.RELEASE</spring-boot.version>
+        <spring-security.version>3.2.6.RELEASE</spring-security.version>
+        <slf4j.version>1.7.10</slf4j.version>
         <logback.version>1.1.2</logback.version>
     </properties>
 
@@ -146,7 +146,7 @@
                 <version>${vaadin-spring.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.vaadin.</groupId>
+                <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-spring-boot</artifactId>
                 <version>${vaadin-spring.version}</version>
             </dependency>
@@ -309,11 +309,13 @@
     </repositories>
 
     <modules>
-        <module>extensions/core</module>
-        <module>extensions/test</module>
         <module>addons/eventbus</module>
         <module>addons/i18n</module>
         <module>addons/sidebar</module>
         <module>addons/simple-mvp</module>
+        <module>extensions/boot</module>
+        <module>extensions/core</module>
+        <module>extensions/test</module>
+        <module>samples</module>
     </modules>
 </project>
