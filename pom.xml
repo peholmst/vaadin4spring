@@ -68,7 +68,6 @@
         </developer>
     </developers>
 
-
     <properties>
         <project.build.encoding>UTF-8</project.build.encoding>
         <project.build.target>1.6</project.build.target>
