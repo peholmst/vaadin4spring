@@ -3,7 +3,6 @@ package org.vaadin.spring.samples.security.ui.views;
 import javax.annotation.PostConstruct;
 
 import org.springframework.security.access.annotation.Secured;
-import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 
 import com.vaadin.navigator.View;

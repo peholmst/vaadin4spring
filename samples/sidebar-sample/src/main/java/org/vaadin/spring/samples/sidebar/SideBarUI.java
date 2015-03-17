@@ -20,6 +20,8 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.navigator.ViewDisplay;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.spring.annotation.SpringUI;
+import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
@@ -27,16 +29,14 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.spring.annotation.VaadinUI;
-import org.vaadin.spring.navigator.SpringViewProvider;
 import org.vaadin.spring.sidebar.SideBar;
 
 /**
- * UI that demonstrates the {@link org.vaadin.spring.stuff.sidebar.SideBar}.
+ * UI that demonstrates the {@link org.vaadin.spring.sidebar.SideBar}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@VaadinUI
+@SpringUI
 public class SideBarUI extends UI {
 
     private static final long serialVersionUID = -7747249047198990160L;

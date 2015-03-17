@@ -18,11 +18,11 @@ package org.vaadin.spring.samples.sidebar;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-import org.vaadin.spring.navigator.annotation.VaadinView;
-import org.vaadin.spring.navigator.annotation.VaadinViewScope;
 import org.vaadin.spring.sidebar.annotation.FontAwesomeIcon;
 import org.vaadin.spring.sidebar.annotation.SideBarItem;
 
@@ -31,12 +31,12 @@ import org.vaadin.spring.sidebar.annotation.SideBarItem;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@VaadinView(name = PlanningView2.VIEW_NAME)
+@SpringView(name = PlanningView2.VIEW_NAME)
 @SideBarItem(sectionId = Sections.PLANNING,
         caption = "View 2",
         order = 2)
 @FontAwesomeIcon(FontAwesome.AMBULANCE)
-@VaadinViewScope
+@ViewScope
 public class PlanningView2 extends VerticalLayout implements View {
 
     private static final long serialVersionUID = -5940176536863140421L;

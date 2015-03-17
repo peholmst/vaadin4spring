@@ -15,15 +15,15 @@
  */
 package org.vaadin.spring.touchkit.annotation;
 
-import org.vaadin.spring.annotation.VaadinComponent;
-import org.vaadin.spring.annotation.VaadinUIScope;
+import com.vaadin.spring.annotation.VaadinUIScope;
+import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * The TouchKit counterpart to {@link org.vaadin.spring.annotation.VaadinUI}. Use it like this:
+ * The TouchKit counterpart to {@link com.vaadin.spring.annotation.SpringUI}. Use it like this:
  * <pre>
  *     &#64;VaadinUI
  *     public class MyRootTouchKitUI extends UI {
@@ -37,15 +37,15 @@ import java.lang.annotation.Target;
  *         // ...
  *     }
  *     </pre>
- * The annotated UI will automatically be placed in the {@link org.vaadin.spring.annotation.VaadinUIScope}, so there is no need to add that annotation explicitly.
+ * The annotated UI will automatically be placed in the {@link com.vaadin.spring.annotation.VaadinUIScope}, so there is no need to add that annotation explicitly.
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.annotation.VaadinUI
+ * @see com.vaadin.spring.annotation.SpringUI
  */
 @Target({java.lang.annotation.ElementType.TYPE})
 @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 @Documented
-@VaadinComponent
+@Component
 @VaadinUIScope
 public @interface TouchKitUI {
 

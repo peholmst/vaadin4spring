@@ -5,7 +5,7 @@
     <parent>
         <artifactId>samples-parent-pom</artifactId>
         <groupId>org.vaadin.spring.samples</groupId>
-        <version>0.0.5.RELEASE</version>
+        <version>0.0.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,12 +15,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.vaadin.spring</groupId>
-            <artifactId>spring-boot-vaadin</artifactId>
+            <groupId>org.vaadin.spring.extensions</groupId>
+            <artifactId>vaadin-spring-ext-boot</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.vaadin.spring</groupId>
-            <artifactId>spring-vaadin-eventbus</artifactId>
+            <groupId>org.vaadin.spring.addons</groupId>
+            <artifactId>vaadin-spring-addon-eventbus</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

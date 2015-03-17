@@ -16,13 +16,13 @@
 package org.vaadin.spring.samples.navigation;
 
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.spring.annotation.VaadinComponent;
-import org.vaadin.spring.navigator.annotation.VaadinViewScope;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -32,8 +32,8 @@ import javax.annotation.PreDestroy;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@VaadinViewScope
-@VaadinComponent
+@ViewScope
+@SpringComponent
 public class ViewScopedComponent extends Label {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewScopedComponent.class);

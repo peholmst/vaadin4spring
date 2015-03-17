@@ -16,7 +16,6 @@
 package org.vaadin.spring.samples.security.ui.login;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.spring.annotation.VaadinUI;
 import org.vaadin.spring.navigator.SpringViewProvider;
 
 import com.vaadin.annotations.Theme;

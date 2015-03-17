@@ -18,15 +18,15 @@ package org.vaadin.spring.samples.navigation;
 import com.vaadin.data.Property;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.spring.access.ViewAccessControl;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.spring.navigator.ViewProviderAccessDelegate;
-import org.vaadin.spring.navigator.annotation.VaadinView;
 
 import javax.annotation.PostConstruct;
 import java.util.HashSet;
@@ -34,15 +34,15 @@ import java.util.Set;
 
 
 /**
- * A view that demonstrates how {@link org.vaadin.spring.navigator.ViewProviderAccessDelegate}s can be used
+ * A view that demonstrates how {@link com.vaadin.spring.access.ViewAccessControl}s can be used
  * to control access to views. In this example, the access delegate is the UI scoped view, but you can also use e.g. singleton
  * access delegates.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@VaadinUIScope
-@VaadinView(name = AccessControlView.VIEW_NAME)
-public class AccessControlView extends VerticalLayout implements View, ViewProviderAccessDelegate {
+@UIScope
+@SpringView(name = AccessControlView.VIEW_NAME)
+public class AccessControlView extends VerticalLayout implements View, ViewAccessControl {
 
     public static final String VIEW_NAME = "access";
 
@@ -87,20 +87,12 @@ public class AccessControlView extends VerticalLayout implements View, ViewProvi
     }
 
     @Override
-    public boolean isAccessGranted(String beanName, UI ui) {
-        final VaadinView annotation = applicationContext.findAnnotationOnBean(beanName, VaadinView.class);
+    public boolean isAccessGranted(UI ui, String beanName) {
+        final SpringView annotation = applicationContext.findAnnotationOnBean(beanName, SpringView.class);
         if (annotation != null) {
             return allowedViews.contains(annotation.name());
         } else {
             return false;
         }
     }
-
-    @Override
-    public boolean isAccessGranted(String beanName, UI ui, View view) {
-        // All the security checks are handled in the above method
-        return true;
-    }
-
-
 }
