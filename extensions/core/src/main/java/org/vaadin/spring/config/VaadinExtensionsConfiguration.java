@@ -22,6 +22,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.context.request.RequestContextListener;
 import org.vaadin.spring.context.VaadinApplicationContext;
+import org.vaadin.spring.context.VaadinServiceFactory;
+import org.vaadin.spring.context.VaadinSessionFactory;
 import org.vaadin.spring.http.HttpResponseFactory;
 import org.vaadin.spring.http.HttpResponseFilter;
 import org.vaadin.spring.http.HttpService;
@@ -80,5 +82,21 @@ public class VaadinExtensionsConfiguration {
     @Scope(value = org.springframework.web.context.WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)
     HttpService httpService() {
         return new VaadinHttpService();
+    }
+
+    /**
+     * Allows injection of the current {@link com.vaadin.server.VaadinService}.
+     */
+    @Bean
+    VaadinServiceFactory vaadinServiceFactory() {
+        return new VaadinServiceFactory();
+    }
+
+    /**
+     * Allows injection of the current {@link com.vaadin.server.VaadinSession}.
+     */
+    @Bean
+    VaadinSessionFactory vaadinSessionFactory() {
+        return new VaadinSessionFactory();
     }
 }
