@@ -55,6 +55,11 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.vaadin.spring</groupId>
+                <artifactId>spring-vaadin-portlet</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-themes</artifactId>
                 <version>${vaadin.version}</version>
@@ -162,5 +167,6 @@
         <module>push-sample</module>
         <module>security-sample</module>
         <module>navigation-sample</module>
+        <module>portlet-sample</module>
     </modules>
 </project>

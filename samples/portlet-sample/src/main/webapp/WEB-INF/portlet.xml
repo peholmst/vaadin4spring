@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" version="2.0"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd
+                                 http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
+
+    <portlet>
+        <description>An example portlet to show Spring integration to Vaadin</description>
+        <portlet-name>Vaadin + Spring Portlet Example</portlet-name>
+        <display-name>Vaadin + Spring Portlet</display-name>
+
+        <!-- Map portlet to a servlet -->
+        <portlet-class>org.vaadin.spring.portlet.SpringAwareVaadinPortlet</portlet-class>
+        <init-param>
+          <name>UI</name>
+          <!-- The application class with package name -->
+          <value>org.vaadin.spring.samples.portlet.ui.MyVaadinPortletUI</value>
+        </init-param>
+
+        <!-- Supported portlet modes and content types -->
+        <supports>
+          <mime-type>text/html</mime-type>
+          <portlet-mode>VIEW</portlet-mode>
+        </supports>
+
+        <!-- Not always required but Liferay requires these -->
+        <portlet-info>
+          <title>Vaadin + Spring Portlet</title>
+          <keywords>vaadin</keywords>
+        </portlet-info>
+    </portlet>
+</portlet-app>
