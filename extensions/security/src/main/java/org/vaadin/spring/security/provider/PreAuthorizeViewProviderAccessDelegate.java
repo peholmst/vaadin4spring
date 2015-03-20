@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.vaadin.spring.access.ViewAccessControl;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
@@ -35,15 +36,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.util.MethodInvocationUtils;
 import org.springframework.util.ClassUtils;
-import org.vaadin.spring.navigator.ViewProviderAccessDelegate;
 import org.vaadin.spring.security.VaadinSecurity;
 import org.vaadin.spring.security.VaadinSecurityAware;
 
-import com.vaadin.navigator.View;
 import com.vaadin.ui.UI;
 
 /**
- * Implementation of {@link org.vaadin.spring.navigator.ViewProviderAccessDelegate} that
+ * Implementation of {@link com.vaadin.spring.access.ViewAccessControl} that
  * checks if a view has the {@link org.springframework.security.access.prepost.PreAuthorize} annotation and if so,
  * uses the {@link org.vaadin.spring.security.VaadinSecurity} instance to check if the current user is authorized to
  * access the view.
@@ -53,7 +52,9 @@ import com.vaadin.ui.UI;
  * <br><br>
  * Initial code:<a href="https://github.com/markoradinovic/Vaadin4Spring-MVP-Sample-SpringSecurity">https://github.com/markoradinovic/Vaadin4Spring-MVP-Sample-SpringSecurity</a>
  */
-public class PreAuthorizeViewProviderAccessDelegate implements ApplicationContextAware, VaadinSecurityAware, ViewProviderAccessDelegate {
+public class PreAuthorizeViewProviderAccessDelegate implements ApplicationContextAware, VaadinSecurityAware, ViewAccessControl {
+
+    // TODO Rename this class
 
     private VaadinSecurity security;
     private ApplicationContext applicationContext;
@@ -69,7 +70,7 @@ public class PreAuthorizeViewProviderAccessDelegate implements ApplicationContex
     }
 
     @Override
-    public boolean isAccessGranted(String beanName, UI ui) {
+    public boolean isAccessGranted(UI ui, String beanName) {
 
         PreAuthorize viewSecured = applicationContext.findAnnotationOnBean(beanName, PreAuthorize.class);
 
@@ -101,13 +102,5 @@ public class PreAuthorizeViewProviderAccessDelegate implements ApplicationContex
             return true; // Access decision manager required for @PreAuthorize()
         }
 
-    }
-
-    /*
-     * If there is an access manager then the decision is already made 
-     */
-    @Override
-    public boolean isAccessGranted(String beanName, UI ui, View view) {
-        return true;
     }
 }

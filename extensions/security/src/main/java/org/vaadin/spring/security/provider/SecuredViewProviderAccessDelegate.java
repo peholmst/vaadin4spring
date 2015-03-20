@@ -16,16 +16,17 @@
 package org.vaadin.spring.security.provider;
 
 import com.vaadin.navigator.View;
+import com.vaadin.spring.access.ViewAccessControl;
+import com.vaadin.spring.access.ViewInstanceAccessControl;
 import com.vaadin.ui.UI;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.annotation.Secured;
-import org.vaadin.spring.navigator.ViewProviderAccessDelegate;
 import org.vaadin.spring.security.VaadinSecurity;
 import org.vaadin.spring.security.VaadinSecurityAware;
 
 /**
- * Implementation of {@link org.vaadin.spring.navigator.ViewProviderAccessDelegate} that
+ * Implementation of {@link com.vaadin.spring.access.ViewAccessControl} and {@link com.vaadin.spring.access.ViewInstanceAccessControl} that
  * checks if a view has the {@link org.springframework.security.access.annotation.Secured} annotation and if so,
  * uses the {@link org.vaadin.spring.security.VaadinSecurity} instance to check if the current user is authorized to
  * access the view.
@@ -34,7 +35,9 @@ import org.vaadin.spring.security.VaadinSecurityAware;
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  * @see VaadinSecurity#hasAnyAuthority(String...)
  */
-public class SecuredViewProviderAccessDelegate implements VaadinSecurityAware, ViewProviderAccessDelegate {
+public class SecuredViewProviderAccessDelegate implements VaadinSecurityAware, ViewAccessControl, ViewInstanceAccessControl {
+
+    // TODO Rename this class
 
     private VaadinSecurity security;
     private ApplicationContext applicationContext;
@@ -46,7 +49,7 @@ public class SecuredViewProviderAccessDelegate implements VaadinSecurityAware, V
     }
 
     @Override
-    public boolean isAccessGranted(String beanName, UI ui) {
+    public boolean isAccessGranted(UI ui, String beanName) {
 
         Secured viewSecured = applicationContext.findAnnotationOnBean(beanName, Secured.class);
 
@@ -60,7 +63,7 @@ public class SecuredViewProviderAccessDelegate implements VaadinSecurityAware, V
     }
 
     @Override
-    public boolean isAccessGranted(String beanName, UI ui, View view) {
+    public boolean isAccessGranted(UI ui, String beanName, View view) {
         Secured viewSecured = view.getClass().getAnnotation(Secured.class);
 
         if ( viewSecured == null || !security.hasAccessDecisionManager() ) {

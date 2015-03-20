@@ -21,10 +21,10 @@ import org.vaadin.spring.security.config.VaadinSecurityConfiguration;
 import java.lang.annotation.*;
 
 /**
- * Addition to the {@link org.vaadin.spring.annotation.EnableVaadin} annotation that configures support for Spring Security in Vaadin applications.
+ * Addition to the {@link com.vaadin.spring.annotation.EnableVaadin} annotation that configures support for Spring Security in Vaadin applications.
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.annotation.EnableVaadin
+ * @see com.vaadin.spring.annotation.EnableVaadin
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

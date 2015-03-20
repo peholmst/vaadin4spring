@@ -329,6 +329,7 @@
         <module>addons/simple-mvp</module>
         <module>extensions/boot</module>
         <module>extensions/core</module>
+        <module>extensions/security</module>
         <module>extensions/test</module>
         <module>samples</module>
     </modules>

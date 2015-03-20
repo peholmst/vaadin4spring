@@ -15,10 +15,13 @@
  */
 package org.vaadin.spring.security.test;
 
+import com.vaadin.spring.annotation.EnableVaadin;
 import org.springframework.context.annotation.Configuration;
+import org.vaadin.spring.annotation.EnableVaadinExtensions;
 
 @Configuration
 @EnableVaadin
+@EnableVaadinExtensions
 public class DefaultTestConfiguration {
     
 }
