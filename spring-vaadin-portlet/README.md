@@ -70,3 +70,5 @@ public class YourApplicationConfiguration {
     //...
 }
 ```
+
+You could find an example at `../samples/portlet-sample`.
