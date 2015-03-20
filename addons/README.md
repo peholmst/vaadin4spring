@@ -33,3 +33,7 @@ look at both and pick the one you like the most:
 
 * [MVP](mvp/README.md) by Chris Phillipson
 * [Simple MVP](simple-mvp/README.md) by Nicolas Frankel
+
+## Portlet support
+
+There is one community contributed add-on for portlet support. More information can be found [here](portlet/README.md).

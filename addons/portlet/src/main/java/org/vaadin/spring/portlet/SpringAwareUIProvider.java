@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.annotation.VaadinPortletUI;
-import org.vaadin.spring.internal.UIID;
+import com.vaadin.spring.internal.UIID;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

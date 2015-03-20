@@ -325,6 +325,7 @@
         <module>addons/eventbus</module>
         <module>addons/i18n</module>
         <module>addons/mvp</module>
+        <module>addons/portlet</module>
         <module>addons/sidebar</module>
         <module>addons/simple-mvp</module>
         <module>extensions/boot</module>
