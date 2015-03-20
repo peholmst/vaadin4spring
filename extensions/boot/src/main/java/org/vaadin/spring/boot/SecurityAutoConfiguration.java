@@ -24,18 +24,20 @@ import org.vaadin.spring.security.VaadinSecurity;
 import org.vaadin.spring.security.annotation.EnableVaadinSecurity;
 
 /**
+ * Auto configuration for Spring Security support.
+ *
  * @author Petter Holmström (petter@vaadin.com)
  * @see org.vaadin.spring.security.annotation.EnableVaadinSecurity
  */
 @Configuration
 @ConditionalOnClass(VaadinSecurity.class)
-public class VaadinSecurityAutoConfiguration {
+public class SecurityAutoConfiguration {
 
-    private static Logger logger = LoggerFactory.getLogger(VaadinSecurityAutoConfiguration.class);
+    private static Logger logger = LoggerFactory.getLogger(SecurityAutoConfiguration.class);
 
     @Configuration
     @EnableVaadinSecurity
-    static class EnableVaadinSecurityConfiguration implements InitializingBean {
+    static class EnableSecurityConfiguration implements InitializingBean {
         @Override
         public void afterPropertiesSet() throws Exception {
             logger.debug("{} initialized", getClass().getName());
