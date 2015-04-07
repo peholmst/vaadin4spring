@@ -28,7 +28,7 @@ creating a singleton instance of ```ApplicationContextEventBroker```:
 
 ```java
  @Autowired
- EventBus.ApplicationEventBUs eventBus;
+ EventBus.ApplicationEventBus eventBus;
  ...
  @Bean
  ApplicationContextEventBroker applicationContextEventBroker() {
