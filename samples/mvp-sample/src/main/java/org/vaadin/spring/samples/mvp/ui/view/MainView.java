@@ -15,17 +15,17 @@
  */
 package org.vaadin.spring.samples.mvp.ui.view;
 
-import javax.annotation.PostConstruct;
-
-import org.vaadin.spring.navigator.annotation.VaadinView;
-
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
 
-@VaadinUIScope
-@VaadinView(name = MainView.NAME)
+import javax.annotation.PostConstruct;
+
+@UIScope
+@SpringView(name = MainView.NAME)
 public class MainView extends VerticalLayout implements View {
 
     private static final long serialVersionUID = 6041151920926888211L;

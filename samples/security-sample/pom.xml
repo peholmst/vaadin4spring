@@ -4,7 +4,7 @@
     <parent>
         <artifactId>samples-parent-pom</artifactId>
         <groupId>org.vaadin.spring.samples</groupId>
-        <version>0.0.5.RELEASE</version>
+        <version>0.0.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -25,7 +25,7 @@
             <artifactId>validation-api</artifactId>
             <version>1.1.0.Final</version>
         </dependency>
-    
+
         <!-- Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -38,7 +38,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -49,55 +48,51 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
         </dependency>
-    
+
         <!-- Spring4Vaadin -->
         <dependency>
-            <groupId>org.vaadin.spring</groupId>
-            <artifactId>spring-boot-vaadin</artifactId>
-            </dependency>
-        <dependency>
-            <groupId>org.vaadin.spring</groupId>
-            <artifactId>spring-vaadin</artifactId>
+            <groupId>org.vaadin.spring.extensions</groupId>
+            <artifactId>vaadin-spring-ext-security</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.vaadin.spring</groupId>
-            <artifactId>spring-vaadin-security</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.vaadin.spring.extensions</groupId>
+            <artifactId>vaadin-spring-ext-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.vaadin.spring</groupId>
-            <artifactId>spring-vaadin-mvp</artifactId>
+            <groupId>org.vaadin.spring.extensions</groupId>
+            <artifactId>vaadin-spring-ext-boot</artifactId>
         </dependency>
-        
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-spring</artifactId>
+        </dependency>
+
         <!-- Vaadin -->
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-server</artifactId>
-            <version>${vaadin.version}</version>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-push</artifactId>
-            </dependency>
+        </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client</artifactId>
-            <version>${vaadin.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client-compiler</artifactId>
-            <version>${vaadin.version}</version>
             <scope>provided</scope>
             <exclusions>
-            
+
                 <!-- 
                     Excluded Jetty 
                     Reason: Will conflict with the default container (Tomcat)
                     loaded by Spring-boot
                 -->
-            
+
                 <exclusion>
                     <artifactId>jetty-servlet</artifactId>
                     <groupId>org.eclipse.jetty</groupId>
@@ -160,7 +155,7 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-themes</artifactId>
         </dependency>
-        
+
         <!-- Database -->
         <dependency>
             <groupId>com.h2database</groupId>
@@ -236,8 +231,8 @@
                     <!-- <runTarget>mobilemail</runTarget> -->
                     <!-- We are doing "inplace" but into subdir VAADIN/widgetsets. 
                         This way compatible with Vaadin eclipse plugin. -->
-                    <webappDirectory>${project.build.directory}/classes/VAADIN/widgetsets</webappDirectory>
-                    <hostedWebapp>${basedir}/src/main/webapp/VAADIN/widgetsets</hostedWebapp>
+                    <webappDirectory>${basedir}/src/main/resources/VAADIN/widgetsets</webappDirectory>
+                    <hostedWebapp>${basedir}/src/main/resources/VAADIN/widgetsets</hostedWebapp>
                     <!-- Most Vaadin apps don't need this stuff, guide that 
                         to target -->
                     <persistentunitcachedir>${project.build.directory}</persistentunitcachedir>

@@ -15,18 +15,17 @@
  */
 package org.vaadin.spring.samples.mvp.ui.view;
 
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
-import org.vaadin.spring.navigator.annotation.VaadinView;
-import org.vaadin.spring.samples.mvp.ui.component.util.ControlsContext;
-
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import org.vaadin.spring.samples.mvp.ui.component.util.ControlsContext;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
 
 /**
  * Header >>> responsible for rendering fixed and dynamic elements.
@@ -34,8 +33,8 @@ import com.vaadin.ui.HorizontalLayout;
  * @author Chris Phillipson (fastnsilver@gmail.com)
  *
  */
-@VaadinUIScope
-@VaadinView(name = HeaderView.NAME)
+@UIScope
+@SpringView(name = HeaderView.NAME)
 public class HeaderView extends HorizontalLayout implements View {
 
     private static final long serialVersionUID = -3507331087453071116L;

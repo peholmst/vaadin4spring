@@ -1,18 +1,18 @@
 package org.vaadin.spring.samples.security.ui.views;
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.security.access.annotation.Secured;
-import org.vaadin.spring.navigator.annotation.VaadinView;
-
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+import org.springframework.security.access.annotation.Secured;
 
-@VaadinView(name = SecuredView.NAME)
-@VaadinUIScope
+import javax.annotation.PostConstruct;
+
+@SpringView(name = SecuredView.NAME)
+@UIScope
 @Secured("ROLE_USER")
 public class SecuredView extends VerticalLayout implements View {
 
