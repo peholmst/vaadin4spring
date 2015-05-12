@@ -15,22 +15,21 @@
  */
 package org.vaadin.spring.samples.mvp.ui.component.selector;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import org.apache.commons.lang3.StringUtils;
-import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.spring.samples.mvp.dto.AssetOwnedDailyId;
 import org.vaadin.spring.samples.mvp.ui.service.UiService;
 
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 
-@VaadinUIScope
-@VaadinView(name = AnyParticipantSelector.NAME)
+@UIScope
+@SpringView(name = AnyParticipantSelector.NAME)
 public class AnyParticipantSelector extends ParticipantSelector {
 
     private static final long serialVersionUID = 601560875854451663L;

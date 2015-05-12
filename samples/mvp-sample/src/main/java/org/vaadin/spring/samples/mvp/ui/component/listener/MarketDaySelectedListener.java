@@ -15,18 +15,18 @@
  */
 package org.vaadin.spring.samples.mvp.ui.component.listener;
 
-import java.util.Date;
-
-import javax.inject.Inject;
-
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.spring.annotation.UIScope;
+import org.springframework.stereotype.Component;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.samples.mvp.util.SSTimeUtil;
 
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
+import javax.inject.Inject;
+import java.util.Date;
 
-@VaadinUIScope
-@VaadinComponent
+@UIScope
+@Component
 public class MarketDaySelectedListener implements ValueChangeListener {
 
     private static final long serialVersionUID = -123053805576375573L;

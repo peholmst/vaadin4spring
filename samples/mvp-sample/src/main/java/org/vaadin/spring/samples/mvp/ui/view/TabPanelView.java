@@ -15,28 +15,27 @@
  */
 package org.vaadin.spring.samples.mvp.ui.view;
 
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
+import com.vaadin.spring.navigator.SpringViewProvider;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.TabSheet;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.spring.navigator.SpringViewProvider;
-import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.spring.samples.mvp.ui.component.grid.DataGrid;
 import org.vaadin.spring.samples.mvp.ui.component.listener.TabSelectedListener;
 import org.vaadin.spring.samples.mvp.ui.component.nav.NavElement;
 import org.vaadin.spring.samples.mvp.ui.component.nav.NavElementFactory;
 
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.TabSheet;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import java.util.List;
 
-@VaadinUIScope
-@VaadinView(name = TabPanelView.NAME)
+@UIScope
+@SpringView(name = TabPanelView.NAME)
 public class TabPanelView extends TabSheet implements View {
 
     private static final long serialVersionUID = -4866260647690189827L;

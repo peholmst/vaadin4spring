@@ -15,18 +15,19 @@
  */
 package org.vaadin.spring.samples.mvp.ui.component.listener;
 
-import javax.inject.Inject;
-
+import com.vaadin.event.ItemClickEvent;
+import com.vaadin.event.ItemClickEvent.ItemClickListener;
+import com.vaadin.shared.MouseEventDetails.MouseButton;
+import com.vaadin.spring.annotation.UIScope;
+import org.springframework.stereotype.Component;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.samples.mvp.ui.component.nav.NavElement;
 import org.vaadin.spring.samples.mvp.ui.component.util.ControlsContext;
 
-import com.vaadin.event.ItemClickEvent;
-import com.vaadin.event.ItemClickEvent.ItemClickListener;
-import com.vaadin.shared.MouseEventDetails.MouseButton;
+import javax.inject.Inject;
 
-@VaadinUIScope
-@VaadinComponent
+@UIScope
+@Component
 public class NavigationPanelListener implements ItemClickListener {
 
     private static final long serialVersionUID = -8657189602674122010L;

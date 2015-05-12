@@ -46,8 +46,23 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.vaadin.spring.extensions</groupId>
+                <artifactId>vaadin-spring-ext-security</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.vaadin.spring.extensions</groupId>
+                <artifactId>vaadin-spring-ext-test</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.vaadin.spring.addons</groupId>
                 <artifactId>vaadin-spring-addon-eventbus</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.vaadin.spring.addons</groupId>
+                <artifactId>vaadin-spring-addon-mvp</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -58,6 +73,21 @@
             <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-themes</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-server</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-client</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-client-compiler</artifactId>
                 <version>${vaadin.version}</version>
             </dependency>
             <dependency>
@@ -132,9 +162,9 @@
     <modules>
         <module>sidebar-sample</module>
         <module>eventbus-sample</module>
-<!--        <module>mvp-sample</module>-->
+        <module>mvp-sample</module>
         <module>push-sample</module>
-<!--        <module>security-sample</module>-->
+        <module>security-sample</module>
         <module>navigation-sample</module>
     </modules>
 </project>

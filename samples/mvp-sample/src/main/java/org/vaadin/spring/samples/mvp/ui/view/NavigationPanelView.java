@@ -15,20 +15,19 @@
  */
 package org.vaadin.spring.samples.mvp.ui.view;
 
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
-import org.vaadin.spring.navigator.annotation.VaadinView;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.Tree;
 import org.vaadin.spring.samples.mvp.ui.component.listener.NavigationPanelListener;
 import org.vaadin.spring.samples.mvp.ui.component.nav.NavContainerFactory;
 import org.vaadin.spring.samples.mvp.ui.component.nav.NavElement;
 
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.Tree;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Primary navigation view that employs a {@link Tree} to render a hierarchical display of
@@ -37,8 +36,8 @@ import com.vaadin.ui.Tree;
  * @author Chris Phillipson (fastnsilver@gmail.com)
  *
  */
-@VaadinUIScope
-@VaadinView(name = NavigationPanelView.NAME)
+@UIScope
+@SpringView(name = NavigationPanelView.NAME)
 public class NavigationPanelView extends Panel implements View {
 
     private static final long serialVersionUID = 1L;

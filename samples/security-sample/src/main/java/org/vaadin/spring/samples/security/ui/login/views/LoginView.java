@@ -15,18 +15,13 @@
  */
 package org.vaadin.spring.samples.security.ui.login.views;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.AuthenticationException;
-import org.vaadin.spring.http.HttpService;
-import org.vaadin.spring.navigator.annotation.VaadinView;
-import org.vaadin.spring.samples.security.ui.login.LoginUI;
-import org.vaadin.spring.security.VaadinSecurity;
-
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -40,9 +35,14 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.AuthenticationException;
+import org.vaadin.spring.http.HttpService;
+import org.vaadin.spring.samples.security.ui.login.LoginUI;
+import org.vaadin.spring.security.VaadinSecurity;
 
-@VaadinView(name = LoginView.NAME, ui = LoginUI.class)
-@VaadinUIScope
+@SpringView(name = LoginView.NAME, ui = LoginUI.class)
+@UIScope
 public class LoginView extends VerticalLayout implements View {
 
     private static final long serialVersionUID = -4430276235082912377L;

@@ -15,28 +15,27 @@
  */
 package org.vaadin.spring.samples.mvp.ui.component.selector;
 
-import java.util.Date;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
+import com.vaadin.ui.PopupDateField;
 import org.apache.commons.lang3.ArrayUtils;
 import org.joda.time.DateTime;
 import org.springframework.core.env.Environment;
-import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.spring.samples.mvp.util.SSTimeUtil;
 
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.ui.PopupDateField;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import java.util.Date;
 
 /**
  * Restrict selection of an operating day
  * @author Chris Phillipson (fastnsilver@gmail.com)
  *
  */
-@VaadinUIScope
-@VaadinView(name = MarketDayPicker.NAME)
+@UIScope
+@SpringView(name = MarketDayPicker.NAME)
 public class MarketDayPicker extends PopupDateField implements View {
 
     private static final long serialVersionUID = 5271190219929731976L;
