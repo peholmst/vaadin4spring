@@ -15,10 +15,10 @@
  */
 package org.vaadin.spring.samples.navigation;
 
+import com.vaadin.spring.annotation.ViewScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.vaadin.spring.navigator.annotation.VaadinViewScope;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -28,7 +28,7 @@ import javax.annotation.PreDestroy;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@VaadinViewScope
+@ViewScope
 @Component
 public class ViewScopedBusinessObject {
 

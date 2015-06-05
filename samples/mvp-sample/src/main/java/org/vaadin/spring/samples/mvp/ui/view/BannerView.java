@@ -15,16 +15,10 @@
  */
 package org.vaadin.spring.samples.mvp.ui.view;
 
-import javax.inject.Inject;
-
-import org.springframework.core.env.Environment;
-import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.spring.navigator.annotation.VaadinView;
-import org.vaadin.spring.samples.mvp.security.config.Scheme;
-import org.vaadin.spring.samples.mvp.ui.component.listener.LogoutLinkListener;
-
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
@@ -32,9 +26,14 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Panel;
+import org.springframework.core.env.Environment;
+import org.vaadin.spring.samples.mvp.security.config.Scheme;
+import org.vaadin.spring.samples.mvp.ui.component.listener.LogoutLinkListener;
 
-@VaadinUIScope
-@VaadinView(name = BannerView.NAME)
+import javax.inject.Inject;
+
+@UIScope
+@SpringView(name = BannerView.NAME)
 public class BannerView extends Panel implements View {
 
     private static final long serialVersionUID = 2140523090860294866L;

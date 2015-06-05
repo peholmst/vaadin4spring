@@ -15,19 +15,18 @@
  */
 package org.vaadin.spring.samples.mvp.ui;
 
-import javax.inject.Inject;
-
-import org.vaadin.spring.annotation.VaadinUI;
+import com.vaadin.annotations.Title;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.spring.annotation.SpringUI;
+import com.vaadin.ui.UI;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.samples.mvp.ui.presenter.Action;
 import org.vaadin.spring.samples.mvp.ui.presenter.MainPresenter;
 
-import com.vaadin.annotations.Title;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.UI;
+import javax.inject.Inject;
 
-@VaadinUI
+@SpringUI
 @Title("Market User Interface")
 public class MvpUI extends UI {
 

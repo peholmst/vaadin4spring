@@ -11,13 +11,12 @@
 
     <groupId>org.vaadin.spring</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.6-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Vaadin4Spring</name>
     <description>
-        Spring, Spring Boot and Spring Security support for Vaadin applications
-        (or the other way around, depending on your point of view).
+        Additions to the official Vaadin Spring add-on.
     </description>
     <url>https://github.com/peholmst/vaadin4spring</url>
 
@@ -45,6 +44,10 @@
             <email>gjr.timmer@gmail.com</email>
         </developer>
         <developer>
+            <name>Idel Pivnitskiy</name>
+            <email>idel.pivnitskiy@gmail.com</email>
+        </developer>
+        <developer>
             <name>Josh Long</name>
             <email>josh@joshlong.com</email>
         </developer>
@@ -69,17 +72,17 @@
         </developer>
     </developers>
 
-
     <properties>
         <project.build.encoding>UTF-8</project.build.encoding>
         <project.build.target>1.6</project.build.target>
         <project.build.source>1.6</project.build.source>
-        <vaadin.version>7.4.0</vaadin.version>
+        <vaadin.version>7.4.4</vaadin.version>
         <vaadin-touchkit.version>4.0.0</vaadin-touchkit.version>
-        <spring.version>4.1.4.RELEASE</spring.version>
-        <spring-boot.version>1.2.1.RELEASE</spring-boot.version>
-        <spring-security.version>3.2.5.RELEASE</spring-security.version>
-        <slf4j.version>1.7.7</slf4j.version>
+        <vaadin-spring.version>1.0.0.beta2</vaadin-spring.version>
+        <spring.version>4.1.5.RELEASE</spring.version>
+        <spring-boot.version>1.2.2.RELEASE</spring-boot.version>
+        <spring-security.version>3.2.6.RELEASE</spring-security.version>
+        <slf4j.version>1.7.10</slf4j.version>
         <logback.version>1.1.2</logback.version>
     </properties>
 
@@ -103,6 +106,11 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-web</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc-portlet</artifactId>
                 <version>${spring.version}</version>
             </dependency>
             <dependency>
@@ -141,6 +149,16 @@
                 <version>${vaadin-touchkit.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-spring</artifactId>
+                <version>${vaadin-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-spring-boot</artifactId>
+                <version>${vaadin-spring.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.11</version>
@@ -174,6 +192,11 @@
                 <groupId>javax.inject</groupId>
                 <artifactId>javax.inject</artifactId>
                 <version>1</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.portlet</groupId>
+                <artifactId>portlet-api</artifactId>
+                <version>2.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -296,30 +319,19 @@
             <id>vaadin-addons</id>
             <url>http://maven.vaadin.com/vaadin-addons</url>
         </repository>
-
-        <!-- Add Spring repositories -->
-        <!-- (you don't need this if you are using a .RELEASE version) -->
-        <!-- <repository> <id>spring-snapshots</id> <url>http://repo.spring.io/snapshot</url> 
-            <snapshots><enabled>true</enabled></snapshots> </repository> <repository> 
-            <id>spring-milestones</id> <url>http://repo.spring.io/milestone</url> </repository> -->
     </repositories>
 
-    <!-- <pluginRepositories> <pluginRepository> <id>spring-snapshots</id> 
-        <url>http://repo.spring.io/snapshot</url> </pluginRepository> <pluginRepository> 
-        <id>spring-milestones</id> <url>http://repo.spring.io/milestone</url> </pluginRepository> 
-        </pluginRepositories> -->
-
     <modules>
-        <module>spring-boot-vaadin</module>
-        <module>spring-vaadin</module>
-        <module>spring-vaadin-security</module>
-        <module>spring-vaadin-touchkit</module>
-        <module>spring-vaadin-test</module>
-        <module>spring-vaadin-mvp</module>
+        <module>addons/eventbus</module>
+        <module>addons/i18n</module>
+        <module>addons/mvp</module>
+        <module>addons/portlet</module>
+        <module>addons/sidebar</module>
+        <module>addons/simple-mvp</module>
+        <module>extensions/boot</module>
+        <module>extensions/core</module>
+        <module>extensions/security</module>
+        <module>extensions/test</module>
         <module>samples</module>
-        <module>spring-vaadin-simple-mvp</module>
-        <module>spring-vaadin-sidebar</module>
-        <module>spring-vaadin-i18n</module>
-        <module>spring-vaadin-eventbus</module>
     </modules>
 </project>

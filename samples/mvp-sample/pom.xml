@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <artifactId>samples-parent-pom</artifactId>
         <groupId>org.vaadin.spring.samples</groupId>
-        <version>0.0.5-SNAPSHOT</version>
+        <version>0.0.6-SNAPSHOT</version>
     </parent>
 
+    <groupId>org.vaadin.spring.samples</groupId>
     <artifactId>mvp-sample</artifactId>
     <packaging>war</packaging>
 
@@ -32,7 +33,7 @@
         <java.version>1.6</java.version>
         <javax.inject.version>1</javax.inject.version>
         <vaadin.version>7.3.10</vaadin.version>
-        <vaadin.boot.version>0.0.5-SNAPSHOT</vaadin.boot.version>
+        <vaadin.boot.version>0.0.6-SNAPSHOT</vaadin.boot.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
     </properties>
 
@@ -48,7 +49,8 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>${gson.version}</version><!--$NO-MVN-MAN-VER$-->
+            <version>${gson.version}</version>
+            <!--$NO-MVN-MAN-VER$-->
         </dependency>
 
         <!-- Joda time -->
@@ -70,17 +72,25 @@
         </dependency>
 
         <dependency>
-            <groupId>org.vaadin.spring</groupId>
-            <artifactId>spring-boot-vaadin</artifactId>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-spring-boot</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.vaadin.spring</groupId>
-            <artifactId>spring-vaadin-security</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.vaadin.spring.addons</groupId>
+            <artifactId>vaadin-spring-addon-eventbus</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.vaadin.spring</groupId>
-            <artifactId>spring-vaadin-mvp</artifactId>
+            <groupId>org.vaadin.spring.addons</groupId>
+            <artifactId>vaadin-spring-addon-mvp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.vaadin.spring.extensions</groupId>
+            <artifactId>vaadin-spring-ext-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.vaadin.spring.extensions</groupId>
+            <artifactId>vaadin-spring-ext-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -122,17 +132,10 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client-compiled</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.vaadin.spring</groupId>
-            <artifactId>spring-vaadin-test</artifactId>
-            <version>${vaadin.boot.version}</version>
-            <scope>test</scope>
-        </dependency>
 
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client-compiler</artifactId>
-            <version>${vaadin.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

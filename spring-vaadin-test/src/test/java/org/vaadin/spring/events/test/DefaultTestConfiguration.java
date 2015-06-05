@@ -15,8 +15,8 @@
  */
 package org.vaadin.spring.events.test;
 
+import com.vaadin.spring.annotation.EnableVaadin;
 import org.springframework.context.annotation.Configuration;
-import org.vaadin.spring.annotation.EnableVaadin;
 import org.vaadin.spring.events.annotation.EnableVaadinEventBus;
 
 @Configuration

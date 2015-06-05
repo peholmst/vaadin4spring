@@ -17,11 +17,11 @@ package org.vaadin.spring.samples.sidebar;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.spring.sidebar.annotation.SideBarItem;
 import org.vaadin.spring.sidebar.annotation.ThemeIcon;
 
@@ -30,11 +30,11 @@ import org.vaadin.spring.sidebar.annotation.ThemeIcon;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@VaadinView(name = ReportingView1.VIEW_NAME)
+@SpringView(name = ReportingView1.VIEW_NAME)
 @SideBarItem(sectionId = Sections.REPORTING,
         caption = "View 1")
 @ThemeIcon("../runo/icons/64/folder.png")
-@VaadinUIScope
+@UIScope
 public class ReportingView1 extends VerticalLayout implements View {
 
     private static final long serialVersionUID = 3093131679874982795L;

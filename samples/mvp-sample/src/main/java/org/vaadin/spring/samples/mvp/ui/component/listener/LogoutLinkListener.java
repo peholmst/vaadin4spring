@@ -15,25 +15,24 @@
  */
 package org.vaadin.spring.samples.mvp.ui.component.listener;
 
-import javax.inject.Inject;
-
-import org.springframework.core.env.Environment;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.vaadin.spring.annotation.VaadinComponent;
-import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.spring.samples.mvp.ui.view.BannerView;
-
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import org.springframework.core.env.Environment;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.vaadin.spring.samples.mvp.ui.view.BannerView;
+
+import javax.inject.Inject;
 
 /**
  * Facilitates logout.  Destroys the current session and redirects user to a login page.
  * @author Chris Phillipson (fastnsilver@gmail.com)
  *
  */
-@VaadinUIScope
-@VaadinComponent
+@UIScope
+@Component
 public class LogoutLinkListener implements ClickListener {
 
     private static final long serialVersionUID = -1022565023996117634L;

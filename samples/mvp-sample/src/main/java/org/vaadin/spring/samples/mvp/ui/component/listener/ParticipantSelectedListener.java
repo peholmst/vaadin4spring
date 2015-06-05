@@ -15,19 +15,16 @@
  */
 package org.vaadin.spring.samples.mvp.ui.component.listener;
 
-import javax.inject.Inject;
-
-import org.vaadin.spring.annotation.VaadinComponent;
-import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventScope;
-import org.vaadin.spring.events.annotation.EventBusProxy;
-
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.spring.annotation.UIScope;
+import org.springframework.stereotype.Component;
+import org.vaadin.spring.events.EventBus;
 
-@VaadinUIScope
-@VaadinComponent
+import javax.inject.Inject;
+
+@UIScope
+@Component
 public class ParticipantSelectedListener implements ValueChangeListener {
 
     private static final long serialVersionUID = 331391425040065709L;

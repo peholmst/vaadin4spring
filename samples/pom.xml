@@ -5,19 +5,20 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.2.1.RELEASE</version>
+        <version>1.2.2.RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.vaadin.spring.samples</groupId>
     <artifactId>samples-parent-pom</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.6-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Vaadin4Spring Samples</name>
 
     <properties>
-        <vaadin.version>7.4.0</vaadin.version>
+        <vaadin.version>7.4.1</vaadin.version>
+        <vaadin-spring.version>1.0.0.beta2</vaadin-spring.version>
         <tomcat.version>7.0.55</tomcat.version>
         <!-- Server push is not yet working with Tomcat 8, at least not when using Spring Boot -->
     </properties>
@@ -25,38 +26,68 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.vaadin.spring</groupId>
-                <artifactId>spring-boot-vaadin</artifactId>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-spring</artifactId>
+                <version>${vaadin-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-spring-boot</artifactId>
+                <version>${vaadin-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.vaadin.spring.extensions</groupId>
+                <artifactId>vaadin-spring-ext-boot</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.vaadin.spring</groupId>
-                <artifactId>spring-vaadin</artifactId>
+                <groupId>org.vaadin.spring.extensions</groupId>
+                <artifactId>vaadin-spring-ext-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.vaadin.spring</groupId>
-                <artifactId>spring-vaadin-eventbus</artifactId>
+                <groupId>org.vaadin.spring.extensions</groupId>
+                <artifactId>vaadin-spring-ext-security</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.vaadin.spring</groupId>
-                <artifactId>spring-vaadin-mvp</artifactId>
+                <groupId>org.vaadin.spring.extensions</groupId>
+                <artifactId>vaadin-spring-ext-test</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.vaadin.spring</groupId>
-                <artifactId>spring-vaadin-sidebar</artifactId>
+                <groupId>org.vaadin.spring.addons</groupId>
+                <artifactId>vaadin-spring-addon-eventbus</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.vaadin.spring</groupId>
-                <artifactId>spring-vaadin-touchkit</artifactId>
+                <groupId>org.vaadin.spring.addons</groupId>
+                <artifactId>vaadin-spring-addon-mvp</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.vaadin.spring.addons</groupId>
+                <artifactId>vaadin-spring-addon-sidebar</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-themes</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-server</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-client</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-client-compiler</artifactId>
                 <version>${vaadin.version}</version>
             </dependency>
             <dependency>
@@ -126,34 +157,7 @@
             <id>vaadin-addons</id>
             <url>http://maven.vaadin.com/vaadin-addons</url>
         </repository>
-
-        <!-- Add Spring repositories -->
-        <!-- (you don't need this if you are using a .RELEASE version) -->
-        <!--
-        <repository>
-            <id>spring-snapshots</id>
-            <url>http://repo.spring.io/snapshot</url>
-            <snapshots><enabled>true</enabled></snapshots>
-        </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <url>http://repo.spring.io/milestone</url>
-        </repository>
-        -->
     </repositories>
-
-    <!--
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-snapshots</id>
-            <url>http://repo.spring.io/snapshot</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <url>http://repo.spring.io/milestone</url>
-        </pluginRepository>
-    </pluginRepositories>
-    -->
 
     <modules>
         <module>sidebar-sample</module>

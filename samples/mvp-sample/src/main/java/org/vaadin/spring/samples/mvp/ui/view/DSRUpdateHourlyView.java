@@ -15,14 +15,12 @@
  */
 package org.vaadin.spring.samples.mvp.ui.view;
 
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.vaadin.data.Container.Hierarchical;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
+import com.vaadin.ui.Table;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.spring.samples.mvp.dto.DSRUpdateHourlyDTO;
 import org.vaadin.spring.samples.mvp.ui.component.grid.HierarchicalDataGrid;
 import org.vaadin.spring.samples.mvp.ui.component.util.DataGridUtil;
@@ -30,17 +28,18 @@ import org.vaadin.spring.samples.mvp.ui.component.util.HierarchicalRow;
 import org.vaadin.spring.samples.mvp.ui.component.util.HierarchicalRows;
 import org.vaadin.spring.samples.mvp.util.SSTimeUtil;
 
-import com.vaadin.data.Container.Hierarchical;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.ui.Table;
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Demand Side Response Hourly Update grid
  * @author Chris Phillipson (fastnsilver@gmail.com)
  *
  */
-@VaadinUIScope
-@VaadinView(name = DSRUpdateHourlyView.NAME)
+@UIScope
+@SpringView(name = DSRUpdateHourlyView.NAME)
 public class DSRUpdateHourlyView extends HierarchicalDataGrid<DSRUpdateHourlyDTO> {
 
     private static final long serialVersionUID = 1L;

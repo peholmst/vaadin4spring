@@ -15,28 +15,19 @@
  */
 package org.vaadin.spring.samples.mvp.ui.component.listener;
 
-import java.lang.annotation.Annotation;
+import com.vaadin.spring.annotation.UIScope;
+import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
+import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
+import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.samples.mvp.ui.component.util.ControlsContext;
+import org.vaadin.spring.samples.mvp.ui.view.HeaderView;
 
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.context.ApplicationContext;
-import org.vaadin.spring.annotation.VaadinComponent;
-import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.navigator.annotation.VaadinPresenter;
-import org.vaadin.spring.navigator.annotation.VaadinView;
-import org.vaadin.spring.samples.mvp.ui.component.util.ControlsContext;
-import org.vaadin.spring.samples.mvp.ui.presenter.Screen;
-import org.vaadin.spring.samples.mvp.ui.view.HeaderView;
-
-import com.vaadin.navigator.View;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
-import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
-
-@VaadinUIScope
-@VaadinComponent
+@UIScope
+@Component
 public class TabSelectedListener implements SelectedTabChangeListener {
 
     private static final long serialVersionUID = -6279286514453567595L;
@@ -53,23 +44,24 @@ public class TabSelectedListener implements SelectedTabChangeListener {
     // that can be received and handled by them
     public void selectedTabChange(final SelectedTabChangeEvent event) {
         eventBus.publish(context.getBean(HeaderView.class), ControlsContext.empty());
-        Component c = event.getTabSheet().getSelectedTab();
-        if (View.class.isAssignableFrom(c.getClass())) {
-            View v = (View) c;
-            Annotation[] annotations = v.getClass().getAnnotations();
-            if (ArrayUtils.isNotEmpty(annotations)) {
-                for (Annotation a: annotations) {
-                    if (a instanceof VaadinView) {
-                        VaadinView vv = (VaadinView) a;
-                        // really just need the presenter whose name matched VaadinView#name to be
-                        // called into being, but Spring caches scoped-beans too
-                        context.getBeansWithAnnotation(VaadinPresenter.class);
-                        eventBus.publish(this, new Screen(vv.name()));
-                        break;
-                    }
-                }
-            }
-        }
+        // TODO RAS enable
+        //Component c = event.getTabSheet().getSelectedTab();
+//        if (View.class.isAssignableFrom(c.getClass())) {
+//            View v = (View) c;
+//            Annotation[] annotations = v.getClass().getAnnotations();
+//            if (ArrayUtils.isNotEmpty(annotations)) {
+//                for (Annotation a : annotations) {
+//                    if (a instanceof VaadinView) {
+//                        VaadinView vv = (VaadinView) a;
+        // really just need the presenter whose name matched VaadinView#name to be
+        // called into being, but Spring caches scoped-beans too
+//                    context.getBeansWithAnnotation(VaadinPresenter.class);
+//                    eventBus.publish(this, new Screen(vv.name()));
+//                    break;
+//                }
+//            }
+//        }
+//    }
     }
 
 }

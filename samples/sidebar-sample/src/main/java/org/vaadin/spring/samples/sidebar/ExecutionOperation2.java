@@ -15,10 +15,10 @@
  */
 package org.vaadin.spring.samples.sidebar;
 
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Notification;
 
 import org.springframework.stereotype.Component;
-import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.sidebar.annotation.SideBarItem;
 import org.vaadin.spring.sidebar.annotation.ThemeIcon;
 
@@ -33,7 +33,7 @@ import java.io.Serializable;
         caption = "Operation 2")
 @ThemeIcon("../runo/icons/64/lock.png")
 @Component
-@VaadinUIScope
+@UIScope
 public class ExecutionOperation2 implements Runnable, Serializable {
 
     private static final long serialVersionUID = 3606282532867648181L;

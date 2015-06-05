@@ -18,25 +18,25 @@ package org.vaadin.spring.samples.navigation;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.spring.navigator.annotation.VaadinView;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 /**
- * Example of a view that uses the {@link org.vaadin.spring.annotation.VaadinUIScope}.
+ * Example of a view that uses the {@link com.vaadin.spring.annotation.UIScope}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@VaadinUIScope
-@VaadinView(name = UIScopedView.VIEW_NAME)
+@UIScope
+@SpringView(name = UIScopedView.VIEW_NAME)
 public class UIScopedView extends VerticalLayout implements View {
 
     public static final String VIEW_NAME = "ui";

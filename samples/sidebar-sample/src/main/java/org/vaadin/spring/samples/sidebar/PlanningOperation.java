@@ -16,10 +16,10 @@
 package org.vaadin.spring.samples.sidebar;
 
 import com.vaadin.server.FontAwesome;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Notification;
 
 import org.springframework.stereotype.Component;
-import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.sidebar.annotation.FontAwesomeIcon;
 import org.vaadin.spring.sidebar.annotation.SideBarItem;
 
@@ -35,7 +35,7 @@ import java.io.Serializable;
         order = 3)
 @FontAwesomeIcon(FontAwesome.APPLE)
 @Component
-@VaadinUIScope
+@UIScope
 public class PlanningOperation implements Runnable, Serializable {
 
     private static final long serialVersionUID = -5503674215883178949L;
