@@ -172,7 +172,7 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
      */
     @Override
     public boolean hasAuthenticationFailureHandlerConfigured() {
-        return (this.authenticationFailureHandler != null ? true : false);
+        return (this.authenticationFailureHandler != null);
     }
     
     /**

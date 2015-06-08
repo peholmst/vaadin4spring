@@ -29,8 +29,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.security.GenericVaadinSecurity;
 import org.vaadin.spring.security.VaadinSecurity;
-import org.vaadin.spring.security.provider.PreAuthorizeViewProviderAccessDelegate;
-import org.vaadin.spring.security.provider.SecuredViewProviderAccessDelegate;
+import org.vaadin.spring.security.provider.PreAuthorizeViewInstanceAccessControl;
+import org.vaadin.spring.security.provider.SecuredViewAccessControl;
 import org.vaadin.spring.security.support.VaadinSecurityAwareProcessor;
 import org.vaadin.spring.security.web.VaadinDefaultRedirectStrategy;
 import org.vaadin.spring.security.web.VaadinRedirectStrategy;
@@ -91,13 +91,13 @@ public class VaadinSecurityConfiguration {
     }
 
     @Bean
-    SecuredViewProviderAccessDelegate securedViewProviderAccessDelegate() {
-        return new SecuredViewProviderAccessDelegate();
+    SecuredViewAccessControl securedViewAccessControl() {
+        return new SecuredViewAccessControl();
     }
     
     @Bean
-    PreAuthorizeViewProviderAccessDelegate preAuthorizeViewProviderAccessDelegate() {
-        return new PreAuthorizeViewProviderAccessDelegate();
+    PreAuthorizeViewInstanceAccessControl preAuthorizeViewInstanceAccessControl() {
+        return new PreAuthorizeViewInstanceAccessControl();
     }
 
     /**

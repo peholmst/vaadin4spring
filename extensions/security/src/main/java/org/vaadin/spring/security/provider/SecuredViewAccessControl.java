@@ -19,8 +19,11 @@ import com.vaadin.navigator.View;
 import com.vaadin.spring.access.ViewAccessControl;
 import com.vaadin.spring.access.ViewInstanceAccessControl;
 import com.vaadin.ui.UI;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.security.access.annotation.Secured;
 import org.vaadin.spring.security.VaadinSecurity;
 import org.vaadin.spring.security.VaadinSecurityAware;
@@ -35,9 +38,9 @@ import org.vaadin.spring.security.VaadinSecurityAware;
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  * @see VaadinSecurity#hasAnyAuthority(String...)
  */
-public class SecuredViewProviderAccessDelegate implements VaadinSecurityAware, ViewAccessControl, ViewInstanceAccessControl {
+public class SecuredViewAccessControl implements VaadinSecurityAware, ApplicationContextAware, ViewAccessControl, ViewInstanceAccessControl {
 
-    // TODO Rename this class
+    private static final Logger logger = LoggerFactory.getLogger(SecuredViewAccessControl.class);
 
     private VaadinSecurity security;
     private ApplicationContext applicationContext;
@@ -45,31 +48,41 @@ public class SecuredViewProviderAccessDelegate implements VaadinSecurityAware, V
     @Override
     public void setVaadinSecurity(VaadinSecurity vaadinSecurity) {
         security = vaadinSecurity;
-        applicationContext = security.getApplicationContext();
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 
     @Override
     public boolean isAccessGranted(UI ui, String beanName) {
+        final Secured viewSecured = applicationContext.findAnnotationOnBean(beanName, Secured.class);
 
-        Secured viewSecured = applicationContext.findAnnotationOnBean(beanName, Secured.class);
-
-        if ( viewSecured == null ) {
+        if (viewSecured == null) {
+            logger.trace("No @Secured annotation found on view {}. Granting access.", beanName);
             return true;
-        } else if ( security.hasAccessDecisionManager() ) {
-            return true; // Leave decision to the second hook
+        } else if (security.hasAccessDecisionManager()) {
+            logger.trace("AccessDecisionManager found, leaving access decision concerning view {} to the instance access control", beanName);
+            return true;
         } else {
-            return security.hasAnyAuthority(viewSecured.value());
+            final boolean result = security.hasAnyAuthority(viewSecured.value());
+            logger.trace("Is access granted to view {}: {}", beanName, result);
+            return result;
         }
     }
 
     @Override
     public boolean isAccessGranted(UI ui, String beanName, View view) {
-        Secured viewSecured = view.getClass().getAnnotation(Secured.class);
+        final Secured viewSecured = applicationContext.findAnnotationOnBean(beanName, Secured.class);
 
-        if ( viewSecured == null || !security.hasAccessDecisionManager() ) {
+        if (viewSecured == null || !security.hasAccessDecisionManager()) {
+            logger.trace("No @Secured annotation found or no AccessDecisionManager found. Granting access to view {}", beanName);
             return true; // Decision is already done if there is no AccessDecisionManager
         } else {
-            return security.hasAccessToSecuredObject(view);
+            final boolean result = security.hasAccessToSecuredObject(view);
+            logger.trace("Is access granted to view {}: {}", beanName, result);
+            return result;
         }
     }
 }

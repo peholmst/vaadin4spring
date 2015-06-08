@@ -15,51 +15,61 @@
  */
 package org.vaadin.spring.security;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
 
 /**
  * Interface that provides the Spring Security operations that are most commonly required
  * in a Vaadin application.
- *  
- *  @author Petter Holmström (petter@vaadin.com)
- *  @author Gert-Jan Timmer (gjr.timmer@gmail.com)
+ *
+ * @author Petter Holmström (petter@vaadin.com)
+ * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  */
 public interface VaadinSecurity extends VaadinSecurityContext {
 
     /**
-     * Checks if the current user is authenticated.
-     *
-     * @return true if the current {@link org.springframework.security.core.context.SecurityContext} contains an {@link org.springframework.security.core.Authentication} token,
-     * and the token has been authenticated by an {@link org.springframework.security.authentication.AuthenticationManager}.
-     * @see org.springframework.security.core.Authentication#isAuthenticated()
+     * Returns true if the current user is authenticated and not anonymous.
      */
     boolean isAuthenticated();
+
+    /**
+     * Returns true if the current user is authenticated and anonymous.
+     */
+    boolean isAuthenticatedAnonymously();
+
+    /**
+     * Returns true if the current user is authenticated by a Remember Me token.
+     */
+    boolean isRememberMeAuthenticated();
+
+    /**
+     * Returns true if the current user is authenticated and neither anonymous nor a Remember Me user.
+     */
+    boolean isFullyAuthenticated();
 
     /**
      * Tries to login using the specified authentication object. If authentication succeeds, this method
      * will return without exceptions.
      *
      * @param authentication the authentication object to authenticate, must not be {@code null}.
-     * @param rememberMe boolean to indicate if remember me authentication should be activated
+     * @param rememberMe     boolean to indicate if remember me authentication should be activated
      * @throws org.springframework.security.core.AuthenticationException if authentication fails.
-     * @throws Exception 
+     * @throws Exception
      */
     void login(Authentication authentication, boolean rememberMe) throws AuthenticationException, Exception;
-    
+
     /**
      * Tries to login using the specified authentication object. If authentication succeeds, this method
      * will return without exceptions.
-     * <p>
+     * <p/>
      * Remember Me authentication is ignored
      *
      * @param authentication the authentication object to authenticate, must not be {@code null}.
      * @throws org.springframework.security.core.AuthenticationException if authentication fails.
-     * @throws Exception 
+     * @throws Exception
      */
     void login(Authentication authentication) throws AuthenticationException, Exception;
 
@@ -67,37 +77,37 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * Convenience method that invokes {@link #login(org.springframework.security.core.Authentication)} with a
      * {@link org.springframework.security.authentication.UsernamePasswordAuthenticationToken}-object.
      *
-     * @param username the username to use, must not be {@code null}.
-     * @param password the password to use, must not be {@code null}.
+     * @param username   the username to use, must not be {@code null}.
+     * @param password   the password to use, must not be {@code null}.
      * @param rememberMe boolean to set remember me authentication
      * @throws AuthenticationException if authentication fails.
-     * @throws ServletException if Authentication{Success/Failure}Handler fails
-     * @throws IOException if Authentication{Success/Failure}Handler fails
+     * @throws ServletException        if Authentication{Success/Failure}Handler fails
+     * @throws IOException             if Authentication{Success/Failure}Handler fails
      */
     void login(String username, String password, boolean rememberMe) throws AuthenticationException, Exception;
-    
+
     /**
      * Convenience method that invokes {@link #login(org.springframework.security.core.Authentication)} with a
      * {@link org.springframework.security.authentication.UsernamePasswordAuthenticationToken}-object.
-     * <p>
+     * <p/>
      * Remember me authentication is ignored
-     * 
+     *
      * @param username the username to use, must not be {@code null}.
      * @param password the password to use, must not be {@code null}.
      * @throws AuthenticationException if authentication fails.
-     * @throws ServletException if Authentication{Success/Failure}Handler fails
-     * @throws IOException if Authentication{Success/Failure}Handler fails
+     * @throws ServletException        if Authentication{Success/Failure}Handler fails
+     * @throws IOException             if Authentication{Success/Failure}Handler fails
      */
     void login(String username, String password) throws AuthenticationException, Exception;
 
     /**
      * Set the logout processing URL, defaults to '/logout'.
      * This property should match the configured value with HttpSecurity configuration.
-     * 
+     *
      * @param logoutUrl the use url at which the logout is configured with HttpSecurity
      */
     void setLogoutProcessingUrl(String logoutUrl);
-    
+
     /**
      * Logs the user out, and have Spring-Security handle the logout with the configured
      * LogoutConfigurer of the HttpSecurity.
