@@ -130,6 +130,7 @@ public class SecurityConfiguration {
             http
                 .authorizeRequests()
                     .antMatchers("/login/**").permitAll()
+                    .antMatchers("/VAADIN/**").permitAll()
                     .antMatchers("/UIDL/**").permitAll()
                     .antMatchers("/HEARTBEAT/**").authenticated()
                     .antMatchers("/**").authenticated()
