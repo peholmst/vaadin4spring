@@ -9,9 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>security-sample-single</artifactId>
+    <artifactId>security-sample-managed</artifactId>
 
-    <name>Vaadin4Spring Samples - Security - Single UI</name>
+    <name>Vaadin4Spring Samples - Vaadin Managed Security</name>
 
     <dependencies>
         <dependency>

@@ -18,7 +18,7 @@
 
     <properties>
         <vaadin.version>7.4.7</vaadin.version>
-        <vaadin-spring.version>1.0.0.beta3</vaadin-spring.version>
+        <vaadin-spring.version>1.0-SNAPSHOT</vaadin-spring.version>
         <tomcat.version>7.0.55</tomcat.version>
         <!-- Server push is not yet working with Tomcat 8, at least not when using Spring Boot -->
     </properties>
@@ -165,7 +165,7 @@
         <module>mvp-sample</module>
         <module>push-sample</module>
         <module>security-sample</module>
-        <module>security-sample-single</module>
+        <module>security-sample-managed</module>
         <module>navigation-sample</module>
     </modules>
 </project>

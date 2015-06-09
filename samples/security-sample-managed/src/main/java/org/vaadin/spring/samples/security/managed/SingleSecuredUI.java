@@ -1,9 +1,23 @@
-package org.vaadin.spring.samples.security.single;
+/*
+ * Copyright 2015 The original authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.vaadin.spring.samples.security.managed;
 
 import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
@@ -11,16 +25,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
-import org.vaadin.spring.samples.security.single.events.LoginEvent;
-import org.vaadin.spring.samples.security.single.events.LogoutEvent;
+import org.vaadin.spring.samples.security.managed.events.LoginEvent;
 import org.vaadin.spring.security.VaadinSecurity;
 
 /**
- * Created by petterwork on 05/06/15.
+ * Main application UI that shows either the {@link org.vaadin.spring.samples.security.managed.MainScreen} or the {@link org.vaadin.spring.samples.security.managed.LoginScreen},
+ * depending on whether there is an authenticated user or not. Also note that the UI is using web socket based push.
+ *
+ * @author Petter Holmström (petter@vaadin.com)
  */
 @SpringUI
 @Theme(ValoTheme.THEME_NAME)
-@Push(transport = Transport.LONG_POLLING) // TODO Should also support web sockets
+@Push
 public class SingleSecuredUI extends UI {
 
     @Autowired
@@ -70,15 +86,4 @@ public class SingleSecuredUI extends UI {
             }
         });
     }
-
-    @EventBusListenerMethod
-    void onLogout(LogoutEvent logoutEvent) {
-        access(new Runnable() {
-            @Override
-            public void run() {
-                showLoginScreen();
-            }
-        });
-    }
-
 }
