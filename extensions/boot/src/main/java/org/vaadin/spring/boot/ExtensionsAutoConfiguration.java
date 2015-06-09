@@ -15,14 +15,17 @@
  */
 package org.vaadin.spring.boot;
 
+import com.vaadin.server.VaadinServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.vaadin.spring.annotation.EnableVaadinExtensions;
 import org.vaadin.spring.config.VaadinExtensionsConfiguration;
-import org.vaadin.spring.i18n.I18N;
+import org.vaadin.spring.servlet.Vaadin4SpringServlet;
 
 /**
  * Auto configuration for Vaadin4Spring core extensions.
@@ -43,6 +46,15 @@ public class ExtensionsAutoConfiguration {
         @Override
         public void afterPropertiesSet() throws Exception {
             logger.debug("{} initialized", getClass().getName());
+        }
+
+        /**
+         * Unless there already is a custom VaadinServlet bean, we will register our own.
+         */
+        @Bean
+        @ConditionalOnMissingBean
+        VaadinServlet vaadinServlet() {
+            return new Vaadin4SpringServlet();
         }
     }
 }
