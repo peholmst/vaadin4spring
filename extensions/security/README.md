@@ -1,5 +1,8 @@
 Vaadin4Spring Security (Experimental)
 ==========================
+
+# PLEASE NOTE! Spring4Vaadin Security is being redesigned. The contents of this README are outdated.
+
 <br>
 ## General ##
 Spring security for a Vaadin application can be enabled by the annotation ```@EnableVaadinSecurity```.
