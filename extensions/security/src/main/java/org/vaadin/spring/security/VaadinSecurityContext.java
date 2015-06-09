@@ -18,23 +18,19 @@ package org.vaadin.spring.security;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
-import org.vaadin.spring.security.web.authentication.VaadinAuthenticationFailureHandler;
-import org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccessHandler;
 
 /**
  * Interface which provides access to basic Security Context objects.
- * 
- * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  *
+ * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
+ * @author Petter Holmström (petter@vaadin.com)
+ * @see org.vaadin.spring.security.SharedVaadinSecurityContext
  */
 public interface VaadinSecurityContext {
 
     /**
      * Get the current Spring ApplicationContext
-     * 
+     *
      * @return {@link org.springframework.context.ApplicationContext}
      */
     ApplicationContext getApplicationContext();
@@ -42,7 +38,7 @@ public interface VaadinSecurityContext {
     /**
      * Get the configured {@link org.springframework.security.authentication.AuthenticationManager}
      * return {@code null} if not available.
-     * 
+     *
      * @return {@link org.springframework.security.authentication.AuthenticationManager}
      */
     AuthenticationManager getAuthenticationManager();
@@ -50,51 +46,15 @@ public interface VaadinSecurityContext {
     /**
      * Get the configured {@link org.springframework.security.access.AccessDecisionManager}
      * return {@code null} if not available.
-     * 
+     *
      * @return {@link org.springframework.security.access.AccessDecisionManager}
      */
     AccessDecisionManager getAccessDecisionManager();
 
     /**
-     * Get the configured {@link SessionAuthenticationStrategy}
-     * return {@link org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy} if not configured
-     * 
-     * @return {@link SessionAuthenticationStrategy}
-     */
-    SessionAuthenticationStrategy getSessionAuthenticationStrategy();
-    
-    /** 
      * Checks if the Security bean has an accessDecisionManager
-     * 
+     *
      * @return true if the Security bean has an accessDecisionManager
      */
     boolean hasAccessDecisionManager();
-    
-    /**
-     * Add {@link AuthenticationSuccessHandler}
-     * <br><br>
-     * Set to <code>null</code> to deactivate
-     */
-    void addAuthenticationSuccessHandler(VaadinAuthenticationSuccessHandler handler);
-    
-    /**
-     * Check if {@link AuthenticationSuccessHandler} is configured
-     * <br><br>
-     * @return <code>true</code> if configured, else <code>false</code>
-     */
-    boolean hasAuthenticationSuccessHandlerConfigured();
-    
-    /**
-     * Add {@link AuthenticationFailureHandler}
-     * <br><br>
-     * Set to <code>null</code> to deactivate
-     */
-    void addAuthenticationFailureHandler(VaadinAuthenticationFailureHandler handler);
-    
-    /**
-     * Check if {@link AuthenticationFailureHandler} is configured
-     * <br><br>
-     * @return <code>true</code> if configured, else <code>false</code>
-     */
-    boolean hasAuthenticationFailureHandlerConfigured();
 }

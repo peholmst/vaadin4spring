@@ -18,9 +18,6 @@ package org.vaadin.spring.security;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
-import javax.servlet.ServletException;
-import java.io.IOException;
-
 /**
  * Interface that provides the Spring Security operations that are most commonly required
  * in a Vaadin application.
@@ -57,7 +54,6 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * @param authentication the authentication object to authenticate, must not be {@code null}.
      * @param rememberMe     boolean to indicate if remember me authentication should be activated
      * @throws org.springframework.security.core.AuthenticationException if authentication fails.
-     * @throws Exception
      */
     void login(Authentication authentication, boolean rememberMe) throws AuthenticationException, Exception;
 
@@ -69,7 +65,6 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      *
      * @param authentication the authentication object to authenticate, must not be {@code null}.
      * @throws org.springframework.security.core.AuthenticationException if authentication fails.
-     * @throws Exception
      */
     void login(Authentication authentication) throws AuthenticationException, Exception;
 
@@ -81,8 +76,6 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * @param password   the password to use, must not be {@code null}.
      * @param rememberMe boolean to set remember me authentication
      * @throws AuthenticationException if authentication fails.
-     * @throws ServletException        if Authentication{Success/Failure}Handler fails
-     * @throws IOException             if Authentication{Success/Failure}Handler fails
      */
     void login(String username, String password, boolean rememberMe) throws AuthenticationException, Exception;
 
@@ -95,22 +88,11 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * @param username the username to use, must not be {@code null}.
      * @param password the password to use, must not be {@code null}.
      * @throws AuthenticationException if authentication fails.
-     * @throws ServletException        if Authentication{Success/Failure}Handler fails
-     * @throws IOException             if Authentication{Success/Failure}Handler fails
      */
     void login(String username, String password) throws AuthenticationException, Exception;
 
     /**
-     * Set the logout processing URL, defaults to '/logout'.
-     * This property should match the configured value with HttpSecurity configuration.
-     *
-     * @param logoutUrl the use url at which the logout is configured with HttpSecurity
-     */
-    void setLogoutProcessingUrl(String logoutUrl);
-
-    /**
-     * Logs the user out, and have Spring-Security handle the logout with the configured
-     * LogoutConfigurer of the HttpSecurity.
+     * Logs the user out.
      */
     void logout();
 
@@ -182,11 +164,4 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * @see #hasAuthorities(String...)
      */
     boolean hasAnyAuthority(String... authorities);
-
-    /**
-     * Allows the session attribute name to be customized for this repository instance.
-     *
-     * @param springSecurityContextKey the key under which the security context will be stored. Defaults to
-     */
-    void setSpringSecurityContextKey(String springSecurityContextKey);
 }

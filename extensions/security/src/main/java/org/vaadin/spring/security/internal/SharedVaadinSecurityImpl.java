@@ -13,49 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.security;
+package org.vaadin.spring.security.internal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.ConfigAttribute;
-import org.springframework.security.access.SecurityConfig;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
-import org.springframework.security.authentication.RememberMeAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.util.Assert;
 import org.vaadin.spring.http.HttpService;
+import org.vaadin.spring.security.SharedVaadinSecurity;
 import org.vaadin.spring.security.web.VaadinRedirectStrategy;
+import org.vaadin.spring.security.web.authentication.VaadinAuthenticationFailureHandler;
+import org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccessHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
- * Convenience class that provides the Spring Security operations that are most commonly required in a Vaadin application.
+ * Implementation of {@link org.vaadin.spring.security.VaadinSecurity} that is used when Vaadin is participating
+ * in the existing Spring Web Security setup.
  * <p/>
  * Additional Code / Documentation from {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository}
  *
  * @author Petter Holmström (petter@vaadin.com)
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  */
-public class GenericVaadinSecurity extends AbstractVaadinSecurity implements VaadinSecurity {
+public class SharedVaadinSecurityImpl extends AbstractVaadinSecurity implements SharedVaadinSecurity {
 
     /**
      * The default key under which the security context will be stored in the session.
@@ -69,10 +60,8 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
      * The {@link org.springframework.security.web.context.SecurityContextPersistenceFilter} will use the configured key from {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository}
      */
     public static final String SPRING_SECURITY_CONTEXT_KEY = "SPRING_SECURITY_CONTEXT";
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-
     private String springSecurityContextKey = SPRING_SECURITY_CONTEXT_KEY;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     private String logoutProcessingUrl = "/logout";
 
     /**
@@ -88,36 +77,8 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
     @Autowired(required = false)
     private RememberMeServices rememberMeService;
 
-    @Override
-    public boolean isAuthenticated() {
-        final Authentication authentication = getAuthentication();
-        return authentication != null
-                && authentication.isAuthenticated()
-                && !(authentication instanceof AnonymousAuthenticationToken);
-    }
-
-    @Override
-    public boolean isAuthenticatedAnonymously() {
-        final Authentication authentication = getAuthentication();
-        return authentication instanceof AnonymousAuthenticationToken
-                && authentication.isAuthenticated();
-    }
-
-    @Override
-    public boolean isRememberMeAuthenticated() {
-        final Authentication authentication = getAuthentication();
-        return authentication instanceof RememberMeAuthenticationToken
-                && authentication.isAuthenticated();
-    }
-
-    @Override
-    public boolean isFullyAuthenticated() {
-        final Authentication authentication = getAuthentication();
-        return authentication != null
-                && !(authentication instanceof AnonymousAuthenticationToken)
-                && !(authentication instanceof RememberMeAuthenticationToken)
-                && authentication.isAuthenticated();
-    }
+    private VaadinAuthenticationFailureHandler authenticationFailureHandler;
+    private VaadinAuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Override
     public void login(Authentication authentication, boolean rememberMe) throws AuthenticationException, Exception {
@@ -229,18 +190,6 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
 
     }
 
-    public void login(Authentication authentication) throws AuthenticationException, Exception {
-        login(authentication, false);
-    }
-
-    public void login(String username, String password, boolean rememberMe) throws AuthenticationException, Exception {
-        login(new UsernamePasswordAuthenticationToken(username, password), rememberMe);
-    }
-
-    @Override
-    public void login(String username, String password) throws AuthenticationException, Exception {
-        login(new UsernamePasswordAuthenticationToken(username, password));
-    }
 
     @Override
     public void setLogoutProcessingUrl(String logoutUrl) {
@@ -249,7 +198,6 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
 
     @Override
     public void logout() {
-        
         /*
          * Redirect user to the logout URL and have the configured LogoutFilter
          * with {@link LogoutHandlers} handle the logout.
@@ -258,24 +206,7 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
     }
 
     @Override
-    public boolean hasAuthority(String authority) {
-        final Authentication authentication = getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return false;
-        }
-
-        for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
-            if (authority.equals(grantedAuthority.getAuthority())) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
     public Authentication getAuthentication() {
-
         /*
          * Fetch the Authentication object.
          * Authentication is not available within the SecurityContextHolder.
@@ -293,13 +224,10 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
          * securityContextHolder is checked.
          */
 
-        // Check SecurityContextHolder
         final SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
 
         if (authentication == null) {
-            
-            
             /*
              * Fetch the Current HttpSession from the RequestScope
              * because the chain already was completed and therefor
@@ -307,81 +235,9 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
              */
             HttpSession httpSession = httpRequestResponseHolder.getCurrentRequest().getSession();
             authentication = ((org.springframework.security.core.context.SecurityContextImpl) httpSession.getAttribute(springSecurityContextKey)).getAuthentication();
-
         }
 
         return authentication;
-
-    }
-
-    @Override
-    public boolean hasAccessToObject(Object securedObject, String... securityConfigurationAttributes) {
-        final Authentication authentication = getAuthentication();
-        if (getAccessDecisionManager() == null || authentication == null || !authentication.isAuthenticated()) {
-            if (getAccessDecisionManager() == null) {
-                logger.warn("Access was denied to object because there was no AccessDecisionManager set!");
-            }
-            return false;
-        }
-
-        final Collection<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>(securityConfigurationAttributes.length);
-        for (String securityConfigString : securityConfigurationAttributes) {
-            configAttributes.add(new SecurityConfig(securityConfigString));
-        }
-
-        try {
-            getAccessDecisionManager().decide(authentication, securedObject, configAttributes);
-            return true;
-        } catch (AccessDeniedException ex) {
-            return false;
-        } catch (InsufficientAuthenticationException ex) {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean hasAccessToSecuredObject(Object securedObject) {
-        final Secured secured = AopUtils.getTargetClass(securedObject).getAnnotation(Secured.class);
-        Assert.notNull(secured, "securedObject did not have @Secured annotation");
-        return hasAccessToObject(securedObject, secured.value());
-    }
-
-    @Override
-    public boolean hasAccessToSecuredMethod(Object securedObject, String methodName, Class<?>... methodParameterTypes) {
-
-        try {
-            final Method method = securedObject.getClass().getMethod(methodName, methodParameterTypes);
-            final Secured secured = AnnotationUtils.findAnnotation(method, Secured.class);
-            Assert.notNull(secured, "securedObject did not have @Secured annotation");
-            return hasAccessToObject(securedObject, secured.value());
-        } catch (NoSuchMethodException ex) {
-            throw new IllegalArgumentException("Method " + methodName + " does not exist", ex);
-        }
-
-    }
-
-    @Override
-    public boolean hasAuthorities(String... authorities) {
-
-        for (String authority : authorities) {
-            if (!hasAuthority(authority)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean hasAnyAuthority(String... authorities) {
-
-        for (String authority : authorities) {
-            if (hasAuthority(authority)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     @Override
@@ -398,7 +254,40 @@ public class GenericVaadinSecurity extends AbstractVaadinSecurity implements Vaa
      *
      * @return a new SecurityContext instance. Never null.
      */
-    private SecurityContext generateNewContext() {
+    protected SecurityContext generateNewContext() {
         return SecurityContextHolder.createEmptyContext();
+    }
+
+    @Override
+    public SessionAuthenticationStrategy getSessionAuthenticationStrategy() {
+        return null;
+    }
+
+    protected VaadinAuthenticationSuccessHandler getAuthenticationSuccessHandler() {
+        return authenticationSuccessHandler;
+    }
+
+    @Override
+    public void setAuthenticationSuccessHandler(VaadinAuthenticationSuccessHandler handler) {
+        this.authenticationSuccessHandler = handler;
+    }
+
+    @Override
+    public boolean hasAuthenticationSuccessHandlerConfigured() {
+        return authenticationSuccessHandler != null;
+    }
+
+    protected VaadinAuthenticationFailureHandler getAuthenticationFailureHandler() {
+        return authenticationFailureHandler;
+    }
+
+    @Override
+    public void setAuthenticationFailureHandler(VaadinAuthenticationFailureHandler handler) {
+        this.authenticationFailureHandler = handler;
+    }
+
+    @Override
+    public boolean hasAuthenticationFailureHandlerConfigured() {
+        return authenticationFailureHandler != null;
     }
 }

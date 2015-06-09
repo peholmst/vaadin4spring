@@ -27,8 +27,8 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.vaadin.spring.security.GenericVaadinSecurity;
 import org.vaadin.spring.security.VaadinSecurity;
+import org.vaadin.spring.security.internal.ManagedVaadinSecurityImpl;
 import org.vaadin.spring.security.provider.PreAuthorizeViewInstanceAccessControl;
 import org.vaadin.spring.security.provider.SecuredViewAccessControl;
 import org.vaadin.spring.security.support.VaadinSecurityAwareProcessor;
@@ -43,18 +43,8 @@ import org.vaadin.spring.security.web.VaadinRedirectStrategy;
  * @see org.vaadin.spring.security.annotation.EnableVaadinSecurity
  */
 @Configuration
+@Deprecated
 public class VaadinSecurityConfiguration {
-
-    public static final class Beans {
-
-        public static final String VAADIN_SECURITY                  = "vaadinSecurity";
-        public static final String VAADIN_SECURITY_AWARE_PROCESSOR  = "vaadinSecurityProcessor";
-        public static final String CURRENT_USER                     = "currentUser";
-        public static final String ACCESS_DECISION_MANAGER          = "accessDecisionManager";
-        public static final String AUTHENTICATION_MANAGER           = "authenticationManager";
-        public static final String VAADIN_REDIRECT_STRATEGY         = "vaadinRedirectStrategy";
-
-    }
 
     @Bean(name = Beans.CURRENT_USER)
     Authentication currentUser() {
@@ -79,10 +69,10 @@ public class VaadinSecurityConfiguration {
     VaadinRedirectStrategy vaadinRedirectStrategy() {
         return new VaadinDefaultRedirectStrategy();
     }
-    
+
     @Bean(name = Beans.VAADIN_SECURITY)
     VaadinSecurity vaadinSecurity() {
-        return new GenericVaadinSecurity();
+        return new ManagedVaadinSecurityImpl();
     }
 
     @Bean(name = Beans.VAADIN_SECURITY_AWARE_PROCESSOR)
@@ -94,25 +84,36 @@ public class VaadinSecurityConfiguration {
     SecuredViewAccessControl securedViewAccessControl() {
         return new SecuredViewAccessControl();
     }
-    
+
     @Bean
     PreAuthorizeViewInstanceAccessControl preAuthorizeViewInstanceAccessControl() {
         return new PreAuthorizeViewInstanceAccessControl();
     }
 
+    public static final class Beans {
+
+        public static final String VAADIN_SECURITY = "vaadinSecurity";
+        public static final String VAADIN_SECURITY_AWARE_PROCESSOR = "vaadinSecurityProcessor";
+        public static final String CURRENT_USER = "currentUser";
+        public static final String ACCESS_DECISION_MANAGER = "accessDecisionManager";
+        public static final String AUTHENTICATION_MANAGER = "authenticationManager";
+        public static final String VAADIN_REDIRECT_STRATEGY = "vaadinRedirectStrategy";
+
+    }
+
     /**
      * Enable GlobalMethod Security
-     *  - Enable @Secured annotation
-     *  - Enable @PreAuthorize annotation
-     *  - Enable @PostAuthorize annotation
-     *  
+     * - Enable @Secured annotation
+     * - Enable @PreAuthorize annotation
+     * - Enable @PostAuthorize annotation
+     * <p/>
      * Enable default accessDecisionManager, required for Pre/PostAuthrorize annotations
      * Pre/PostAuthorize requires {@link org.springframework.security.access.prepost.PreInvocationAuthorizationAdviceVoter}
-     * 
+     * <p/>
      * If custom AccessDecisionManager is required, override bean definition
      * by providing custom accessDecisionManager with id={@link VaadinSecurityConfiguration.Beans.ACCESS_DECISION_MANAGER}
      * or by providing annotation: &#64;Bean(name = VaadinSecurityConfiguration.Beans.ACCESS_DECISION_MANAGER)
-     * 
+     *
      * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
      * @see GlobalMethodSecurityConfiguration
      */

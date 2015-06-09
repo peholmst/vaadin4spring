@@ -18,7 +18,11 @@ package org.vaadin.spring.security.annotation;
 import org.springframework.context.annotation.Import;
 import org.vaadin.spring.security.config.VaadinSecurityConfiguration;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Addition to the {@link com.vaadin.spring.annotation.EnableVaadin} annotation that configures support for Spring Security in Vaadin applications.
@@ -30,5 +34,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Import(VaadinSecurityConfiguration.class)
+@Deprecated
 public @interface EnableVaadinSecurity {
 }

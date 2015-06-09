@@ -30,7 +30,7 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.RequestCacheAwareFilter;
-import org.vaadin.spring.security.VaadinSecurityContext;
+import org.vaadin.spring.security.SharedVaadinSecurityContext;
 import org.vaadin.spring.security.annotation.EnableVaadinSecurity;
 import org.vaadin.spring.security.web.VaadinDefaultRedirectStrategy;
 import org.vaadin.spring.security.web.VaadinRedirectStrategy;
@@ -43,13 +43,13 @@ import org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccess
 public class SecurityConfiguration {
 
     // TODO Spring-Boot-Actuator
-    
+
     @Configuration
     @EnableVaadinSecurity
     public static class WebSecurityConfig extends WebSecurityConfigurerAdapter implements InitializingBean {
-        
+
         @Autowired
-        private VaadinSecurityContext vaadinSecurityContext;
+        private SharedVaadinSecurityContext vaadinSecurityContext;
 
         /*
          * (non-Javadoc)
@@ -59,9 +59,9 @@ public class SecurityConfiguration {
          */
         @Override
         public void afterPropertiesSet() throws Exception {
-            this.vaadinSecurityContext.addAuthenticationSuccessHandler(redirectSaveHandler());
+            this.vaadinSecurityContext.setAuthenticationSuccessHandler(redirectSaveHandler());
         }
-        
+
         @Bean(name = "authenticationManager")
         @Override
         public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -106,48 +106,47 @@ public class SecurityConfiguration {
 
             return handler;
         }
-        
+
         // TODO Disable SpringSecurityFilterChain DefaultFilters (/css, /jsm /images)
         @Override
         public void configure(WebSecurity web) throws Exception {
             web
-                .ignoring()
+                    .ignoring()
                     .antMatchers("/VAADIN/**");
         }
-        
+
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
             auth
-                .inMemoryAuthentication()
+                    .inMemoryAuthentication()
                     .withUser("user").password("user").roles("USER")
                     .and()
                     .withUser("admin").password("admin").roles("ADMIN");
         }
-        
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            
+
             http
-                .authorizeRequests()
+                    .authorizeRequests()
                     .antMatchers("/login/**").permitAll()
                     .antMatchers("/UIDL/**").permitAll()
                     .antMatchers("/HEARTBEAT/**").authenticated()
                     .antMatchers("/**").authenticated()
                     .anyRequest().authenticated()
-                .and()
-                .sessionManagement()
+                    .and()
+                    .sessionManagement()
                     .sessionFixation()
-                        .migrateSession()
-                .and()
-                .csrf().disable()
-                .headers()
+                    .migrateSession()
+                    .and()
+                    .csrf().disable()
+                    .headers()
                     .frameOptions().disable()
-                .exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
-            
+                    .exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
+
         }
 
-        
-        
+
     }
-    
+
 }
