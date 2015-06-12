@@ -20,7 +20,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.vaadin.spring.events.Event;
-import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusListener;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
@@ -48,6 +47,14 @@ public class ScopedEventBusTest {
         String theStringPayload;
         Integer theIntegerPayload;
 
+        Event<String> theStringEventWithTarget;
+        Event<Integer> theIntegerEventWithTarget;
+        String theStringPayloadWithTarget;
+        Integer theIntegerPayloadWithTarget;
+
+        String theStringPayloadWithTargetFail;
+        Integer theIntegerPayloadWithTargetFail;
+
         @EventBusListenerMethod
         void onStringEvent(Event<String> stringEvent) {
             theStringEvent = stringEvent;
@@ -66,6 +73,36 @@ public class ScopedEventBusTest {
         @EventBusListenerMethod
         void onIntegerPayloadEvent(Integer integerPayload) {
             theIntegerPayload = integerPayload;
+        }
+        
+        @EventBusListenerMethod(target = "shouldSucceed")
+        void onStringEventWithTarget(Event<String> stringEvent) {
+            theStringEventWithTarget = stringEvent;
+        }
+
+        @EventBusListenerMethod(target = "shouldSucceed")
+        void onStringPayloadEventWithTarget(String stringPayload) {
+            theStringPayloadWithTarget = stringPayload;
+        }
+
+        @EventBusListenerMethod(target = "shouldSucceed")
+        void onIntegerEventWithTarget(Event<Integer> integerEvent) {
+            theIntegerEventWithTarget = integerEvent;
+        }
+
+        @EventBusListenerMethod(target = "shouldSucceed")
+        void onIntegerPayloadEventWithTarget(Integer integerPayload) {
+            theIntegerPayloadWithTarget = integerPayload;
+        }
+        
+        @EventBusListenerMethod(target = "shouldFail")
+        void onStringPayloadEventWithTargetFail(String stringPayload) {
+            theStringPayloadWithTargetFail = stringPayload;
+        }
+
+        @EventBusListenerMethod(target = "shouldSucceed.butFail")
+        void onIntegerPayloadEventWithTargetFail(Integer integerPayload) {
+            theIntegerPayloadWithTargetFail = integerPayload;
         }
     }
 
@@ -120,6 +157,26 @@ public class ScopedEventBusTest {
         assertNotNull(listener.theStringEvent);
         assertEquals("Hello World", listener.theStringEvent.getPayload());
         assertEquals("Hello World", listener.theStringPayload);
+    }
+
+    @Test
+    public void testSubscribeAndPublishWithListenerMethodsWithTarget() {
+        MultipleListeners listener = new MultipleListeners();
+
+        sessionEventBus.subscribe(listener);
+        sessionEventBus.publish("shouldSucceed", this, "Hello World");
+        sessionEventBus.publish("shouldSucceed.int", this, 10);
+
+        assertNull(listener.theStringPayloadWithTargetFail);
+        assertNull(listener.theIntegerPayloadWithTargetFail);
+        
+        assertNotNull(listener.theIntegerEventWithTarget);
+        assertNotNull(listener.theStringEventWithTarget);
+        
+        assertEquals("Hello World", listener.theStringPayloadWithTarget);
+        assertEquals("Hello World", listener.theStringEventWithTarget.getPayload());
+        assertEquals(10, listener.theIntegerPayloadWithTarget.intValue());
+        assertEquals(10, listener.theIntegerEventWithTarget.getPayload().intValue());
     }
 
     @Test(expected = IllegalArgumentException.class)

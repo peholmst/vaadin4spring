@@ -49,4 +49,10 @@ public @interface EventBusListenerMethod {
 
     Class<? extends EventBusListenerMethodFilter> filter() default NoEventBusListenerMethodFilter.class;
 
+    /**
+     * A target is a String which can be specified while publishing an event. The method
+     * will only called when the target matches the given String in the published method.
+     */
+    String target() default "";
+
 }
