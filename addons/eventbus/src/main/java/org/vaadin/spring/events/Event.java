@@ -37,11 +37,15 @@ public class Event<T> implements Serializable {
 
     private final T payload;
 
+    public Event(EventBus eventBus, Object source, T payload) {
+    	this(eventBus, source, payload, "");
+    }
+
     public Event(EventBus eventBus, Object source, T payload, String target) {
         this.eventBus = eventBus;
         this.source = source;
         this.payload = payload;
-        this.target = target;
+        this.target = target != null ? target : "";
         this.timestamp = System.currentTimeMillis();
     }
 
