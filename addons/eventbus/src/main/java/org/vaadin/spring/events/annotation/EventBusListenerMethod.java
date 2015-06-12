@@ -55,4 +55,10 @@ public @interface EventBusListenerMethod {
      */
     String target() default "";
 
+    /**
+     * If this value is set to true, the defined target of the receiver method must only
+     * be prefixed substring to get accepted as target method. Otherwise the target string
+     * must be equal to the published target.
+     */
+    boolean targetMatchPrefix() default false;
 }

@@ -90,7 +90,7 @@ public class ScopedEventBusTest {
             theIntegerEventWithTarget = integerEvent;
         }
 
-        @EventBusListenerMethod(target = "shouldSucceed")
+        @EventBusListenerMethod(target = "shouldSucceed", targetMatchPrefix = true)
         void onIntegerPayloadEventWithTarget(Integer integerPayload) {
             theIntegerPayloadWithTarget = integerPayload;
         }
@@ -169,14 +169,13 @@ public class ScopedEventBusTest {
 
         assertNull(listener.theStringPayloadWithTargetFail);
         assertNull(listener.theIntegerPayloadWithTargetFail);
+        assertNull(listener.theIntegerEventWithTarget);
         
-        assertNotNull(listener.theIntegerEventWithTarget);
         assertNotNull(listener.theStringEventWithTarget);
         
         assertEquals("Hello World", listener.theStringPayloadWithTarget);
         assertEquals("Hello World", listener.theStringEventWithTarget.getPayload());
         assertEquals(10, listener.theIntegerPayloadWithTarget.intValue());
-        assertEquals(10, listener.theIntegerEventWithTarget.getPayload().intValue());
     }
 
     @Test(expected = IllegalArgumentException.class)

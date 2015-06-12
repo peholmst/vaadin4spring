@@ -99,13 +99,16 @@ class MethodListenerWrapper extends AbstractListenerWrapper {
                 EventBusListenerMethod annotation = listenerMethod.getAnnotation(EventBusListenerMethod.class);
                 EventBusListenerMethodFilter filter = annotation.filter().newInstance();
                 String target = annotation.target();
+                boolean isTarget = annotation.targetMatchPrefix() 
+                        ? event.getTarget().startsWith(target) 
+                        : target.equals(event.getTarget());
                 EventScope scope = annotation.scope();
                 if (scope.equals(EventScope.UNDEFINED)) {
                     scope = event.getScope();
                 }
-                supports = supports && filter.filter(event.getPayload())
-                        && event.getScope().equals(scope)
-                        && event.getTarget().startsWith(target);
+                supports = supports && isTarget 
+                        && filter.filter(event.getPayload())
+                        && event.getScope().equals(scope);
             }
         } catch (Exception e) {
             throw new RuntimeException("A checked exception occurred while invoking listener method " + listenerMethod.getName(), e);
