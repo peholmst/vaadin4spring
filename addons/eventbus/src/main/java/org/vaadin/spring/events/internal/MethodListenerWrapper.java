@@ -123,32 +123,7 @@ class MethodListenerWrapper extends AbstractListenerWrapper {
     private boolean isInTopic(Event<?> event) throws InstantiationException, IllegalAccessException {
         EventBusListenerTopic annotation = listenerMethod.getAnnotation(EventBusListenerTopic.class);
         TopicFilter filter = annotation.filter().newInstance();
-        return filter.validTobic(event.getTopic(), annotation.topic());
+        return filter.validTopic(event.getTopic(), annotation.topic());
     }    
-    
-//    @Override
-//    public boolean supports(Event<?> event) {
-//        boolean supports = super.supports(event);
-//        try {
-//            if (listenerMethod.isAnnotationPresent(EventBusListenerMethod.class)) {
-//                EventBusListenerMethod annotation = listenerMethod.getAnnotation(EventBusListenerMethod.class);
-//                EventBusListenerMethodFilter filter = annotation.filter().newInstance();
-////                String target = annotation.target();
-////                boolean isTarget = annotation.targetMatchPrefix() 
-////                        ? event.getTarget().startsWith(target) 
-////                        : target.equals(event.getTarget());
-//                EventScope scope = annotation.scope();
-//                if (scope.equals(EventScope.UNDEFINED)) {
-//                    scope = event.getScope();
-//                }
-//                supports = supports 
-//                        && filter.filter(event.getPayload())
-//                        && event.getScope().equals(scope);
-//            }
-//        } catch (Exception e) {
-//            throw new RuntimeException("A checked exception occurred while invoking listener method " + listenerMethod.getName(), e);
-//        }
-//        return supports;
-//    }
 
 }

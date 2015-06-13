@@ -15,11 +15,12 @@ import org.vaadin.spring.events.TopicFilter;
 public @interface EventBusListenerTopic {
 
     /**
-     * A topic is a String which can be specified while publishing an event. The method
-     * will only called when the topic matches the given String in the published method.
+     * A topic is a String which can be specified while publishing an event. The
+     * method will only called when the topic matches the given String in the
+     * published method.
      */
-	String topic() default "";
-	
+    String topic() default "";
+
     Class<? extends TopicFilter> filter() default ExactTopicFilter.class;
 
 }
