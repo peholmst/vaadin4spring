@@ -31,7 +31,7 @@ public class Event<T> implements Serializable {
 
     private final Object source;
 
-    private final String target;
+    private final String topic;
     
     private final long timestamp;
 
@@ -41,11 +41,11 @@ public class Event<T> implements Serializable {
     	this(eventBus, source, payload, "");
     }
 
-    public Event(EventBus eventBus, Object source, T payload, String target) {
+    public Event(EventBus eventBus, Object source, T payload, String topic) {
         this.eventBus = eventBus;
         this.source = source;
         this.payload = payload;
-        this.target = target != null ? target : "";
+        this.topic = topic != null ? topic : "";
         this.timestamp = System.currentTimeMillis();
     }
 
@@ -77,12 +77,12 @@ public class Event<T> implements Serializable {
     }
 
     /**
-     * Gets the string which specifies the target of the event on the event bus.
+     * Gets the string which specifies the topic of the event on the event bus.
      * 
-     * @return the target of the event, never {@code null}.
+     * @return the topic of the event, never {@code null}.
      */
-    public String getTarget() {
-		return target;
+    public String getTopic() {
+		return topic;
 	}
     
     /**

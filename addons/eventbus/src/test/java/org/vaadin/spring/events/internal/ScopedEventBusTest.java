@@ -22,7 +22,9 @@ import org.mockito.ArgumentCaptor;
 import org.vaadin.spring.events.Event;
 import org.vaadin.spring.events.EventBusListener;
 import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.HierachyTopicFilter;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
+import org.vaadin.spring.events.annotation.EventBusListenerTopic;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -75,32 +77,38 @@ public class ScopedEventBusTest {
             theIntegerPayload = integerPayload;
         }
         
-        @EventBusListenerMethod(target = "shouldSucceed")
+        @EventBusListenerTopic(topic = "shouldSucceed")
+        @EventBusListenerMethod
         void onStringEventWithTarget(Event<String> stringEvent) {
             theStringEventWithTarget = stringEvent;
         }
 
-        @EventBusListenerMethod(target = "shouldSucceed")
+        @EventBusListenerTopic(topic = "shouldSucceed")
+        @EventBusListenerMethod
         void onStringPayloadEventWithTarget(String stringPayload) {
             theStringPayloadWithTarget = stringPayload;
         }
 
-        @EventBusListenerMethod(target = "shouldSucceed")
+        @EventBusListenerTopic(topic = "shouldSucceed")
+        @EventBusListenerMethod
         void onIntegerEventWithTarget(Event<Integer> integerEvent) {
             theIntegerEventWithTarget = integerEvent;
         }
 
-        @EventBusListenerMethod(target = "shouldSucceed", targetMatchPrefix = true)
+        @EventBusListenerTopic(topic = "shouldSucceed", filter = HierachyTopicFilter.class)
+        @EventBusListenerMethod
         void onIntegerPayloadEventWithTarget(Integer integerPayload) {
             theIntegerPayloadWithTarget = integerPayload;
         }
         
-        @EventBusListenerMethod(target = "shouldFail")
+        @EventBusListenerTopic(topic = "shouldFail")
+        @EventBusListenerMethod
         void onStringPayloadEventWithTargetFail(String stringPayload) {
             theStringPayloadWithTargetFail = stringPayload;
         }
 
-        @EventBusListenerMethod(target = "shouldSucceed.butFail")
+        @EventBusListenerTopic(topic = "shouldSucceed.butFail")
+        @EventBusListenerMethod
         void onIntegerPayloadEventWithTargetFail(Integer integerPayload) {
             theIntegerPayloadWithTargetFail = integerPayload;
         }

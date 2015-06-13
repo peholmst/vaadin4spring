@@ -104,9 +104,9 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
     }
 
     @Override
-    public <T> void publish(String target, Object sender, T payload) {
-        logger.debug("Publishing payload [{}] from sender [{}] on event bus [{}] to raget  [{}]", payload, sender, this, target);
-        listeners.publish(new Event<T>(this, sender, payload, target));
+    public <T> void publish(String topic, Object sender, T payload) {
+        logger.debug("Publishing payload [{}] from sender [{}] on event bus [{}] in topic  [{}]", payload, sender, this, topic);
+        listeners.publish(new Event<T>(this, sender, payload, topic));
     }
 
     @Override
@@ -115,13 +115,13 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
     }
 
     @Override
-    public <T> void publish(EventScope scope, String target, Object sender, T payload) throws UnsupportedOperationException {
-        logger.debug("Trying to publish payload [{}] from sender [{}] using scope [{}] on event bus [{}] to target [{}]", payload, sender, scope, this, target);
+    public <T> void publish(EventScope scope, String topic, Object sender, T payload) throws UnsupportedOperationException {
+        logger.debug("Trying to publish payload [{}] from sender [{}] using scope [{}] on event bus [{}] int topic [{}]", payload, sender, scope, this, topic);
         
         if (eventScope.equals(scope)) {
-            publish(target, sender, payload);
+            publish(topic, sender, payload);
         } else if (parentEventBus != null) {
-            parentEventBus.publish(scope, target, sender, payload);
+            parentEventBus.publish(scope, topic, sender, payload);
         } else {
             logger.warn("Could not publish payload with scope [{}] on event bus [{}]", scope, this);
             throw new UnsupportedOperationException("Could not publish event with scope " + scope);

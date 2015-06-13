@@ -48,17 +48,4 @@ public @interface EventBusListenerMethod {
     EventScope scope() default EventScope.UNDEFINED;
 
     Class<? extends EventBusListenerMethodFilter> filter() default NoEventBusListenerMethodFilter.class;
-
-    /**
-     * A target is a String which can be specified while publishing an event. The method
-     * will only called when the target matches the given String in the published method.
-     */
-    String target() default "";
-
-    /**
-     * If this value is set to true, the defined target of the receiver method must only
-     * be prefixed substring to get accepted as target method. Otherwise the target string
-     * must be equal to the published target.
-     */
-    boolean targetMatchPrefix() default false;
 }
