@@ -116,7 +116,7 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
 
     @Override
     public <T> void publish(EventScope scope, String topic, Object sender, T payload) throws UnsupportedOperationException {
-        logger.debug("Trying to publish payload [{}] from sender [{}] using scope [{}] on event bus [{}] int topic [{}]", payload, sender, scope, this, topic);
+        logger.debug("Trying to publish payload [{}] from sender [{}] using scope [{}] on event bus [{}] in topic [{}]", payload, sender, scope, this, topic);
         
         if (eventScope.equals(scope)) {
             publish(topic, sender, payload);
