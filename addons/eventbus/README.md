@@ -36,6 +36,10 @@ creating a singleton instance of ```ApplicationContextEventBroker```:
  }
 ```    
 
+# Event Bus Topics
+Events can be published with a string based topic. This will distinguish which listener methods will be called.
+Therefore a topic must be provided when publishing events and at the listener methods.
+
 # Injecting the Event Bus
 
 The event bus is automatically enabled when you enable the Spring4Vaadin add-on. You can just autowire in an instance
@@ -80,7 +84,9 @@ Example:
  ...
  myUIScopedEventBus.publish(this, "This will be published on the UI scoped event bus");
  myUIScopedEventBus.publish(EventScope.SESSION, this, "This will be published on the session scoped event bus");
-```
+ myUIScopedEventBus.publish("myTopic", this, "This will be published on the UI scoped event bus within the topic myTopic");
+ myUIScopedEventBus.publish("myTopic",EventScope.SESSION, this, "This will be published on the session scoped event bus  within the topic myTopic");
+ ```
 
 # Receiving Events
 
@@ -98,10 +104,29 @@ When subscribing to an event bus, you can also define whether you want to receiv
 this is true, which means that events published on the parent event buses will also be delivered to the subscriber. If
 false, only events published on that particular event bus will be delivered.
 
+To specify a topic, the listener method must be annotated with the ```@EventBusListenerTopic``` additionally.
+There it's possible to set the listener topic and an implementation of the ```TopicFilter``` interface to define how 
+to evaluate the topic matching.
+
+```java
+ @EventBusListenerTopic(topic = "myTopic")
+ @EventBusListenerMethod()
+ public void myListener(MyPayload payload) {...}
+ ```
+or width a custom filter implementation 
+
+```java
+ @EventBusListenerTopic(topic = "myTopic", filter = MyCustomTopicFilter.class)
+ @EventBusListenerMethod()
+ public void myListener(MyPayload payload) {...}
+ ```
+
 ## Known Limitations
 
 Currently, you cannot use JDK 8 lambdas to subscribe to events. This has to do with the way
 the payload is currently deduced (issue #44).
+
+The topics will only work with the annotation based listeners, see ``@EventBusListenerMethod```.
 
 # More Information
 
