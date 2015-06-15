@@ -52,6 +52,10 @@
             <email>josh@joshlong.com</email>
         </developer>
         <developer>
+            <name>Marco Luthardt</name>
+            <email>marco.luthardt@iandme.net</email>
+        </developer>
+        <developer>
             <name>Matti Tahvonen</name>
             <organization>Vaadin</organization>
             <email>matti@vaadin.com</email>
