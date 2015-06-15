@@ -86,8 +86,8 @@ public interface EventBus {
      * Publishes the specified payload on the event bus, or any of its parent buses, depending on the event scope.
      * The topic specifies which listeners will be notified.
      *
-     * @param topic   the topic of the event to publish, never {@code null}.
      * @param scope   the scope of the event, never {@code null}.
+     * @param topic   the topic of the event to publish, never {@code null}.
      * @param sender  the object that published the event, never {@code null}.
      * @param payload the payload of the event to publish, never {@code null}.
      * @param <T>     the type of the payload;
