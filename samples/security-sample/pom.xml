@@ -15,7 +15,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>org.vaadin.spring.samples.security.ApplicationInitializer</start-class>
-        <java.version>1.8</java.version>
         <spring4vaadin.version>0.0.4-SNAPSHOT</spring4vaadin.version>
     </properties>
 
@@ -194,16 +193,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                    <target>1.8</target>
-                    <source>1.8</source>
-                </configuration>
-            </plugin>
-            <!-- 
+            <!--
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <configuration>
