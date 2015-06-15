@@ -20,10 +20,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.vaadin.spring.events.Event;
-import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusListener;
 import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.HierachyTopicFilter;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
+import org.vaadin.spring.events.annotation.EventBusListenerTopic;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -48,6 +49,14 @@ public class ScopedEventBusTest {
         String theStringPayload;
         Integer theIntegerPayload;
 
+        Event<String> theStringEventWithTarget;
+        Event<Integer> theIntegerEventWithTarget;
+        String theStringPayloadWithTarget;
+        Integer theIntegerPayloadWithTarget;
+
+        String theStringPayloadWithTargetFail;
+        Integer theIntegerPayloadWithTargetFail;
+
         @EventBusListenerMethod
         void onStringEvent(Event<String> stringEvent) {
             theStringEvent = stringEvent;
@@ -66,6 +75,42 @@ public class ScopedEventBusTest {
         @EventBusListenerMethod
         void onIntegerPayloadEvent(Integer integerPayload) {
             theIntegerPayload = integerPayload;
+        }
+        
+        @EventBusListenerTopic(topic = "shouldSucceed")
+        @EventBusListenerMethod
+        void onStringEventWithTarget(Event<String> stringEvent) {
+            theStringEventWithTarget = stringEvent;
+        }
+
+        @EventBusListenerTopic(topic = "shouldSucceed")
+        @EventBusListenerMethod
+        void onStringPayloadEventWithTarget(String stringPayload) {
+            theStringPayloadWithTarget = stringPayload;
+        }
+
+        @EventBusListenerTopic(topic = "shouldSucceed")
+        @EventBusListenerMethod
+        void onIntegerEventWithTarget(Event<Integer> integerEvent) {
+            theIntegerEventWithTarget = integerEvent;
+        }
+
+        @EventBusListenerTopic(topic = "shouldSucceed", filter = HierachyTopicFilter.class)
+        @EventBusListenerMethod
+        void onIntegerPayloadEventWithTarget(Integer integerPayload) {
+            theIntegerPayloadWithTarget = integerPayload;
+        }
+        
+        @EventBusListenerTopic(topic = "shouldFail")
+        @EventBusListenerMethod
+        void onStringPayloadEventWithTargetFail(String stringPayload) {
+            theStringPayloadWithTargetFail = stringPayload;
+        }
+
+        @EventBusListenerTopic(topic = "shouldSucceed.butFail")
+        @EventBusListenerMethod
+        void onIntegerPayloadEventWithTargetFail(Integer integerPayload) {
+            theIntegerPayloadWithTargetFail = integerPayload;
         }
     }
 
@@ -120,6 +165,25 @@ public class ScopedEventBusTest {
         assertNotNull(listener.theStringEvent);
         assertEquals("Hello World", listener.theStringEvent.getPayload());
         assertEquals("Hello World", listener.theStringPayload);
+    }
+
+    @Test
+    public void testSubscribeAndPublishWithListenerMethodsWithTarget() {
+        MultipleListeners listener = new MultipleListeners();
+
+        sessionEventBus.subscribe(listener);
+        sessionEventBus.publish("shouldSucceed", this, "Hello World");
+        sessionEventBus.publish("shouldSucceed.int", this, 10);
+
+        assertNull(listener.theStringPayloadWithTargetFail);
+        assertNull(listener.theIntegerPayloadWithTargetFail);
+        assertNull(listener.theIntegerEventWithTarget);
+        
+        assertNotNull(listener.theStringEventWithTarget);
+        
+        assertEquals("Hello World", listener.theStringPayloadWithTarget);
+        assertEquals("Hello World", listener.theStringEventWithTarget.getPayload());
+        assertEquals(10, listener.theIntegerPayloadWithTarget.intValue());
     }
 
     @Test(expected = IllegalArgumentException.class)

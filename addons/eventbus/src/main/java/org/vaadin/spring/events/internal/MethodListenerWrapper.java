@@ -26,7 +26,9 @@ import org.vaadin.spring.events.Event;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusListenerMethodFilter;
 import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.TopicFilter;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
+import org.vaadin.spring.events.annotation.EventBusListenerTopic;
 
 /**
  * Implementation of {@link org.vaadin.spring.events.internal.AbstractListenerWrapper} that wraps an object
@@ -96,18 +98,32 @@ class MethodListenerWrapper extends AbstractListenerWrapper {
         boolean supports = super.supports(event);
         try {
             if (listenerMethod.isAnnotationPresent(EventBusListenerMethod.class)) {
-                EventBusListenerMethod annotation = listenerMethod.getAnnotation(EventBusListenerMethod.class);
-                EventBusListenerMethodFilter filter = annotation.filter().newInstance();
-                EventScope scope = annotation.scope();
-                if (scope.equals(EventScope.UNDEFINED)) {
-                    scope = event.getScope();
-                }
-                supports = supports && filter.filter(event.getPayload()) && event.getScope().equals(scope);
+                supports = supports && isInterestedListenerMethod(event);
             }
+        	if (listenerMethod.isAnnotationPresent(EventBusListenerTopic.class) && supports) {
+        		supports = isInTopic(event);
+        	}
         } catch (Exception e) {
             throw new RuntimeException("A checked exception occurred while invoking listener method " + listenerMethod.getName(), e);
         }
         return supports;
     }
+
+    private boolean isInterestedListenerMethod(Event<?> event) throws InstantiationException, IllegalAccessException {
+        EventBusListenerMethod annotation = listenerMethod.getAnnotation(EventBusListenerMethod.class);
+        EventBusListenerMethodFilter filter = annotation.filter().newInstance();
+        EventScope scope = annotation.scope();
+        if (scope.equals(EventScope.UNDEFINED)) {
+            scope = event.getScope();
+        }
+        return filter.filter(event.getPayload())
+                && event.getScope().equals(scope);
+    }
+    
+    private boolean isInTopic(Event<?> event) throws InstantiationException, IllegalAccessException {
+        EventBusListenerTopic annotation = listenerMethod.getAnnotation(EventBusListenerTopic.class);
+        TopicFilter filter = annotation.filter().newInstance();
+        return filter.validTopic(event.getTopic(), annotation.topic());
+    }    
 
 }
