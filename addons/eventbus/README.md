@@ -37,8 +37,9 @@ creating a singleton instance of ```ApplicationContextEventBroker```:
 ```    
 
 # Event Bus Topics
-Events can be published with a string based topic. This will distinguish which listener methods will be called.
-Therefore a topic must be provided when publishing events and at the listener methods.
+Events can be published with an optional string based topic. This will distinguish which listener methods will be called. Therefore, when it's the intent to use topics, a topic must be provided when publishing events and at the listener methods.
+
+When no topic is published (default), all listeners, which listens for the published payload, will be called.
 
 # Injecting the Event Bus
 
