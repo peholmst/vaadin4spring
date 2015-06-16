@@ -49,13 +49,13 @@ public class ScopedEventBusTest {
         String theStringPayload;
         Integer theIntegerPayload;
 
-        Event<String> theStringEventWithTarget;
-        Event<Integer> theIntegerEventWithTarget;
-        String theStringPayloadWithTarget;
-        Integer theIntegerPayloadWithTarget;
+        Event<String> theStringEventWithTopic;
+        Event<Integer> theIntegerEventWithTopic;
+        String theStringPayloadWithTopic;
+        Integer theIntegerPayloadWithTopic;
 
-        String theStringPayloadWithTargetFail;
-        Integer theIntegerPayloadWithTargetFail;
+        String theStringPayloadWithTopicFail;
+        Integer theIntegerPayloadWithTopicFail;
 
         @EventBusListenerMethod
         void onStringEvent(Event<String> stringEvent) {
@@ -79,38 +79,38 @@ public class ScopedEventBusTest {
         
         @EventBusListenerTopic(topic = "shouldSucceed")
         @EventBusListenerMethod
-        void onStringEventWithTarget(Event<String> stringEvent) {
-            theStringEventWithTarget = stringEvent;
+        void onStringEventWithTopic(Event<String> stringEvent) {
+            theStringEventWithTopic = stringEvent;
         }
 
         @EventBusListenerTopic(topic = "shouldSucceed")
         @EventBusListenerMethod
-        void onStringPayloadEventWithTarget(String stringPayload) {
-            theStringPayloadWithTarget = stringPayload;
+        void onStringPayloadEventWithTopic(String stringPayload) {
+            theStringPayloadWithTopic = stringPayload;
         }
 
         @EventBusListenerTopic(topic = "shouldSucceed")
         @EventBusListenerMethod
-        void onIntegerEventWithTarget(Event<Integer> integerEvent) {
-            theIntegerEventWithTarget = integerEvent;
+        void onIntegerEventWithTopic(Event<Integer> integerEvent) {
+            theIntegerEventWithTopic = integerEvent;
         }
 
         @EventBusListenerTopic(topic = "shouldSucceed", filter = HierachyTopicFilter.class)
         @EventBusListenerMethod
-        void onIntegerPayloadEventWithTarget(Integer integerPayload) {
-            theIntegerPayloadWithTarget = integerPayload;
+        void onIntegerPayloadEventWithTopic(Integer integerPayload) {
+            theIntegerPayloadWithTopic = integerPayload;
         }
         
         @EventBusListenerTopic(topic = "shouldFail")
         @EventBusListenerMethod
-        void onStringPayloadEventWithTargetFail(String stringPayload) {
-            theStringPayloadWithTargetFail = stringPayload;
+        void onStringPayloadEventWithTopicFail(String stringPayload) {
+            theStringPayloadWithTopicFail = stringPayload;
         }
 
         @EventBusListenerTopic(topic = "shouldSucceed.butFail")
         @EventBusListenerMethod
-        void onIntegerPayloadEventWithTargetFail(Integer integerPayload) {
-            theIntegerPayloadWithTargetFail = integerPayload;
+        void onIntegerPayloadEventWithTopicFail(Integer integerPayload) {
+            theIntegerPayloadWithTopicFail = integerPayload;
         }
     }
 
@@ -168,22 +168,30 @@ public class ScopedEventBusTest {
     }
 
     @Test
-    public void testSubscribeAndPublishWithListenerMethodsWithTarget() {
+    public void testSubscribeAndPublishWithListenerMethodsWithTopic() {
         MultipleListeners listener = new MultipleListeners();
 
         sessionEventBus.subscribe(listener);
         sessionEventBus.publish("shouldSucceed", this, "Hello World");
         sessionEventBus.publish("shouldSucceed.int", this, 10);
 
-        assertNull(listener.theStringPayloadWithTargetFail);
-        assertNull(listener.theIntegerPayloadWithTargetFail);
-        assertNull(listener.theIntegerEventWithTarget);
+        // null because not called with topic
+        assertNull(listener.theStringPayload);
+        assertNull(listener.theStringEvent);
+        assertNull(listener.theIntegerPayload);
+        assertNull(listener.theIntegerEvent);
+
+        // null because topic must fail
+        assertNull(listener.theStringPayloadWithTopicFail);
+        assertNull(listener.theIntegerPayloadWithTopicFail);
+        assertNull(listener.theIntegerEventWithTopic);
         
-        assertNotNull(listener.theStringEventWithTarget);
+        assertNotNull(listener.theStringPayloadWithTopic);
+        assertNotNull(listener.theStringEventWithTopic);
         
-        assertEquals("Hello World", listener.theStringPayloadWithTarget);
-        assertEquals("Hello World", listener.theStringEventWithTarget.getPayload());
-        assertEquals(10, listener.theIntegerPayloadWithTarget.intValue());
+        assertEquals("Hello World", listener.theStringPayloadWithTopic);
+        assertEquals("Hello World", listener.theStringEventWithTopic.getPayload());
+        assertEquals(10, listener.theIntegerPayloadWithTopic.intValue());
     }
 
     @Test(expected = IllegalArgumentException.class)

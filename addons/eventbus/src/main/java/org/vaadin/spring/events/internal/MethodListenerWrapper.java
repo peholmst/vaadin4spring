@@ -102,6 +102,8 @@ class MethodListenerWrapper extends AbstractListenerWrapper {
             }
         	if (listenerMethod.isAnnotationPresent(EventBusListenerTopic.class) && supports) {
         		supports = isInTopic(event);
+        	} else if ( !event.getTopic().isEmpty()) {
+        		supports = false;
         	}
         } catch (Exception e) {
             throw new RuntimeException("A checked exception occurred while invoking listener method " + listenerMethod.getName(), e);
