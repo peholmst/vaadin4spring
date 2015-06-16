@@ -175,6 +175,13 @@ public class ScopedEventBusTest {
         sessionEventBus.publish("shouldSucceed", this, "Hello World");
         sessionEventBus.publish("shouldSucceed.int", this, 10);
 
+        // null because not called with topic
+        assertNull(listener.theStringPayload);
+        assertNull(listener.theStringEvent);
+        assertNull(listener.theIntegerPayload);
+        assertNull(listener.theIntegerEvent);
+
+        // null because topic must fail
         assertNull(listener.theStringPayloadWithTopicFail);
         assertNull(listener.theIntegerPayloadWithTopicFail);
         assertNull(listener.theIntegerEventWithTopic);
