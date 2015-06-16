@@ -102,7 +102,7 @@ class MethodListenerWrapper extends AbstractListenerWrapper {
             }
         	if (listenerMethod.isAnnotationPresent(EventBusListenerTopic.class) && supports) {
         		supports = isInTopic(event);
-        	} else if ( !event.getTopic().equals("")) {
+        	} else if ( !event.getTopic().isEmpty()) {
         		supports = false;
         	}
         } catch (Exception e) {
