@@ -10,8 +10,8 @@
         <relativePath>../../</relativePath>
     </parent>
 
-    <groupId>org.vaadin.addons</groupId>
-    <artifactId>spring-vaadin-portlet</artifactId>
+    <groupId>org.vaadin.spring.addons</groupId>
+    <artifactId>vaadin-spring-addon-portlet</artifactId>
     <packaging>jar</packaging>
 
     <name>Vaadin4Spring Add-ons - Portlet Support</name>
