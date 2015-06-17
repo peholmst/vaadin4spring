@@ -59,6 +59,18 @@ public interface EventBus {
     <T> void publish(Object sender, T payload);
 
     /**
+     * Publishes the specified payload on the event bus, using the scope of this particular event bus.
+     * The topic specifies which listeners will be notified.
+     *
+     * @param topic   the topic of the event to publish, never {@code null}.
+     * @param sender  the object that published the event, never {@code null}.
+     * @param payload the payload of the event to publish, never {@code null}.
+     * @param <T>     the type of the payload.
+     * @see #getScope()
+     */
+    <T> void publish(String topic, Object sender, T payload);
+
+    /**
      * Publishes the specified payload on the event bus, or any of its parent buses, depending on the event scope.
      *
      * @param scope   the scope of the event, never {@code null}.
@@ -69,6 +81,20 @@ public interface EventBus {
      * @see #publish(Object, Object)
      */
     <T> void publish(EventScope scope, Object sender, T payload) throws UnsupportedOperationException;
+
+    /**
+     * Publishes the specified payload on the event bus, or any of its parent buses, depending on the event scope.
+     * The topic specifies which listeners will be notified.
+     *
+     * @param scope   the scope of the event, never {@code null}.
+     * @param topic   the topic of the event to publish, never {@code null}.
+     * @param sender  the object that published the event, never {@code null}.
+     * @param payload the payload of the event to publish, never {@code null}.
+     * @param <T>     the type of the payload;
+     * @throws UnsupportedOperationException if the payload could not be published with the specified scope.
+     * @see #publish(Object, Object)
+     */
+    <T> void publish(EventScope scope, String topic, Object sender, T payload) throws UnsupportedOperationException;
 
     /**
      * Gets the scope of the events published on this event bus.

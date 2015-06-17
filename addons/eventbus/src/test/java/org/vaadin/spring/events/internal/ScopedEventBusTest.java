@@ -20,10 +20,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.vaadin.spring.events.Event;
-import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusListener;
 import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.HierachyTopicFilter;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
+import org.vaadin.spring.events.annotation.EventBusListenerTopic;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -48,6 +49,14 @@ public class ScopedEventBusTest {
         String theStringPayload;
         Integer theIntegerPayload;
 
+        Event<String> theStringEventWithTopic;
+        Event<Integer> theIntegerEventWithTopic;
+        String theStringPayloadWithTopic;
+        Integer theIntegerPayloadWithTopic;
+
+        String theStringPayloadWithTopicFail;
+        Integer theIntegerPayloadWithTopicFail;
+
         @EventBusListenerMethod
         void onStringEvent(Event<String> stringEvent) {
             theStringEvent = stringEvent;
@@ -66,6 +75,42 @@ public class ScopedEventBusTest {
         @EventBusListenerMethod
         void onIntegerPayloadEvent(Integer integerPayload) {
             theIntegerPayload = integerPayload;
+        }
+        
+        @EventBusListenerTopic(topic = "shouldSucceed")
+        @EventBusListenerMethod
+        void onStringEventWithTopic(Event<String> stringEvent) {
+            theStringEventWithTopic = stringEvent;
+        }
+
+        @EventBusListenerTopic(topic = "shouldSucceed")
+        @EventBusListenerMethod
+        void onStringPayloadEventWithTopic(String stringPayload) {
+            theStringPayloadWithTopic = stringPayload;
+        }
+
+        @EventBusListenerTopic(topic = "shouldSucceed")
+        @EventBusListenerMethod
+        void onIntegerEventWithTopic(Event<Integer> integerEvent) {
+            theIntegerEventWithTopic = integerEvent;
+        }
+
+        @EventBusListenerTopic(topic = "shouldSucceed", filter = HierachyTopicFilter.class)
+        @EventBusListenerMethod
+        void onIntegerPayloadEventWithTopic(Integer integerPayload) {
+            theIntegerPayloadWithTopic = integerPayload;
+        }
+        
+        @EventBusListenerTopic(topic = "shouldFail")
+        @EventBusListenerMethod
+        void onStringPayloadEventWithTopicFail(String stringPayload) {
+            theStringPayloadWithTopicFail = stringPayload;
+        }
+
+        @EventBusListenerTopic(topic = "shouldSucceed.butFail")
+        @EventBusListenerMethod
+        void onIntegerPayloadEventWithTopicFail(Integer integerPayload) {
+            theIntegerPayloadWithTopicFail = integerPayload;
         }
     }
 
@@ -120,6 +165,33 @@ public class ScopedEventBusTest {
         assertNotNull(listener.theStringEvent);
         assertEquals("Hello World", listener.theStringEvent.getPayload());
         assertEquals("Hello World", listener.theStringPayload);
+    }
+
+    @Test
+    public void testSubscribeAndPublishWithListenerMethodsWithTopic() {
+        MultipleListeners listener = new MultipleListeners();
+
+        sessionEventBus.subscribe(listener);
+        sessionEventBus.publish("shouldSucceed", this, "Hello World");
+        sessionEventBus.publish("shouldSucceed.int", this, 10);
+
+        // null because not called with topic
+        assertNull(listener.theStringPayload);
+        assertNull(listener.theStringEvent);
+        assertNull(listener.theIntegerPayload);
+        assertNull(listener.theIntegerEvent);
+
+        // null because topic must fail
+        assertNull(listener.theStringPayloadWithTopicFail);
+        assertNull(listener.theIntegerPayloadWithTopicFail);
+        assertNull(listener.theIntegerEventWithTopic);
+        
+        assertNotNull(listener.theStringPayloadWithTopic);
+        assertNotNull(listener.theStringEventWithTopic);
+        
+        assertEquals("Hello World", listener.theStringPayloadWithTopic);
+        assertEquals("Hello World", listener.theStringEventWithTopic.getPayload());
+        assertEquals(10, listener.theIntegerPayloadWithTopic.intValue());
     }
 
     @Test(expected = IllegalArgumentException.class)

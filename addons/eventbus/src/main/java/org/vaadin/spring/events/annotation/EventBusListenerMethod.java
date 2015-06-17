@@ -48,5 +48,4 @@ public @interface EventBusListenerMethod {
     EventScope scope() default EventScope.UNDEFINED;
 
     Class<? extends EventBusListenerMethodFilter> filter() default NoEventBusListenerMethodFilter.class;
-
 }

@@ -130,8 +130,8 @@ public class SecurityConfiguration {
             http
                     .authorizeRequests()
                     .antMatchers("/login/**").permitAll()
-                    .antMatchers("/UIDL/**").permitAll()
-                    .antMatchers("/HEARTBEAT/**").authenticated()
+                    .antMatchers("/vaadinServlet/UIDL/**").permitAll()
+                    .antMatchers("/vaadinServlet/HEARTBEAT/**").authenticated()
                     .antMatchers("/**").authenticated()
                     .anyRequest().authenticated()
                     .and()

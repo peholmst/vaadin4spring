@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -11,7 +10,7 @@
 
     <groupId>org.vaadin.spring</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>0.0.6-SNAPSHOT</version>
+    <version>0.0.7-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Vaadin4Spring</name>
@@ -52,6 +51,10 @@
             <email>josh@joshlong.com</email>
         </developer>
         <developer>
+            <name>Marco Luthardt</name>
+            <email>marco.luthardt@iandme.net</email>
+        </developer>
+        <developer>
             <name>Matti Tahvonen</name>
             <organization>Vaadin</organization>
             <email>matti@vaadin.com</email>
@@ -76,12 +79,12 @@
         <project.build.encoding>UTF-8</project.build.encoding>
         <project.build.target>1.6</project.build.target>
         <project.build.source>1.6</project.build.source>
-        <vaadin.version>7.4.7</vaadin.version>
+        <vaadin.version>7.4.8</vaadin.version>
         <vaadin-touchkit.version>4.0.0</vaadin-touchkit.version>
         <vaadin-spring.version>1.0-SNAPSHOT</vaadin-spring.version>
-        <spring.version>4.1.5.RELEASE</spring.version>
-        <spring-boot.version>1.2.2.RELEASE</spring-boot.version>
-        <spring-security.version>3.2.6.RELEASE</spring-security.version>
+        <spring.version>4.1.6.RELEASE</spring.version>
+        <spring-boot.version>1.2.4.RELEASE</spring-boot.version>
+        <spring-security.version>3.2.7.RELEASE</spring-security.version>
         <slf4j.version>1.7.10</slf4j.version>
         <logback.version>1.1.2</logback.version>
     </properties>
@@ -292,7 +295,9 @@
                             <links>
                                 <link>http://docs.spring.io/spring/docs/${spring.version}/javadoc-api/</link>
                                 <link>http://docs.spring.io/autorepo/docs/spring-security/${spring-security.version}/apidocs/</link>
+                                <link>https://vaadin.com/api/${vaadin.version}/</link>
                             </links>
+                            <additionalparam>-Xdoclint:none</additionalparam>
                         </configuration>
                     </plugin>
                     <plugin>
