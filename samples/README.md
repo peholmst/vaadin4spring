@@ -22,7 +22,7 @@ This demonstrates how Vaadin4Spring, server-side background threads and server p
 
 ## Security Sample ##
 
-This demonstrates how Spring Security can be used in Vaadin4Spring applications. [Go to the sample](push-sample)
+This demonstrates how Spring Security can be used in Vaadin4Spring applications. [Go to the sample](security-sample)
 
 ## Sidebar Sample ##
 
