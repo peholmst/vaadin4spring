@@ -15,32 +15,34 @@
  */
 package org.vaadin.spring.samples.mvp.ui;
 
+import javax.inject.Inject;
+
+import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.samples.mvp.ui.presenter.Action;
+import org.vaadin.spring.samples.mvp.ui.presenter.MainPresenter;
+
+import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.UI;
-import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventScope;
-import org.vaadin.spring.samples.mvp.ui.presenter.Action;
-import org.vaadin.spring.samples.mvp.ui.presenter.MainPresenter;
 
-import javax.inject.Inject;
-
-@SpringUI
+@SpringUI(path = "/ui")
+@Theme("valo")
 @Title("Market User Interface")
 public class MvpUI extends UI {
 
     private static final long serialVersionUID = 1L;
 
     @Inject
-    EventBus eventBus;
+    EventBus.SessionEventBus eventBus;
 
     @Inject
     MainPresenter presenter;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        eventBus.publish(EventScope.SESSION, this, Action.START);
+        eventBus.publish(this, Action.START);
         setContent(presenter.getView());
     }
 
