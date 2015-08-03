@@ -42,7 +42,7 @@ security:
 # Servlet mapping for VaadinServlet
 vaadin:
     servlet:
-        urlMapping: /ui/*
+        urlMapping: /*
         params:
             productionMode: true
             

@@ -36,7 +36,13 @@ enum HttpSecurityConfigurer {
     void configure(Environment env, ApplicationContext context, HttpSecurity http) throws Exception {
         // all requests are authenticated
         http
-        .authorizeRequests().anyRequest().authenticated();
+        .authorizeRequests()
+        .antMatchers("/VAADIN/**", "/PUSH/**", "/UIDL/**", "/login", "/login/**").permitAll()
+        .antMatchers("/**").fullyAuthenticated()
+        .and()
+        // Vaadin chokes if this filter is enabled, disable it!
+        .csrf().disable();
+        
 
         // have UI peacefully coexist with Apache CXF web-services
         String id = env.getProperty("app.security.scheme", Scheme.BASIC.id());
@@ -44,11 +50,12 @@ enum HttpSecurityConfigurer {
         switch(scheme) {
             case FORM:
                 http
-                .formLogin().failureUrl("/login?error")
-                .defaultSuccessUrl("/ui")
-                .permitAll()
+                .formLogin()
+                  .failureUrl("/login?error")
+                  .defaultSuccessUrl("/ui")
+                  .permitAll()
                 .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+                  .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
                 .permitAll();
                 break;
             case BASIC:
@@ -60,9 +67,6 @@ enum HttpSecurityConfigurer {
                 http.addFilterAfter(context.getBean(DigestAuthenticationFilter.class), BasicAuthenticationFilter.class);
                 break;
         }
-
-        // Vaadin chokes if this filter is enabled, disable it!
-        http.csrf().disable();
 
         // TODO plumb custom HTTP 403 and 404 pages
         /* http.exceptionHandling().accessDeniedPage("/access?error"); */

@@ -19,6 +19,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.vaadin.spring.annotation.EnableVaadinExtensions;
+import org.vaadin.spring.events.annotation.EnableEventBus;
 
 /**
  * Bootstraps application using Spring Boot API indiscriminately and recursively
@@ -28,8 +30,10 @@ import org.springframework.context.annotation.Configuration;
  *
  */
 @Configuration
-@ComponentScan
+@EnableEventBus
+@EnableVaadinExtensions
 @EnableAutoConfiguration
+@ComponentScan
 public class Application {
 
 	public static void main(String[] args) {

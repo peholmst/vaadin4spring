@@ -73,6 +73,7 @@ public abstract class DataGrid<DTO, T extends Table> extends VerticalLayout impl
         }
         // initialize table
         this.table = table;
+        addComponent(this.table);
         // if no data show default message
         if (CollectionUtils.isEmpty(data)) {
             addComponent(new Label(NO_RESULTS_CAPTION, ContentMode.TEXT));
