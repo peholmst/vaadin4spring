@@ -21,7 +21,7 @@ import org.vaadin.spring.sidebar.config.SideBarConfiguration;
 import java.lang.annotation.*;
 
 /**
- * Add this annotation to your application configuration to enable the {@link org.vaadin.spring.sidebar.SideBar}
+ * Add this annotation to your application configuration to enable the {@link org.vaadin.spring.sidebar.components.AccordionSideBar}
  * component. After that, just inject the side bar into your UIs.
  *
  * @author Petter Holmström (petter@vaadin.com)

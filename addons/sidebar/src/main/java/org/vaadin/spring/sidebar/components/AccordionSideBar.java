@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.sidebar;
+package org.vaadin.spring.sidebar.components;
 
 import com.vaadin.annotations.StyleSheet;
 import com.vaadin.navigator.ViewChangeListener;
@@ -23,6 +23,9 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
+import org.vaadin.spring.sidebar.SideBarItemDescriptor;
+import org.vaadin.spring.sidebar.SideBarSectionDescriptor;
+import org.vaadin.spring.sidebar.SideBarUtils;
 
 import java.util.Collection;
 
@@ -52,12 +55,12 @@ import java.util.Collection;
  * The side bar comes with a simple theme. In most cases, you probably want to change the styles to make the look and feel of the side bar more compatible with your application.
  * Please see the {@code VAADIN/addons/sidebar/sidebar.css} file in the resources directory.
  * <p>
- * If you want to customize the components that are added to the accordion, implement {@link org.vaadin.spring.sidebar.SideBar.SectionComponentFactory} and/or {@link org.vaadin.spring.sidebar.SideBar.ItemComponentFactory}.
+ * If you want to customize the components that are added to the accordion, implement {@link AccordionSideBar.SectionComponentFactory} and/or {@link AccordionSideBar.ItemComponentFactory}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
 @StyleSheet("vaadin://addons/sidebar/sidebar.css")
-public class SideBar extends Accordion {
+public class AccordionSideBar extends AbstractSideBar {
 
     private static final long serialVersionUID = 2268915666228648275L;
     
@@ -66,97 +69,42 @@ public class SideBar extends Accordion {
     public static final String SIDE_BAR_SECTION_STYLE = "sideBarSection";
     public static final String SELECTED_STYLE = "selected";
 
-    private final SideBarUtils sideBarUtils;
-    private final SectionComponentFactory sectionComponentFactory;
-    @SuppressWarnings("unused")
-    private final ItemComponentFactory itemComponentFactory;
+    private Accordion accordion;
 
     /**
      * You should not need to create instances of this component directly. Instead, just inject the side bar into
      * your UI.
      */
-    public SideBar(SideBarUtils sideBarUtils, SectionComponentFactory sectionComponentFactory, ItemComponentFactory itemComponentFactory) {
-        this.sideBarUtils = sideBarUtils;
+    public AccordionSideBar(SideBarUtils sideBarUtils) {
+        super(sideBarUtils);
         addStyleName(SIDE_BAR_STYLE);
         setSizeFull();
-
-        if (sectionComponentFactory == null) {
-            sectionComponentFactory = new DefaultSectionComponentFactory();
-        }
-        if (itemComponentFactory == null) {
-            itemComponentFactory = new DefaultItemComponentFactory();
-        }
-        this.sectionComponentFactory = sectionComponentFactory;
-        this.itemComponentFactory = itemComponentFactory;
-        sectionComponentFactory.setItemComponentFactory(itemComponentFactory);
     }
 
     @Override
-    public void attach() {
-        super.attach();
-        for (SideBarSectionDescriptor section : sideBarUtils.getSideBarSections(getUI().getClass())) {
-            addTab(sectionComponentFactory.createSectionComponent(section, sideBarUtils.getSideBarItems(section)),
-                    section.getCaption());
-        }
+    protected Component createCompositionRoot() {
+        accordion = new Accordion();
+        accordion.setSizeFull();
+        return accordion;
     }
 
     @Override
-    public void detach() {
-        removeAllComponents();
-        super.detach();
+    protected SectionComponentFactory createDefaultSectionComponentFactory() {
+        return new DefaultSectionComponentFactory();
+    }
+
+    @Override
+    protected ItemComponentFactory createDefaultItemComponentFactory() {
+        return new DefaultItemComponentFactory();
+    }
+
+    @Override
+    protected void createSection(SideBarSectionDescriptor section, Collection<SideBarItemDescriptor> items) {
+        accordion.addTab(getSectionComponentFactory().createSectionComponent(section, items), section.getCaption());
     }
 
     /**
-     * Interface defining a factory for creating components that correspond to sections in a side bar.
-     * In practice, a section is a tab of a {@link org.vaadin.spring.sidebar.SideBar}.
-     * <p>
-     * If you want to use your own factory, make a Spring managed bean that implements this interface.
-     * It will automatically be used by the {@link org.vaadin.spring.sidebar.SideBar}.
-     *
-     * @see SideBar#addTab(com.vaadin.ui.Component)
-     */
-    public interface SectionComponentFactory {
-        /**
-         * Sets the {@code ItemComponentFactory} to use when creating the items of the section.
-         *
-         * @param itemComponentFactory the item component factory, must not be {@code null}.
-         */
-        void setItemComponentFactory(ItemComponentFactory itemComponentFactory);
-
-        /**
-         * Creates a component to be added as a tab to the {@link org.vaadin.spring.sidebar.SideBar}.
-         *
-         * @param descriptor      the descriptor of the side bar section, must not be {@code null}.
-         * @param itemDescriptors the descriptors of the items to be added to the section, must not be {@code null}.
-         * @return a component, never {@code null}.
-         * @see SideBar#addTab(com.vaadin.ui.Component)
-         */
-        Component createSectionComponent(SideBarSectionDescriptor descriptor, Collection<SideBarItemDescriptor> itemDescriptors);
-    }
-
-    /**
-     * Interface defining a factory for creating components that correspond to items in a side bar section. When
-     * the item is clicked by the user, {@link org.vaadin.spring.sidebar.SideBarItemDescriptor#itemInvoked(com.vaadin.ui.UI)}
-     * must be called.
-     * <p>
-     * If you want to use your own factory, make a Spring managed bean that implements this interface.
-     * It will automatically be used by the {@link org.vaadin.spring.sidebar.SideBar}.
-     */
-    public interface ItemComponentFactory {
-
-        /**
-         * Creates a component to be added to a side bar section by a {@link org.vaadin.spring.sidebar.SideBar.SectionComponentFactory}.
-         * Remember to call {@link org.vaadin.spring.sidebar.SideBarItemDescriptor#itemInvoked(com.vaadin.ui.UI)} when the item
-         * is clicked by the user.
-         *
-         * @param descriptor the descriptor of the side bar item, must not be {@code null}.
-         * @return a component, never {@code null}.
-         */
-        Component createItemComponent(SideBarItemDescriptor descriptor);
-    }
-
-    /**
-     * Extended version of {@link com.vaadin.ui.NativeButton} that is used by the {@link org.vaadin.spring.sidebar.SideBar.DefaultItemComponentFactory}.
+     * Extended version of {@link com.vaadin.ui.NativeButton} that is used by the {@link AccordionSideBar.DefaultItemComponentFactory}.
      */
     static class ItemButton extends NativeButton {
 
@@ -186,7 +134,7 @@ public class SideBar extends Accordion {
     }
 
     /**
-     * Extended version of {@link org.vaadin.spring.sidebar.SideBar.ItemButton} that is used for view items. This
+     * Extended version of {@link AccordionSideBar.ItemButton} that is used for view items. This
      * button keeps track of the currently selected view in the current UI's {@link com.vaadin.navigator.Navigator} and
      * updates its style so that the button of the currently visible view can be highlighted.
      */
@@ -231,7 +179,7 @@ public class SideBar extends Accordion {
     }
 
     /**
-     * Default implementation of {@link org.vaadin.spring.sidebar.SideBar.SectionComponentFactory} that creates
+     * Default implementation of {@link AccordionSideBar.SectionComponentFactory} that creates
      * a {@link com.vaadin.ui.Panel} with a {@link com.vaadin.ui.VerticalLayout} that contains the items.
      */
     public class DefaultSectionComponentFactory implements SectionComponentFactory {
@@ -258,7 +206,7 @@ public class SideBar extends Accordion {
     }
 
     /**
-     * Default implementation of {@link org.vaadin.spring.sidebar.SideBar.ItemComponentFactory} that creates
+     * Default implementation of {@link AccordionSideBar.ItemComponentFactory} that creates
      * {@link com.vaadin.ui.NativeButton}s.
      */
     public class DefaultItemComponentFactory implements ItemComponentFactory {

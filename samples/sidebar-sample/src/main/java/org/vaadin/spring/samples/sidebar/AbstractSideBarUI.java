@@ -18,65 +18,54 @@ package org.vaadin.spring.samples.sidebar;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.navigator.ViewDisplay;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
-import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.Reindeer;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.spring.sidebar.SideBar;
+import org.vaadin.spring.sidebar.components.AbstractSideBar;
 
 /**
- * UI that demonstrates the {@link org.vaadin.spring.sidebar.SideBar}.
+ * Base class for side bar demonstration UIs.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-@SpringUI
-public class SideBarUI extends UI {
+public abstract class AbstractSideBarUI extends UI {
 
     private static final long serialVersionUID = -7747249047198990160L;
 
     @Autowired
     SpringViewProvider viewProvider;
 
-    @Autowired
-    SideBar sideBar;
-
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         getPage().setTitle("Vaadin4Spring Side Bar Sample");
-        final HorizontalSplitPanel rootLayout = new HorizontalSplitPanel();
-        rootLayout.setStyleName(Reindeer.SPLITPANEL_SMALL);
+        final HorizontalLayout rootLayout = new HorizontalLayout();
         rootLayout.setSizeFull();
         setContent(rootLayout);
 
-        final Navigator navigator = new Navigator(this, new ViewDisplay() {
+        final VerticalLayout viewContainer = new VerticalLayout();
+        viewContainer.setSizeFull();
 
-            private static final long serialVersionUID = -6790174005086362171L;
-
-            @Override
-            public void showView(View view) {
-                System.out.println("Showing view " + view);
-                rootLayout.setSecondComponent((com.vaadin.ui.Component) view);
-            }
-        });
+        final Navigator navigator = new Navigator(this, viewContainer);
         navigator.setErrorView(new ErrorView());
         navigator.addProvider(viewProvider);
         setNavigator(navigator);
 
-        rootLayout.setFirstComponent(sideBar);
-        rootLayout.setSplitPosition(150, Unit.PIXELS);
+        rootLayout.addComponent(getSideBar());
+        rootLayout.addComponent(viewContainer);
+        rootLayout.setExpandRatio(viewContainer, 1.0f);
     }
+
+
+    protected abstract AbstractSideBar getSideBar();
 
     private class ErrorView extends VerticalLayout implements View {
 
         private static final long serialVersionUID = -1349484555495574658L;
-       private Label message;
+        private Label message;
 
         ErrorView() {
             setMargin(true);
