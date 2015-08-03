@@ -20,9 +20,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.vaadin.spring.annotation.EnableVaadinExtensions;
 import org.vaadin.spring.config.VaadinExtensionsConfiguration;
 import org.vaadin.spring.servlet.Vaadin4SpringServlet;
@@ -49,10 +50,10 @@ public class ExtensionsAutoConfiguration {
         }
 
         /**
-         * Unless there already is a custom VaadinServlet bean, we will register our own.
+         * We will register our own Vaadin Servlet.
          */
         @Bean
-        @ConditionalOnMissingBean
+        @Order(value = Ordered.LOWEST_PRECEDENCE - 1)
         VaadinServlet vaadinServlet() {
             return new Vaadin4SpringServlet();
         }
