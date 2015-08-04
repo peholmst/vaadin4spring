@@ -23,11 +23,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is used to declare a {@link org.vaadin.spring.sidebar.SideBar} section that can contain items.
+ * This annotation is used to declare a {@link org.vaadin.spring.sidebar.components.AccordionSideBar} section that can contain items.
  * It has to be placed on a Spring-managed bean in order to get detected, but the bean can be an empty singleton without methods.
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.sidebar.SideBar
+ * @see org.vaadin.spring.sidebar.components.AccordionSideBar
  * @see org.vaadin.spring.sidebar.annotation.SideBarItem
  * @see org.vaadin.spring.sidebar.annotation.SideBarSections
  */

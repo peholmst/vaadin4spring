@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is used to declare a {@link org.vaadin.spring.sidebar.SideBar} item that a user can click on.
+ * This annotation is used to declare a {@link org.vaadin.spring.sidebar.components.AccordionSideBar} item that a user can click on.
  * It can be placed on two types of beans:
  * <ol>
  * <li>{@link java.lang.Runnable}s - when the item is clicked, the runnable is executed</li>
@@ -30,7 +30,7 @@ import java.lang.annotation.Target;
  * Please note that the annotated class must be a Spring-managed bean - only adding this annotation is not enough.
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.sidebar.SideBar
+ * @see org.vaadin.spring.sidebar.components.AccordionSideBar
  * @see org.vaadin.spring.sidebar.annotation.SideBarSection
  * @see org.vaadin.spring.sidebar.annotation.FontAwesomeIcon
  * @see org.vaadin.spring.sidebar.annotation.ThemeIcon

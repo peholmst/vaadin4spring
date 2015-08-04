@@ -23,12 +23,13 @@ import org.springframework.context.annotation.Configuration;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.sidebar.FontAwesomeIconProvider;
 import org.vaadin.spring.sidebar.LocalizedThemeIconProvider;
-import org.vaadin.spring.sidebar.SideBar;
 import org.vaadin.spring.sidebar.SideBarUtils;
 import org.vaadin.spring.sidebar.ThemeIconProvider;
+import org.vaadin.spring.sidebar.components.AccordionSideBar;
+import org.vaadin.spring.sidebar.components.ValoSideBar;
 
 /**
- * Spring configuration for the {@link org.vaadin.spring.sidebar.SideBar} and its dependencies.
+ * Spring configuration for the {@link org.vaadin.spring.sidebar.components.AccordionSideBar} and its dependencies.
  *
  * @author Petter Holmström (petter@vaadin.com)
  * @see org.vaadin.spring.sidebar.annotation.EnableSideBar
@@ -40,15 +41,17 @@ public class SideBarConfiguration {
     I18N i18n;
     @Autowired
     ApplicationContext applicationContext;
-    @Autowired(required = false)
-    SideBar.SectionComponentFactory sectionComponentFactory;
-    @Autowired(required = false)
-    SideBar.ItemComponentFactory itemComponentFactory;
 
     @Bean
     @UIScope
-    SideBar sideBar() {
-        return new SideBar(sideBarUtils(), sectionComponentFactory, itemComponentFactory);
+    AccordionSideBar accordionSideBar() {
+        return new AccordionSideBar(sideBarUtils());
+    }
+
+    @Bean
+    @UIScope
+    ValoSideBar valoSideBar() {
+        return new ValoSideBar(sideBarUtils());
     }
 
     @Bean
