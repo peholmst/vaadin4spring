@@ -16,6 +16,7 @@
 package org.vaadin.spring.sidebar.components;
 
 import com.vaadin.ui.Component;
+import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CustomComponent;
 import org.vaadin.spring.sidebar.SideBarItemDescriptor;
 import org.vaadin.spring.sidebar.SideBarSectionDescriptor;
@@ -24,36 +25,68 @@ import org.vaadin.spring.sidebar.SideBarUtils;
 import java.util.Collection;
 
 /**
- * Created by petterwork on 03/08/15.
+ * Base class for visual side bar components. The side bar has access to an instance of {@link org.vaadin.spring.sidebar.SideBarUtils}
+ * that will provide information about the sections and items to show.
+ *
+ * @author Petter Holmström (petter@vaadin.com)
  */
-public abstract class AbstractSideBar extends CustomComponent {
+public abstract class AbstractSideBar<CR extends ComponentContainer> extends CustomComponent {
 
     private final SideBarUtils sideBarUtils;
-    private SectionComponentFactory sectionComponentFactory;
+    private SectionComponentFactory<CR> sectionComponentFactory;
     private ItemComponentFactory itemComponentFactory;
 
     /**
-     * You should not need to create instances of this component directly. Instead, just inject the side bar into
-     * your UI.
+     * Protected constructor. The instance of {@link org.vaadin.spring.sidebar.SideBarUtils} should come from the Spring application context.
      */
-    public AbstractSideBar(SideBarUtils sideBarUtils) {
+    protected AbstractSideBar(SideBarUtils sideBarUtils) {
         this.sideBarUtils = sideBarUtils;
     }
 
-    protected abstract Component createCompositionRoot();
+    /**
+     * Creates the component that actually contain the side bar sections and items. This method is called every time
+     * the side bar is attached to a UI. Every time the side bar is detached, its composition root will be set back to {@code null}.
+     */
+    protected abstract CR createCompositionRoot();
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * When the side bar is not attached to a UI, this method will always return {@code null}.
+     * </p>
+     *
+     * @see #createCompositionRoot()
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    protected CR getCompositionRoot() {
+        return (CR) super.getCompositionRoot();
+    }
 
     @Override
     public void attach() {
         super.attach();
-        setCompositionRoot(createCompositionRoot());
+        CR compositionRoot = createCompositionRoot();
+        setCompositionRoot(compositionRoot);
         for (SideBarSectionDescriptor section : sideBarUtils.getSideBarSections(getUI().getClass())) {
-            createSection(section, sideBarUtils.getSideBarItems(section));
+            createSection(compositionRoot, section, sideBarUtils.getSideBarItems(section));
         }
     }
 
-    protected abstract SectionComponentFactory createDefaultSectionComponentFactory();
+    /**
+     * Creates the default {@link org.vaadin.spring.sidebar.components.AbstractSideBar.SectionComponentFactory} to use.
+     * This method must never return {@code null}.
+     */
+    protected abstract SectionComponentFactory<CR> createDefaultSectionComponentFactory();
 
-    protected SectionComponentFactory getSectionComponentFactory() {
+    /**
+     * Returns the current {@link org.vaadin.spring.sidebar.components.AbstractSideBar.SectionComponentFactory}. If no
+     * factory has been set, a default factory is created.
+     *
+     * @see #setSectionComponentFactory(org.vaadin.spring.sidebar.components.AbstractSideBar.SectionComponentFactory)
+     * @see #createDefaultSectionComponentFactory()
+     */
+    protected SectionComponentFactory<CR> getSectionComponentFactory() {
         if (sectionComponentFactory == null) {
             sectionComponentFactory = createDefaultSectionComponentFactory();
         }
@@ -61,12 +94,26 @@ public abstract class AbstractSideBar extends CustomComponent {
         return sectionComponentFactory;
     }
 
-    protected void setSectionComponentFactory(SectionComponentFactory sectionComponentFactory) {
+    /**
+     * Sets the {@link org.vaadin.spring.sidebar.components.AbstractSideBar.SectionComponentFactory} to use.
+     */
+    protected void setSectionComponentFactory(SectionComponentFactory<CR> sectionComponentFactory) {
         this.sectionComponentFactory = sectionComponentFactory;
     }
 
+    /**
+     * Creates the default {@link org.vaadin.spring.sidebar.components.AbstractSideBar.ItemComponentFactory} to use.
+     * This method must never return {@code null}.
+     */
     protected abstract ItemComponentFactory createDefaultItemComponentFactory();
 
+    /**
+     * Returns the current {@link org.vaadin.spring.sidebar.components.AbstractSideBar.ItemComponentFactory}. If no
+     * factory has been set, a default factory is created.
+     *
+     * @see #setItemComponentFactory(org.vaadin.spring.sidebar.components.AbstractSideBar.ItemComponentFactory)
+     * @see #createDefaultItemComponentFactory()
+     */
     protected ItemComponentFactory getItemComponentFactory() {
         if (itemComponentFactory == null) {
             itemComponentFactory = createDefaultItemComponentFactory();
@@ -74,15 +121,16 @@ public abstract class AbstractSideBar extends CustomComponent {
         return itemComponentFactory;
     }
 
+    /**
+     * Sets the {@link org.vaadin.spring.sidebar.components.AbstractSideBar.ItemComponentFactory} to use.
+     */
     protected void setItemComponentFactory(ItemComponentFactory itemComponentFactory) {
         this.itemComponentFactory = itemComponentFactory;
     }
 
-    protected SideBarUtils getSideBarUtils() {
-        return sideBarUtils;
+    private void createSection(CR compositionRoot, SideBarSectionDescriptor section, Collection<SideBarItemDescriptor> items) {
+        getSectionComponentFactory().createSection(compositionRoot, section, items);
     }
-
-    protected abstract void createSection(SideBarSectionDescriptor section, Collection<SideBarItemDescriptor> items);
 
     @Override
     public void detach() {
@@ -92,39 +140,30 @@ public abstract class AbstractSideBar extends CustomComponent {
 
     /**
      * Interface defining a factory for creating components that correspond to sections in a side bar.
-     * In practice, a section is a tab of a {@link AccordionSideBar}.
-     * <p/>
-     * If you want to use your own factory, make a Spring managed bean that implements this interface.
-     * It will automatically be used by the {@link AccordionSideBar}.
-     *
-     * @see AccordionSideBar#addTab(com.vaadin.ui.Component)
      */
-    public interface SectionComponentFactory {
+    public interface SectionComponentFactory<CR extends ComponentContainer> {
         /**
-         * Sets the {@code ItemComponentFactory} to use when creating the items of the section.
+         * Sets the {@code ItemComponentFactory} to use when creating the items of the section. This method
+         * is always called before the first invocation of {@link #createSection(com.vaadin.ui.ComponentContainer, org.vaadin.spring.sidebar.SideBarSectionDescriptor, java.util.Collection)}.
          *
          * @param itemComponentFactory the item component factory, must not be {@code null}.
          */
         void setItemComponentFactory(ItemComponentFactory itemComponentFactory);
 
         /**
-         * Creates a component to be added as a tab to the {@link AccordionSideBar}.
+         * Creates and adds the specified section and items to the composition root.
          *
+         * @param compositionRoot the component to which the section and items are to be added, must not be {@code null}.
          * @param descriptor      the descriptor of the side bar section, must not be {@code null}.
          * @param itemDescriptors the descriptors of the items to be added to the section, must not be {@code null}.
-         * @return a component, never {@code null}.
-         * @see AccordionSideBar#addTab(com.vaadin.ui.Component)
          */
-        Component createSectionComponent(SideBarSectionDescriptor descriptor, Collection<SideBarItemDescriptor> itemDescriptors);
+        void createSection(CR compositionRoot, SideBarSectionDescriptor descriptor, Collection<SideBarItemDescriptor> itemDescriptors);
     }
 
     /**
      * Interface defining a factory for creating components that correspond to items in a side bar section. When
      * the item is clicked by the user, {@link org.vaadin.spring.sidebar.SideBarItemDescriptor#itemInvoked(com.vaadin.ui.UI)}
      * must be called.
-     * <p/>
-     * If you want to use your own factory, make a Spring managed bean that implements this interface.
-     * It will automatically be used by the {@link AccordionSideBar}.
      */
     public interface ItemComponentFactory {
 

@@ -20,9 +20,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.NativeButton;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.spring.sidebar.SideBarItemDescriptor;
 import org.vaadin.spring.sidebar.SideBarSectionDescriptor;
@@ -31,17 +29,30 @@ import org.vaadin.spring.sidebar.SideBarUtils;
 import java.util.Collection;
 
 /**
- * Created by petterwork on 03/08/15.
+ * <p>
+ * This is a side bar component that has been especially designed to be used with the {@link com.vaadin.ui.themes.ValoTheme Valo} theme.
+ * It is based on {@link com.vaadin.ui.CssLayout}s and the {@code MENU_} -styles.
+ * </p>
+ * <p>
+ * The sections and items are declared using the {@link org.vaadin.spring.sidebar.annotation.SideBarSection} and {@link org.vaadin.spring.sidebar.annotation.SideBarItem} annotations, respectively.
+ * To use this side bar, simply enable it in your application configuration using the {@link org.vaadin.spring.sidebar.annotation.EnableSideBar} annotation,
+ * and inject it into your UI. Also remember to use the Valo theme.
+ * </p>
+ *
+ * @author Petter Holmström (petter@vaadin.com)
+ * @see #setHeader(com.vaadin.ui.Layout)
+ * @see #setLogo(com.vaadin.ui.Component)
+ * @see #setLargeIcons(boolean)
  */
-public class ValoSideBar extends AbstractSideBar {
+public class ValoSideBar extends AbstractSideBar<CssLayout> {
 
-    private CssLayout layout;
+    private Layout headerLayout;
+    private Component logo;
+    private boolean largeIcons = false;
 
     /**
      * You should not need to create instances of this component directly. Instead, just inject the side bar into
      * your UI.
-     *
-     * @param sideBarUtils
      */
     public ValoSideBar(SideBarUtils sideBarUtils) {
         super(sideBarUtils);
@@ -50,27 +61,117 @@ public class ValoSideBar extends AbstractSideBar {
     }
 
     @Override
-    protected Component createCompositionRoot() {
-        layout = new CssLayout();
+    protected CssLayout createCompositionRoot() {
+        CssLayout layout = new CssLayout();
         layout.addStyleName(ValoTheme.MENU_PART);
+        if (largeIcons) {
+            layout.addStyleName(ValoTheme.MENU_PART_LARGE_ICONS);
+        }
         layout.setWidth(null);
         layout.setHeight("100%");
+        if (logo != null) {
+            layout.addComponent(logo);
+        }
+        if (headerLayout != null) {
+            layout.addComponent(headerLayout);
+        }
         return layout;
     }
 
+    /**
+     * Returns whether the side bar is using large icons or not. Default is false.
+     *
+     * @see ValoTheme#MENU_PART_LARGE_ICONS
+     */
+    public boolean isLargeIcons() {
+        return largeIcons;
+    }
+
+    /**
+     * Specifies whether the side bar should use large icons or not.
+     *
+     * @see ValoTheme#MENU_PART_LARGE_ICONS
+     */
+    public void setLargeIcons(boolean largeIcons) {
+        this.largeIcons = largeIcons;
+        if (getCompositionRoot() != null) {
+            if (largeIcons) {
+                getCompositionRoot().addStyleName(ValoTheme.MENU_PART_LARGE_ICONS);
+            } else {
+                getCompositionRoot().removeStyleName(ValoTheme.MENU_PART_LARGE_ICONS);
+            }
+        }
+    }
+
+    /**
+     * Adds a header to the top of the side bar, below the logo. The {@link ValoTheme#MENU_TITLE} style
+     * will automatically be added to the layout.
+     *
+     * @param headerLayout the layout containing the header, or {@code null} to remove.
+     */
+    public void setHeader(Layout headerLayout) {
+        if (getCompositionRoot() != null && this.headerLayout != null) {
+            getCompositionRoot().removeComponent(this.headerLayout);
+        }
+        this.headerLayout = headerLayout;
+        if (headerLayout != null) {
+            headerLayout.addStyleName(ValoTheme.MENU_TITLE);
+            if (getCompositionRoot() != null) {
+                if (this.logo != null) {
+                    getCompositionRoot().addComponent(headerLayout, 1);
+                } else {
+                    getCompositionRoot().addComponentAsFirst(headerLayout);
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns the header layout, or {@code null} if none has been set.
+     *
+     * @see #setHeader(com.vaadin.ui.Layout)
+     */
+    public Layout getHeader() {
+        return headerLayout;
+    }
+
+    /**
+     * Adds a logo to the very top of the side bar, above the header. The logo's primary style is automatically
+     * set to {@link ValoTheme#MENU_LOGO} ands its size to undefined.
+     *
+     * @param logo a {@link com.vaadin.ui.Label} or {@link com.vaadin.ui.Button} to use as the logo, or {@code null} to remove the logo completely.
+     */
+    public void setLogo(Component logo) {
+        if (getCompositionRoot() != null && this.logo != null) {
+            getCompositionRoot().removeComponent(this.logo);
+        }
+        this.logo = logo;
+        if (logo != null) {
+            logo.setPrimaryStyleName(ValoTheme.MENU_LOGO);
+            logo.setSizeUndefined();
+            if (getCompositionRoot() != null) {
+                getCompositionRoot().addComponentAsFirst(logo);
+            }
+        }
+    }
+
+    /**
+     * Returns the logo, or {@code null} if none has been set.
+     *
+     * @see #setLogo(com.vaadin.ui.Component)
+     */
+    public Component getLogo() {
+        return logo;
+    }
+
     @Override
-    protected SectionComponentFactory createDefaultSectionComponentFactory() {
+    protected SectionComponentFactory<CssLayout> createDefaultSectionComponentFactory() {
         return new DefaultSectionComponentFactory();
     }
 
     @Override
     protected ItemComponentFactory createDefaultItemComponentFactory() {
         return new DefaultItemComponentFactory();
-    }
-
-    @Override
-    protected void createSection(SideBarSectionDescriptor section, Collection<SideBarItemDescriptor> items) {
-        getSectionComponentFactory().createSectionComponent(section, items);
     }
 
     /**
@@ -146,10 +247,10 @@ public class ValoSideBar extends AbstractSideBar {
     }
 
     /**
-     * Default implementation of {@link ValoSideBar.SectionComponentFactory} that creates
-     * a {@link com.vaadin.ui.CssLayout} that contains the items.
+     * Default implementation of {@link ValoSideBar.SectionComponentFactory} that adds the section header
+     * and items directly to the composition root.
      */
-    public class DefaultSectionComponentFactory implements SectionComponentFactory {
+    public class DefaultSectionComponentFactory implements SectionComponentFactory<CssLayout> {
 
         private ItemComponentFactory itemComponentFactory;
 
@@ -159,16 +260,15 @@ public class ValoSideBar extends AbstractSideBar {
         }
 
         @Override
-        public Component createSectionComponent(SideBarSectionDescriptor descriptor, Collection<SideBarItemDescriptor> itemDescriptors) {
+        public void createSection(CssLayout compositionRoot, SideBarSectionDescriptor descriptor, Collection<SideBarItemDescriptor> itemDescriptors) {
             Label header = new Label();
             header.setValue(descriptor.getCaption());
             header.setSizeUndefined();
             header.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
-            layout.addComponent(header);
+            compositionRoot.addComponent(header);
             for (SideBarItemDescriptor item : itemDescriptors) {
-                layout.addComponent(itemComponentFactory.createItemComponent(item));
+                compositionRoot.addComponent(itemComponentFactory.createItemComponent(item));
             }
-            return null; // TODO Redesign the factories to get rid of stuff like this
         }
     }
 
