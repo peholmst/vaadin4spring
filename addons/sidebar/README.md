@@ -103,8 +103,8 @@ Example:
 
 ## Item Icons
 
-All items can also have icons. Currently you can choose between two types of icons: icons provided by the theme,
-or FontAwesome icons.
+All items can also have icons. Currently you can choose between three types of icons: icons provided by the theme,
+FontAwesome icons or Vaadin Font Icons.
 
 ### Theme Icons
 
@@ -148,6 +148,11 @@ Example:
  ...
  }
 ```
+
+### Vaadin Font Icons
+
+You can use the new [Vaadin Font Icons](https://vaadin.com/font-icons) by adding the ```@VaadinFontIcon``` annotation to the item bean.
+This annotation is used in the same way as the ```@FontAwesomeIcon```. Also remember to add the Vaadin Font Icons to your theme.
 
 ### Custom Icons
 
