@@ -1,22 +1,23 @@
 The Vaadin4Spring Side Bar
 ==========================
 
-The side bar can be used as a main menu in applications with many views. It is implemented as a Vaadin accordion
-and divided into sections. Every section contains clickable menu items. Both sections and menu items are added
-declaratively using annotations.
+The side bar can be used as a main menu in applications with many views. The side bar is divided into sections and every section contains clickable menu items.
+Both sections and menu items are added declaratively using annotations. 
 
-# Implementation Notice
-Feel free to use the features listed in this README in your projects, but please
-consider this module slightly less stable (in terms of API) than the other modules in Vaadin4Spring.
+At the moment, there are two implementations: 
+
+* AccordionSideBar: a side bar implemented as a Vaadin accordion where the sections are tabs.
+* ValoSideBar: a side bar implemented as a CSS layout using the new Valo theme.
 
 # Enabling the Side Bar
 
-To enable the side bar, add the ```@EnableSideBar``` annotation to your application configuration.
-After that, inject an instance of ```@SideBar``` into your UI like this:
+To enable the side bar, add the ```@EnableSideBar``` annotation to your application configuration. The side bar requires the I18N addon, so you
+might also have to add ```@EnableI18N``` unless you are using auto configuration.
+After that, inject an instance of the side bar into your UI like this:
 
 ```java
  @Autowired
- SideBar sideBar;
+ ValoSideBar sideBar; // Could also use AccordionSideBar
  ....
  myLayout.addComponent(sideBar);
 ```
@@ -102,8 +103,8 @@ Example:
 
 ## Item Icons
 
-All items can also have icons. Currently you can choose between two types of icons: icons provided by the theme,
-or FontAwesome icons.
+All items can also have icons. Currently you can choose between three types of icons: icons provided by the theme,
+FontAwesome icons or Vaadin Font Icons.
 
 ### Theme Icons
 
@@ -148,12 +149,19 @@ Example:
  }
 ```
 
+### Vaadin Font Icons
+
+You can use the new [Vaadin Font Icons](https://vaadin.com/font-icons) by adding the ```@VaadinFontIcon``` annotation to the item bean.
+This annotation is used in the same way as the ```@FontAwesomeIcon```. Also remember to add the Vaadin Font Icons to your theme.
+
 ### Custom Icons
 
-It is also possible to provide your own icons. Have a look at the JavaDocs of the [SideBarItemIcon](SideBarItemIcon.java)
-annotation and the [SideBarItemIconProvider](SideBarItemIconProvider.java) interface for more information.
+It is also possible to provide your own icons. Have a look at the JavaDocs of the [SideBarItemIcon](src/main/java/org/vaadin/spring/sidebar/annotation/SideBarItemIcon.java)
+annotation and the [SideBarItemIconProvider](src/main/java/org/vaadin/spring/sidebar/SideBarItemIconProvider.java) interface for more information.
 
 # Themeing
 
-The side bar includes some very basic styles optimized for the Reindeer theme. In most real world applications,
-you want to change these. The styles you want to override can be found as constants in the [SideBar](SideBar.java) class.
+The AccordionSideBar includes some very basic styles optimized for the Reindeer theme. In most real world applications,
+you want to change these. The styles you want to override can be found as constants in the [AccordionSideBar](src/main/java/org/vaadin/spring/sidebar/components/AccordionSideBar.java) class.
+
+The ValoSideBar uses styles from the Valo theme only.

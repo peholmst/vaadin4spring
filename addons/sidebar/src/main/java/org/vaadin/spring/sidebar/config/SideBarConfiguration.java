@@ -25,6 +25,7 @@ import org.vaadin.spring.sidebar.FontAwesomeIconProvider;
 import org.vaadin.spring.sidebar.LocalizedThemeIconProvider;
 import org.vaadin.spring.sidebar.SideBarUtils;
 import org.vaadin.spring.sidebar.ThemeIconProvider;
+import org.vaadin.spring.sidebar.VaadinFontIconProvider;
 import org.vaadin.spring.sidebar.components.AccordionSideBar;
 import org.vaadin.spring.sidebar.components.ValoSideBar;
 
@@ -72,5 +73,10 @@ public class SideBarConfiguration {
     @Bean
     FontAwesomeIconProvider fontAwesomeIconProvider() {
         return new FontAwesomeIconProvider();
+    }
+
+    @Bean
+    VaadinFontIconProvider vaadinFontIconProvider() {
+        return new VaadinFontIconProvider();
     }
 }
