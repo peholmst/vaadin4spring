@@ -27,7 +27,8 @@ import org.vaadin.spring.sidebar.annotation.SideBarSections;
 @SideBarSections({
         @SideBarSection(id = Sections.PLANNING, caption = "Planning"),
         @SideBarSection(id = Sections.EXECUTION, caption = "Execution"),
-        @SideBarSection(id = Sections.REPORTING, caption = "Reporting")
+        @SideBarSection(id = Sections.REPORTING, caption = "Reporting"),
+        @SideBarSection(id = Sections.VAADIN_FONT_ICONS, caption = "Vaadin Font Icons", ui = ValoSideBarUI.class)
 })
 @Component
 public class Sections {
@@ -35,4 +36,5 @@ public class Sections {
     public static final String PLANNING = "planning";
     public static final String EXECUTION = "execution";
     public static final String REPORTING = "reporting";
+    public static final String VAADIN_FONT_ICONS = "vaadinFontIcons";
 }

@@ -35,7 +35,7 @@ import org.vaadin.spring.sidebar.components.ValoSideBar;
  * @author Petter Holmström (petter@vaadin.com)
  */
 @SpringUI(path = "/valo")
-@Theme(ValoTheme.THEME_NAME)
+@Theme("sidebar") // A custom theme based on Valo
 public class ValoSideBarUI extends AbstractSideBarUI {
 
     @Autowired
