@@ -21,8 +21,8 @@ More information can be found [here](i18n/README.md).
      
 ## The Side Bar ##
    
-The side bar can be used as a main menu in applications with many views. It is implemented as a Vaadin accordion and divided into 
-sections. Every section contains clickable menu items. Both sections and menu items are added declaratively using annotations.
+The side bar can be used as a main menu in applications with many views. A side bar is divided into 
+sections and every section contains clickable menu items. Both sections and menu items are added declaratively using annotations.
    
 More information can be found [here](sidebar/README.md).
 

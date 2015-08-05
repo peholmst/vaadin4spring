@@ -38,6 +38,8 @@ A section has the following properties:
    in all side bars of all UI classes.
 4. An ordering number that is used to order the sections within the side bar.
 
+If a section does not contain any items, it is not added to the side bar.
+
 Example:
 
 ```java
@@ -100,6 +102,12 @@ Example:
  ...
  }
 ```
+
+## Item Filtering
+
+It is possible to filter the items before adding them to the side bar, for example if the current user should not
+have access to a particular set of items. You can do this by implementing the [AbstractSideBar.FilterItem](src/main/java/org/vaadin/spring/sidebar/components/AbstractSideBar.java) interface
+and calling ```AbstractSideBar.setItemFilter(FilterItem)``` *before* the side bar is attached to the UI.
 
 ## Item Icons
 
