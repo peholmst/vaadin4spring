@@ -22,7 +22,9 @@ import org.vaadin.spring.sidebar.SideBarItemDescriptor;
 import org.vaadin.spring.sidebar.SideBarSectionDescriptor;
 import org.vaadin.spring.sidebar.SideBarUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Base class for visual side bar components. The side bar has access to an instance of {@link org.vaadin.spring.sidebar.SideBarUtils}
@@ -35,6 +37,7 @@ public abstract class AbstractSideBar<CR extends ComponentContainer> extends Cus
     private final SideBarUtils sideBarUtils;
     private SectionComponentFactory<CR> sectionComponentFactory;
     private ItemComponentFactory itemComponentFactory;
+    private ItemFilter itemFilter;
 
     /**
      * Protected constructor. The instance of {@link org.vaadin.spring.sidebar.SideBarUtils} should come from the Spring application context.
@@ -129,7 +132,40 @@ public abstract class AbstractSideBar<CR extends ComponentContainer> extends Cus
     }
 
     private void createSection(CR compositionRoot, SideBarSectionDescriptor section, Collection<SideBarItemDescriptor> items) {
-        getSectionComponentFactory().createSection(compositionRoot, section, items);
+        if (items.isEmpty()) {
+            return;
+        }
+        if (itemFilter == null) {
+            getSectionComponentFactory().createSection(compositionRoot, section, items);
+        } else {
+            List<SideBarItemDescriptor> passedItems = new ArrayList<SideBarItemDescriptor>();
+            for (SideBarItemDescriptor candidate : items) {
+                if (itemFilter.passesFilter(candidate)) {
+                    passedItems.add(candidate);
+                }
+            }
+            if (passedItems.size() > 0) {
+                getSectionComponentFactory().createSection(compositionRoot, section, passedItems);
+            }
+        }
+    }
+
+    /**
+     * Sets an optional filter that is consulted before an item is added to the side bar. If set,
+     * only items that pass the filter are added.
+     */
+    public void setItemFilter(ItemFilter itemFilter) {
+        if (isAttached()) {
+            throw new IllegalStateException("An ItemFilter cannot be set when the SideBar is attached");
+        }
+        this.itemFilter = itemFilter;
+    }
+
+    /**
+     * Returns the item filter to use or {@code null} if not set.
+     */
+    public ItemFilter getItemFilter() {
+        return itemFilter;
     }
 
     @Override
@@ -155,7 +191,7 @@ public abstract class AbstractSideBar<CR extends ComponentContainer> extends Cus
          *
          * @param compositionRoot the component to which the section and items are to be added, must not be {@code null}.
          * @param descriptor      the descriptor of the side bar section, must not be {@code null}.
-         * @param itemDescriptors the descriptors of the items to be added to the section, must not be {@code null}.
+         * @param itemDescriptors the descriptors of the items to be added to the section, must not be {@code null} nor empty.
          */
         void createSection(CR compositionRoot, SideBarSectionDescriptor descriptor, Collection<SideBarItemDescriptor> itemDescriptors);
     }
@@ -176,5 +212,21 @@ public abstract class AbstractSideBar<CR extends ComponentContainer> extends Cus
          * @return a component, never {@code null}.
          */
         Component createItemComponent(SideBarItemDescriptor descriptor);
+    }
+
+    /**
+     * Interface defining a filter that can limit which items show up in the side bar.
+     */
+    public interface ItemFilter {
+
+        /**
+         * Checks if the specified side bar item passes the filter or not. Items that do not pass are excluded
+         * from the side bar.
+         *
+         * @param descriptor the descriptor of the side bar item, must not be {@code null}.
+         * @return true if the item passes the filter, false if it does not.
+         */
+        boolean passesFilter(SideBarItemDescriptor descriptor);
+
     }
 }
