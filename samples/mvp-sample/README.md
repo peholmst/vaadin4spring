@@ -6,7 +6,7 @@ focus on MVP architecture.
 
 ## Quick Start ##
 
-Clone this repository `git clone https://github.com/fastnsilver/vaadin4spring.git`
+Clone this repository `git clone https://github.com/peholmst/vaadin4spring.git`
 
 Build the library and sample modules with Maven using 
 

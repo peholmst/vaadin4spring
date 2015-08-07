@@ -16,11 +16,10 @@
 package org.vaadin.spring.sidebar;
 
 import com.vaadin.server.Resource;
+import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.UI;
-
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.i18n.I18N;
-import com.vaadin.spring.annotation.SpringView;
 import org.vaadin.spring.sidebar.annotation.SideBarItem;
 import org.vaadin.spring.sidebar.annotation.SideBarItemIcon;
 
@@ -49,6 +48,16 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
         this.iconProvider = findIconProvider();
     }
 
+    /**
+     * Attempts to find and return an annotation of the specified type declared on this side bar item.
+     *
+     * @param annotationType the type of the annotation to look for.
+     * @return the annotation, or {@code null} if not found.
+     */
+    public <A extends Annotation> A findAnnotationOnBean(Class<A> annotationType) {
+        return applicationContext.findAnnotationOnBean(beanName, annotationType);
+    }
+
     private Annotation findIconAnnotation() {
         Class<?> type = applicationContext.getType(beanName);
         while (type != null) {
@@ -63,7 +72,7 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
         return null;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private SideBarItemIconProvider<Annotation> findIconProvider() {
         if (iconAnnotation != null) {
             final Class<? extends SideBarItemIconProvider> iconProviderClass = iconAnnotation.annotationType().getAnnotation(SideBarItemIcon.class).value();

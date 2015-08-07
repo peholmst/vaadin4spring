@@ -15,25 +15,27 @@
  */
 package org.vaadin.spring.sidebar.annotation;
 
-import org.springframework.context.annotation.Import;
-import org.vaadin.spring.sidebar.config.SideBarConfiguration;
+import org.vaadin.spring.sidebar.VaadinFontIconProvider;
+import org.vaadin.teemu.VaadinIcons;
 
-import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Add this annotation to your application configuration to enable the {@link org.vaadin.spring.sidebar.components.AccordionSideBar}
- * component. After that, just inject the side bar into your UIs. The side bar uses {@link org.vaadin.spring.i18n.I18N}, so remember
- * {@link org.vaadin.spring.i18n.annotation.EnableI18N enable} it as well, unless you are using auto configuration.
+ * This annotation is placed next to {@link org.vaadin.spring.sidebar.annotation.SideBarItem}, instructing the side bar
+ * to use a {@link org.vaadin.teemu.VaadinIcons Vaadin Font Icon} for the item.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Import(SideBarConfiguration.class)
-public @interface EnableSideBar {
+@SideBarItemIcon(VaadinFontIconProvider.class)
+public @interface VaadinFontIcon {
+
+    /**
+     * The item icon.
+     */
+    VaadinIcons value();
 }

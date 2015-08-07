@@ -15,16 +15,17 @@
  */
 package org.vaadin.spring.samples.mvp.ui.component.listener;
 
+import javax.inject.Inject;
+
+import org.springframework.core.env.Environment;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import org.springframework.core.env.Environment;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.vaadin.spring.samples.mvp.ui.view.BannerView;
-
-import javax.inject.Inject;
+import com.vaadin.ui.HasComponents;
 
 /**
  * Facilitates logout.  Destroys the current session and redirects user to a login page.
@@ -43,12 +44,12 @@ public class LogoutLinkListener implements ClickListener {
 	@Override
 	public void buttonClick(ClickEvent event) {
 		SecurityContextHolder.clearContext();
-		BannerView banner = (BannerView) event.getComponent().getParent();
+		HasComponents parent = event.getComponent().getParent();
 		String contextPath = VaadinServlet.getCurrent().getServletContext().getContextPath();
 		String urlMapping = env.getProperty("vaadin.servlet.urlMapping");
 		String uiPath = urlMapping.substring(0, urlMapping.length() - 2);
 		String location = contextPath.concat(uiPath);
-		banner.getUI().getPage().setLocation(location);
+		parent.getUI().getPage().setLocation(location);
 	}
 
 }

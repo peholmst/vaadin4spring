@@ -27,6 +27,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.vaadin.spring.samples.mvp.Profiles;
+import org.vaadin.spring.security.annotation.EnableVaadinSecurity;
 
 
 /**
@@ -39,6 +40,7 @@ import org.vaadin.spring.samples.mvp.Profiles;
  *
  */
 @Configuration
+@EnableVaadinSecurity
 @EnableWebMvcSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Order(1)
