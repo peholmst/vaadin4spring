@@ -25,7 +25,7 @@ import org.springframework.context.ApplicationContextAware;
 /**
  * VaadinApplicationContext allows static access to the {@link org.springframework.context.ApplicationContext}.
  * This implementation exists to provide access from non-managed spring beans.
- * <p>An VaadinApplicationContext provides:
+ * <p>A VaadinApplicationContext provides:
  * <ul>
  * <li>Access to the Spring {@link org.springframework.context.ApplicationContext}.
  * </ul>

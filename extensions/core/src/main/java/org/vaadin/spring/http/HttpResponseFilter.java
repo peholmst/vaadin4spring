@@ -54,7 +54,7 @@ public class HttpResponseFilter implements Filter {
         }		
     }
 
-    public HttpServletResponse getHttpServletReponse() {
+    public HttpServletResponse getHttpServletResponse() {
         return responses.get();
     }
 
