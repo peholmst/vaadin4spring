@@ -59,7 +59,7 @@ public class Vaadin4SpringServletService extends SpringVaadinServletService {
     @Override
     public void requestStart(VaadinRequest request, VaadinResponse response) {
         super.requestStart(request, response);
-        logger.debug("Invoking VaadinRequestStartListeners");
+        logger.trace("Invoking VaadinRequestStartListeners");
         for (VaadinRequestStartListener listener : applicationContext.getBeansOfType(VaadinRequestStartListener.class).values()) {
             try {
                 listener.onRequestStart(request, response);
@@ -67,12 +67,12 @@ public class Vaadin4SpringServletService extends SpringVaadinServletService {
                 logger.error("VaadinRequestStartListener threw an exception, ignoring", ex);
             }
         }
-        logger.debug("Finished invoking VaadinRequestStartListeners");
+        logger.trace("Finished invoking VaadinRequestStartListeners");
     }
 
     @Override
     public void requestEnd(VaadinRequest request, VaadinResponse response, VaadinSession session) {
-        logger.debug("Invoking VaadinRequestEndListeners");
+        logger.trace("Invoking VaadinRequestEndListeners");
         for (VaadinRequestEndListener listener : applicationContext.getBeansOfType(VaadinRequestEndListener.class).values()) {
             try {
                 listener.onRequestEnd(request, response, session);
@@ -80,7 +80,7 @@ public class Vaadin4SpringServletService extends SpringVaadinServletService {
                 logger.error("VaadinRequestEndListener threw an exception, ignoring", ex);
             }
         }
-        logger.debug("Finished invoking VaadinRequestEndListener");
+        logger.trace("Finished invoking VaadinRequestEndListener");
         super.requestEnd(request, response, session);
     }
 }
