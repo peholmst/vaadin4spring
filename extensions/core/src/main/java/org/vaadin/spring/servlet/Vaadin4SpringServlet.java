@@ -16,7 +16,10 @@
 package org.vaadin.spring.servlet;
 
 import com.vaadin.server.DeploymentConfiguration;
+import com.vaadin.server.ServiceDestroyListener;
 import com.vaadin.server.ServiceException;
+import com.vaadin.server.SessionDestroyListener;
+import com.vaadin.server.SessionInitListener;
 import com.vaadin.server.SystemMessagesProvider;
 import com.vaadin.server.VaadinServletService;
 import com.vaadin.spring.server.SpringVaadinServlet;
@@ -32,6 +35,9 @@ import javax.servlet.ServletException;
  * An extended version of {@link com.vaadin.spring.server.SpringVaadinServlet} that provides the following additional features:
  * <ul>
  * <li>Support for specifying a custom {@link com.vaadin.server.SystemMessagesProvider} by making it available as a Spring managed bean</li>
+ * <li>Support for adding {@link com.vaadin.server.SessionInitListener}s by making them available as Spring managed beans</li>
+ * <li>Support for adding {@link com.vaadin.server.SessionDestroyListener}s by making them available as Spring managed beans</li>
+ * <li>Support for adding {@link com.vaadin.server.ServiceDestroyListener}s by making them available as Spring managed beans</li>
  * <li>Support for {@link org.vaadin.spring.request.VaadinRequestStartListener}s and {@link org.vaadin.spring.request.VaadinRequestEndListener}s</li>
  * </ul>
  *
@@ -65,5 +71,18 @@ public class Vaadin4SpringServlet extends SpringVaadinServlet {
             logger.info("Could not find a SystemMessagesProvider in the application context, using default");
             logger.trace("Exception thrown while looking for a SystemMessagesProvider", ex);
         }
+        for (SessionInitListener sessionInitListener : applicationContext.getBeansOfType(SessionInitListener.class).values()) {
+            logger.info("Adding SessionInitListener {}", sessionInitListener);
+            getService().addSessionInitListener(sessionInitListener);
+        }
+        for (SessionDestroyListener sessionDestroyListener : applicationContext.getBeansOfType(SessionDestroyListener.class).values()) {
+            logger.info("Adding SessionDestroyListener {}", sessionDestroyListener);
+            getService().addSessionDestroyListener(sessionDestroyListener);
+        }
+        for (ServiceDestroyListener serviceDestroyListener : applicationContext.getBeansOfType(ServiceDestroyListener.class).values()) {
+            logger.info("Adding ServiceDestroyListener {}", serviceDestroyListener);
+            getService().addServiceDestroyListener(serviceDestroyListener);
+        }
+        logger.info("Custom Vaadin4Spring servlet initialization completed");
     }
 }
