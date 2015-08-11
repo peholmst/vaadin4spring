@@ -30,11 +30,12 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.vaadin.spring.annotation.PrototypeScope;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.samples.security.managed.events.LoginEvent;
 import org.vaadin.spring.security.VaadinSecurity;
+import org.vaadin.spring.security.util.SuccessfulLoginEvent;
 
 /**
  * Full-screen UI component that allows the user to login.
@@ -74,6 +75,7 @@ public class LoginScreen extends CustomComponent {
         loginForm.addComponent(rememberMe = new CheckBox("Remember me"));
         loginForm.addComponent(login = new Button("Login"));
         login.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        login.setDisableOnClick(true);
         login.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         login.addClickListener(new Button.ClickListener() {
             @Override
@@ -103,8 +105,8 @@ public class LoginScreen extends CustomComponent {
 
     private void login() {
         try {
-            vaadinSecurity.login(userName.getValue(), passwordField.getValue(), rememberMe.getValue());
-            eventBus.publish(this, new LoginEvent());
+            final Authentication authentication = vaadinSecurity.login(userName.getValue(), passwordField.getValue(), rememberMe.getValue());
+            eventBus.publish(this, new SuccessfulLoginEvent(getUI(), authentication));
         } catch (AuthenticationException ex) {
             userName.focus();
             userName.selectAll();
@@ -114,6 +116,8 @@ public class LoginScreen extends CustomComponent {
         } catch (Exception ex) {
             Notification.show("An unexpected error occurred", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
             LoggerFactory.getLogger(getClass()).error("Unexpected error while logging in", ex);
+        } finally {
+            login.setEnabled(true);
         }
     }
 }

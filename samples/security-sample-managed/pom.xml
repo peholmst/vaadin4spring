@@ -39,6 +39,10 @@
             <artifactId>vaadin-spring-addon-eventbus</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.vaadin.spring.addons</groupId>
+            <artifactId>vaadin-spring-addon-sidebar</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-themes</artifactId>
         </dependency>
