@@ -2,7 +2,7 @@ The Vaadin4Spring I18N Extensions
 =================================
 
 Internationalization in a Vaadin4Spring application is very much handled by the I18N features of Spring itself.
-However, to make it a bit easier to use, the addon provides a helper class, namely [I18N](I18N.java).
+However, to make it a bit easier to use, the addon provides a helper class, namely [I18N](src/main/java/org/vaadin/spring/i18n/I18N.java).
 
 The ```I18N``` can be injected into any Spring managed bean and uses the locale of the currently active UI
 when looking up messages from the application context.
@@ -20,7 +20,7 @@ Example:
 
 A composite message source is an implementation of the Spring ```MessageSource``` interface
 that resolves messages by querying all beans in the application context that implement the
-[MessageProvider](MessageProvider.java) interface. 
+[MessageProvider](src/main/java/org/vaadin/spring/i18n/MessageProvider.java) interface. 
 
 The idea behind this is to make it possible to build modular UI applications that all share a single message source.
 Each module would have its own message provider, and would use either ```I18N``` or the application context directly
@@ -33,7 +33,7 @@ You can enable the composite message source by adding the ```@EnableCompositeMes
 Spring configuration. This will add the message source to your application context.
 
 After this, create as many ```MessageProvider``` beans as you want. You can either implement the interface from
-scratch, or use the [ResourceBundleMessageProvider](ResourceBundleMessageProvider.java). The latter reads messages from
+scratch, or use the [ResourceBundleMessageProvider](src/main/java/org/vaadin/spring/i18n/ResourceBundleMessageProvider.java). The latter reads messages from
 resource bundles with a specific basename and encoding (check the JavaDocs for more information).
 
 ## Example
@@ -69,16 +69,4 @@ public class MyModule {
 Finally a tip: If you are building a modular application, it is good practice to prepend the messages with some kind
 of module identifier, for example a Java package name. That way you can avoid naming conflicts when additional modules
 are added in the future.
-
-# Experimental Stuff
-
-In addition to the ```I18N``` class, there are also some experimental classes that should be used with care (meaning
-they might not work at all, they could change dramatically or even be dropped from future versions of the add-on).
-
-Please check the source code and JavaDocs for more information:
-
-* [TranslatedProperties](TranslatedProperties.java)
-* [TranslatedProperty](TranslatedProperty.java)
-* [Translator](Translator.class)
-* [ComponentProperties](support/ComponentProperties.java)
 
