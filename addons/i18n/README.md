@@ -70,15 +70,3 @@ Finally a tip: If you are building a modular application, it is good practice to
 of module identifier, for example a Java package name. That way you can avoid naming conflicts when additional modules
 are added in the future.
 
-# Experimental Stuff
-
-In addition to the ```I18N``` class, there are also some experimental classes that should be used with care (meaning
-they might not work at all, they could change dramatically or even be dropped from future versions of the add-on).
-
-Please check the source code and JavaDocs for more information:
-
-* [TranslatedProperties](TranslatedProperties.java)
-* [TranslatedProperty](TranslatedProperty.java)
-* [Translator](Translator.class)
-* [ComponentProperties](support/ComponentProperties.java)
-
