@@ -81,7 +81,7 @@ public class SharedVaadinSecurityImpl extends AbstractVaadinSecurity implements 
     private VaadinAuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Override
-    public void login(Authentication authentication, boolean rememberMe) throws AuthenticationException, Exception {
+    public Authentication login(Authentication authentication, boolean rememberMe) throws AuthenticationException, Exception {
 
         // Ensure SecurityContext is never null
         SecurityContext context = SecurityContextHolder.getContext();
@@ -141,6 +141,7 @@ public class SharedVaadinSecurityImpl extends AbstractVaadinSecurity implements 
                 getAuthenticationSuccessHandler().onAuthenticationSuccess(authentication);
             }
 
+            return authentication;
         } catch (AuthenticationException e) {
 
             /**
@@ -166,12 +167,14 @@ public class SharedVaadinSecurityImpl extends AbstractVaadinSecurity implements 
             /*
              * Process AuthenticationFailureHandler if configured
              */
+            // TODO What to do about this???
+            /*
             if (hasAuthenticationFailureHandlerConfigured()) {
                 getAuthenticationFailureHandler().onAuthenticationFailure(e);
             } else {
                 throw e;
-            }
-
+            }*/
+            throw e;
         } finally {
 
             /**

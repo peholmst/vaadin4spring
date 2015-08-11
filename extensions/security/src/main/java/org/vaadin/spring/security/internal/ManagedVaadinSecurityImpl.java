@@ -39,16 +39,17 @@ public class ManagedVaadinSecurityImpl extends AbstractVaadinSecurity {
     }
 
     @Override
-    public void login(Authentication authentication, boolean rememberMe) throws AuthenticationException {
+    public Authentication login(Authentication authentication, boolean rememberMe) throws AuthenticationException {
         SecurityContext context = SecurityContextHolder.getContext();
         logger.debug("Authenticating using {}, rememberMe = {}", authentication, rememberMe);
         final Authentication fullyAuthenticated = getAuthenticationManager().authenticate(authentication);
         logger.debug("Setting authentication of context {} to {}", context, fullyAuthenticated);
         context.setAuthentication(fullyAuthenticated);
         if (rememberMe) {
-            logger.warn("Support for Remember Me has not been added yet");
+            throw new UnsupportedOperationException("Support for Remember Me has not been added yet");
             // TODO Implement me!
         }
+        return fullyAuthenticated;
     }
 
     @Override

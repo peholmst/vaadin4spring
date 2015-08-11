@@ -37,6 +37,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.util.Assert;
 import org.vaadin.spring.security.VaadinSecurity;
 
@@ -57,6 +58,7 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
     private ApplicationContext applicationContext;
     private AuthenticationManager authenticationManager;
     private AccessDecisionManager accessDecisionManager;
+    private RememberMeServices rememberMeServices;
 
     @Override
     public boolean isAuthenticated() {
@@ -90,18 +92,18 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
     }
 
     @Override
-    public void login(Authentication authentication) throws AuthenticationException, Exception {
-        login(authentication, false);
+    public Authentication login(Authentication authentication) throws AuthenticationException, Exception {
+        return login(authentication, false);
     }
 
     @Override
-    public void login(String username, String password, boolean rememberMe) throws AuthenticationException, Exception {
-        login(new UsernamePasswordAuthenticationToken(username, password), rememberMe);
+    public Authentication login(String username, String password, boolean rememberMe) throws AuthenticationException, Exception {
+        return login(new UsernamePasswordAuthenticationToken(username, password), rememberMe);
     }
 
     @Override
-    public void login(String username, String password) throws AuthenticationException, Exception {
-        login(new UsernamePasswordAuthenticationToken(username, password));
+    public Authentication login(String username, String password) throws AuthenticationException, Exception {
+        return login(new UsernamePasswordAuthenticationToken(username, password));
     }
 
     @Override
@@ -119,6 +121,13 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
         } catch (NoSuchBeanDefinitionException ex) {
             accessDecisionManager = null;
             logger.warn("No AccessDecisionManager found! Some security methods will not be available.");
+        }
+
+        try {
+            rememberMeServices = applicationContext.getBean(RememberMeServices.class);
+            logger.info("Using RememberMeServices {}", rememberMeServices);
+        } catch (NoSuchBeanDefinitionException ex) {
+            logger.info("No RememberMeServices found. Support for RememberMe authentication is disabled.");
         }
     }
 
@@ -145,6 +154,16 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
     @Override
     public boolean hasAccessDecisionManager() {
         return (accessDecisionManager != null);
+    }
+
+    @Override
+    public RememberMeServices getRememberMeServices() {
+        return rememberMeServices;
+    }
+
+    @Override
+    public boolean hasRememberMeServices() {
+        return rememberMeServices != null;
     }
 
     @Override

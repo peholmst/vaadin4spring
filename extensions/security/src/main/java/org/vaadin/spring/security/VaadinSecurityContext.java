@@ -18,6 +18,7 @@ package org.vaadin.spring.security;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.web.authentication.RememberMeServices;
 
 /**
  * Interface which provides access to basic Security Context objects.
@@ -57,4 +58,14 @@ public interface VaadinSecurityContext {
      * @return true if the Security bean has an accessDecisionManager
      */
     boolean hasAccessDecisionManager();
+
+    /**
+     * Returns the {@link org.springframework.security.web.authentication.RememberMeServices}, or {@code null} if not available.
+     */
+    RememberMeServices getRememberMeServices();
+
+    /**
+     * Checks if {@link org.springframework.security.web.authentication.RememberMeServices} are available.
+     */
+    boolean hasRememberMeServices();
 }

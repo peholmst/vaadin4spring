@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.security.provider;
+package org.vaadin.spring.security.navigation;
 
 import com.vaadin.navigator.View;
 import com.vaadin.spring.access.ViewInstanceAccessControl;
@@ -39,7 +39,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Implementation of {@link com.vaadin.spring.access.ViewAccessControl} that
+ * Implementation of {@link com.vaadin.spring.access.ViewInstanceAccessControl} that
  * checks if a view has the {@link org.springframework.security.access.prepost.PreAuthorize} annotation and if so,
  * uses the {@link org.vaadin.spring.security.VaadinSecurity} instance to check if the current user is authorized to
  * access the view.

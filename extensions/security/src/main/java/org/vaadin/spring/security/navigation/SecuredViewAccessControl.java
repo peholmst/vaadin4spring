@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.security.provider;
+package org.vaadin.spring.security.navigation;
 
-import com.vaadin.navigator.View;
 import com.vaadin.spring.access.ViewAccessControl;
-import com.vaadin.spring.access.ViewInstanceAccessControl;
 import com.vaadin.ui.UI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +27,7 @@ import org.vaadin.spring.security.VaadinSecurity;
 import org.vaadin.spring.security.VaadinSecurityAware;
 
 /**
- * Implementation of {@link com.vaadin.spring.access.ViewAccessControl} and {@link com.vaadin.spring.access.ViewInstanceAccessControl} that
+ * Implementation of {@link com.vaadin.spring.access.ViewAccessControl} that
  * checks if a view has the {@link org.springframework.security.access.annotation.Secured} annotation and if so,
  * uses the {@link org.vaadin.spring.security.VaadinSecurity} instance to check if the current user is authorized to
  * access the view.
@@ -37,8 +35,9 @@ import org.vaadin.spring.security.VaadinSecurityAware;
  * @author Petter Holmström (petter@vaadin.com)
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  * @see VaadinSecurity#hasAnyAuthority(String...)
+ * @see org.vaadin.spring.security.navigation.PreAuthorizeViewInstanceAccessControl
  */
-public class SecuredViewAccessControl implements VaadinSecurityAware, ApplicationContextAware, ViewAccessControl, ViewInstanceAccessControl {
+public class SecuredViewAccessControl implements VaadinSecurityAware, ApplicationContextAware, ViewAccessControl {
 
     private static final Logger logger = LoggerFactory.getLogger(SecuredViewAccessControl.class);
 
@@ -62,25 +61,8 @@ public class SecuredViewAccessControl implements VaadinSecurityAware, Applicatio
         if (viewSecured == null) {
             logger.trace("No @Secured annotation found on view {}. Granting access.", beanName);
             return true;
-        } else if (security.hasAccessDecisionManager()) {
-            logger.trace("AccessDecisionManager found, leaving access decision concerning view {} to the instance access control", beanName);
-            return true;
         } else {
             final boolean result = security.hasAnyAuthority(viewSecured.value());
-            logger.trace("Is access granted to view {}: {}", beanName, result);
-            return result;
-        }
-    }
-
-    @Override
-    public boolean isAccessGranted(UI ui, String beanName, View view) {
-        final Secured viewSecured = applicationContext.findAnnotationOnBean(beanName, Secured.class);
-
-        if (viewSecured == null || !security.hasAccessDecisionManager()) {
-            logger.trace("No @Secured annotation found or no AccessDecisionManager found. Granting access to view {}", beanName);
-            return true; // Decision is already done if there is no AccessDecisionManager
-        } else {
-            final boolean result = security.hasAccessToSecuredObject(view);
             logger.trace("Is access granted to view {}: {}", beanName, result);
             return result;
         }

@@ -24,8 +24,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.security.VaadinSecurity;
-import org.vaadin.spring.security.provider.PreAuthorizeViewInstanceAccessControl;
-import org.vaadin.spring.security.provider.SecuredViewAccessControl;
+import org.vaadin.spring.security.navigation.PreAuthorizeViewInstanceAccessControl;
+import org.vaadin.spring.security.navigation.SecuredViewAccessControl;
 import org.vaadin.spring.security.support.VaadinSecurityAwareProcessor;
 
 /**
