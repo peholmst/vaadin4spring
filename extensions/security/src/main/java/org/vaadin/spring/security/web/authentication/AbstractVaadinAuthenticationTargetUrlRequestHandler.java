@@ -15,16 +15,8 @@
  */
 package org.vaadin.spring.security.web.authentication;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.util.Assert;
@@ -32,62 +24,60 @@ import org.springframework.util.StringUtils;
 import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.security.web.VaadinRedirectStrategy;
 
-/**
-* Base class containing the logic used by strategies which handle redirection to a URL and
-* are passed an {@code Authentication} object as part of the contract.
-* See {@link org.springframework.security.web.authentication.AuthenticationSuccessHandler} and
-* {@link org.springframework.security.web.authentication.logout.LogoutSuccessHandler LogoutSuccessHandler}, for example.
-* <p>
-* Uses the following logic sequence to determine how it should handle the forward/redirect
-* <ul>
-* <li>
-* If the {@code alwaysUseDefaultTargetUrl} property is set to true, the {@code defaultTargetUrl} property
-* will be used for the destination.
-* </li>
-* <li>
-* If a parameter matching the value of {@code targetUrlParameter} has been set on the request, the value will be used
-* as the destination. If you are enabling this functionality, then you should ensure that the parameter
-* cannot be used by an attacker to redirect the user to a malicious site (by clicking on a URL with the parameter
-* included, for example). Typically it would be used when the parameter is included in the login form and submitted with
-* the username and password.
-* </li>
-* <li>
-* If the {@code useReferer} property is set, the "Referer" HTTP header value will be used, if present.
-* </li>
-* <li>
-* As a fallback option, the {@code defaultTargetUrl} value will be used.
-* </li>
-* </ul>
-*
-* @author Luke Taylor (original author source code Spring-Security)
-* @author Gert-Jan Timmer (gjr.timmer@gmail.com) (Vaadin specific changes)
-* @since 3.0
-*/
-public abstract class AbstractVaadinAuthenticationTargetUrlRequestHandler implements InitializingBean {
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
+/**
+ * Base class containing the logic used by strategies which handle redirection to a URL and
+ * are passed an {@code Authentication} object as part of the contract.
+ * See {@link org.springframework.security.web.authentication.AuthenticationSuccessHandler} and
+ * {@link org.springframework.security.web.authentication.logout.LogoutSuccessHandler LogoutSuccessHandler}, for example.
+ * <p/>
+ * Uses the following logic sequence to determine how it should handle the forward/redirect
+ * <ul>
+ * <li>
+ * If the {@code alwaysUseDefaultTargetUrl} property is set to true, the {@code defaultTargetUrl} property
+ * will be used for the destination.
+ * </li>
+ * <li>
+ * If a parameter matching the value of {@code targetUrlParameter} has been set on the request, the value will be used
+ * as the destination. If you are enabling this functionality, then you should ensure that the parameter
+ * cannot be used by an attacker to redirect the user to a malicious site (by clicking on a URL with the parameter
+ * included, for example). Typically it would be used when the parameter is included in the login form and submitted with
+ * the username and password.
+ * </li>
+ * <li>
+ * If the {@code useReferer} property is set, the "Referer" HTTP header value will be used, if present.
+ * </li>
+ * <li>
+ * As a fallback option, the {@code defaultTargetUrl} value will be used.
+ * </li>
+ * </ul>
+ *
+ * @author Luke Taylor (original author source code Spring-Security)
+ * @author Gert-Jan Timmer (gjr.timmer@gmail.com) (Vaadin specific changes)
+ * @author Petter Holmström (petter@vaadin.com)
+ */
+public abstract class AbstractVaadinAuthenticationTargetUrlRequestHandler {
+
+    protected final VaadinRedirectStrategy redirectStrategy;
+    protected final HttpService http;
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private String targetUrlParameter = null;
     private String defaultTargetUrl = "/";
     private boolean alwaysUseDefaultTargetUrl = false;
     private boolean useReferer = false;
-    private VaadinRedirectStrategy redirectStrategy;
 
-    @Autowired
-    protected HttpService http;
-    
-    protected AbstractVaadinAuthenticationTargetUrlRequestHandler() {
-    }
-    
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        
-        Assert.notNull(redirectStrategy, "VaadinRedirectStrategy cannot be null");
-        
+    protected AbstractVaadinAuthenticationTargetUrlRequestHandler(HttpService http, VaadinRedirectStrategy redirectStrategy) {
+        this.http = http;
+        this.redirectStrategy = redirectStrategy;
     }
 
     /**
      * Invokes the configured {@code RedirectStrategy} with the URL returned by the {@code determineTargetUrl} method.
-     * <p>
+     * <p/>
      * The redirect will not be performed if the response has already been committed.
      */
     protected void handle(Authentication authentication) throws IOException, ServletException {
@@ -114,7 +104,7 @@ public abstract class AbstractVaadinAuthenticationTargetUrlRequestHandler implem
         // Check for the parameter and use that if available
         String targetUrl = null;
 
-        if (targetUrlParameter != null  ) {
+        if (targetUrlParameter != null) {
             targetUrl = request.getParameter(targetUrlParameter);
 
             if (StringUtils.hasText(targetUrl)) {
@@ -161,6 +151,10 @@ public abstract class AbstractVaadinAuthenticationTargetUrlRequestHandler implem
         this.defaultTargetUrl = defaultTargetUrl;
     }
 
+    protected boolean isAlwaysUseDefaultTargetUrl() {
+        return alwaysUseDefaultTargetUrl;
+    }
+
     /**
      * If <code>true</code>, will always redirect to the value of {@code defaultTargetUrl}
      * (defaults to <code>false</code>).
@@ -169,8 +163,8 @@ public abstract class AbstractVaadinAuthenticationTargetUrlRequestHandler implem
         this.alwaysUseDefaultTargetUrl = alwaysUseDefaultTargetUrl;
     }
 
-    protected boolean isAlwaysUseDefaultTargetUrl() {
-        return alwaysUseDefaultTargetUrl;
+    protected String getTargetUrlParameter() {
+        return targetUrlParameter;
     }
 
     /**
@@ -178,28 +172,13 @@ public abstract class AbstractVaadinAuthenticationTargetUrlRequestHandler implem
      * and the value used as the target URL if present.
      *
      * @param targetUrlParameter the name of the parameter containing the encoded target URL. Defaults
-     * to null.
+     *                           to null.
      */
     public void setTargetUrlParameter(String targetUrlParameter) {
-        if(targetUrlParameter != null) {
-            Assert.hasText(targetUrlParameter,"targetUrlParameter cannot be empty");
+        if (targetUrlParameter != null) {
+            Assert.hasText(targetUrlParameter, "targetUrlParameter cannot be empty");
         }
         this.targetUrlParameter = targetUrlParameter;
-    }
-
-    protected String getTargetUrlParameter() {
-        return targetUrlParameter;
-    }
-
-    /**
-     * Allows overriding of the behaviour when redirecting to a target URL.
-     */
-    public void setRedirectStrategy(VaadinRedirectStrategy redirectStrategy) {
-        this.redirectStrategy = redirectStrategy;
-    }
-
-    protected VaadinRedirectStrategy getRedirectStrategy() {
-        return redirectStrategy;
     }
 
     /**

@@ -15,30 +15,32 @@
  */
 package org.vaadin.spring.security.web.authentication;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.WebAttributes;
+import org.vaadin.spring.http.HttpService;
+import org.vaadin.spring.security.web.VaadinRedirectStrategy;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * <tt>VaadinAuthenticationSuccessHandler</tt> which can be configured with a default URL which users should be
  * sent to upon successful authentication.
- * <p>
+ * <p/>
  * The logic used is that of the {@link AbstractVaadinAuthenticationTargetUrlRequestHandler parent class}.
- * <p>
+ * <p/>
  * Must be used as a bean because of autowiring within parent class.
- * 
+ *
  * @author Luke Taylor (original source code of {@link org.springframework.security.web.authentication.AuthenticationSuccessHandler})
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com) (Vaadin specific implementation)
+ * @author Petter Holmström (petter@vaadin.com)
  */
 public class VaadinUrlAuthenticationSuccessHandler extends AbstractVaadinAuthenticationTargetUrlRequestHandler implements VaadinAuthenticationSuccessHandler {
 
-    public VaadinUrlAuthenticationSuccessHandler() {}
-    
-    public VaadinUrlAuthenticationSuccessHandler(String defaultTargetUrl) {
+    public VaadinUrlAuthenticationSuccessHandler(HttpService http, VaadinRedirectStrategy redirectStrategy, String defaultTargetUrl) {
+        super(http, redirectStrategy);
         setDefaultTargetUrl(defaultTargetUrl);
     }
-    
+
     @Override
     public void onAuthenticationSuccess(Authentication authentication) throws Exception {
         handle(authentication);

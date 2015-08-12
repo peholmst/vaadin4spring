@@ -15,9 +15,6 @@
  */
 package org.vaadin.spring.security.web.authentication;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -25,7 +22,11 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.util.StringUtils;
+import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.security.web.VaadinRedirectStrategy;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * An authentication success strategy which can make use of the {@link VaadinRedirectStrategy} which may have been stored in
@@ -33,7 +34,7 @@ import org.vaadin.spring.security.web.VaadinRedirectStrategy;
  * the request data is stored to record the original destination before the authentication process commenced, and to
  * allow the request to be reconstructed when a redirect to the same URL occurs. This class is responsible for
  * performing the redirect to the original URL if appropriate.
- * <p>
+ * <p/>
  * Following a successful authentication, it decides on the redirect destination, based on the following scenarios:
  * <ul>
  * <li>
@@ -55,26 +56,29 @@ import org.vaadin.spring.security.web.VaadinRedirectStrategy;
  * If no {@code SavedRequest} is found, it will delegate to the base class.
  * </li>
  * </ul>
- *
- * <p>
+ * <p/>
  * Must be created as bean because to autowiring within parent class.
  *
  * @author Luke Taylor (original source code spring-security)
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com) (Vaadin specific changes)
- * 
+ * @author Petter Holmström (petter@vaadin.com)
  */
 public class SavedRequestAwareVaadinAuthenticationSuccessHandler extends VaadinUrlAuthenticationSuccessHandler {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    
+
     private RequestCache requestCache = new HttpSessionRequestCache();
-    
+
+    public SavedRequestAwareVaadinAuthenticationSuccessHandler(HttpService http, VaadinRedirectStrategy redirectStrategy, String defaultTargetUrl) {
+        super(http, redirectStrategy, defaultTargetUrl);
+    }
+
     @Override
     public void onAuthenticationSuccess(Authentication authentication) throws Exception {
 
         HttpServletRequest request = http.getCurrentRequest();
         HttpServletResponse response = http.getCurrentResponse();
-        
+
         SavedRequest savedRequest = requestCache.getRequest(request, response);
 
         if (savedRequest == null) {
@@ -95,10 +99,9 @@ public class SavedRequestAwareVaadinAuthenticationSuccessHandler extends VaadinU
         // Use the DefaultSavedRequest URL
         String targetUrl = savedRequest.getRedirectUrl();
         logger.debug("Redirecting to DefaultSavedRequest Url: " + targetUrl);
-        getRedirectStrategy().sendRedirect(targetUrl);
-        
+        redirectStrategy.sendRedirect(targetUrl);
     }
-    
+
     public void setRequestCache(RequestCache requestCache) {
         this.requestCache = requestCache;
     }

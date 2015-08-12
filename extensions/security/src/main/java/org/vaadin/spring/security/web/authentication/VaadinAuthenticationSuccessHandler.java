@@ -19,14 +19,16 @@ import org.springframework.security.core.Authentication;
 
 /**
  * Strategy used to handle a successful user authentication.
- * <p>
+ * <p/>
  * Implementations can do whatever they want but typical behaviour would be to control the navigation to the
  * subsequent destination (using a redirect or a forward). For example, after a user has logged in by submitting a
  * login form, the application needs to decide where they should be redirected to afterwards.
  * Other logic may also be included if required.
- * <p>
+ * <p/>
  * Vaadin Specific Strategy of {@link org.springframework.security.web.authentication.AuthenticationSuccessHandler}
  *
+ * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
+ * @author Petter Holmström (petter@vaadin.com)
  */
 public interface VaadinAuthenticationSuccessHandler {
 
@@ -36,4 +38,14 @@ public interface VaadinAuthenticationSuccessHandler {
      * @param authentication the <tt>Authentication</tt> object which was created during the authentication process.
      */
     void onAuthenticationSuccess(Authentication authentication) throws Exception;
+
+    /**
+     * Implementation of {@link org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccessHandler} that does nothing.
+     */
+    static final class NullHandler implements VaadinAuthenticationSuccessHandler {
+
+        @Override
+        public void onAuthenticationSuccess(Authentication authentication) throws Exception {
+        }
+    }
 }

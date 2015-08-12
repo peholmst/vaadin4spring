@@ -15,6 +15,8 @@
  */
 package org.vaadin.spring.security.internal;
 
+import com.vaadin.server.VaadinSession;
+import com.vaadin.server.WrappedSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,275 +24,149 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextHolderStrategy;
-import org.springframework.security.web.authentication.RememberMeServices;
-import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
+import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.util.Assert;
 import org.vaadin.spring.http.HttpService;
-import org.vaadin.spring.security.SharedVaadinSecurity;
-import org.vaadin.spring.security.web.VaadinRedirectStrategy;
-import org.vaadin.spring.security.web.authentication.VaadinAuthenticationFailureHandler;
 import org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccessHandler;
+import org.vaadin.spring.security.web.authentication.VaadinLogoutHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * Implementation of {@link org.vaadin.spring.security.VaadinSecurity} that is used when Vaadin is participating
  * in the existing Spring Web Security setup.
- * <p/>
- * Additional Code / Documentation from {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository}
  *
  * @author Petter Holmström (petter@vaadin.com)
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  */
-public class SharedVaadinSecurityImpl extends AbstractVaadinSecurity implements SharedVaadinSecurity {
+public class SharedVaadinSecurityImpl extends AbstractVaadinSecurity {
 
-    /**
-     * The default key under which the security context will be stored in the session.
-     * Used by {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository}
-     * <br><br>
-     * If this is overridden by the user then also override {@code springSecurityContextKey} within {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository}
-     * to match the new key.
-     * <br><br>
-     * The key of {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository} can be overridden with {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository#setSpringSecurityContextKey}
-     * <br><br>
-     * The {@link org.springframework.security.web.context.SecurityContextPersistenceFilter} will use the configured key from {@link org.springframework.security.web.context.HttpSessionSecurityContextRepository}
-     */
-    public static final String SPRING_SECURITY_CONTEXT_KEY = "SPRING_SECURITY_CONTEXT";
-    private String springSecurityContextKey = SPRING_SECURITY_CONTEXT_KEY;
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private String logoutProcessingUrl = "/logout";
-
-    /**
-     * Current {@link HttpServletRequest} and {@link HttpServletResponse} are
-     * autowired through the {@link HttpService} proxy.
-     */
     @Autowired
-    private HttpService httpRequestResponseHolder;
-
-    @Autowired
-    private VaadinRedirectStrategy redirectStrategy;
-
+    HttpService httpRequestResponseHolder;
     @Autowired(required = false)
-    private RememberMeServices rememberMeService;
-
-    private VaadinAuthenticationFailureHandler authenticationFailureHandler;
-    private VaadinAuthenticationSuccessHandler authenticationSuccessHandler;
+    SessionAuthenticationStrategy sessionAuthenticationStrategy;
+    @Autowired(required = false)
+    VaadinAuthenticationSuccessHandler vaadinAuthenticationSuccessHandler;
+    @Autowired(required = false)
+    VaadinLogoutHandler vaadinLogoutHandler;
+    private String springSecurityContextKey = HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
+    private boolean saveContextInSessionAfterLogin = false;
 
     @Override
-    public Authentication login(Authentication authentication, boolean rememberMe) throws AuthenticationException, Exception {
-
-        // Ensure SecurityContext is never null
+    public Authentication login(Authentication authentication, boolean rememberMe) throws Exception {
         SecurityContext context = SecurityContextHolder.getContext();
 
-        // Retrieve HttpServletRequest / HttpServletResponse from RequestScope
-        HttpServletRequest request = httpRequestResponseHolder.getCurrentRequest();
-        HttpServletResponse response = httpRequestResponseHolder.getCurrentResponse();
-
-        try {
-            
-            /*
-             * Try to authenticate user
-             */
-            final Authentication fullyAuthenticated = getAuthenticationManager().authenticate(authentication);
-            
-            /*
-             * Store Authentication within SecurityContext
-             */
-            context.setAuthentication(fullyAuthenticated);
-            
-            /*
-             * Handle RememberMe
-             */
-            if (rememberMe) {
-                
-                /*
-                 * Locate RememberMeService
-                 */
-                if (rememberMeService != null) {
-                    
-                    /*
-                     * Store RememberMe within HttpServletRequest
-                     */
-                    logger.debug("Registering RememberMe in request");
-                    request.setAttribute(AbstractRememberMeServices.DEFAULT_PARAMETER, rememberMe);
-                    
-                    /*
-                     * Signal the RememberMeService of the login
-                     */
-                    rememberMeService.loginSuccess(request, response, authentication);
-
-                } else {
-                    logger.error("RememberMe Request while no <RememberMeServices> found within <ApplicationContext>");
-                }
-
-            }
-            
-            /*
-             * Signal the SessionAuthenticationStrategy of the login
-             */
-            getSessionAuthenticationStrategy().onAuthentication(fullyAuthenticated, request, response);
-            
-            /*
-             * Process AuthenticationSuccessHandler if configured
-             */
-            if (hasAuthenticationSuccessHandlerConfigured()) {
-                getAuthenticationSuccessHandler().onAuthenticationSuccess(authentication);
-            }
-
-            return authentication;
-        } catch (AuthenticationException e) {
-
-            /**
-             * {@link DisabledException}            -> Optional
-             * {@link LockedException}              -> Optional
-             * {@link BadCredentialsException}      -> Required
-             *
-             * Clear SecurityContext and handler Authentication Failure
-             * If AuthenticationFailureHandler is configured, use it else
-             * throw {@link AuthenticationFailureHandler}
-             */
-            context = generateNewContext();
-            
-            /*
-             * Handle RememberMe authentication Failure
-             * No need to check if it is being used; 
-             * on failure invalidate all remember-me-tokens.
-             */
-            if (rememberMeService != null) {
-                rememberMeService.loginFail(request, response);
-            }
-            
-            /*
-             * Process AuthenticationFailureHandler if configured
-             */
-            // TODO What to do about this???
-            /*
-            if (hasAuthenticationFailureHandlerConfigured()) {
-                getAuthenticationFailureHandler().onAuthenticationFailure(e);
-            } else {
-                throw e;
-            }*/
-            throw e;
-        } finally {
-
-            /**
-             * Store SecurityContext within the Session for the SecurityFilterChain
-             * On error this will store an empty context, which will cause
-             * the security filter chain to invalidate the authentication.
-             *
-             * Context needs to be stored within the HttpSession so the {@link SecurityContextPersistenceFilter}
-             * can make a call to the default configured {@link HttpSessionSecurityContextRepository}
-             */
-            HttpSession session = httpRequestResponseHolder.getCurrentRequest().getSession();
-            session.setAttribute(springSecurityContextKey, context);
-
+        final HttpServletRequest request = httpRequestResponseHolder.getCurrentRequest();
+        if (request == null) {
+            throw new IllegalStateException("No HttpServletRequest bound to current thread");
         }
 
+        final HttpServletResponse response = httpRequestResponseHolder.getCurrentResponse();
+        if (response == null) {
+            throw new IllegalStateException("No HttpServletResponse bound to current thread");
+        }
 
-    }
-
-
-    @Override
-    public void setLogoutProcessingUrl(String logoutUrl) {
-        logoutProcessingUrl = logoutUrl;
+        try {
+            final Authentication fullyAuthenticated = getAuthenticationManager().authenticate(authentication);
+            context.setAuthentication(fullyAuthenticated);
+            if (rememberMe) {
+                if (hasRememberMeServices()) {
+                    getRememberMeServices().loginSuccess(request, response, authentication);
+                } else {
+                    throw new IllegalStateException("Requested RememberMe authentication but no RememberBeServices are available");
+                }
+            }
+            sessionAuthenticationStrategy.onAuthentication(fullyAuthenticated, request, response);
+            vaadinAuthenticationSuccessHandler.onAuthenticationSuccess(fullyAuthenticated);
+            return authentication;
+        } catch (AuthenticationException e) {
+            context = SecurityContextHolder.createEmptyContext();
+            if (hasRememberMeServices()) {
+                getRememberMeServices().loginFail(request, response);
+            }
+            throw e;
+        } finally {
+            if (saveContextInSessionAfterLogin) {
+                WrappedSession session = getSession();
+                if (session != null) {
+                    session.setAttribute(springSecurityContextKey, context);
+                }
+            }
+        }
     }
 
     @Override
     public void logout() {
-        /*
-         * Redirect user to the logout URL and have the configured LogoutFilter
-         * with {@link LogoutHandlers} handle the logout.
-         */
-        redirectStrategy.sendRedirect(logoutProcessingUrl);
+        vaadinLogoutHandler.onLogout();
     }
 
     @Override
     public Authentication getAuthentication() {
-        /*
-         * Fetch the Authentication object.
-         * Authentication is not available within the SecurityContextHolder.
-         * 
-         * The SecurityContextHolder only holds the Authentication when its
-         * processing the securityFilterChain. After it completes the chain
-         * it clears the context holder due to security reasons.
-         * 
-         * Therefor the Authentication object can be retrieved from the
-         * location where the securityFilterChain or VaadinSecurity has left it,
-         * within the HttpSession.
-         * 
-         * Due to work flow or maybe access to the Authentication object through
-         * VaadinSecurity form custom changes to the securityFilterChain, first the
-         * securityContextHolder is checked.
-         */
-
         final SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
 
         if (authentication == null) {
-            /*
-             * Fetch the Current HttpSession from the RequestScope
-             * because the chain already was completed and therefor
-             * the SecurityContextHolder cleared
-             */
-            HttpSession httpSession = httpRequestResponseHolder.getCurrentRequest().getSession();
-            authentication = ((org.springframework.security.core.context.SecurityContextImpl) httpSession.getAttribute(springSecurityContextKey)).getAuthentication();
-        }
+            // The SecurityContextHolder only holds the Authentication when it is
+            // processing the securityFilterChain. After it completes the chain
+            // it clears the context holder.
 
+            // Therefore, the Authentication object can be retrieved from the
+            // location where the securityFilterChain or VaadinSecurity has left it,
+            // within the HttpSession.
+            WrappedSession session = getSession();
+            if (session != null) {
+                SecurityContext context = (SecurityContext) session.getAttribute(springSecurityContextKey);
+                authentication = context.getAuthentication();
+            }
+        }
         return authentication;
     }
 
-    @Override
+    private WrappedSession getSession() {
+        VaadinSession vaadinSession = VaadinSession.getCurrent();
+        if (vaadinSession != null) {
+            return vaadinSession.getSession();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Sets the session attribute key under which the security context is stored. Defaults to {@link HttpSessionSecurityContextRepository#SPRING_SECURITY_CONTEXT_KEY}.
+     */
     public void setSpringSecurityContextKey(String springSecurityContextKey) {
         Assert.hasText(springSecurityContextKey, "springSecurityContextKey cannot be empty");
         this.springSecurityContextKey = springSecurityContextKey;
     }
 
     /**
-     * By default, calls {@link SecurityContextHolder#createEmptyContext()} to obtain a new context (there should be
-     * no context present in the holder when this method is called). Using this approach the context creation
-     * strategy is decided by the {@link SecurityContextHolderStrategy} in use. The default implementations
-     * will return a new <tt>SecurityContextImpl</tt>.
+     * Specifies whether the security context should be explicitly saved in the session after {@link #login(org.springframework.security.core.Authentication, boolean)}
+     * completes. Defaults to false.
      *
-     * @return a new SecurityContext instance. Never null.
+     * @see #setSpringSecurityContextKey(String)
      */
-    protected SecurityContext generateNewContext() {
-        return SecurityContextHolder.createEmptyContext();
+    public void setSaveContextInSessionAfterLogin(boolean saveContextInSessionAfterLogin) {
+        this.saveContextInSessionAfterLogin = saveContextInSessionAfterLogin;
     }
 
     @Override
-    public SessionAuthenticationStrategy getSessionAuthenticationStrategy() {
-        return null;
-    }
-
-    protected VaadinAuthenticationSuccessHandler getAuthenticationSuccessHandler() {
-        return authenticationSuccessHandler;
-    }
-
-    @Override
-    public void setAuthenticationSuccessHandler(VaadinAuthenticationSuccessHandler handler) {
-        this.authenticationSuccessHandler = handler;
-    }
-
-    @Override
-    public boolean hasAuthenticationSuccessHandlerConfigured() {
-        return authenticationSuccessHandler != null;
-    }
-
-    protected VaadinAuthenticationFailureHandler getAuthenticationFailureHandler() {
-        return authenticationFailureHandler;
-    }
-
-    @Override
-    public void setAuthenticationFailureHandler(VaadinAuthenticationFailureHandler handler) {
-        this.authenticationFailureHandler = handler;
-    }
-
-    @Override
-    public boolean hasAuthenticationFailureHandlerConfigured() {
-        return authenticationFailureHandler != null;
+    public void afterPropertiesSet() throws Exception {
+        super.afterPropertiesSet();
+        if (sessionAuthenticationStrategy == null) {
+            logger.info("No session authentication strategy found in application context, using null strategy");
+            sessionAuthenticationStrategy = new NullAuthenticatedSessionStrategy();
+        }
+        if (vaadinAuthenticationSuccessHandler == null) {
+            logger.info("No authentication success handler found in the application context, using null handler");
+            vaadinAuthenticationSuccessHandler = new VaadinAuthenticationSuccessHandler.NullHandler();
+        }
+        if (vaadinLogoutHandler == null) {
+            logger.info("No logout handler found in the application context, using null handler");
+            vaadinLogoutHandler = new VaadinLogoutHandler.NullHandler();
+        }
     }
 }
