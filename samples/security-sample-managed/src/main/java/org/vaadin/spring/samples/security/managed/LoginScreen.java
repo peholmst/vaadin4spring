@@ -19,7 +19,6 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Label;
@@ -53,8 +52,6 @@ public class LoginScreen extends CustomComponent {
 
     private PasswordField passwordField;
 
-    private CheckBox rememberMe;
-
     private Button login;
 
     private Label loginFailedLabel;
@@ -72,7 +69,6 @@ public class LoginScreen extends CustomComponent {
 
         loginForm.addComponent(userName = new TextField("Username"));
         loginForm.addComponent(passwordField = new PasswordField("Password"));
-        loginForm.addComponent(rememberMe = new CheckBox("Remember me"));
         loginForm.addComponent(login = new Button("Login"));
         login.addStyleName(ValoTheme.BUTTON_PRIMARY);
         login.setDisableOnClick(true);
@@ -105,7 +101,7 @@ public class LoginScreen extends CustomComponent {
 
     private void login() {
         try {
-            final Authentication authentication = vaadinSecurity.login(userName.getValue(), passwordField.getValue(), rememberMe.getValue());
+            final Authentication authentication = vaadinSecurity.login(userName.getValue(), passwordField.getValue());
             eventBus.publish(this, new SuccessfulLoginEvent(getUI(), authentication));
         } catch (AuthenticationException ex) {
             userName.focus();
