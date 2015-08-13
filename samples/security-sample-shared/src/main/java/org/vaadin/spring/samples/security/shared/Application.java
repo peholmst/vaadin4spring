@@ -97,17 +97,12 @@ public class Application {
 
         @Bean
         public RememberMeServices rememberMeServices() {
+            // TODO Is there some way of exposing the RememberMeServices instance that the remember me configurer creates by default?
             TokenBasedRememberMeServices services = new TokenBasedRememberMeServices("myAppKey", userDetailsService());
             services.setAlwaysRemember(true);
             return services;
         }
 
-        /**
-         * An example of how s
-         * @param httpService
-         * @param vaadinRedirectStrategy
-         * @return
-         */
         @Bean(name = VaadinSharedSecurityConfiguration.VAADIN_AUTHENTICATION_SUCCESS_HANDLER_BEAN)
         VaadinAuthenticationSuccessHandler vaadinAuthenticationSuccessHandler(HttpService httpService, VaadinRedirectStrategy vaadinRedirectStrategy) {
             return new VaadinUrlAuthenticationSuccessHandler(httpService, vaadinRedirectStrategy, "/");

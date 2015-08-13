@@ -187,4 +187,39 @@ public class VaadinSharedSecurity extends AbstractVaadinSecurity {
             logger.info("Using logout handler {}", vaadinLogoutHandler);
         }
     }
+
+    /**
+     * Makes it possible to replace the {@link org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccessHandler} after
+     * the bean has been configured.
+     */
+    public void setVaadinAuthenticationSuccessHandler(VaadinAuthenticationSuccessHandler vaadinAuthenticationSuccessHandler) {
+        this.vaadinAuthenticationSuccessHandler = vaadinAuthenticationSuccessHandler;
+    }
+
+    public VaadinAuthenticationSuccessHandler getVaadinAuthenticationSuccessHandler() {
+        return vaadinAuthenticationSuccessHandler;
+    }
+
+    /**
+     * Makes it possible to replace the {@link org.springframework.security.web.authentication.session.SessionAuthenticationStrategy} after
+     * the bean has been configured.
+     */
+    public void setSessionAuthenticationStrategy(SessionAuthenticationStrategy sessionAuthenticationStrategy) {
+        this.sessionAuthenticationStrategy = sessionAuthenticationStrategy;
+    }
+
+    public SessionAuthenticationStrategy getSessionAuthenticationStrategy() {
+        return sessionAuthenticationStrategy;
+    }
+
+    /**
+     * Makes it possible to replace the {@link org.vaadin.spring.security.web.authentication.VaadinLogoutHandler} after the bean has been configured.
+     */
+    public void setVaadinLogoutHandler(VaadinLogoutHandler vaadinLogoutHandler) {
+        this.vaadinLogoutHandler = vaadinLogoutHandler;
+    }
+
+    public VaadinLogoutHandler getVaadinLogoutHandler() {
+        return vaadinLogoutHandler;
+    }
 }
