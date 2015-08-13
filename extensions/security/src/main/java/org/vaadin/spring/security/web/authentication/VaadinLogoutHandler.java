@@ -16,12 +16,17 @@
 package org.vaadin.spring.security.web.authentication;
 
 /**
- * TODO Document me!
+ * When using shared security and invoking {@link org.vaadin.spring.security.VaadinSecurity#logout()}, a logout handler will
+ * be retrieved from the application context and invoked.
  *
  * @author Petter Holmström (petter@vaadin.com)
+ * @see org.vaadin.spring.security.web.authentication.VaadinRedirectLogoutHandler
  */
 public interface VaadinLogoutHandler {
 
+    /**
+     * Called when the user should be logged out.
+     */
     void onLogout();
 
     /**

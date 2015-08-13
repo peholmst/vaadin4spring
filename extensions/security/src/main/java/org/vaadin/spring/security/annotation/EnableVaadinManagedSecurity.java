@@ -25,7 +25,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Enabled Vaadin managed Spring Security. This means that Vaadin will manage the {@link org.springframework.security.core.context.SecurityContext}
+ * Enables managed security for your Vaadin application. This means that Vaadin will manage the {@link org.springframework.security.core.context.SecurityContext}
  * and take care of login and logout by using {@link org.vaadin.spring.security.VaadinSecurity}. No Spring Web Security should be enabled
  * for the Vaadin application's URLs <strong>at all</strong>. Global method security is enabled by default, which means that the backend and the {@link com.vaadin.navigator.View}s
  * can be protected using either {@link org.springframework.security.access.prepost.PreAuthorize} or {@link org.springframework.security.access.annotation.Secured} annotations.

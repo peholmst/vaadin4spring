@@ -15,9 +15,7 @@
  */
 package org.vaadin.spring.security.web;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.vaadin.ui.UI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,28 +23,30 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.util.UrlUtils;
 import org.vaadin.spring.http.HttpService;
 
-import com.vaadin.ui.UI;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Simple implementation of <tt>RedirectStrategy</tt> which is the default used throughout the vaadin4spring framework.
  * <br><br>
  * This class is based upon {@link DefaultRedirectStrategy}
- * 
+ *
+ * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  */
 public class VaadinDefaultRedirectStrategy implements VaadinRedirectStrategy {
 
     private final Logger logger = LoggerFactory.getLogger(getClass().getName());
-    
+
     private boolean contextRelative;
-    
+
     @Autowired
     private HttpService http;
-    
+
     @Override
     public void sendRedirect(String url) {
         HttpServletRequest request = http.getCurrentRequest();
         HttpServletResponse response = http.getCurrentResponse();
-        
+
         String redirectUrl = calculateRedirectUrl(request.getContextPath(), url);
         redirectUrl = response.encodeRedirectURL(redirectUrl);
 
@@ -57,7 +57,7 @@ public class VaadinDefaultRedirectStrategy implements VaadinRedirectStrategy {
         // Change to Vaadin Redirect
         UI.getCurrent().getPage().setLocation(redirectUrl);
     }
-    
+
     private String calculateRedirectUrl(String contextPath, String url) {
         if (!UrlUtils.isAbsoluteUrl(url)) {
             if (contextRelative) {

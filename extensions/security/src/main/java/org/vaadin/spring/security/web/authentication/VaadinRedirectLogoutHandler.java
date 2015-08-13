@@ -15,19 +15,15 @@
  */
 package org.vaadin.spring.security.web.authentication;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.vaadin.spring.security.web.VaadinRedirectStrategy;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 /**
- * TODO Document me!
+ * A logout handler that will redirect the user to a logout URL, that
+ * will take care of the actual logging out.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-public class VaadinRedirectLogoutHandler implements LogoutHandler {
+public class VaadinRedirectLogoutHandler implements VaadinLogoutHandler {
 
     private final VaadinRedirectStrategy redirectStrategy;
     private String logoutUrl = "/logout";
@@ -41,16 +37,22 @@ public class VaadinRedirectLogoutHandler implements LogoutHandler {
         this.logoutUrl = logoutUrl;
     }
 
+    /**
+     * Returns the URL to redirect to, by default {@code /logout}.
+     */
     public String getLogoutUrl() {
         return logoutUrl;
     }
 
+    /**
+     * Sets the URL to redirect to.
+     */
     public void setLogoutUrl(String logoutUrl) {
         this.logoutUrl = logoutUrl;
     }
 
     @Override
-    public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+    public void onLogout() {
         redirectStrategy.sendRedirect(logoutUrl);
     }
 }

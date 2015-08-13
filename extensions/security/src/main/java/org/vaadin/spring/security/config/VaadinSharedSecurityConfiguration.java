@@ -15,9 +15,17 @@
  */
 package org.vaadin.spring.security.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.security.VaadinSecurity;
-import org.vaadin.spring.security.internal.SharedVaadinSecurityImpl;
+import org.vaadin.spring.security.internal.VaadinSharedSecurity;
+import org.vaadin.spring.security.web.VaadinDefaultRedirectStrategy;
+import org.vaadin.spring.security.web.VaadinRedirectStrategy;
+import org.vaadin.spring.security.web.authentication.SavedRequestAwareVaadinAuthenticationSuccessHandler;
+import org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccessHandler;
+import org.vaadin.spring.security.web.authentication.VaadinLogoutHandler;
+import org.vaadin.spring.security.web.authentication.VaadinRedirectLogoutHandler;
 
 /**
  * Configuration for setting up Vaadin shared Spring Security. See {@link org.vaadin.spring.security.annotation.EnableVaadinSharedSecurity} for details.
@@ -27,9 +35,27 @@ import org.vaadin.spring.security.internal.SharedVaadinSecurityImpl;
 @Configuration
 public class VaadinSharedSecurityConfiguration extends AbstractVaadinSecurityConfiguration {
 
+    public static final String VAADIN_REDIRECT_STRATEGY_BEAN = "vaadinRedirectStrategy";
+    public static final String VAADIN_LOGOUT_HANDLER_BEAN = "vaadinLogoutHandler";
+    public static final String VAADIN_AUTHENTICATION_SUCCESS_HANDLER_BEAN = "vaadinAuthenticationSuccessHandler";
+
     @Override
     VaadinSecurity vaadinSecurity() {
-        // TODO Add support for configuring SharedVaadinSecurityImpl upon creation
-        return new SharedVaadinSecurityImpl();
+        return new VaadinSharedSecurity();
+    }
+
+    @Bean(name = VAADIN_REDIRECT_STRATEGY_BEAN)
+    VaadinRedirectStrategy vaadinRedirectStrategy() {
+        return new VaadinDefaultRedirectStrategy();
+    }
+
+    @Bean(name = VAADIN_LOGOUT_HANDLER_BEAN)
+    VaadinLogoutHandler vaadinLogoutHandler(VaadinRedirectStrategy vaadinRedirectStrategy) {
+        return new VaadinRedirectLogoutHandler(vaadinRedirectStrategy);
+    }
+
+    @Bean(name = VAADIN_AUTHENTICATION_SUCCESS_HANDLER_BEAN)
+    VaadinAuthenticationSuccessHandler vaadinAuthenticationSuccessHandler(HttpService httpService, VaadinRedirectStrategy vaadinRedirectStrategy) {
+        return new SavedRequestAwareVaadinAuthenticationSuccessHandler(httpService, vaadinRedirectStrategy, "/");
     }
 }

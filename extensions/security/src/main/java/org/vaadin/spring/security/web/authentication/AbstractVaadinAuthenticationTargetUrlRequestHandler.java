@@ -88,6 +88,8 @@ public abstract class AbstractVaadinAuthenticationTargetUrlRequestHandler {
         if (response.isCommitted()) {
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
             return;
+        } else {
+            logger.debug("Redirecting to " + targetUrl);
         }
 
         redirectStrategy.sendRedirect(targetUrl);

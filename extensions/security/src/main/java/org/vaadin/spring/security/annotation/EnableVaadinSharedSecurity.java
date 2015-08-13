@@ -25,7 +25,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Enabled Vaadin shared Spring Security. This means that Vaadin will participate in Spring Security as an ordinary web application, letting Spring
+ * Enables shared security for your Vaadin application. This means that Vaadin will participate in Spring Security as an ordinary web application, letting Spring
  * Security handle login, logout, {@link org.springframework.security.core.context.SecurityContext} management, etc. When using shared security, you have to manually
  * configure Spring Security just like you would in a normal Spring-based web application. Vaadin4Spring provides some additional services and helper methods to
  * make this easier. Please note that push with web sockets is not currently supported in this mode.

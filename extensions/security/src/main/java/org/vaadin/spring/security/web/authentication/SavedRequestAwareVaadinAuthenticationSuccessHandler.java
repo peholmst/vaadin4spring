@@ -98,7 +98,7 @@ public class SavedRequestAwareVaadinAuthenticationSuccessHandler extends VaadinU
 
         // Use the DefaultSavedRequest URL
         String targetUrl = savedRequest.getRedirectUrl();
-        logger.debug("Redirecting to DefaultSavedRequest Url: " + targetUrl);
+        logger.debug("Redirecting to saved request redirect url: " + targetUrl);
         redirectStrategy.sendRedirect(targetUrl);
     }
 

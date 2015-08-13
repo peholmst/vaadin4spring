@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Petter Holmström (petter@vaadin.com)
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  */
-public class SharedVaadinSecurityImpl extends AbstractVaadinSecurity {
+public class VaadinSharedSecurity extends AbstractVaadinSecurity {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
@@ -71,29 +71,38 @@ public class SharedVaadinSecurityImpl extends AbstractVaadinSecurity {
         }
 
         try {
+            logger.debug("Attempting authentication of {}, rememberMe = {}", authentication, rememberMe);
             final Authentication fullyAuthenticated = getAuthenticationManager().authenticate(authentication);
             context.setAuthentication(fullyAuthenticated);
             if (rememberMe) {
                 if (hasRememberMeServices()) {
+                    logger.debug("Invoking RememberMeServices");
                     getRememberMeServices().loginSuccess(request, response, authentication);
                 } else {
                     throw new IllegalStateException("Requested RememberMe authentication but no RememberBeServices are available");
                 }
             }
+            logger.debug("Invoking session authentication strategy");
             sessionAuthenticationStrategy.onAuthentication(fullyAuthenticated, request, response);
+            logger.debug("Invoking authentication success handler");
             vaadinAuthenticationSuccessHandler.onAuthenticationSuccess(fullyAuthenticated);
             return authentication;
         } catch (AuthenticationException e) {
+            logger.debug("Authentication failed");
             context = SecurityContextHolder.createEmptyContext();
             if (hasRememberMeServices()) {
+                logger.debug("Invoking RememberMeServices");
                 getRememberMeServices().loginFail(request, response);
             }
             throw e;
         } finally {
             if (saveContextInSessionAfterLogin) {
+                logger.debug("Saving security context in the session");
                 WrappedSession session = getSession();
                 if (session != null) {
                     session.setAttribute(springSecurityContextKey, context);
+                } else {
+                    logger.warn("Tried to save security context in the session, but no session was bound to the current thread");
                 }
             }
         }
@@ -117,10 +126,13 @@ public class SharedVaadinSecurityImpl extends AbstractVaadinSecurity {
             // Therefore, the Authentication object can be retrieved from the
             // location where the securityFilterChain or VaadinSecurity has left it,
             // within the HttpSession.
+            logger.debug("No authentication object bound to thread, trying to access the session directly");
             WrappedSession session = getSession();
             if (session != null) {
                 SecurityContext context = (SecurityContext) session.getAttribute(springSecurityContextKey);
                 authentication = context.getAuthentication();
+            } else {
+                logger.debug("No session bound to current thread, cannot retrieve the authentication object");
             }
         }
         return authentication;
@@ -159,14 +171,20 @@ public class SharedVaadinSecurityImpl extends AbstractVaadinSecurity {
         if (sessionAuthenticationStrategy == null) {
             logger.info("No session authentication strategy found in application context, using null strategy");
             sessionAuthenticationStrategy = new NullAuthenticatedSessionStrategy();
+        } else {
+            logger.info("Using session authentication strategy {}", sessionAuthenticationStrategy);
         }
         if (vaadinAuthenticationSuccessHandler == null) {
             logger.info("No authentication success handler found in the application context, using null handler");
             vaadinAuthenticationSuccessHandler = new VaadinAuthenticationSuccessHandler.NullHandler();
+        } else {
+            logger.info("Using authentication success handler {}", vaadinAuthenticationSuccessHandler);
         }
         if (vaadinLogoutHandler == null) {
             logger.info("No logout handler found in the application context, using null handler");
             vaadinLogoutHandler = new VaadinLogoutHandler.NullHandler();
+        } else {
+            logger.info("Using logout handler {}", vaadinLogoutHandler);
         }
     }
 }

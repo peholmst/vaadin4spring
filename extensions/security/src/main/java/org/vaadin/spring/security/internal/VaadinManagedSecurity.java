@@ -30,25 +30,24 @@ import org.springframework.security.core.context.SecurityContextHolder;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-public class ManagedVaadinSecurityImpl extends AbstractVaadinSecurity {
+public class VaadinManagedSecurity extends AbstractVaadinSecurity {
 
-    private static final Logger logger = LoggerFactory.getLogger(ManagedVaadinSecurityImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(VaadinManagedSecurity.class);
 
-    public ManagedVaadinSecurityImpl() {
+    public VaadinManagedSecurity() {
         logger.info("Using Vaadin Managed Security");
     }
 
     @Override
     public Authentication login(Authentication authentication, boolean rememberMe) throws AuthenticationException {
+        if (rememberMe) {
+            throw new UnsupportedOperationException("Remember Me is currently not supported when using managed security");
+        }
         SecurityContext context = SecurityContextHolder.getContext();
         logger.debug("Authenticating using {}, rememberMe = {}", authentication, rememberMe);
         final Authentication fullyAuthenticated = getAuthenticationManager().authenticate(authentication);
         logger.debug("Setting authentication of context {} to {}", context, fullyAuthenticated);
         context.setAuthentication(fullyAuthenticated);
-        if (rememberMe) {
-            throw new UnsupportedOperationException("Support for Remember Me has not been added yet");
-            // TODO Implement me!
-        }
         return fullyAuthenticated;
     }
 
