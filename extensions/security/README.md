@@ -1,200 +1,63 @@
 Vaadin4Spring Security (Experimental)
 ==========================
 
-# PLEASE NOTE! Spring4Vaadin Security is being redesigned. The contents of this README are outdated.
+There are currently two ways of integrating Vaadin and Spring Security using Vaadin4Spring: Shared Security and Managed Security
 
-<br>
-## General ##
-Spring security for a Vaadin application can be enabled by the annotation ```@EnableVaadinSecurity```.
-<br><br>
-```GlobalMethodSecurity``` is enabled by default, for ```@Secured``` annotations and ```@PreAuthorize``` annotations. ```@PostAuthorize``` is currently not supported.
-<br><br>
-Because ```@PreAuthorize``` annotations are enabled a default ```AccessDecisionManager``` is created.
+## Shared Security
 
-#### Override ```AccessDecisionManager``` ####
-A custom ```AccessDecisionManager``` can be implemented by defining a AccessDecisionManager with either the id of ```VaadinSecurityConfiguration.Beans.ACCESS_DECISION_MANAGER``` or by providing your custom AccessDecisionManager with the annotation ```@Bean(name = VaadinSecurityConfiguration.Beans.ACCESS_DECISION_MANAGER)```
+When using shared security, the Vaadin application will participate in an external Spring Security set up just like any web application.
+Login and logout are handled by redirecting to specific URLs and the Vaadin URLs are protected by the Spring Security filters.
 
-## VaadinSecurityContext ###
-The VaadinSecurityContext interface provides access to common spring security objects.
+The [sample application](../../samples/security-sample-shared) demonstrates how shared security works in practice.
 
-- ```ApplicationContext```
-- ```AuthenticationManager```
-- ```AccessDecisionManager```
+**When to use:**
 
-#### Methods ####
+- When you already have Spring Security set up
+- When you share the session with Vaadin applications and non-Vaadin applications
+- When you need to use a custom authentication method already supported by Spring 
+- When you need to support remember me authentication
 
-- ```ApplicationContext getApplicationContext();```
-- ```AuthenticationManager getAuthenticationManager();```
-- ```AccessDecisionManager getAccessDecisionManager();```
-- ```boolean hasAccessDecisionManager();```
+**Drawbacks:**
 
-#### Usage ####
-The ```VaadinSecurityContext``` can be used by either use of ```@Autowired```. Or by the use of the ```VaadinSecurityContextAware``` interface. This works the same like the Spring ```ApplicationContextAware``` interface.
+- You cannot use web socket based push, since it will bypass the Spring Security filter chain
+- You have to do some configuring to get everything up and running
 
-Example Autowired
-```java
-@Autowired
-VaadinSecurityContext vaadinSecurityContext;
-...
-```
+### Quick set-up instructions
 
-Example VaadinSecurityContextAware
-```java
-public class Dummy implements VaadinSecurityContextAware {
+- Add the ```@EnableVaadinSharedSecurity``` annotation to your ```WebSecurityConfigurerAdapter``` class.
+- Disable CSRF-protection in either Spring or Vaadin. If you have both turned on, your application will not work.
+- Configure request authorization, login and logout URLs, etc.
+- If you are using Spring Boot and plan to use a Vaadin UI for the login screen, you need to permit access to ```/vaadinServlet/UIDL/**```
+  and ```/vaadinServlet/HEARTBEAT/**```. You also need to configure a ```LoginUrlAuthenticationEntryPoint``` that redirects to your login UI,
+  and define a ```VaadinAuthenticationSuccessHandler``` bean that redirects the user away from the login page after successful authentication.
+  Please check the sample application for an example.
+- Finally, you might want to ignore Spring Security completely for the Vaadin static resources, i.e. ```/VAADIN/**```.
 
-    private VaadinSecurityContext vaadinSecurityContext;
+## Managed Security
 
-    @Override
-    public void setVaadinSecurityContext(VaadinSecurityContext vaadinSecurityContext) {
-        this.vaadinSecurityContext = vaadinSecurityContext;
-    }
+When using managed security, your Vaadin application will take care of the security integration itself. It will handle authentication, session management and
+storing and retrieving of the security context. Spring Security will only kick in on the backend layer, using method security.
 
-...
-}
-```
+The [sample application](../../samples/security-sample-managed) demonstrates how managed security works in practice. **Please note that until
+[bug 18206](https://dev.vaadin.com/ticket/18206) has been fixed, managed security DOES NOT WORK.** I have been using my own unofficial patched
+version of Vaadin Spring during development. As soon as an official fix is released, I will update Vaadin4Spring to work with it.
 
-## VaadinSecurity ##
-The VaadinSecurity interface provides access to commonly required Spring Security operations in a Vaadin application. It also extends ```VaadinSecurityContext```.
+**When to use:**
 
-#### Methods ####
+- When you want to handle security within a single Vaadin UI and don't need to share the session with non-Vaadin web applications
+- When you don't want to configure Spring Security yourself
+- When you want to use web socket based push
 
--  ```boolean isAuthenticated();```
--  ```void login(Authentication authentication) throws AuthenticationException;```
--  ```void login(String username, String password) throws AuthenticationException;```
--  ```void logout();```
--  ```boolean hasAuthority(String authority);```
--  ```Authentication getAuthentication();```
--  ```boolean hasAccessToObject(Object securedObject, String... securityConfigurationAttributes);```
--  ```boolean hasAccessToSecuredObject(Object securedObject);```
--  ```boolean hasAccessToSecuredMethod(Object securedObject, String methodName, Class<?>... methodParameterTypes);```
--  ```boolean hasAuthorities(String... authorities);```
--  ```boolean hasAnyAuthority(String... authorities);```
--  ```void setSpringSecurityContextKey(String springSecurityContextKey);```
+**Drawbacks:**
 
-##### Methods Inherited from VaadinSecurityContext #####
-- ```ApplicationContext getApplicationContext();```
-- ```AuthenticationManager getAuthenticationManager();```
-- ```AccessDecisionManager getAccessDecisionManager();```
-- ```boolean hasAccessDecisionManager();```
+- Remember me authentication currently does not work since it requires access to cookies and you can't have that if you use web socket based push
 
-#### Usage ####
-```VaadinSecurity``` can be used by either use of ```@Autowired```. Or by the use of the ```VaadinSecurityAware``` interface. This works the same like the Spring ```ApplicationContextAware``` interface.
+### Quick set-up instructions
 
-Example Autowired
-```java
-@Autowired
-VaadinSecurity vaadinSecurity;
-...
-```
+- Add the ```@EnableVaadinManagedSecurity``` annotation to your application or configuration class. This will enable global method security
+  and make the necessary security beans available for injection.
+- If you are using Spring Boot, exclude the default security auto configuration by using this annotation: ```@SpringBootApplication(exclude = org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration.class)```.
+- Implement ```AuthenticationManagerConfigurer``` and annotate it with the ```@Configuration``` annotation. This allows you to configure how
+  users are authenticated.
+- Implement your UI, using the ```VaadinSecurity``` service to interact with Spring Security.
 
-Example VaadinSecurityAware
-```java
-public class Dummy implements VaadinSecurityAware {
-
-    private VaadinSecurity vaadinSecurity;
-
-    @Override
-    public void setVaadinSecurity(VaadinSecurity vaadinSecurity) {
-        this.vaadinSecurity = vaadinSecurity;
-    }
-
-...
-}
-```
-
-## SpringSecurityContextKey ##
-Default Spring-Security uses a ```SPRING_SECURITY_CONTEXT_KEY``` with value of ```"SPRING_SECURITY_CONTEXT"```. This key is used throughout the springSecurityFilterChain. The ```HttpSessionSecurityContextRepository``` uses this key to search for a available ```Authentication``` object within the ```HttpSession```. 
-
-Some users like to change this key.
-
-#### Changing SpringSecurityContextKey ####
-When you implement your own ```HttpSessionSecurityContextRepository``` or you overwrite the default implementation and you change the ```SPRING_SECURITY_CONTEXT_KEY```, you need to set the same key to ```VaadinSecurity```.
-
-This can be done with the method ```.setSpringSecurityContextKey(String springSecurityContextKey)``` on the ```VaadinSecurity``` object.
-
-This ensures that ```VaadinSecurity``` and the ```HttpSessionSecurityContextRepository``` don't go out of sync.
-
-
-
-## Remember Me ##
-
-Implementation Notice:<br>
-When implementing remember me functionality the ```RememberMeServices``` bean has to be created before the ```@EnableVaadinSecurity```. 
-
-The ```VaadinSecurity``` object has a non-required dependency on ```RememberMeServices```. 
-
-If a ```RememberMeServices``` bean is found and created within the ```@Configuration``` class which has ```@EnableVaadinSecurity``` on it, you could end up with an exception.
-
-The ```RememberMeServices``` bean need to be available before the ```@EnableVaadinSecurity``` annotation is called.
-
-
-Within the same below the ```RememberMeServices``` bean is created before the ```@EnableVaadinSecurity``` annotation is called.
-
-When using spring-boot using a ```@AutoConfigureBefore``` is also a good solution.
-
-
-```java
-
-@Configuration
-@ComponentScan
-public class SecurityConfiguration {
-
-    @Autowired
-    JdbcUserDetailsService userDetailsService;
-
-    @Autowired
-    DataSource dataSource;
-
-    @Bean
-    public PersistentTokenRepository jdbcTokenRepository() {
-        JdbcTokenRepositoryImpl repository = new JdbcTokenRepositoryImpl();
-        repository.setCreateTableOnStartup(false);
-        repository.setDataSource(dataSource);
-        return repository;
-    }
-
-    @Bean
-    public RememberMeServices persistentTokenBasedRememberMeServices() {
-        VaadinPersistentTokenBasedRememberMeServices services = new VaadinPersistentTokenBasedRememberMeServices(
-                "vaadin4spring",
-                userDetailsService,
-                jdbcTokenRepository());
-        services.setCookieName("REMEMBERME");
-        return services;
-    }
-
-    @Configuration
-    @EnableVaadinSecurity
-    public static class WebSecurityConfig extends WebSecurityConfigurerAdapter implements InitializingBean {
-
-        @Autowired
-        private VaadinSecurityContext vaadinSecurityContext;
-
-        @Autowired
-        private VaadinRedirectStrategy redirectStrategy;
-
-        @Autowired
-        JdbcUserDetailsService userDetailsService;
-
-        @Autowired
-        DataSource dataSource;
-
-
-		// Autowire the Earlier created bean, so it can be used.
-        @Autowired
-        RememberMeServices rememberMeServices;
-
-        @Override
-        public void afterPropertiesSet() throws Exception {
-            ...
-        }
-
-        @Bean(name = "authenticationManager")
-        @Override
-        public AuthenticationManager authenticationManagerBean() throws Exception {
-            return super.authenticationManagerBean();
-        }
-
-    ...
-
-```

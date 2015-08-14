@@ -20,9 +20,15 @@ This demonstrates how Vaadin4Spring integrates with the Vaadin Navigation API. I
 
 This demonstrates how Vaadin4Spring, server-side background threads and server push play together. [Go to the sample](push-sample)
 
-## Security Sample ##
+## Security Sample - Managed Security ##
 
-This demonstrates how Spring Security can be used in Vaadin4Spring applications. [Go to the sample](security-sample)
+This demonstrates how Spring Security can be used in Vaadin4Spring applications using the managed security approach where Vaadin takes care of the
+Spring Security configuration and integration. [Go to the sample](security-sample-managed)
+
+## Security Sample - Shared Security ##
+
+This demonstrates how Spring Security can be used in Vaadin4Spring applications using the shared security approach where Spring Security is configured
+and handled outside of the Vaadin application. [Go to the sample](security-sample-shared)
 
 ## Sidebar Sample ##
 
