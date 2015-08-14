@@ -1,6 +1,8 @@
 MVP Sample
 ==========
 
+**Please note! This sample is currently broken due to the redesign of how Vaadin4Spring integrates with Spring Security**
+
 This is just a sample application that employs all the "good stuff" from Vaadin Spring Boot libraries, with a
 focus on MVP architecture.
 
