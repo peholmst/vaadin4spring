@@ -52,6 +52,9 @@ public class VaadinApplicationContext implements InitializingBean, ApplicationCo
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         synchronized (VaadinApplicationContext.class) {
+            if (context != null) {
+                logger.warn("The application context has already been set. Do you have multiple instances of VaadinApplicationContext in your application?");
+            }
             context = applicationContext;
         }
     }
