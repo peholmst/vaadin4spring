@@ -53,7 +53,7 @@ public class VaadinApplicationContext implements InitializingBean, ApplicationCo
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         synchronized (VaadinApplicationContext.class) {
             if (context != null) {
-                throw new IllegalStateException("The application context has already been set. Do you have multiple instances of VaadinApplicationContext in your application?");
+                logger.warn("The application context has already been set. Do you have multiple instances of VaadinApplicationContext in your application?");
             }
             context = applicationContext;
         }
