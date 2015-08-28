@@ -16,10 +16,13 @@
 package org.vaadin.spring.boot;
 
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.spring.boot.VaadinAutoConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -36,6 +39,7 @@ import org.vaadin.spring.servlet.Vaadin4SpringServlet;
  */
 @Configuration
 @ConditionalOnClass(VaadinExtensionsConfiguration.class)
+@AutoConfigureBefore(VaadinAutoConfiguration.class)
 public class ExtensionsAutoConfiguration {
 
     private static Logger logger = LoggerFactory.getLogger(ExtensionsAutoConfiguration.class);
@@ -54,6 +58,7 @@ public class ExtensionsAutoConfiguration {
          */
         @Bean
         @Order(value = Ordered.LOWEST_PRECEDENCE - 1)
+        @ConditionalOnMissingBean
         VaadinServlet vaadinServlet() {
             return new Vaadin4SpringServlet();
         }
