@@ -15,7 +15,16 @@ Example:
  ...
  myLabel = new Label(i18n.get("myMessageKey", "My argument"));
 ```
+It is also possible to specify the Locale, when the bean creation happens before the UI is created. 
 
+Example:
+
+```java
+ @Autowired
+ I18N i18n; 
+ ...
+ myLabel = new Label(i18n.getWithLocale("myMessageKey", Locale.GERMAN, "My argument"));
+```
 # Composite Message Source
 
 A composite message source is an implementation of the Spring ```MessageSource``` interface
