@@ -125,6 +125,23 @@ public class I18NTest {
         assertEquals("myDefaultMsg", i18n.getWithDefault("myCode", "myDefaultMsg", "myArg"));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void getWithLocale_LocaleIsNull() {
+        final Locale locale = null;
+        i18n.getWithLocale("myCode", null, new Object[]{"myArg"});
+    }
+
+    @Test
+    public void getWithLocale_passedLocaleIsResolved() {
+        when(applicationContext.getMessage("myCode", new Object[] {"myArg"}, Locale.GERMAN)).thenReturn("myGermanMessage");
+        when(applicationContext.getMessage("myCode", new Object[] {"myArg"}, Locale.US)).thenReturn("myUsMessage");
+        
+        Locale locale = Locale.GERMAN;
+        assertEquals("myGermanMessage", i18n.getWithLocale("myCode", locale, "myArg"));
+        locale = Locale.US;
+        assertEquals("myUsMessage",i18n.getWithLocale("myCode", locale, "myArg"));
+    }
+
     @Test
     public void getLocale_noCurrentUI_defaultLocaleIsReturned() {
         final Locale locale = Locale.getDefault();
