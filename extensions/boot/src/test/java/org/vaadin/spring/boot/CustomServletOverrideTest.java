@@ -16,14 +16,12 @@
 package org.vaadin.spring.boot;
 
 import com.vaadin.server.VaadinServlet;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -38,7 +36,6 @@ import static org.junit.Assert.assertTrue;
  * up the correct custom Vaadin Servlet from the application context.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@Ignore // TODO Reenable once Vaadin ticket #18206 has been fixed
 @ContextConfiguration(classes = {CustomServletOverrideTest.MyConfiguration.class})
 public class CustomServletOverrideTest {
 
@@ -50,8 +47,7 @@ public class CustomServletOverrideTest {
     public static class MyConfiguration {
 
         @Bean
-        @Order(1)
-        MyCustomVaadinServlet myCustomVaadinServlet() {
+        MyCustomVaadinServlet vaadinServlet() {
             return new MyCustomVaadinServlet();
         }
     }

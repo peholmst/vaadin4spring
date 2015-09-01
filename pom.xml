@@ -81,7 +81,7 @@
         <project.build.source>1.6</project.build.source>
         <vaadin.version>7.5.2</vaadin.version>
         <vaadin-touchkit.version>4.0.0</vaadin-touchkit.version>
-        <vaadin-spring.version>1.0.0.beta3</vaadin-spring.version>
+        <vaadin-spring.version>1.0-SNAPSHOT</vaadin-spring.version>
         <spring.version>4.1.7.RELEASE</spring.version>
         <spring-boot.version>1.2.5.RELEASE</spring-boot.version>
         <spring-security.version>3.2.8.RELEASE</spring-security.version>
@@ -323,6 +323,16 @@
         <repository>
             <id>vaadin-addons</id>
             <url>http://maven.vaadin.com/vaadin-addons</url>
+        </repository>
+        <repository>
+            <id>vaadin-snapshots</id>
+            <url>http://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </repository>
     </repositories>
 
