@@ -73,6 +73,10 @@
             <organization>Vaadin</organization>
             <email>petter@vaadin.com</email>
         </developer>
+        <developer>
+            <name>Tobias Placht</name>
+            <email>dev@knacht.net</email>
+        </developer>
     </developers>
 
     <properties>
