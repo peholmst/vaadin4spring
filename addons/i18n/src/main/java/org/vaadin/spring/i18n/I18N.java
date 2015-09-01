@@ -85,8 +85,32 @@ public class I18N {
      */
     public String get(String code, Object... arguments) {
         try {
-            return getMessage(code, arguments);
+            return getMessage(code, null, arguments);
         } catch (NoSuchMessageException ex) {
+            logger.warn("Tried to retrieve message with code [{}] that does not exist", code);
+            return "!" + code;
+        }
+    }
+
+    /**
+     * Tries to resolve the specified message for the given locale.
+     *
+     * @param code      the code to lookup up, such as 'calculator.noRateSet', never {@code null}.
+     * @param arguments Array of arguments that will be filled in for params within the message (params look like "{0}", "{1,date}", "{2,time}"), or {@code null} if none.
+     * @param locale    The Locale for which it is tried to look up the code. Must not be null
+     * @throws IllegalArgumentException if the given Locale is null
+     * @return the resolved message, or the message code prepended with an exclamation mark if the lookup fails.
+     * @see org.springframework.context.ApplicationContext#getMessage(String, Object[], java.util.Locale)
+     * @see java.util.Locale
+     */
+    public String getWithLocale(String code, Locale locale, Object... arguments) {
+        if (locale == null) {
+            throw new IllegalArgumentException("Locale must not be null");
+        }
+        try {
+            return getMessage(code,locale, arguments);
+        }
+        catch (NoSuchMessageException ex) {
             logger.warn("Tried to retrieve message with code [{}] that does not exist", code);
             return "!" + code;
         }
@@ -104,15 +128,16 @@ public class I18N {
      */
     public String getWithDefault(String code, String defaultMessage, Object... arguments) {
         try {
-            return getMessage(code, arguments);
+            return getMessage(code, null, arguments);
         } catch (NoSuchMessageException ex) {
             return defaultMessage;
         }
     }
 
-    private String getMessage(String code, Object... arguments) {
+    private String getMessage(String code, Locale locale, Object... arguments) {
+        Locale actualLocale = locale == null ? getLocale() : locale;
         try {
-            return applicationContext.getMessage(code, arguments, getLocale());
+            return applicationContext.getMessage(code, arguments, actualLocale);
         } catch (NoSuchMessageException ex) {
             if (isRevertToDefaultBundle()) {
                 return applicationContext.getMessage(code, arguments, null);
