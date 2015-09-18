@@ -85,7 +85,7 @@
         <project.build.source>1.6</project.build.source>
         <vaadin.version>7.5.5</vaadin.version>
         <vaadin-touchkit.version>4.0.0</vaadin-touchkit.version>
-        <vaadin-spring.version>1.0.0.rc1</vaadin-spring.version>
+        <vaadin-spring.version>1.0.0</vaadin-spring.version>
         <spring.version>4.1.7.RELEASE</spring.version>
         <spring-boot.version>1.2.5.RELEASE</spring-boot.version>
         <spring-security.version>3.2.8.RELEASE</spring-security.version>
