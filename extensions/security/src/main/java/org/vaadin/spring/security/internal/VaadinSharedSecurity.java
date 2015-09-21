@@ -73,6 +73,45 @@ public class VaadinSharedSecurity extends AbstractVaadinSecurity {
         try {
             logger.debug("Attempting authentication of {}, rememberMe = {}", authentication, rememberMe);
             final Authentication fullyAuthenticated = getAuthenticationManager().authenticate(authentication);
+            
+            /*
+             * Fix: #255 (VaadinSharedSecurity ignored sessionAuthenticationStrategy failures) 
+             * 
+             * Reorganized Authentication procedure
+             * Authentication workflow set according to {@link AbstractAuthenticationProcessingFilter}
+             *
+             * #1 Check for Null Authentication and handle like Authentication Exception
+             *    And set {@link Authentication} Object to null out of security
+             *    
+             * #2 Execute SessionStrategy
+             * #3 Handle Successful login
+             * #4 Execute LoginSuccessHandler
+             */
+            
+            
+            // #1 Check NULL Authentication
+            if ( authentication == null ) {
+                // Handle failed authentication
+                logger.debug("Authentication failed");
+                context = SecurityContextHolder.createEmptyContext();
+                if (hasRememberMeServices()) {
+                    logger.debug("Invoking RememberMeServices");
+                    getRememberMeServices().loginFail(request, response);
+                }
+                
+                /* 
+                 * Return NULL
+                 * And set {@link Autentication} object reference to NULL
+                 */
+                authentication = null;
+                return null;
+            }
+            
+            // #2 Execute SessionStrategy
+            logger.debug("Invoking session authentication strategy");
+            sessionAuthenticationStrategy.onAuthentication(fullyAuthenticated, request, response);
+            
+            // #3 Handle Successful Login
             context.setAuthentication(fullyAuthenticated);
             if (rememberMe) {
                 if (hasRememberMeServices()) {
@@ -82,10 +121,11 @@ public class VaadinSharedSecurity extends AbstractVaadinSecurity {
                     throw new IllegalStateException("Requested RememberMe authentication but no RememberBeServices are available");
                 }
             }
-            logger.debug("Invoking session authentication strategy");
-            sessionAuthenticationStrategy.onAuthentication(fullyAuthenticated, request, response);
+            
+            // #4 Execute LoginSuccessHandler
             logger.debug("Invoking authentication success handler");
             vaadinAuthenticationSuccessHandler.onAuthenticationSuccess(fullyAuthenticated);
+            
             return authentication;
         } catch (AuthenticationException e) {
             logger.debug("Authentication failed");
