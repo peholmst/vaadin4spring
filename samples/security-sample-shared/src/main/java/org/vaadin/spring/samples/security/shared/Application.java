@@ -53,7 +53,7 @@ public class Application {
      */
     @Configuration
     @EnableWebSecurity
-    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true, proxyTargetClass = true)
     @EnableVaadinSharedSecurity
     static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
