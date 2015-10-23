@@ -108,6 +108,7 @@ public class AccordionSideBar extends AbstractSideBar<Accordion> {
         ItemButton(final SideBarItemDescriptor descriptor) {
             setCaption(descriptor.getCaption());
             setIcon(descriptor.getIcon());
+            setId(descriptor.getItemId());
             setDisableOnClick(true);
             addStyleName(SIDE_BAR_SECTION_ITEM_STYLE);
             setWidth(100, Unit.PERCENTAGE);

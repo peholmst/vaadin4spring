@@ -183,6 +183,7 @@ public class ValoSideBar extends AbstractSideBar<CssLayout> {
             setPrimaryStyleName(ValoTheme.MENU_ITEM);
             setCaption(descriptor.getCaption());
             setIcon(descriptor.getIcon());
+            setId(descriptor.getItemId());
             setDisableOnClick(true);
             addClickListener(new Button.ClickListener() {
 

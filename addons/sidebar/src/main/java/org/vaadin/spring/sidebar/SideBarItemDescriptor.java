@@ -31,8 +31,9 @@ import java.lang.annotation.Annotation;
  * @author Petter Holmström (petter@vaadin.com)
  */
 public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDescriptor> {
+    public static final String ITEM_ID_PREFIX = "sidebaritem_";
 
-    private final SideBarItem item;
+	private final SideBarItem item;
     private final I18N i18n;
     private final ApplicationContext applicationContext;
     private final String beanName;
@@ -126,6 +127,15 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
             return null;
         }
     }
+
+    /**
+     * Returns the generated item id. Can f.e. be used to reference the ItemButton in selenium tests.
+     *
+     * @return
+     */
+    public String getItemId() {
+		return ITEM_ID_PREFIX + beanName.toLowerCase();
+	}
 
     /**
      * Returns the order of this side bar item within the section.
