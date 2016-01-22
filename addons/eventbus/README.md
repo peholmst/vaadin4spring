@@ -101,6 +101,9 @@ the ```subscribe(...)```methods. A subscriber can be created in three ways:
 3. Create at least one method that conforms to the following signature: ```myMethodName(MyPayloadType)``` and
    annotate it with ```@EventBusListenerMethod```.
 
+**Please note**, that currently, the listeners are registered using *strong* references. You have to make sure you
+unregister the listeners when no longer needed or that the listeners and the event bus have the same scope.
+
 When subscribing to an event bus, you can also define whether you want to receive propagating events as well. By default,
 this is true, which means that events published on the parent event buses will also be delivered to the subscriber. If
 false, only events published on that particular event bus will be delivered.
