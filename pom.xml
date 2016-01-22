@@ -142,13 +142,10 @@
             </dependency>
             <dependency>
                 <groupId>com.vaadin</groupId>
-                <artifactId>vaadin-server</artifactId>
+                <artifactId>vaadin-bom</artifactId>
                 <version>${vaadin.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.vaadin</groupId>
-                <artifactId>vaadin-themes</artifactId>
-                <version>${vaadin.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.vaadin.addon</groupId>

@@ -21,6 +21,10 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.vaadin.spring.extensions</groupId>
+            <artifactId>vaadin-spring-ext-boot</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-themes</artifactId>
         </dependency>
