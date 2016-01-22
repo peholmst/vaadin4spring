@@ -18,6 +18,8 @@ package org.vaadin.spring.sidebar;
 import com.vaadin.server.Resource;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.UI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.sidebar.annotation.SideBarItem;
@@ -31,6 +33,7 @@ import java.lang.annotation.Annotation;
  * @author Petter Holmström (petter@vaadin.com)
  */
 public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDescriptor> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SideBarItemDescriptor.class);
     public static final String ITEM_ID_PREFIX = "sidebaritem_";
 
 	private final SideBarItem item;
@@ -42,11 +45,14 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
 
     protected SideBarItemDescriptor(String beanName, ApplicationContext applicationContext) {
         this.item = applicationContext.findAnnotationOnBean(beanName, SideBarItem.class);
+        LOGGER.debug("Item annotation of bean [{}] is [{}]", beanName, item);
         this.i18n = applicationContext.getBean(I18N.class);
         this.applicationContext = applicationContext;
         this.beanName = beanName;
         this.iconAnnotation = findIconAnnotation();
+        LOGGER.debug("Icon annotation of bean [{}] is [{}]", beanName, iconAnnotation);
         this.iconProvider = findIconProvider();
+        LOGGER.debug("Icon provider of bean [{}] is [{}]", beanName, iconProvider);
     }
 
     /**
@@ -62,14 +68,18 @@ public abstract class SideBarItemDescriptor implements Comparable<SideBarItemDes
     private Annotation findIconAnnotation() {
         Class<?> type = applicationContext.getType(beanName);
         while (type != null) {
+            LOGGER.trace("Checking class [{}] for icon annotations", type.getName());
             Annotation[] annotations = type.getDeclaredAnnotations();
             for (Annotation annotation : annotations) {
+                LOGGER.trace("Checking annotation [{}] for icon annotations", annotation);
                 if (annotation.annotationType().isAnnotationPresent(SideBarItemIcon.class)) {
+                    LOGGER.trace("Found icon annotation on [{}]", annotation);
                     return annotation;
                 }
             }
             type = type.getSuperclass();
         }
+        LOGGER.trace("Found no icon annotation");
         return null;
     }
 
