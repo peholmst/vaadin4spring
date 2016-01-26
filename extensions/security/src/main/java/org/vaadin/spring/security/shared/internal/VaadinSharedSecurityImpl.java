@@ -22,6 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -38,6 +40,7 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -46,6 +49,7 @@ import org.springframework.util.Assert;
 import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.security.config.VaadinSecurityConfigurer;
 import org.vaadin.spring.security.internal.AbstractVaadinSecurity;
+import org.vaadin.spring.security.shared.VaadinSharedSecurity;
 import org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccessHandler;
 import org.vaadin.spring.security.web.authentication.VaadinLogoutHandler;
 
@@ -53,13 +57,13 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.server.WrappedSession;
 
 /**
- * Implementation of {@link org.vaadin.spring.security.VaadinSecurity} that is used when Vaadin is participating
- * in the existing Spring Web Security setup.
+ * Implementation of {@link VaadinSharedSecurity}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  */
-public class VaadinSharedSecurityImpl extends AbstractVaadinSecurity implements VaadinSecurityConfigurer.Callback {
+public class VaadinSharedSecurityImpl extends AbstractVaadinSecurity
+    implements VaadinSecurityConfigurer.Callback, VaadinSharedSecurity {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
@@ -72,6 +76,7 @@ public class VaadinSharedSecurityImpl extends AbstractVaadinSecurity implements 
     VaadinLogoutHandler vaadinLogoutHandler;
     private String springSecurityContextKey = HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
     private boolean saveContextInSessionAfterLogin = false;
+    private String rememberMeRequestParameterName = AbstractRememberMeServices.DEFAULT_PARAMETER;
 
     private VaadinSecurityFilter vaadinSecurityFilter;
 
@@ -80,7 +85,7 @@ public class VaadinSharedSecurityImpl extends AbstractVaadinSecurity implements 
     }
 
     @Override
-    public Authentication login(Authentication authentication, boolean rememberMe) throws Exception {
+    public void login(final Authentication authentication, final boolean rememberMe) throws Exception {
         if (vaadinSecurityFilter == null) {
             throw new AuthenticationServiceException("VaadinSharedSecurity has not been configured properly");
         }
@@ -95,8 +100,18 @@ public class VaadinSharedSecurityImpl extends AbstractVaadinSecurity implements 
             throw new IllegalStateException("No HttpServletResponse bound to current thread");
         }
 
+        final HttpServletRequestWrapper requestWrapper = new HttpServletRequestWrapper(request) {
+            @Override
+            public String getParameter(String name) {
+                if (rememberMe && rememberMeRequestParameterName.equals(name)) {
+                    return "true";
+                }
+                return super.getParameter(name);
+            }
+        };
+
         vaadinSecurityFilter.setAuthenticationRequest(authentication);
-        vaadinSecurityFilter.doFilter(request, response, new FilterChain() {
+        vaadinSecurityFilter.doFilter(requestWrapper, response, new FilterChain() {
             @Override
             public void doFilter(ServletRequest request, ServletResponse response)
                 throws IOException, ServletException {
@@ -114,10 +129,22 @@ public class VaadinSharedSecurityImpl extends AbstractVaadinSecurity implements 
             if (vaadinAuthenticationSuccessHandler != null) {
                 vaadinAuthenticationSuccessHandler.onAuthenticationSuccess(successfulAuthentication);
             }
-            return successfulAuthentication;
         }
+    }
 
-        return null;
+    @Override
+    public void login(Authentication authentication) throws AuthenticationException, Exception {
+        login(authentication, false);
+    }
+
+    @Override
+    public void login(String username, String password, boolean rememberMe) throws AuthenticationException, Exception {
+        login(new UsernamePasswordAuthenticationToken(username, password), rememberMe);
+    }
+
+    @Override
+    public void login(String username, String password) throws AuthenticationException, Exception {
+        login(new UsernamePasswordAuthenticationToken(username, password));
     }
 
     @Override
@@ -243,6 +270,7 @@ public class VaadinSharedSecurityImpl extends AbstractVaadinSecurity implements 
 
     @Override
     public void configure(HttpSecurity httpSecurity) {
+        logger.debug("Configuring VaadinSharedSecurity using {}", httpSecurity);
         vaadinSecurityFilter = new VaadinSecurityFilter();
         vaadinSecurityFilter.setAuthenticationManager(httpSecurity.getSharedObject(AuthenticationManager.class));
 
@@ -258,7 +286,7 @@ public class VaadinSharedSecurityImpl extends AbstractVaadinSecurity implements 
         }
     }
 
-    protected static class VaadinSecurityFilter extends AbstractAuthenticationProcessingFilter {
+    private static class VaadinSecurityFilter extends AbstractAuthenticationProcessingFilter {
 
         private final ThreadLocal<Authentication> authenticationRequest = new ThreadLocal<Authentication>();
         private final ThreadLocal<AuthenticationException> authenticationException = new ThreadLocal<AuthenticationException>();

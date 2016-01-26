@@ -40,7 +40,7 @@ public class SecurityContextVaadinRequestListener implements VaadinRequestStartL
     /**
      * The name of the Vaadin Session attribute that contains the security context.
      */
-    public static final String SECURITY_CONTEXT_SESSION_ATTRIBUTE = "org.vaadin.spring.security.internal.springSecurityContext";
+    public static final String SECURITY_CONTEXT_SESSION_ATTRIBUTE = "org.vaadin.spring.security.managed.internal.springSecurityContext";
     private static final Logger logger = LoggerFactory.getLogger(SecurityContextVaadinRequestListener.class);
 
     public SecurityContextVaadinRequestListener() {

@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.security.VaadinSecurity;
-import org.vaadin.spring.security.internal.VaadinSharedSecurity;
+import org.vaadin.spring.security.shared.internal.VaadinSharedSecurityImpl;
 import org.vaadin.spring.security.web.VaadinDefaultRedirectStrategy;
 import org.vaadin.spring.security.web.VaadinRedirectStrategy;
 import org.vaadin.spring.security.web.authentication.SavedRequestAwareVaadinAuthenticationSuccessHandler;
@@ -39,9 +39,14 @@ public class VaadinSharedSecurityConfiguration extends AbstractVaadinSecurityCon
     public static final String VAADIN_LOGOUT_HANDLER_BEAN = "vaadinLogoutHandler";
     public static final String VAADIN_AUTHENTICATION_SUCCESS_HANDLER_BEAN = "vaadinAuthenticationSuccessHandler";
 
+    @Bean
+    VaadinSecurityConfigurer vaadinSecurityConfigurer() {
+        return new VaadinSecurityConfigurer();
+    }
+
     @Override
     VaadinSecurity vaadinSecurity() {
-        return new VaadinSharedSecurity();
+        return new VaadinSharedSecurityImpl(vaadinSecurityConfigurer());
     }
 
     @Bean(name = VAADIN_REDIRECT_STRATEGY_BEAN)

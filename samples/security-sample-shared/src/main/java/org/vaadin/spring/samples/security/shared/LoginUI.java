@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.vaadin.spring.security.VaadinSecurity;
+import org.vaadin.spring.security.shared.VaadinSharedSecurity;
 
 /**
  * UI for the login screen.
@@ -45,7 +46,7 @@ import org.vaadin.spring.security.VaadinSecurity;
 public class LoginUI extends UI {
 
     @Autowired
-    VaadinSecurity vaadinSecurity;
+    VaadinSharedSecurity vaadinSecurity;
 
     private TextField userName;
 

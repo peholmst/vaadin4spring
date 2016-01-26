@@ -15,6 +15,10 @@
  */
 package org.vaadin.spring.security.internal;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
@@ -33,17 +37,11 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.util.Assert;
 import org.vaadin.spring.security.VaadinSecurity;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Abstract implementation of {@link org.vaadin.spring.security.VaadinSecurity}
@@ -63,47 +61,27 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
     @Override
     public boolean isAuthenticated() {
         final Authentication authentication = getAuthentication();
-        return authentication != null
-                && authentication.isAuthenticated()
-                && !(authentication instanceof AnonymousAuthenticationToken);
+        return authentication != null && authentication.isAuthenticated()
+            && !(authentication instanceof AnonymousAuthenticationToken);
     }
 
     @Override
     public boolean isAuthenticatedAnonymously() {
         final Authentication authentication = getAuthentication();
-        return authentication instanceof AnonymousAuthenticationToken
-                && authentication.isAuthenticated();
+        return authentication instanceof AnonymousAuthenticationToken && authentication.isAuthenticated();
     }
 
     @Override
     public boolean isRememberMeAuthenticated() {
         final Authentication authentication = getAuthentication();
-        return authentication instanceof RememberMeAuthenticationToken
-                && authentication.isAuthenticated();
+        return authentication instanceof RememberMeAuthenticationToken && authentication.isAuthenticated();
     }
 
     @Override
     public boolean isFullyAuthenticated() {
         final Authentication authentication = getAuthentication();
-        return authentication != null
-                && !(authentication instanceof AnonymousAuthenticationToken)
-                && !(authentication instanceof RememberMeAuthenticationToken)
-                && authentication.isAuthenticated();
-    }
-
-    @Override
-    public Authentication login(Authentication authentication) throws AuthenticationException, Exception {
-        return login(authentication, false);
-    }
-
-    @Override
-    public Authentication login(String username, String password, boolean rememberMe) throws AuthenticationException, Exception {
-        return login(new UsernamePasswordAuthenticationToken(username, password), rememberMe);
-    }
-
-    @Override
-    public Authentication login(String username, String password) throws AuthenticationException, Exception {
-        return login(new UsernamePasswordAuthenticationToken(username, password));
+        return authentication != null && !(authentication instanceof AnonymousAuthenticationToken)
+            && !(authentication instanceof RememberMeAuthenticationToken) && authentication.isAuthenticated();
     }
 
     @Override
@@ -212,7 +190,8 @@ public abstract class AbstractVaadinSecurity implements ApplicationContextAware,
             return false;
         }
 
-        final Collection<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>(securityConfigurationAttributes.length);
+        final Collection<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>(
+            securityConfigurationAttributes.length);
         for (String securityConfigString : securityConfigurationAttributes) {
             configAttributes.add(new SecurityConfig(securityConfigString));
         }

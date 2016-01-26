@@ -15,23 +15,25 @@
  */
 package org.vaadin.spring.security.managed.internal;
 
-import com.vaadin.server.Page;
-import com.vaadin.server.VaadinSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.security.internal.AbstractVaadinSecurity;
+import org.vaadin.spring.security.managed.VaadinManagedSecurity;
+
+import com.vaadin.server.Page;
+import com.vaadin.server.VaadinSession;
 
 /**
- * Implementation of {@link org.vaadin.spring.security.VaadinSecurity} that is used when Vaadin is managing the
- * security of the web application.
+ * Implementation of {@link VaadinManagedSecurity}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-public class VaadinManagedSecurityImpl extends AbstractVaadinSecurity {
+public class VaadinManagedSecurityImpl extends AbstractVaadinSecurity implements VaadinManagedSecurity {
 
     private static final Logger logger = LoggerFactory.getLogger(VaadinManagedSecurityImpl.class);
 
@@ -40,16 +42,18 @@ public class VaadinManagedSecurityImpl extends AbstractVaadinSecurity {
     }
 
     @Override
-    public Authentication login(Authentication authentication, boolean rememberMe) throws AuthenticationException {
-        if (rememberMe) {
-            throw new UnsupportedOperationException("Remember Me is currently not supported when using managed security");
-        }
+    public Authentication login(Authentication authentication) throws AuthenticationException {
         SecurityContext context = SecurityContextHolder.getContext();
-        logger.debug("Authenticating using {}, rememberMe = {}", authentication, rememberMe);
+        logger.debug("Authenticating using {}", authentication);
         final Authentication fullyAuthenticated = getAuthenticationManager().authenticate(authentication);
         logger.debug("Setting authentication of context {} to {}", context, fullyAuthenticated);
         context.setAuthentication(fullyAuthenticated);
         return fullyAuthenticated;
+    }
+
+    @Override
+    public Authentication login(String username, String password) throws AuthenticationException, Exception {
+        return login(new UsernamePasswordAuthenticationToken(username, password));
     }
 
     @Override

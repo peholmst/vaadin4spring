@@ -16,7 +16,6 @@
 package org.vaadin.spring.security;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 
 /**
  * Interface that provides the Spring Security operations that are most commonly required
@@ -46,54 +45,6 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * Returns true if the current user is authenticated and neither anonymous nor a Remember Me user.
      */
     boolean isFullyAuthenticated();
-
-    /**
-     * Tries to login using the specified authentication object. If authentication succeeds, this method
-     * will return without exceptions.
-     *
-     * @param authentication the authentication object to authenticate, must not be {@code null}.
-     * @param rememberMe     boolean to indicate if remember me authentication should be activated
-     * @return the authenticated {@code Authentication} token.
-     * @throws org.springframework.security.core.AuthenticationException if authentication fails.
-     */
-    Authentication login(Authentication authentication, boolean rememberMe) throws AuthenticationException, Exception;
-
-    /**
-     * Tries to login using the specified authentication object. If authentication succeeds, this method
-     * will return without exceptions.
-     * <p/>
-     * Remember Me authentication is ignored
-     *
-     * @param authentication the authentication object to authenticate, must not be {@code null}.
-     * @return the authenticated {@code Authentication} token.
-     * @throws org.springframework.security.core.AuthenticationException if authentication fails.
-     */
-    Authentication login(Authentication authentication) throws AuthenticationException, Exception;
-
-    /**
-     * Convenience method that invokes {@link #login(org.springframework.security.core.Authentication)} with a
-     * {@link org.springframework.security.authentication.UsernamePasswordAuthenticationToken}-object.
-     *
-     * @param username   the username to use, must not be {@code null}.
-     * @param password   the password to use, must not be {@code null}.
-     * @param rememberMe boolean to set remember me authentication
-     * @return the authenticated {@code Authentication} token.
-     * @throws AuthenticationException if authentication fails.
-     */
-    Authentication login(String username, String password, boolean rememberMe) throws AuthenticationException, Exception;
-
-    /**
-     * Convenience method that invokes {@link #login(org.springframework.security.core.Authentication)} with a
-     * {@link org.springframework.security.authentication.UsernamePasswordAuthenticationToken}-object.
-     * <p/>
-     * Remember me authentication is ignored
-     *
-     * @param username the username to use, must not be {@code null}.
-     * @param password the password to use, must not be {@code null}.
-     * @return the authenticated {@code Authentication} token.
-     * @throws AuthenticationException if authentication fails.
-     */
-    Authentication login(String username, String password) throws AuthenticationException, Exception;
 
     /**
      * Logs the user out.

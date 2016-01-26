@@ -15,6 +15,7 @@
  */
 package org.vaadin.spring.samples.security.shared;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -31,6 +32,7 @@ import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.security.annotation.EnableVaadinSharedSecurity;
+import org.vaadin.spring.security.config.VaadinSecurityConfigurer;
 import org.vaadin.spring.security.config.VaadinSharedSecurityConfiguration;
 import org.vaadin.spring.security.web.VaadinRedirectStrategy;
 import org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccessHandler;
@@ -57,6 +59,9 @@ public class Application {
     @EnableVaadinSharedSecurity
     static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+        @Autowired
+        VaadinSecurityConfigurer vaadinSecurityConfigurer;
+
         @Override
         public void configure(AuthenticationManagerBuilder auth) throws Exception {
             auth.inMemoryAuthentication()
@@ -82,6 +87,7 @@ public class Application {
             http.exceptionHandling()
                     .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
             http.rememberMe().rememberMeServices(rememberMeServices()).key("myAppKey");
+            vaadinSecurityConfigurer.configureVaadinSecurity(http);
         }
 
         @Override
