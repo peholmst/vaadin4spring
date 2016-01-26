@@ -25,7 +25,6 @@ import org.springframework.security.web.authentication.RememberMeServices;
  *
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.security.SharedVaadinSecurityContext
  */
 public interface VaadinSecurityContext {
 
