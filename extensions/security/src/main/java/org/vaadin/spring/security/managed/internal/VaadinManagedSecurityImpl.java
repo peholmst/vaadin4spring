@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.security.internal;
+package org.vaadin.spring.security.managed.internal;
 
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
@@ -23,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.vaadin.spring.security.internal.AbstractVaadinSecurity;
 
 /**
  * Implementation of {@link org.vaadin.spring.security.VaadinSecurity} that is used when Vaadin is managing the
@@ -30,11 +31,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-public class VaadinManagedSecurity extends AbstractVaadinSecurity {
+public class VaadinManagedSecurityImpl extends AbstractVaadinSecurity {
 
-    private static final Logger logger = LoggerFactory.getLogger(VaadinManagedSecurity.class);
+    private static final Logger logger = LoggerFactory.getLogger(VaadinManagedSecurityImpl.class);
 
-    public VaadinManagedSecurity() {
+    public VaadinManagedSecurityImpl() {
         logger.info("Using Vaadin Managed Security");
     }
 
