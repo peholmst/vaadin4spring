@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 The original authors
+ * Copyright 2015, 2016 The original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,42 +29,36 @@ import org.springframework.security.web.authentication.RememberMeServices;
 public interface VaadinSecurityContext {
 
     /**
-     * Get the current Spring ApplicationContext
-     *
-     * @return {@link org.springframework.context.ApplicationContext}
+     * Returns the current Spring application context (never {@code null}).
      */
     ApplicationContext getApplicationContext();
 
     /**
-     * Get the configured {@link org.springframework.security.authentication.AuthenticationManager}
-     * return {@code null} if not available.
-     *
-     * @return {@link org.springframework.security.authentication.AuthenticationManager}
+     * Returns the {@link org.springframework.security.authentication.AuthenticationManager} or {@code null} if not
+     * available.
      */
     AuthenticationManager getAuthenticationManager();
 
     /**
-     * Get the configured {@link org.springframework.security.access.AccessDecisionManager}
-     * return {@code null} if not available.
-     *
-     * @return {@link org.springframework.security.access.AccessDecisionManager}
+     * Checks if an {@link AuthenticationManager} is available or not. When this method returns true,
+     * {@link #getAuthenticationManager()} always returns a non-null object.
+     */
+    boolean hasAuthenticationManager();
+
+    /**
+     * Returns the {@link org.springframework.security.access.AccessDecisionManager} or {@code null} if not available.
      */
     AccessDecisionManager getAccessDecisionManager();
 
     /**
-     * Checks if the Security bean has an accessDecisionManager
-     *
-     * @return true if the Security bean has an accessDecisionManager
+     * Checks if an {@link AccessDecisionManager} is available or not. When this method returns true,
+     * {@link #getAccessDecisionManager()} will always returns a non-null object.
      */
     boolean hasAccessDecisionManager();
 
     /**
-     * Returns the {@link org.springframework.security.web.authentication.RememberMeServices}, or {@code null} if not available.
+     * Returns the {@link org.springframework.security.web.authentication.RememberMeServices} or an instance of
+     * {@link org.springframework.security.web.authentication.NullRememberMeServices} if not available.
      */
     RememberMeServices getRememberMeServices();
-
-    /**
-     * Checks if {@link org.springframework.security.web.authentication.RememberMeServices} are available.
-     */
-    boolean hasRememberMeServices();
 }

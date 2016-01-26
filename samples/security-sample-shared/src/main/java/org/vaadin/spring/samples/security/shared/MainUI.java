@@ -15,10 +15,12 @@
  */
 package org.vaadin.spring.samples.security.shared;
 
+import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.DefaultErrorHandler;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.CssLayout;
@@ -42,6 +44,7 @@ import org.vaadin.spring.sidebar.security.VaadinSecurityItemFilter;
  */
 @SpringUI
 @Theme(ValoTheme.THEME_NAME)
+@Push(transport = Transport.WEBSOCKET)
 public class MainUI extends UI {
 
     @Autowired

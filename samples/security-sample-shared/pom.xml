@@ -50,6 +50,10 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client-compiled</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-push</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

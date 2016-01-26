@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 The original authors
+ * Copyright 2015, 2016 The original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,19 +52,6 @@ public interface VaadinSecurity extends VaadinSecurityContext {
      * will return without exceptions.
      *
      * @param authentication the authentication object to authenticate, must not be {@code null}.
-     * @param rememberMe     boolean to indicate if remember me authentication should be activated
-     * @return the authenticated {@code Authentication} token.
-     * @throws org.springframework.security.core.AuthenticationException if authentication fails.
-     */
-    Authentication login(Authentication authentication, boolean rememberMe) throws AuthenticationException, Exception;
-
-    /**
-     * Tries to login using the specified authentication object. If authentication succeeds, this method
-     * will return without exceptions.
-     * <p/>
-     * Remember Me authentication is ignored
-     *
-     * @param authentication the authentication object to authenticate, must not be {@code null}.
      * @return the authenticated {@code Authentication} token.
      * @throws org.springframework.security.core.AuthenticationException if authentication fails.
      */
@@ -73,20 +60,6 @@ public interface VaadinSecurity extends VaadinSecurityContext {
     /**
      * Convenience method that invokes {@link #login(org.springframework.security.core.Authentication)} with a
      * {@link org.springframework.security.authentication.UsernamePasswordAuthenticationToken}-object.
-     *
-     * @param username   the username to use, must not be {@code null}.
-     * @param password   the password to use, must not be {@code null}.
-     * @param rememberMe boolean to set remember me authentication
-     * @return the authenticated {@code Authentication} token.
-     * @throws AuthenticationException if authentication fails.
-     */
-    Authentication login(String username, String password, boolean rememberMe) throws AuthenticationException, Exception;
-
-    /**
-     * Convenience method that invokes {@link #login(org.springframework.security.core.Authentication)} with a
-     * {@link org.springframework.security.authentication.UsernamePasswordAuthenticationToken}-object.
-     * <p/>
-     * Remember me authentication is ignored
      *
      * @param username the username to use, must not be {@code null}.
      * @param password the password to use, must not be {@code null}.
@@ -101,12 +74,16 @@ public interface VaadinSecurity extends VaadinSecurityContext {
     void logout();
 
     /**
-     * Checks if the current user has the specified authority. This method works with static authorities (such as roles).
-     * If you need more dynamic authorization (such as ACLs or EL expressions), use {@link #hasAccessToObject(Object, String...)}.
+     * Checks if the current user has the specified authority. This method works with static authorities (such as
+     * roles).
+     * If you need more dynamic authorization (such as ACLs or EL expressions), use
+     * {@link #hasAccessToObject(Object, String...)}.
      *
      * @param authority the authority to check, must not be {@code null}.
-     * @return true if the current {@link org.springframework.security.core.context.SecurityContext} contains an authenticated {@link org.springframework.security.core.Authentication}
-     * token that has a {@link org.springframework.security.core.GrantedAuthority} whose string representation matches the specified {@code authority}.
+     * @return true if the current {@link org.springframework.security.core.context.SecurityContext} contains an
+     *         authenticated {@link org.springframework.security.core.Authentication}
+     *         token that has a {@link org.springframework.security.core.GrantedAuthority} whose string representation
+     *         matches the specified {@code authority}.
      * @see org.springframework.security.core.Authentication#getAuthorities()
      * @see org.springframework.security.core.GrantedAuthority#getAuthority()
      */
@@ -115,35 +92,42 @@ public interface VaadinSecurity extends VaadinSecurityContext {
     /**
      * Gets the authentication token of the current user.
      *
-     * @return the {@link org.springframework.security.core.Authentication} token stored in the current {@link org.springframework.security.core.context.SecurityContext}, or {@code null}.
+     * @return the {@link org.springframework.security.core.Authentication} token stored in the current
+     *         {@link org.springframework.security.core.context.SecurityContext}, or {@code null}.
      */
     Authentication getAuthentication();
 
     /**
      * Checks if the current user is authorized based on the specified security configuration attributes. The attributes
-     * can be roles or Spring EL expressions (basically anything you can specify as values of the {@link org.springframework.security.access.annotation.Secured} annotation).
+     * can be roles or Spring EL expressions (basically anything you can specify as values of the
+     * {@link org.springframework.security.access.annotation.Secured} annotation).
      *
-     * @param securedObject                   the secured object.
+     * @param securedObject the secured object.
      * @param securityConfigurationAttributes the security configuration attributes.
      * @return true if the current user is authorized, false if not.
      */
     boolean hasAccessToObject(Object securedObject, String... securityConfigurationAttributes);
 
     /**
-     * Convenience method that invokes {@link #hasAccessToObject(Object, String...)}, using the {@link org.springframework.security.access.annotation.Secured} annotation of the secured object
+     * Convenience method that invokes {@link #hasAccessToObject(Object, String...)}, using the
+     * {@link org.springframework.security.access.annotation.Secured} annotation of the secured object
      * to get the security configuration attributes.
      *
-     * @param securedObject the secured object, must not be {@code null} and must have the {@link org.springframework.security.access.annotation.Secured} annotation.
+     * @param securedObject the secured object, must not be {@code null} and must have the
+     *        {@link org.springframework.security.access.annotation.Secured} annotation.
      * @return true if the current user is authorized, false if not.
      */
     boolean hasAccessToSecuredObject(Object securedObject);
 
     /**
-     * Uses the {@link org.springframework.security.access.annotation.Secured} annotation on the specified method to check if the current user has access to the secured object.
+     * Uses the {@link org.springframework.security.access.annotation.Secured} annotation on the specified method to
+     * check if the current user has access to the secured object.
      *
-     * @param securedObject        the secured object, must not be {@code null}.
-     * @param methodName           the name of the method holding the {@link org.springframework.security.access.annotation.Secured} annotation.
-     * @param methodParameterTypes the parameter types of the method holding the {@link org.springframework.security.access.annotation.Secured} annotation.
+     * @param securedObject the secured object, must not be {@code null}.
+     * @param methodName the name of the method holding the
+     *        {@link org.springframework.security.access.annotation.Secured} annotation.
+     * @param methodParameterTypes the parameter types of the method holding the
+     *        {@link org.springframework.security.access.annotation.Secured} annotation.
      * @return true if the current user is authorized, false if not.
      * @see #hasAccessToSecuredObject(Object)
      */

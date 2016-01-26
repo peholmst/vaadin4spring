@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 The original authors
+ * Copyright 2015, 2016 The original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.security.web.authentication;
+package org.vaadin.spring.security.shared;
 
 /**
- * When using shared security and invoking {@link org.vaadin.spring.security.VaadinSecurity#logout()}, a logout handler will
- * be retrieved from the application context and invoked.
+ * When using shared security and invoking {@link org.vaadin.spring.security.VaadinSecurity#logout()}, a logout handler
+ * will be retrieved from the application context and invoked.
  *
  * @author Petter Holmström (petter@vaadin.com)
- * @see org.vaadin.spring.security.web.authentication.VaadinRedirectLogoutHandler
+ * @see VaadinRedirectLogoutHandler
  */
 public interface VaadinLogoutHandler {
 
@@ -30,9 +30,9 @@ public interface VaadinLogoutHandler {
     void onLogout();
 
     /**
-     * Implementation of {@link org.vaadin.spring.security.web.authentication.VaadinLogoutHandler} that does nothing.
+     * Implementation of {@link VaadinLogoutHandler} that does nothing.
      */
-    static final class NullHandler implements VaadinLogoutHandler {
+    final class NullHandler implements VaadinLogoutHandler {
 
         @Override
         public void onLogout() {

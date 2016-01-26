@@ -25,8 +25,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.vaadin.spring.security.VaadinSecurity;
-import org.vaadin.spring.security.internal.SecurityContextVaadinRequestListener;
-import org.vaadin.spring.security.internal.VaadinManagedSecurity;
+import org.vaadin.spring.security.managed.SecurityContextVaadinRequestListener;
+import org.vaadin.spring.security.managed.DefaultVaadinManagedSecurity;
 
 /**
  * Configuration for setting up Vaadin managed Spring Security. See {@link org.vaadin.spring.security.annotation.EnableVaadinManagedSecurity} for details.
@@ -38,7 +38,7 @@ public class VaadinManagedSecurityConfiguration extends AbstractVaadinSecurityCo
 
     @Override
     VaadinSecurity vaadinSecurity() {
-        return new VaadinManagedSecurity();
+        return new DefaultVaadinManagedSecurity();
     }
 
     @Bean

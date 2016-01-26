@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextListener;
 import org.vaadin.spring.context.VaadinApplicationContext;
 import org.vaadin.spring.context.VaadinServiceFactory;
@@ -28,6 +29,8 @@ import org.vaadin.spring.http.HttpResponseFactory;
 import org.vaadin.spring.http.HttpResponseFilter;
 import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.http.VaadinHttpService;
+
+import javax.servlet.ServletContext;
 
 /**
  * Spring configuration that sets up the the extensions for Vaadin Spring.
@@ -98,5 +101,13 @@ public class VaadinExtensionsConfiguration {
     @Bean
     VaadinSessionFactory vaadinSessionFactory() {
         return new VaadinSessionFactory();
+    }
+
+    /**
+     * Allows injection of the {@link ServletContext}.
+     */
+    @Bean
+    ServletContext servletContext(WebApplicationContext applicationContext) {
+        return applicationContext.getServletContext();
     }
 }

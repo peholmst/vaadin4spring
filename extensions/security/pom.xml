@@ -36,6 +36,11 @@
             <artifactId>vaadin-spring-ext-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-push</artifactId>
+            <optional>true</optional>
+        </dependency>
 
         <!-- Testing -->
         <dependency>

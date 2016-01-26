@@ -19,16 +19,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.security.VaadinSecurity;
-import org.vaadin.spring.security.internal.VaadinSharedSecurity;
-import org.vaadin.spring.security.web.VaadinDefaultRedirectStrategy;
+import org.vaadin.spring.security.shared.VaadinAuthenticationSuccessHandler;
+import org.vaadin.spring.security.shared.VaadinLogoutHandler;
+import org.vaadin.spring.security.shared.VaadinRedirectLogoutHandler;
+import org.vaadin.spring.security.shared.DefaultVaadinSharedSecurity;
+import org.vaadin.spring.security.web.DefaultVaadinRedirectStrategy;
 import org.vaadin.spring.security.web.VaadinRedirectStrategy;
-import org.vaadin.spring.security.web.authentication.SavedRequestAwareVaadinAuthenticationSuccessHandler;
-import org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccessHandler;
-import org.vaadin.spring.security.web.authentication.VaadinLogoutHandler;
-import org.vaadin.spring.security.web.authentication.VaadinRedirectLogoutHandler;
+import org.vaadin.spring.security.shared.SavedRequestAwareVaadinAuthenticationSuccessHandler;
+import org.vaadin.spring.servlet.CustomInitParameterProvider;
+import org.vaadin.spring.servlet.SingletonCustomInitParameterProvider;
 
 /**
- * Configuration for setting up Vaadin shared Spring Security. See {@link org.vaadin.spring.security.annotation.EnableVaadinSharedSecurity} for details.
+ * Configuration for setting up Vaadin shared Spring Security. See
+ * {@link org.vaadin.spring.security.annotation.EnableVaadinSharedSecurity} for details.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
@@ -41,12 +44,12 @@ public class VaadinSharedSecurityConfiguration extends AbstractVaadinSecurityCon
 
     @Override
     VaadinSecurity vaadinSecurity() {
-        return new VaadinSharedSecurity();
+        return new DefaultVaadinSharedSecurity();
     }
 
     @Bean(name = VAADIN_REDIRECT_STRATEGY_BEAN)
     VaadinRedirectStrategy vaadinRedirectStrategy() {
-        return new VaadinDefaultRedirectStrategy();
+        return new DefaultVaadinRedirectStrategy();
     }
 
     @Bean(name = VAADIN_LOGOUT_HANDLER_BEAN)
@@ -55,7 +58,16 @@ public class VaadinSharedSecurityConfiguration extends AbstractVaadinSecurityCon
     }
 
     @Bean(name = VAADIN_AUTHENTICATION_SUCCESS_HANDLER_BEAN)
-    VaadinAuthenticationSuccessHandler vaadinAuthenticationSuccessHandler(HttpService httpService, VaadinRedirectStrategy vaadinRedirectStrategy) {
+    VaadinAuthenticationSuccessHandler vaadinAuthenticationSuccessHandler(HttpService httpService,
+        VaadinRedirectStrategy vaadinRedirectStrategy) {
         return new SavedRequestAwareVaadinAuthenticationSuccessHandler(httpService, vaadinRedirectStrategy, "/");
+    }
+
+    @Bean
+    CustomInitParameterProvider pushSecurityInterceptorInitParameterProvider() {
+        // We're using the class name as a string to avoid ClassNotFoundExceptions when Vaadin Push is not on the
+        // classpath.
+        return new SingletonCustomInitParameterProvider("org.atmosphere.cpr.AtmosphereInterceptor",
+            "org.vaadin.spring.security.shared.PushSecurityInterceptor");
     }
 }

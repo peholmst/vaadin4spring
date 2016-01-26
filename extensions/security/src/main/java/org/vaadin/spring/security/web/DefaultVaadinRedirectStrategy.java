@@ -15,46 +15,35 @@
  */
 package org.vaadin.spring.security.web;
 
-import com.vaadin.ui.UI;
+import javax.servlet.ServletContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.util.UrlUtils;
-import org.vaadin.spring.http.HttpService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.vaadin.ui.UI;
 
 /**
- * Simple implementation of <tt>RedirectStrategy</tt> which is the default used throughout the vaadin4spring framework.
- * <br><br>
- * This class is based upon {@link DefaultRedirectStrategy}
+ * Default implementation of {@link VaadinRedirectStrategy}. Based on
+ * {@link org.springframework.security.web.DefaultRedirectStrategy}.
  *
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
+ * @author Petter Holmström (petter@vaadin.com)
  */
-public class VaadinDefaultRedirectStrategy implements VaadinRedirectStrategy {
+public class DefaultVaadinRedirectStrategy implements VaadinRedirectStrategy {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultVaadinRedirectStrategy.class);
 
     private boolean contextRelative;
 
     @Autowired
-    private HttpService http;
+    ServletContext servletContext;
 
     @Override
     public void sendRedirect(String url) {
-        HttpServletRequest request = http.getCurrentRequest();
-        HttpServletResponse response = http.getCurrentResponse();
-
-        String redirectUrl = calculateRedirectUrl(request.getContextPath(), url);
-        redirectUrl = response.encodeRedirectURL(redirectUrl);
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Redirecting to '" + redirectUrl + "'");
-        }
-
-        // Change to Vaadin Redirect
+        final String redirectUrl = calculateRedirectUrl(servletContext.getContextPath(), url);
+        LOGGER.debug("Redirecting to [" + redirectUrl + "]");
         UI.getCurrent().getPage().setLocation(redirectUrl);
     }
 

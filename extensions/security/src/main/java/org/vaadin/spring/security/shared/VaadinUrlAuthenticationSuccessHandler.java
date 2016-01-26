@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.security.web.authentication;
+package org.vaadin.spring.security.shared;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.WebAttributes;
@@ -34,7 +34,8 @@ import javax.servlet.http.HttpSession;
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com) (Vaadin specific implementation)
  * @author Petter Holmström (petter@vaadin.com)
  */
-public class VaadinUrlAuthenticationSuccessHandler extends AbstractVaadinAuthenticationTargetUrlRequestHandler implements VaadinAuthenticationSuccessHandler {
+public class VaadinUrlAuthenticationSuccessHandler extends AbstractVaadinAuthenticationTargetUrlRequestHandler implements
+    VaadinAuthenticationSuccessHandler {
 
     public VaadinUrlAuthenticationSuccessHandler(HttpService http, VaadinRedirectStrategy redirectStrategy, String defaultTargetUrl) {
         super(http, redirectStrategy);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 The original authors
+ * Copyright 2015, 2016 The original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.security.web.authentication;
+package org.vaadin.spring.security.shared;
 
 import org.springframework.security.core.Authentication;
 
@@ -40,9 +40,9 @@ public interface VaadinAuthenticationSuccessHandler {
     void onAuthenticationSuccess(Authentication authentication) throws Exception;
 
     /**
-     * Implementation of {@link org.vaadin.spring.security.web.authentication.VaadinAuthenticationSuccessHandler} that does nothing.
+     * Implementation of {@link VaadinAuthenticationSuccessHandler} that does nothing.
      */
-    static final class NullHandler implements VaadinAuthenticationSuccessHandler {
+    final class NullHandler implements VaadinAuthenticationSuccessHandler {
 
         @Override
         public void onAuthenticationSuccess(Authentication authentication) throws Exception {

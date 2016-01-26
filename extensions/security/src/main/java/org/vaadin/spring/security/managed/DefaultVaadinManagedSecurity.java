@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 The original authors
+ * Copyright 2015, 2016 The original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,40 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.spring.security.internal;
+package org.vaadin.spring.security.managed;
 
-import com.vaadin.server.Page;
-import com.vaadin.server.VaadinSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.vaadin.spring.security.AbstractVaadinSecurity;
+
+import com.vaadin.server.Page;
+import com.vaadin.server.VaadinSession;
 
 /**
- * Implementation of {@link org.vaadin.spring.security.VaadinSecurity} that is used when Vaadin is managing the
- * security of the web application.
+ * Default implementation of {@link org.vaadin.spring.security.managed.VaadinManagedSecurity}.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
-public class VaadinManagedSecurity extends AbstractVaadinSecurity {
+public class DefaultVaadinManagedSecurity extends AbstractVaadinSecurity implements VaadinManagedSecurity {
 
-    private static final Logger logger = LoggerFactory.getLogger(VaadinManagedSecurity.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultVaadinManagedSecurity.class);
 
-    public VaadinManagedSecurity() {
-        logger.info("Using Vaadin Managed Security");
+    public DefaultVaadinManagedSecurity() {
+        LOGGER.info("Using Vaadin Managed Security");
     }
 
     @Override
-    public Authentication login(Authentication authentication, boolean rememberMe) throws AuthenticationException {
-        if (rememberMe) {
-            throw new UnsupportedOperationException("Remember Me is currently not supported when using managed security");
-        }
+    public Authentication login(Authentication authentication) throws AuthenticationException {
         SecurityContext context = SecurityContextHolder.getContext();
-        logger.debug("Authenticating using {}, rememberMe = {}", authentication, rememberMe);
+        LOGGER.debug("Authenticating using {}", authentication);
         final Authentication fullyAuthenticated = getAuthenticationManager().authenticate(authentication);
-        logger.debug("Setting authentication of context {} to {}", context, fullyAuthenticated);
+        LOGGER.debug("Setting authentication of context {} to {}", context, fullyAuthenticated);
         context.setAuthentication(fullyAuthenticated);
         return fullyAuthenticated;
     }
