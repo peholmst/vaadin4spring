@@ -15,6 +15,9 @@
  */
 package org.vaadin.spring.security.managed;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -23,8 +26,9 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.security.AbstractVaadinSecurity;
 
-import com.vaadin.server.Page;
-import com.vaadin.server.VaadinSession;
+import com.vaadin.server.*;
+import com.vaadin.shared.ui.ui.Transport;
+import com.vaadin.ui.UI;
 
 /**
  * Default implementation of {@link org.vaadin.spring.security.managed.VaadinManagedSecurity}.
@@ -35,18 +39,73 @@ public class DefaultVaadinManagedSecurity extends AbstractVaadinSecurity impleme
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultVaadinManagedSecurity.class);
 
+    public static final String REINITIALIZE_SESSION_AFTER_LOGIN_PROPERTY = "vaadin.spring.security.managed.reinitialize-session-after-login";
+
     public DefaultVaadinManagedSecurity() {
         LOGGER.info("Using Vaadin Managed Security");
     }
 
+    /**
+     * Returns whether the current session should be reinitialized after a successful login. Default is true.
+     * Can be disabled by setting the "{@value #REINITIALIZE_SESSION_AFTER_LOGIN_PROPERTY}" environment property to
+     * false. If Websocket Push is used, the session will never be reinitialized since this throws errors on at least
+     * Tomcat 8.
+     */
+    protected boolean isReinitializeSessionAfterLogin() {
+        return getApplicationContext().getEnvironment().getProperty(REINITIALIZE_SESSION_AFTER_LOGIN_PROPERTY,
+            Boolean.class, true);
+    }
+
     @Override
     public Authentication login(Authentication authentication) throws AuthenticationException {
-        SecurityContext context = SecurityContextHolder.getContext();
         LOGGER.debug("Authenticating using {}", authentication);
         final Authentication fullyAuthenticated = getAuthenticationManager().authenticate(authentication);
+        if (isReinitializeSessionAfterLogin()) {
+            clearAndReinitializeSession();
+        }
+        SecurityContext context = SecurityContextHolder.getContext();
         LOGGER.debug("Setting authentication of context {} to {}", context, fullyAuthenticated);
         context.setAuthentication(fullyAuthenticated);
         return fullyAuthenticated;
+    }
+
+    /**
+     * Clears the session of all attributes except some internal Vaadin attributes and reinitializes it. If Websocket
+     * Push is used, the session will never be reinitialized since this throws errors on at least
+     * Tomcat 8.
+     */
+    protected void clearAndReinitializeSession() {
+        final VaadinRequest currentRequest = VaadinService.getCurrentRequest();
+        final UI currentUI = UI.getCurrent();
+        if (currentUI != null) {
+            final Transport transport = currentUI.getPushConfiguration().getTransport();
+            if (Transport.WEBSOCKET.equals(transport) || Transport.WEBSOCKET_XHR.equals(transport)) {
+                LOGGER.warn(
+                    "Clearing and reinitializing the session is currently not supported when using Websocket Push.");
+                return;
+            }
+        }
+        if (currentRequest != null) {
+            LOGGER.debug("Clearing the session");
+            final WrappedSession session = currentRequest.getWrappedSession();
+            final String serviceName = VaadinService.getCurrent().getServiceName();
+            final Set<String> attributesToSpare = new HashSet<String>();
+            attributesToSpare.add(serviceName + ".lock");
+            attributesToSpare.add(VaadinSession.class.getName() + "." + serviceName);
+            for (String s : currentRequest.getWrappedSession().getAttributeNames()) {
+                if (!attributesToSpare.contains(s)) {
+                    LOGGER.trace("Removing attribute {} from session", s);
+                    session.removeAttribute(s);
+                }
+            }
+            LOGGER.debug("Reinitializing the session {}", session.getId());
+            VaadinService.reinitializeSession(currentRequest);
+            LOGGER.debug("Session reinitialized, new ID is {}",
+                VaadinService.getCurrentRequest().getWrappedSession().getId());
+        } else {
+            LOGGER
+                .warn("No VaadinRequest bound to current thread, could NOT clear/reinitialize the session after login");
+        }
     }
 
     @Override
