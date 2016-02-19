@@ -18,8 +18,10 @@ package org.vaadin.spring.security.navigation;
 import com.vaadin.navigator.View;
 import com.vaadin.spring.access.ViewInstanceAccessControl;
 import com.vaadin.ui.UI;
+import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -32,9 +34,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.util.MethodInvocationUtils;
+import org.springframework.util.ClassUtils;
 import org.vaadin.spring.security.VaadinSecurity;
 import org.vaadin.spring.security.VaadinSecurityAware;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -75,9 +80,9 @@ public class PreAuthorizeViewInstanceAccessControl implements ApplicationContext
             logger.trace("No @PreAuthorize annotation found on view {}. Granting access.", beanName);
             return true;
         } else if (security.hasAccessDecisionManager()) {
-            /*final Class<?> targetClass = AopUtils.getTargetClass(view);
+            final Class<?> targetClass = AopUtils.getTargetClass(view);
             final Method method = ClassUtils.getMethod(targetClass, "enter", com.vaadin.navigator.ViewChangeListener.ViewChangeEvent.class);
-            final MethodInvocation methodInvocation = MethodInvocationUtils.createFromClass(targetClass, method.getName());*/
+            final MethodInvocation methodInvocation = MethodInvocationUtils.createFromClass(targetClass, method.getName());
 
             final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             final AccessDecisionManager accessDecisionManager = security.getAccessDecisionManager();
@@ -86,7 +91,7 @@ public class PreAuthorizeViewInstanceAccessControl implements ApplicationContext
             final Collection<ConfigAttribute> attributes = Collections.singleton((ConfigAttribute) attributeFactory.createPreInvocationAttribute(null, null, viewSecured.value()));
 
             try {
-                accessDecisionManager.decide(authentication, view, attributes);
+                accessDecisionManager.decide(authentication, methodInvocation, attributes);
                 logger.trace("Access to view {} was granted by access decision manager", beanName);
                 return true;
             } catch (InsufficientAuthenticationException e) {
