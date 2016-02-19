@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.annotation.Resource;
 import javax.servlet.Servlet;
@@ -37,6 +38,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {CustomServletOverrideTest.MyConfiguration.class})
+@WebAppConfiguration
 public class CustomServletOverrideTest {
 
     public static class MyCustomVaadinServlet extends VaadinServlet {
