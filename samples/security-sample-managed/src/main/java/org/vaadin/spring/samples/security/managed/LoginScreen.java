@@ -101,12 +101,14 @@ public class LoginScreen extends CustomComponent {
 
     private void login() {
         try {
-            final Authentication authentication = vaadinSecurity.login(userName.getValue(), passwordField.getValue());
+            String password = passwordField.getValue();
+            passwordField.setValue("");
+
+            final Authentication authentication = vaadinSecurity.login(userName.getValue(), password);
             eventBus.publish(this, new SuccessfulLoginEvent(getUI(), authentication));
         } catch (AuthenticationException ex) {
             userName.focus();
             userName.selectAll();
-            passwordField.setValue("");
             loginFailedLabel.setValue(String.format("Login failed: %s", ex.getMessage()));
             loginFailedLabel.setVisible(true);
         } catch (Exception ex) {
