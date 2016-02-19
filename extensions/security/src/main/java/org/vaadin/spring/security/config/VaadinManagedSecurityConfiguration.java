@@ -47,7 +47,7 @@ public class VaadinManagedSecurityConfiguration extends AbstractVaadinSecurityCo
     }
 
     @Configuration
-    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true, proxyTargetClass = true)
     static class GlobalMethodSecurity extends GlobalMethodSecurityConfiguration {
 
         @Autowired
