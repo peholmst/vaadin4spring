@@ -58,7 +58,7 @@ public class SecurityContextVaadinRequestListener implements VaadinRequestStartL
 
         SecurityContextHolder.clearContext();
         if (session != null) {
-            logger.debug("Loading security context from VaadinSession {}", session);
+            logger.trace("Loading security context from VaadinSession {}", session);
             SecurityContext securityContext;
             session.lock();
             try {
@@ -67,13 +67,13 @@ public class SecurityContextVaadinRequestListener implements VaadinRequestStartL
                 session.unlock();
             }
             if (securityContext == null) {
-                logger.debug("No security context found in VaadinSession {}", session);
+                logger.trace("No security context found in VaadinSession {}", session);
             } else {
-                logger.debug("Setting security context to {}", securityContext);
+                logger.trace("Setting security context to {}", securityContext);
                 SecurityContextHolder.setContext(securityContext);
             }
         } else {
-            logger.debug("No VaadinSession available for retrieving the security context");
+            logger.trace("No VaadinSession available for retrieving the security context");
         }
     }
 
@@ -82,7 +82,7 @@ public class SecurityContextVaadinRequestListener implements VaadinRequestStartL
         try {
             if (session != null) {
                 SecurityContext securityContext = SecurityContextHolder.getContext();
-                logger.debug("Storing security context {} in VaadinSession {}", securityContext, session);
+                logger.trace("Storing security context {} in VaadinSession {}", securityContext, session);
                 session.lock();
                 try {
                     session.setAttribute(SECURITY_CONTEXT_SESSION_ATTRIBUTE, securityContext);
@@ -90,10 +90,10 @@ public class SecurityContextVaadinRequestListener implements VaadinRequestStartL
                     session.unlock();
                 }
             } else {
-                logger.debug("No VaadinSession available for storing the security context");
+                logger.trace("No VaadinSession available for storing the security context");
             }
         } finally {
-            logger.debug("Clearing security context");
+            logger.trace("Clearing security context");
             SecurityContextHolder.clearContext();
         }
     }
