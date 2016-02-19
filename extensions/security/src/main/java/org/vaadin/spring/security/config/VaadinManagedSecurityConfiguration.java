@@ -24,12 +24,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
-import org.vaadin.spring.security.VaadinSecurity;
-import org.vaadin.spring.security.managed.SecurityContextVaadinRequestListener;
 import org.vaadin.spring.security.managed.DefaultVaadinManagedSecurity;
+import org.vaadin.spring.security.managed.SecurityContextVaadinRequestListener;
+import org.vaadin.spring.security.managed.VaadinManagedSecurity;
 
 /**
- * Configuration for setting up Vaadin managed Spring Security. See {@link org.vaadin.spring.security.annotation.EnableVaadinManagedSecurity} for details.
+ * Configuration for setting up Vaadin managed Spring Security. See
+ * {@link org.vaadin.spring.security.annotation.EnableVaadinManagedSecurity} for details.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
@@ -37,7 +38,7 @@ import org.vaadin.spring.security.managed.DefaultVaadinManagedSecurity;
 public class VaadinManagedSecurityConfiguration extends AbstractVaadinSecurityConfiguration {
 
     @Override
-    VaadinSecurity vaadinSecurity() {
+    VaadinManagedSecurity vaadinSecurity() {
         return new DefaultVaadinManagedSecurity();
     }
 
@@ -70,7 +71,8 @@ public class VaadinManagedSecurityConfiguration extends AbstractVaadinSecurityCo
             try {
                 applicationContext.getBean(AuthenticationManagerConfigurer.class).configure(auth);
             } catch (Exception ex) {
-                throw new IllegalStateException("No AuthenticationManagerConfigurer found. Either define one, or override the GlobalMethodSecurity.configure(AuthenticationManagerBuilder) method.");
+                throw new IllegalStateException(
+                    "No AuthenticationManagerConfigurer found. Either define one, or override the GlobalMethodSecurity.configure(AuthenticationManagerBuilder) method.");
             }
         }
     }

@@ -68,7 +68,7 @@ public class SingleSecuredUI extends UI {
         if (vaadinSecurity.isAuthenticated()) {
             showMainScreen();
         } else {
-            showLoginScreen();
+            showLoginScreen(request.getParameter("goodbye") != null);
         }
     }
 
@@ -84,8 +84,10 @@ public class SingleSecuredUI extends UI {
         super.detach();
     }
 
-    private void showLoginScreen() {
-        setContent(applicationContext.getBean(LoginScreen.class));
+    private void showLoginScreen(boolean loggedOut) {
+        LoginScreen loginScreen = applicationContext.getBean(LoginScreen.class);
+        loginScreen.setLoggedOut(loggedOut);
+        setContent(loginScreen);
     }
 
     private void showMainScreen() {

@@ -115,6 +115,12 @@ public class DefaultVaadinManagedSecurity extends AbstractVaadinSecurity impleme
     }
 
     @Override
+    public void logout(String logoutUrl) {
+        VaadinSession.getCurrent().close();
+        Page.getCurrent().setLocation(logoutUrl);
+    }
+
+    @Override
     public Authentication getAuthentication() {
         final SecurityContext securityContext = SecurityContextHolder.getContext();
         return securityContext.getAuthentication();

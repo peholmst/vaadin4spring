@@ -56,11 +56,17 @@ public class LoginScreen extends CustomComponent {
 
     private Label loginFailedLabel;
 
+    private Label loggedOutLabel;
+
     @Autowired
     public LoginScreen(VaadinSecurity vaadinSecurity, EventBus.SessionEventBus eventBus) {
         this.vaadinSecurity = vaadinSecurity;
         this.eventBus = eventBus;
         initLayout();
+    }
+
+    void setLoggedOut(boolean loggedOut) {
+        loggedOutLabel.setVisible(loggedOut);
     }
 
     private void initLayout() {
@@ -89,6 +95,12 @@ public class LoginScreen extends CustomComponent {
         loginFailedLabel.addStyleName(ValoTheme.LABEL_FAILURE);
         loginFailedLabel.setVisible(false);
 
+        loginLayout.addComponent(loggedOutLabel = new Label("Good bye!"));
+        loginLayout.setComponentAlignment(loggedOutLabel, Alignment.BOTTOM_CENTER);
+        loggedOutLabel.setSizeUndefined();
+        loggedOutLabel.addStyleName(ValoTheme.LABEL_SUCCESS);
+        loggedOutLabel.setVisible(false);
+
         loginLayout.addComponent(loginForm);
         loginLayout.setComponentAlignment(loginForm, Alignment.TOP_CENTER);
 
@@ -101,6 +113,8 @@ public class LoginScreen extends CustomComponent {
 
     private void login() {
         try {
+            loggedOutLabel.setVisible(false);
+
             String password = passwordField.getValue();
             passwordField.setValue("");
 

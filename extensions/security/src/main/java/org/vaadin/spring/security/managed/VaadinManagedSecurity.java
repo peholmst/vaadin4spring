@@ -24,5 +24,8 @@ import org.vaadin.spring.security.VaadinSecurity;
  * @author Petter Holmström (petter@vaadin.com)
  */
 public interface VaadinManagedSecurity extends VaadinSecurity {
-    // No methods so far but we use a separate interface for consistency.
+    /**
+     * Logs the user out and redirects to the specified URL.
+     */
+    void logout(String logoutUrl);
 }

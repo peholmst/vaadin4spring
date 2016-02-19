@@ -20,6 +20,7 @@ import com.vaadin.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.samples.security.managed.Sections;
 import org.vaadin.spring.security.VaadinSecurity;
+import org.vaadin.spring.security.managed.VaadinManagedSecurity;
 import org.vaadin.spring.sidebar.annotation.FontAwesomeIcon;
 import org.vaadin.spring.sidebar.annotation.SideBarItem;
 
@@ -33,15 +34,15 @@ import org.vaadin.spring.sidebar.annotation.SideBarItem;
 @FontAwesomeIcon(FontAwesome.POWER_OFF)
 public class LogoutOperation implements Runnable {
 
-    private final VaadinSecurity vaadinSecurity;
+    private final VaadinManagedSecurity vaadinSecurity;
 
     @Autowired
-    public LogoutOperation(VaadinSecurity vaadinSecurity) {
+    public LogoutOperation(VaadinManagedSecurity vaadinSecurity) {
         this.vaadinSecurity = vaadinSecurity;
     }
 
     @Override
     public void run() {
-        vaadinSecurity.logout();
+        vaadinSecurity.logout("?goodbye");
     }
 }
