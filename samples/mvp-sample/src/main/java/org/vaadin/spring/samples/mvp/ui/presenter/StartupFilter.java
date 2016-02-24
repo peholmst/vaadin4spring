@@ -15,6 +15,7 @@
  */
 package org.vaadin.spring.samples.mvp.ui.presenter;
 
+import org.vaadin.spring.events.Event;
 import org.vaadin.spring.events.EventBusListenerMethodFilter;
 
 /**
@@ -26,7 +27,8 @@ import org.vaadin.spring.events.EventBusListenerMethodFilter;
 public class StartupFilter implements EventBusListenerMethodFilter {
 
     @Override
-    public boolean filter(Object payload) {
+    public boolean filter(Event<?> event) {
+        Object payload = event.getPayload();
         boolean result = false;
         if (Action.class.isAssignableFrom(payload.getClass())) {
             Action action = (Action) payload;
@@ -34,7 +36,6 @@ public class StartupFilter implements EventBusListenerMethodFilter {
                 result = true;
             }
         }
-        return result;
-    }
+        return result;    }
 
 }

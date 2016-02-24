@@ -24,7 +24,7 @@ package org.vaadin.spring.events;
 public class NoEventBusListenerMethodFilter implements EventBusListenerMethodFilter {
 
     @Override
-    public boolean filter(Object payload) {
+    public boolean filter(Event<?> event) {
         return true;
     }
 
