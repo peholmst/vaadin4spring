@@ -24,9 +24,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -61,7 +61,8 @@ public class DefaultVaadinSharedSecurity extends AbstractVaadinSecurity implemen
 
     @Override
     public Authentication login(Authentication authentication, boolean rememberMe) throws Exception {
-        final HttpServletRequest request = new RememberMeRequestWrapper(getCurrentRequest(), rememberMe);
+        final HttpServletRequest request = new RememberMeRequestWrapper(getCurrentRequest(), rememberMe,
+            getRememberMeParameter());
         final HttpServletResponse response = getCurrentResponse();
 
         try {
@@ -90,12 +91,44 @@ public class DefaultVaadinSharedSecurity extends AbstractVaadinSecurity implemen
         }
     }
 
+    /**
+     * Returns the name of the request parameter that enables or disables remember me authentication. If the
+     * {@link #getRememberMeServices() RememberMeServices} extends {@link AbstractRememberMeServices},
+     * the parameter will be retrieved from there. Otherwise, {@link AbstractRememberMeServices#DEFAULT_PARAMETER} is
+     * returned.
+     */
+    protected String getRememberMeParameter() {
+        if (getRememberMeServices() instanceof AbstractRememberMeServices) {
+            return ((AbstractRememberMeServices) getRememberMeServices()).getParameter();
+        } else {
+            return AbstractRememberMeServices.DEFAULT_PARAMETER;
+        }
+    }
+
+    /**
+     * Called by {@link #login(Authentication, boolean)} upon unsuccessful authentication. This implementation will
+     * clear the security context holder and inform the {@code RememberMeServices} of the failed login.
+     * 
+     * @param request the current request.
+     * @param response the current response.
+     */
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.debug("Authentication failed");
         SecurityContextHolder.clearContext();
         getRememberMeServices().loginFail(request, response);
     }
 
+    /**
+     * Called by {@link #login(Authentication, boolean)} upon successful authentication. This implementation will
+     * update the security context holder, inform the {@code RememberMeServices} and invoke the authentication success
+     * handler.
+     *
+     * @param authentication the authentication token returned by the
+     *        {@link org.springframework.security.authentication.AuthenticationManager}.
+     * @param request the current request.
+     * @param response the current response.
+     * @throws Exception
+     */
     protected void successfulAuthentication(Authentication authentication, HttpServletRequest request,
         HttpServletResponse response) throws Exception {
         LOGGER.debug("Authentication succeeded");
@@ -104,6 +137,9 @@ public class DefaultVaadinSharedSecurity extends AbstractVaadinSecurity implemen
         vaadinAuthenticationSuccessHandler.onAuthenticationSuccess(authentication);
     }
 
+    /**
+     * Returns the HTTP request bound to the current thread.
+     */
     protected HttpServletRequest getCurrentRequest() {
         final HttpServletRequest request = httpService.getCurrentRequest();
         if (request == null) {
@@ -112,6 +148,9 @@ public class DefaultVaadinSharedSecurity extends AbstractVaadinSecurity implemen
         return request;
     }
 
+    /**
+     * Returns the HTTP response bound to the current thread.
+     */
     protected HttpServletResponse getCurrentResponse() {
         final HttpServletResponse response = httpService.getCurrentResponse();
         if (response == null) {
@@ -121,13 +160,12 @@ public class DefaultVaadinSharedSecurity extends AbstractVaadinSecurity implemen
     }
 
     @Override
-    public Authentication login(String username, String password, boolean rememberMe)
-        throws AuthenticationException, Exception {
+    public Authentication login(String username, String password, boolean rememberMe) throws Exception {
         return login(new UsernamePasswordAuthenticationToken(username, password), rememberMe);
     }
 
     @Override
-    public Authentication login(Authentication authentication) throws AuthenticationException, Exception {
+    public Authentication login(Authentication authentication) throws Exception {
         return login(authentication, false);
     }
 
@@ -252,10 +290,27 @@ public class DefaultVaadinSharedSecurity extends AbstractVaadinSecurity implemen
         return vaadinLogoutHandler;
     }
 
-    protected class RememberMeRequestWrapper extends HttpServletRequestWrapper {
+    /**
+     * A request wrapper that overrides the value of the remember me parameter based on the values provided in the
+     * constructor. This makes it possible to plug into the existing remember me architecture of Spring Security.
+     */
+    protected final class RememberMeRequestWrapper extends HttpServletRequestWrapper {
 
-        public RememberMeRequestWrapper(HttpServletRequest request, boolean rememberMe) {
+        private final String parameter;
+        private final String rememberMe;
+
+        public RememberMeRequestWrapper(HttpServletRequest request, boolean rememberMe, String parameter) {
             super(request);
+            this.rememberMe = Boolean.toString(rememberMe);
+            this.parameter = parameter;
+        }
+
+        @Override
+        public String getParameter(String name) {
+            if (parameter.equals(name)) {
+                return rememberMe;
+            }
+            return super.getParameter(name);
         }
     }
 }

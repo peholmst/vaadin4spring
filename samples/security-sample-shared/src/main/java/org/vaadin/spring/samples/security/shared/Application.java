@@ -77,8 +77,8 @@ public class Application {
             http.logout().addLogoutHandler(new VaadinSessionClosingLogoutHandler()).logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout").permitAll();
             http.exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
-            // Instruct Spring Security to use the same RememberMeServices as Vaadin4Spring
-            http.rememberMe().rememberMeServices(rememberMeServices());
+            // Instruct Spring Security to use the same RememberMeServices as Vaadin4Spring. Also remember the key.
+            http.rememberMe().rememberMeServices(rememberMeServices()).key("myAppKey");
             // Instruct Spring Security to use the same authentication strategy as Vaadin4Spring
             http.sessionManagement().sessionAuthenticationStrategy(sessionAuthenticationStrategy());
         }
