@@ -15,22 +15,27 @@
  */
 package org.vaadin.spring.events.internal;
 
+import java.io.Serializable;
+import java.lang.reflect.Method;
+
+import javax.annotation.PreDestroy;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
-import org.vaadin.spring.events.*;
+import org.vaadin.spring.events.Event;
+import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventBusListener;
+import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.util.ClassUtils;
 
-import javax.annotation.PreDestroy;
-
-import java.io.Serializable;
-import java.lang.reflect.Method;
-
 /**
- * Implementation of {@link org.vaadin.spring.events.EventBus} that publishes events with one specific {@link org.vaadin.spring.events.EventScope}.
- * A scoped event bus can also have a parent event bus, in which case all events published on the parent bus will propagate to the scoped event bus as well.
+ * Implementation of {@link org.vaadin.spring.events.EventBus} that publishes events with one specific
+ * {@link org.vaadin.spring.events.EventScope}.
+ * A scoped event bus can also have a parent event bus, in which case all events published on the parent bus will
+ * propagate to the scoped event bus as well.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
@@ -44,15 +49,16 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
 
     private EventBus parentEventBus;
     private EventBusListener<Object> parentListener = new EventBusListener<Object>() {
-        
+
         private static final long serialVersionUID = -8276470908536582989L;
 
         @Override
         public void onEvent(final Event<Object> event) {
-            logger.debug("Propagating event [{}] from parent event bus [{}] to event bus [{}]", event, parentEventBus, ScopedEventBus.this);
+            logger.debug("Propagating event [{}] from parent event bus [{}] to event bus [{}]", event, parentEventBus,
+                ScopedEventBus.this);
             listeners.publish(event);
         }
-        
+
     };
 
     /**
@@ -63,7 +69,7 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
     }
 
     /**
-     * @param scope          the scope of the events that this event bus handles.
+     * @param scope the scope of the events that this event bus handles.
      * @param parentEventBus the parent event bus to use, may be {@code null};
      */
     public ScopedEventBus(EventScope scope, EventBus parentEventBus) {
@@ -71,7 +77,8 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
         this.parentEventBus = parentEventBus;
         if (parentEventBus != null) {
             if (AopUtils.isJdkDynamicProxy(parentEventBus)) {
-                logger.debug("Parent event bus [{}] is proxied, trying to get the real EventBus instance", parentEventBus);
+                logger.debug("Parent event bus [{}] is proxied, trying to get the real EventBus instance",
+                    parentEventBus);
                 try {
                     this.parentEventBus = (EventBus) ((Advised) parentEventBus).getTargetSource().getTarget();
                 } catch (Exception e) {
@@ -105,7 +112,8 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
 
     @Override
     public <T> void publish(String topic, Object sender, T payload) {
-        logger.debug("Publishing payload [{}] from sender [{}] on event bus [{}] in topic  [{}]", payload, sender, this, topic);
+        logger.debug("Publishing payload [{}] from sender [{}] on event bus [{}] in topic  [{}]", payload, sender, this,
+            topic);
         listeners.publish(new Event<T>(this, sender, payload, topic));
     }
 
@@ -115,9 +123,11 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
     }
 
     @Override
-    public <T> void publish(EventScope scope, String topic, Object sender, T payload) throws UnsupportedOperationException {
-        logger.debug("Trying to publish payload [{}] from sender [{}] using scope [{}] on event bus [{}] in topic [{}]", payload, sender, scope, this, topic);
-        
+    public <T> void publish(EventScope scope, String topic, Object sender, T payload)
+        throws UnsupportedOperationException {
+        logger.debug("Trying to publish payload [{}] from sender [{}] using scope [{}] on event bus [{}] in topic [{}]",
+            payload, sender, scope, this, topic);
+
         if (eventScope.equals(scope)) {
             publish(topic, sender, payload);
         } else if (parentEventBus != null) {
@@ -134,9 +144,22 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
     }
 
     @Override
+    public <T> void subscribeWithWeakReference(EventBusListener<T> listener) {
+        subscribeWithWeakReference(listener, true);
+    }
+
+    @Override
     public <T> void subscribe(EventBusListener<T> listener, boolean includingPropagatingEvents) {
-        logger.trace("Subscribing listener [{}] to event bus [{}], includingPropagatingEvents = {}", listener, this, includingPropagatingEvents);
+        logger.trace("Subscribing listener [{}] to event bus [{}], includingPropagatingEvents = {}", listener, this,
+            includingPropagatingEvents);
         listeners.add(new EventBusListenerWrapper(this, listener, includingPropagatingEvents));
+    }
+
+    @Override
+    public <T> void subscribeWithWeakReference(EventBusListener<T> listener, boolean includingPropagatingEvents) {
+        logger.trace("Subscribing listener [{}] to event bus [{}] with weak reference, includingPropagatingEvents = {}",
+            listener, this, includingPropagatingEvents);
+        listeners.addWithWeakReference(new EventBusListenerWrapper(this, listener, includingPropagatingEvents));
     }
 
     @Override
@@ -145,8 +168,24 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
     }
 
     @Override
-    public void subscribe(final Object listener, final boolean includingPropagatingEvents) {
-        logger.trace("Subscribing listener [{}] to event bus [{}], includingPropagatingEvents = {}", listener, this, includingPropagatingEvents);
+    public void subscribeWithWeakReference(Object listener) {
+        subscribeWithWeakReference(listener, true);
+    }
+
+    @Override
+    public void subscribe(Object listener, boolean includingPropagatingEvents) {
+        subscribe(listener, includingPropagatingEvents, false);
+    }
+
+    @Override
+    public void subscribeWithWeakReference(Object listener, boolean includingPropagatingEvents) {
+        subscribe(listener, includingPropagatingEvents, true);
+    }
+
+    private void subscribe(final Object listener, final boolean includingPropagatingEvents,
+        final boolean weakReference) {
+        logger.trace("Subscribing listener [{}] to event bus [{}], includingPropagatingEvents = {}, weakReference = {}",
+            listener, this, includingPropagatingEvents, weakReference);
 
         final int[] foundMethods = new int[1];
         ClassUtils.visitClassHierarchy(new ClassUtils.ClassVisitor() {
@@ -156,11 +195,17 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
                     if (m.isAnnotationPresent(EventBusListenerMethod.class)) {
                         if (m.getParameterTypes().length == 1) {
                             logger.trace("Found listener method [{}] in listener [{}]", m.getName(), listener);
-                            MethodListenerWrapper l = new MethodListenerWrapper(ScopedEventBus.this, listener, includingPropagatingEvents, m);
-                            listeners.add(l);
+                            MethodListenerWrapper l = new MethodListenerWrapper(ScopedEventBus.this, listener,
+                                includingPropagatingEvents, m);
+                            if (weakReference) {
+                                listeners.addWithWeakReference(l);
+                            } else {
+                                listeners.add(l);
+                            }
                             foundMethods[0]++;
                         } else {
-                            throw new IllegalArgumentException("Listener method " + m.getName() + " does not have the required signature");
+                            throw new IllegalArgumentException(
+                                "Listener method " + m.getName() + " does not have the required signature");
                         }
                     }
                 }
@@ -183,7 +228,8 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
         listeners.removeAll(new ListenerCollection.ListenerFilter() {
             @Override
             public boolean passes(ListenerCollection.Listener l) {
-                return (l instanceof AbstractListenerWrapper) && (((AbstractListenerWrapper) l).getListenerTarget() == listener);
+                return (l instanceof AbstractListenerWrapper)
+                    && (((AbstractListenerWrapper) l).getListenerTarget() == listener);
             }
         });
     }
@@ -200,7 +246,8 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s[id=%x, eventScope=%s, parentEventBus=%s]", getClass().getSimpleName(), System.identityHashCode(this), eventScope, parentEventBus);
+        return String.format("%s[id=%x, eventScope=%s, parentEventBus=%s]", getClass().getSimpleName(),
+            System.identityHashCode(this), eventScope, parentEventBus);
     }
 
     /**

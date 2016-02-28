@@ -16,7 +16,8 @@
 package org.vaadin.spring.events;
 
 /**
- * Interface defining an event bus. This event bus infrastructure complements the {@link org.springframework.context.ApplicationEventPublisher} in the following ways:
+ * Interface defining an event bus. This event bus infrastructure complements the
+ * {@link org.springframework.context.ApplicationEventPublisher} in the following ways:
  * <ul>
  * <li>Events propagate from parent buses to children</li>
  * <li>Events are scoped</li>
@@ -36,13 +37,16 @@ package org.vaadin.spring.events;
  * <li>Session events are propagated to the UI event bus.</li>
  * <li>UI events are propagated to the view event bus.</li>
  * </ul>
- * Furthermore, {@link org.springframework.context.ApplicationEventPublisher} events can be propagated to any event bus by using {@link org.vaadin.spring.events.support.ApplicationContextEventBroker}.
+ * Furthermore, {@link org.springframework.context.ApplicationEventPublisher} events can be propagated to any event bus
+ * by using {@link org.vaadin.spring.events.support.ApplicationContextEventBroker}.
  * <p>
- * You select which {@code EventBus} implementation to inject by using the corresponding interface. For example, to inject the UI-scoped event bus, you would use:
+ * You select which {@code EventBus} implementation to inject by using the corresponding interface. For example, to
+ * inject the UI-scoped event bus, you would use:
  * <code>
  * &#64;Autowired UIEventBus myUIScopedEventBus;
  * </code>
- * With this implementation, you can subscribe to and publish events of the application, session and UI scopes (see {@link #publish(EventScope, Object, Object)}).
+ * With this implementation, you can subscribe to and publish events of the application, session and UI scopes (see
+ * {@link #publish(EventScope, Object, Object)}).
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
@@ -51,9 +55,9 @@ public interface EventBus {
     /**
      * Publishes the specified payload on the event bus, using the scope of this particular event bus.
      *
-     * @param sender  the object that published the event, never {@code null}.
+     * @param sender the object that published the event, never {@code null}.
      * @param payload the payload of the event to publish, never {@code null}.
-     * @param <T>     the type of the payload.
+     * @param <T> the type of the payload.
      * @see #getScope()
      */
     <T> void publish(Object sender, T payload);
@@ -62,10 +66,10 @@ public interface EventBus {
      * Publishes the specified payload on the event bus, using the scope of this particular event bus.
      * The topic specifies which listeners will be notified.
      *
-     * @param topic   the topic of the event to publish, never {@code null}.
-     * @param sender  the object that published the event, never {@code null}.
+     * @param topic the topic of the event to publish, never {@code null}.
+     * @param sender the object that published the event, never {@code null}.
      * @param payload the payload of the event to publish, never {@code null}.
-     * @param <T>     the type of the payload.
+     * @param <T> the type of the payload.
      * @see #getScope()
      */
     <T> void publish(String topic, Object sender, T payload);
@@ -73,10 +77,10 @@ public interface EventBus {
     /**
      * Publishes the specified payload on the event bus, or any of its parent buses, depending on the event scope.
      *
-     * @param scope   the scope of the event, never {@code null}.
-     * @param sender  the object that published the event, never {@code null}.
+     * @param scope the scope of the event, never {@code null}.
+     * @param sender the object that published the event, never {@code null}.
      * @param payload the payload of the event to publish, never {@code null}.
-     * @param <T>     the type of the payload;
+     * @param <T> the type of the payload;
      * @throws UnsupportedOperationException if the payload could not be published with the specified scope.
      * @see #publish(Object, Object)
      */
@@ -86,11 +90,11 @@ public interface EventBus {
      * Publishes the specified payload on the event bus, or any of its parent buses, depending on the event scope.
      * The topic specifies which listeners will be notified.
      *
-     * @param scope   the scope of the event, never {@code null}.
-     * @param topic   the topic of the event to publish, never {@code null}.
-     * @param sender  the object that published the event, never {@code null}.
+     * @param scope the scope of the event, never {@code null}.
+     * @param topic the topic of the event to publish, never {@code null}.
+     * @param sender the object that published the event, never {@code null}.
      * @param payload the payload of the event to publish, never {@code null}.
-     * @param <T>     the type of the payload;
+     * @param <T> the type of the payload;
      * @throws UnsupportedOperationException if the payload could not be published with the specified scope.
      * @see #publish(Object, Object)
      */
@@ -106,60 +110,98 @@ public interface EventBus {
 
     /**
      * Subscribes the specified listener to the event bus, including propagated events from parent event buses.
-     * The event bus will analyse the payload type of the listener to determine which events it is interested in receiving.
+     * The event bus will analyse the payload type of the listener to determine which events it is interested in
+     * receiving.
      * This is the same as calling {@link #subscribe(EventBusListener, boolean) subscribe(listener, true)}.
      *
      * @param listener the listener to subscribe, never {@code null}.
-     * @param <T>      the type of payload the listener is interested in.
+     * @param <T> the type of payload the listener is interested in.
      * @see #unsubscribe(EventBusListener)
+     * @see #subscribeWithWeakReference(EventBusListener)
      */
     <T> void subscribe(EventBusListener<T> listener);
+
+    /**
+     * Same as {@link #subscribe(EventBusListener)}, but uses a weak reference to store the listener internally.
+     */
+    <T> void subscribeWithWeakReference(EventBusListener<T> listener);
 
     /**
      * Subscribes the specified listener to the event bus. The event bus will analyse the
      * payload type of the listener to determine which events it is interested in receiving.
      *
-     * @param listener                   the listener to subscribe, never {@code null}.
-     * @param includingPropagatingEvents true to notify the listener of events that have propagated from the chain of parent event buses, false to only notify the listeners of events that are directly published on this event bus.
-     * @param <T>                        the type of payload the listener is interested in.
+     * @param listener the listener to subscribe, never {@code null}.
+     * @param includingPropagatingEvents true to notify the listener of events that have propagated from the chain of
+     *        parent event buses, false to only notify the listeners of events that are directly published on this event
+     *        bus.
+     * @param <T> the type of payload the listener is interested in.
      * @see #unsubscribe(EventBusListener)
+     * @see #subscribeWithWeakReference(EventBusListener, boolean)
      */
     <T> void subscribe(EventBusListener<T> listener, boolean includingPropagatingEvents);
 
     /**
-     * Subscribes the specified listener to the event bus. The listener need not implement the {@link org.vaadin.spring.events.EventBusListener} interface,
-     * but must contain one or more methods that are annotated with the {@link org.vaadin.spring.events.annotation.EventBusListenerMethod} interface and conform to one of these method
-     * signatures: <code>myMethodName(Event&lt;MyPayloadType&gt;)</code> or <code>myMethodName(MyPayloadType)</code>. The event bus will analyse the payload type of the listener methods to determine
-     * which events the different methods are interested in receiving. This is the same as calling {@link #subscribe(Object, boolean) subscribe(listener, true)}.
+     * Same as {@link #subscribe(EventBusListener, boolean)}, but uses a weak reference to store the listener
+     * internally.
+     */
+    <T> void subscribeWithWeakReference(EventBusListener<T> listener, boolean includingPropagatingEvents);
+
+    /**
+     * Subscribes the specified listener to the event bus. The listener need not implement the
+     * {@link org.vaadin.spring.events.EventBusListener} interface,
+     * but must contain one or more methods that are annotated with the
+     * {@link org.vaadin.spring.events.annotation.EventBusListenerMethod} interface and conform to one of these method
+     * signatures: <code>myMethodName(Event&lt;MyPayloadType&gt;)</code> or <code>myMethodName(MyPayloadType)</code>.
+     * The event bus will analyse the payload type of the listener methods to determine
+     * which events the different methods are interested in receiving. This is the same as calling
+     * {@link #subscribe(Object, boolean) subscribe(listener, true)}.
      *
      * @param listener the listener to subscribe, never {@code null}.
+     * @see #subscribeWithWeakReference(Object)
      */
     void subscribe(Object listener);
 
     /**
-     * Subscribes the specified listener to the event bus. The listener need not implement the {@link org.vaadin.spring.events.EventBusListener} interface,
-     * but must contain one or more methods that are annotated with the {@link org.vaadin.spring.events.annotation.EventBusListenerMethod} interface and conform to one of these method
-     * signatures: <code>myMethodName(Event&lt;MyPayloadType&gt;)</code> or <code>myMethodName(MyPayloadType)</code>. The event bus will analyse the payload type of the listener methods to determine
+     * Same as {@link #subscribe(Object)}, but uses a weak reference to store the listener internally.
+     */
+    void subscribeWithWeakReference(Object listener);
+
+    /**
+     * Subscribes the specified listener to the event bus. The listener need not implement the
+     * {@link org.vaadin.spring.events.EventBusListener} interface,
+     * but must contain one or more methods that are annotated with the
+     * {@link org.vaadin.spring.events.annotation.EventBusListenerMethod} interface and conform to one of these method
+     * signatures: <code>myMethodName(Event&lt;MyPayloadType&gt;)</code> or <code>myMethodName(MyPayloadType)</code>.
+     * The event bus will analyse the payload type of the listener methods to determine
      * which events the different methods are interested in receiving.
      *
-     * @param listener                   the listener to subscribe, never {@code null}.
-     * @param includingPropagatingEvents true to notify the listener of events that have propagated from the chain of parent event buses, false to only notify the listeners of events that are directly published on this event bus.
+     * @param listener the listener to subscribe, never {@code null}.
+     * @param includingPropagatingEvents true to notify the listener of events that have propagated from the chain of
+     *        parent event buses, false to only notify the listeners of events that are directly published on this event
+     *        bus.
      * @see #unsubscribe(Object)
+     * @see #subscribeWithWeakReference(Object, boolean)
      */
     void subscribe(Object listener, boolean includingPropagatingEvents);
 
     /**
-     * Unsubscribes the specified listener from the event bus.
+     * Same as {@link #subscribe(Object, boolean)}, but uses a weak reference to store the listener internally.
+     */
+    void subscribeWithWeakReference(Object listener, boolean includingPropagatingEvents);
+
+    /**
+     * Unsubscribes the specified listener from the event bus. Also works for listeners stored with weak references.
      *
      * @param listener the listener to unsubscribe, never {@code null}.
-     * @param <T>      the type of the payload.
+     * @param <T> the type of the payload.
      * @see #subscribe(EventBusListener)
      * @see #subscribe(EventBusListener, boolean)
      */
     <T> void unsubscribe(EventBusListener<T> listener);
 
     /**
-     * Unsubscribes the specified listener (and all its listener methods) from the event bus.
+     * Unsubscribes the specified listener (and all its listener methods) from the event bus. Also works for listeners
+     * stored with weak references.
      *
      * @param listener the listener to unsubscribe, never {@code null}.
      * @see #subscribe(Object)

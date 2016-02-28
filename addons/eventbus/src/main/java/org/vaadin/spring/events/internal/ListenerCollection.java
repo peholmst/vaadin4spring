@@ -15,14 +15,12 @@
  */
 package org.vaadin.spring.events.internal;
 
+import java.io.Serializable;
+import java.util.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.Event;
-
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 /**
  * A collection of listeners. Intended only for internal use by the framework.
@@ -34,6 +32,7 @@ class ListenerCollection implements Serializable {
     private static final long serialVersionUID = -6237902400879667320L;
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final Set<Listener> listeners = new HashSet<Listener>();
+    private final Set<Listener> weakListeners = Collections.newSetFromMap(new WeakHashMap<Listener, Boolean>());
 
     /**
      * Interface defining a listener.
@@ -70,7 +69,8 @@ class ListenerCollection implements Serializable {
     }
 
     /**
-     * Adds the specified {@link org.vaadin.spring.events.internal.ListenerCollection.Listener} to the listener collection.
+     * Adds the specified {@link org.vaadin.spring.events.internal.ListenerCollection.Listener} to the listener
+     * collection.
      *
      * @param listener the listener to add, never {@code null}.
      * @see #remove(org.vaadin.spring.events.internal.ListenerCollection.Listener)
@@ -83,7 +83,23 @@ class ListenerCollection implements Serializable {
     }
 
     /**
-     * Removes a {@link org.vaadin.spring.events.internal.ListenerCollection.Listener} previously added by {@link #add(org.vaadin.spring.events.internal.ListenerCollection.Listener)}.
+     * Adds the specified {@link org.vaadin.spring.events.internal.ListenerCollection.Listener} to the listener
+     * collection,
+     * using a weak reference. This means the listener does not need to be removed to be eligible for garbage
+     * collection.
+     *
+     * @param listener the listener to add, never {@code null}.
+     */
+    public void addWithWeakReference(Listener listener) {
+        logger.trace("Adding listener [{}] using a weak reference", listener);
+        synchronized (weakListeners) {
+            weakListeners.add(listener);
+        }
+    }
+
+    /**
+     * Removes a {@link org.vaadin.spring.events.internal.ListenerCollection.Listener} previously added by 
+     * {@link #add(org.vaadin.spring.events.internal.ListenerCollection.Listener)}.
      * If no listener definition is found in the collection, nothing happens.
      *
      * @param listener the listener to remove, never {@code null}.
@@ -94,10 +110,14 @@ class ListenerCollection implements Serializable {
         synchronized (listeners) {
             listeners.remove(listener);
         }
+        synchronized (weakListeners) {
+            weakListeners.remove(listener);
+        }
     }
 
     /**
-     * Removes all {@link org.vaadin.spring.events.internal.ListenerCollection.Listener}s that pass the specified filter and that were previously added by
+     * Removes all {@link org.vaadin.spring.events.internal.ListenerCollection.Listener}s that pass the specified filter
+     * and that were previously added by
      * {@link #add(org.vaadin.spring.events.internal.ListenerCollection.Listener)}.
      *
      * @param filter the filter that specifies which listeners to remove, never {@code null}.
@@ -105,6 +125,9 @@ class ListenerCollection implements Serializable {
     public void removeAll(ListenerFilter filter) {
         synchronized (listeners) {
             removeFilteredListenersFromSet(filter, listeners);
+        }
+        synchronized (weakListeners) {
+            removeFilteredListenersFromSet(filter, weakListeners);
         }
     }
 
@@ -115,10 +138,14 @@ class ListenerCollection implements Serializable {
         synchronized (listeners) {
             listeners.clear();
         }
+        synchronized (weakListeners) {
+            weakListeners.clear();
+        }
     }
 
     /**
-     * Publishes the specified {@code event} to all {@link org.vaadin.spring.events.internal.ListenerCollection.Listener}s that support it.
+     * Publishes the specified {@code event} to all
+     * {@link org.vaadin.spring.events.internal.ListenerCollection.Listener}s that support it.
      *
      * @param event the event to publish, never {@code null}.
      * @see org.vaadin.spring.events.internal.ListenerCollection.Listener#publish(org.vaadin.spring.events.Event)
@@ -128,6 +155,9 @@ class ListenerCollection implements Serializable {
         Set<Listener> interestedListeners = new HashSet<Listener>();
         synchronized (listeners) {
             addSupportedListenersToSet(listeners, interestedListeners, event);
+        }
+        synchronized (weakListeners) {
+            addSupportedListenersToSet(weakListeners, interestedListeners, event);
         }
         if (interestedListeners.isEmpty()) {
             logger.debug("No listeners supported event [{}]", event);
@@ -139,7 +169,8 @@ class ListenerCollection implements Serializable {
         }
     }
 
-    private <T> void addSupportedListenersToSet(Set<Listener> candidateListeners, Set<Listener> selectedListeners, Event<T> event) {
+    private <T> void addSupportedListenersToSet(Set<Listener> candidateListeners, Set<Listener> selectedListeners,
+        Event<T> event) {
         for (Listener candidateListener : candidateListeners) {
             if (candidateListener.supports(event)) {
                 logger.trace("Listener [{}] supports event [{}]", candidateListener, event);
@@ -149,7 +180,7 @@ class ListenerCollection implements Serializable {
     }
 
     private void removeFilteredListenersFromSet(ListenerFilter filter, Set<Listener> listenerSet) {
-        for (Iterator<Listener> it = listenerSet.iterator(); it.hasNext(); ) {
+        for (Iterator<Listener> it = listenerSet.iterator(); it.hasNext();) {
             Listener listener = it.next();
             if (filter.passes(listener)) {
                 logger.trace("Removing listener [{}]", listener);

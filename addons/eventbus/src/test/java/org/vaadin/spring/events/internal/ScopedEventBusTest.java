@@ -15,6 +15,11 @@
  */
 package org.vaadin.spring.events.internal;
 
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
+import java.lang.ref.WeakReference;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,9 +30,6 @@ import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.HierachyTopicFilter;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.events.annotation.EventBusListenerTopic;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 /**
  * Test case for {@link org.vaadin.spring.events.internal.ScopedEventBus}.
@@ -76,7 +78,7 @@ public class ScopedEventBusTest {
         void onIntegerPayloadEvent(Integer integerPayload) {
             theIntegerPayload = integerPayload;
         }
-        
+
         @EventBusListenerTopic(topic = "shouldSucceed")
         @EventBusListenerMethod
         void onStringEventWithTopic(Event<String> stringEvent) {
@@ -100,7 +102,7 @@ public class ScopedEventBusTest {
         void onIntegerPayloadEventWithTopic(Integer integerPayload) {
             theIntegerPayloadWithTopic = integerPayload;
         }
-        
+
         @EventBusListenerTopic(topic = "shouldFail")
         @EventBusListenerMethod
         void onStringPayloadEventWithTopicFail(String stringPayload) {
@@ -185,10 +187,10 @@ public class ScopedEventBusTest {
         assertNull(listener.theStringPayloadWithTopicFail);
         assertNull(listener.theIntegerPayloadWithTopicFail);
         assertNull(listener.theIntegerEventWithTopic);
-        
+
         assertNotNull(listener.theStringPayloadWithTopic);
         assertNotNull(listener.theStringEventWithTopic);
-        
+
         assertEquals("Hello World", listener.theStringPayloadWithTopic);
         assertEquals("Hello World", listener.theStringEventWithTopic.getPayload());
         assertEquals(10, listener.theIntegerPayloadWithTopic.intValue());
@@ -293,4 +295,21 @@ public class ScopedEventBusTest {
         assertEquals("Hello World Session", listener.theStringPayload);
     }
 
+    @Test
+    public void testSubscribeWithWeakReference() {
+        StringListener listener = new StringListener() {
+            int cnt =0;
+            @Override public void onEvent(Event<String> event) {
+                cnt++;
+                if (cnt > 1) {
+                    fail("I should have been garbage collected by now");
+                }
+            }
+        };
+        applicationEventBus.subscribeWithWeakReference(listener);
+        applicationEventBus.publish(this, "Hello World Application");
+        listener = null;
+        System.gc();
+        applicationEventBus.publish(this, "Hello World Application");
+    }
 }
