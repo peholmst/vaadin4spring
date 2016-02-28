@@ -3,7 +3,7 @@
     <parent>
         <artifactId>parent-pom</artifactId>
         <groupId>org.vaadin.spring</groupId>
-        <version>0.0.7.RELEASE</version>
+        <version>0.0.8-SNAPSHOT</version>
         <relativePath>../../</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
