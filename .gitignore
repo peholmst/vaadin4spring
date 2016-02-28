@@ -2,6 +2,8 @@
 
 # Maven
 target/
+*.releaseBackup
+release.properties
 
 # IntelliJ
 *.iml

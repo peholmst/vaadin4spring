@@ -10,7 +10,7 @@
 
     <groupId>org.vaadin.spring</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>0.0.7-SNAPSHOT</version>
+    <version>0.0.7.RELEASE</version>
     <packaging>pom</packaging>
 
     <name>Vaadin4Spring</name>
