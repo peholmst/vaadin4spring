@@ -15,21 +15,21 @@
  */
 package org.vaadin.spring.i18n;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.MessageSource;
-import org.springframework.context.support.AbstractMessageSource;
-
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.MessageSource;
+import org.springframework.context.support.AbstractMessageSource;
+
 /**
  * Message source that resolves the messages by querying the {@link org.vaadin.spring.i18n.MessageProvider}s in
- * the application context. The resolved messages are cached.
+ * the application context. The resolved messages are cached by default. The caching can be turned off.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
@@ -41,10 +41,15 @@ public class CompositeMessageSource extends AbstractMessageSource implements Mes
 
     private final Map<Locale, Map<String, MessageFormat>> messageFormatCache = new ConcurrentHashMap<Locale, Map<String, MessageFormat>>();
 
+    public static final String ENV_PROP_MESSAGE_FORMAT_CACHE_ENABLED = "vaadin4spring.i18n.message-format-cache.enabled";
+
+    private boolean messageFormatCacheEnabled = true;
+
     /**
      * Creates a new {@code CompositeMessageSource}.
      *
-     * @param applicationContext the application context to use when looking up {@link org.vaadin.spring.i18n.MessageProvider}s, must not be {@code null}.
+     * @param applicationContext the application context to use when looking up
+     *        {@link org.vaadin.spring.i18n.MessageProvider}s, must not be {@code null}.
      */
     public CompositeMessageSource(ApplicationContext applicationContext) {
         LOGGER.info("Looking up MessageProviders");
@@ -55,6 +60,29 @@ public class CompositeMessageSource extends AbstractMessageSource implements Mes
             }
         }
         LOGGER.info("Found {} MessageProvider(s)", messageProviders.size());
+        messageFormatCacheEnabled = applicationContext.getEnvironment()
+            .getProperty(ENV_PROP_MESSAGE_FORMAT_CACHE_ENABLED, Boolean.class, true);
+        if (messageFormatCacheEnabled) {
+            LOGGER.info("MessageFormat cache enabled");
+        } else {
+            LOGGER.info("MessageFormat cache disabled");
+        }
+    }
+
+    /**
+     * Returns whether the resolved messages are cached or not. Default is true.
+     */
+    public boolean isMessageFormatCacheEnabled() {
+        return messageFormatCacheEnabled;
+    }
+
+    /**
+     * Enables or disables caching of resolved messages. This can also be set by the
+     * <code>{@value #ENV_PROP_MESSAGE_FORMAT_CACHE_ENABLED}</code>
+     * environment property.
+     */
+    public void setMessageFormatCacheEnabled(boolean messageFormatCacheEnabled) {
+        this.messageFormatCacheEnabled = messageFormatCacheEnabled;
     }
 
     @Override
@@ -70,13 +98,19 @@ public class CompositeMessageSource extends AbstractMessageSource implements Mes
     }
 
     private MessageFormat queryCache(String s, Locale locale) {
-        final Map<String, MessageFormat> cache = getMessageFormatCache(locale);
-        return cache.get(s);
+        if (messageFormatCacheEnabled) {
+            final Map<String, MessageFormat> cache = getMessageFormatCache(locale);
+            return cache.get(s);
+        } else {
+            return null;
+        }
     }
 
     private void cache(String s, Locale locale, MessageFormat messageFormat) {
-        final Map<String, MessageFormat> cache = getMessageFormatCache(locale);
-        cache.put(s, messageFormat);
+        if (messageFormatCacheEnabled) {
+            final Map<String, MessageFormat> cache = getMessageFormatCache(locale);
+            cache.put(s, messageFormat);
+        }
     }
 
     private MessageFormat queryMessageProviders(String s, Locale locale) {
