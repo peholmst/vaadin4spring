@@ -21,3 +21,6 @@ samples/*-sample*/src/main/webapp/VAADIN/themes/**/*.css
 samples/*-sample*/src/main/webapp/VAADIN/widgetsets/
 samples/*-sample*/src/main/resources/VAADIN/widgetsets/
 samples/*-sample*/src/main/resources/VAADIN/themes/**/*.css
+
+# JRebel
+rebel.xml

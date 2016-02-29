@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.3.2.RELEASE</version>
+        <relativePath/>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -67,6 +69,11 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.vaadin.spring.addons</groupId>
+                <artifactId>vaadin-spring-addon-i18n</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-bom</artifactId>
                 <version>${vaadin.version}</version>
@@ -77,6 +84,22 @@
     </dependencyManagement>
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.zeroturnaround</groupId>
+                <artifactId>jrebel-maven-plugin</artifactId>
+                <version>1.1.5</version>
+                <executions>
+                    <execution>
+                        <id>generate-rebel-xml</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -142,11 +165,10 @@
     <modules>
         <module>sidebar-sample</module>
         <module>eventbus-sample</module>
-        <!--<module>mvp-sample</module>--> <!-- Does not build because of how spring security integration redesign -->
         <module>push-sample</module>
-        <!--<module>security-sample</module>--> <!-- Obsolete but kept in case some features still need to be ported to the new spring security integration -->
         <module>security-sample-managed</module>
         <module>security-sample-shared</module>
         <module>navigation-sample</module>
+        <module>i18n-sample</module>
     </modules>
 </project>
