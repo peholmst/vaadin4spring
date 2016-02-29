@@ -79,3 +79,24 @@ Finally a tip: If you are building a modular application, it is good practice to
 of module identifier, for example a Java package name. That way you can avoid naming conflicts when additional modules
 are added in the future.
 
+# Automatic Cache Cleanup
+
+If you are using a tool such as JRebel, you probably want the resource bundles to be updated on the fly without having
+to restart the application. By default, Java caches the resource bundles after they have been loaded the first time. Vaadin4Spring
+contains a feature that can clear these caches on a regular interval.
+
+To enable the feature, declare the following two environment properties (e.g. in ```application.properties```):
+
+```
+vaadin4spring.i18n.message-format-cache.enabled=false
+vaadin4spring.i18n.message-provider-cache.cleanup-interval-seconds=5
+```
+
+In production, you probably want to stick to the defaults, i.e. no cleanups and an enabled message format cache.
+
+# Support Classes
+
+If you want to be able to change the language on the fly in your UI, there are a few support classes that will
+make this easier for you. In short, all your internationalized components need to implement the ```Translatable```
+interface. Then, either extend ```TranslatableUI``` or add a ```TranslatableSupport``` delegate to your existing UI
+and you are done. Please check the I18N sample application for an example.
