@@ -118,7 +118,7 @@ class MethodListenerWrapper extends AbstractListenerWrapper {
         if (scope.equals(EventScope.UNDEFINED)) {
             scope = event.getScope();
         }
-        return filter.filter(event.getPayload())
+        return filter.filter(event)
                 && event.getScope().equals(scope);
     }
     
