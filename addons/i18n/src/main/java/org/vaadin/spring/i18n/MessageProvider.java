@@ -29,9 +29,14 @@ public interface MessageProvider {
     /**
      * Attempts to resolve the specified code for the specified locale.
      *
-     * @param s      the code of the message, must not be {@code null}.
+     * @param s the code of the message, must not be {@code null}.
      * @param locale the locale, must not be {@code null}.
      * @return a {@code MessageFormat} for the message, or {@code null} if not found.
      */
     MessageFormat resolveCode(String s, Locale locale);
+
+    /**
+     * Clears any internal caches, forcing the message provider to resolve the codes from the original message source.
+     */
+    void clearCache();
 }

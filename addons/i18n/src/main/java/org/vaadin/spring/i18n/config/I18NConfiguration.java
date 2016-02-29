@@ -15,15 +15,13 @@
  */
 package org.vaadin.spring.i18n.config;
 
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.Assert;
+import org.springframework.core.env.Environment;
 import org.vaadin.spring.i18n.CompositeMessageSource;
 import org.vaadin.spring.i18n.I18N;
+import org.vaadin.spring.i18n.MessageProviderCacheCleanupExecutor;
 
 /**
  * Configuration class used by {@literal @}EnableVaadinI18N
@@ -32,31 +30,26 @@ import org.vaadin.spring.i18n.I18N;
  * define {@link org.vaadin.spring.i18n.MessageProvider} beans that can serve the message source with messages.
  * 
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
+ * @author Petter Holmström (petter@vaadin.com)
  * @see org.vaadin.spring.i18n.I18N
  * @see org.vaadin.spring.i18n.CompositeMessageSource
  */
 @Configuration
-public class I18NConfiguration implements ApplicationContextAware, InitializingBean {
-    
-    private ApplicationContext context;
-    
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.context = applicationContext;
-    }
-    
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        Assert.notNull(context, "Failed to autowire 'ApplicationContext");
-    }
-    
+public class I18NConfiguration {
+
     @Bean
-    I18N i18n() {
+    I18N i18n(ApplicationContext context) {
         return new I18N(context);
     }
 
     @Bean
-    CompositeMessageSource messageSource() {
+    CompositeMessageSource messageSource(ApplicationContext context) {
         return new CompositeMessageSource(context);
+    }
+
+    @Bean
+    MessageProviderCacheCleanupExecutor messageProviderCacheCleanupExecutor(Environment environment,
+        CompositeMessageSource messageSource) {
+        return new MessageProviderCacheCleanupExecutor(environment, messageSource);
     }
 }

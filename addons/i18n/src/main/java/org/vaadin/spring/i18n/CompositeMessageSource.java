@@ -35,14 +35,10 @@ import org.springframework.context.support.AbstractMessageSource;
  */
 public class CompositeMessageSource extends AbstractMessageSource implements MessageSource {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CompositeMessageSource.class);
-
-    private final Collection<MessageProvider> messageProviders;
-
-    private final Map<Locale, Map<String, MessageFormat>> messageFormatCache = new ConcurrentHashMap<Locale, Map<String, MessageFormat>>();
-
     public static final String ENV_PROP_MESSAGE_FORMAT_CACHE_ENABLED = "vaadin4spring.i18n.message-format-cache.enabled";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompositeMessageSource.class);
+    private final Collection<MessageProvider> messageProviders;
+    private final Map<Locale, Map<String, MessageFormat>> messageFormatCache = new ConcurrentHashMap<Locale, Map<String, MessageFormat>>();
     private boolean messageFormatCacheEnabled = true;
 
     /**
@@ -60,12 +56,18 @@ public class CompositeMessageSource extends AbstractMessageSource implements Mes
             }
         }
         LOGGER.info("Found {} MessageProvider(s)", messageProviders.size());
-        messageFormatCacheEnabled = applicationContext.getEnvironment()
-            .getProperty(ENV_PROP_MESSAGE_FORMAT_CACHE_ENABLED, Boolean.class, true);
-        if (messageFormatCacheEnabled) {
-            LOGGER.info("MessageFormat cache enabled");
-        } else {
-            LOGGER.info("MessageFormat cache disabled");
+        setMessageFormatCacheEnabled(applicationContext.getEnvironment()
+            .getProperty(ENV_PROP_MESSAGE_FORMAT_CACHE_ENABLED, Boolean.class, true));
+    }
+
+    /**
+     * Clears the caches of all message providers.
+     * 
+     * @see MessageProvider#clearCache()
+     */
+    public void clearMessageProviderCaches() {
+        for (MessageProvider messageProvider : messageProviders) {
+            messageProvider.clearCache();
         }
     }
 
@@ -83,6 +85,11 @@ public class CompositeMessageSource extends AbstractMessageSource implements Mes
      */
     public void setMessageFormatCacheEnabled(boolean messageFormatCacheEnabled) {
         this.messageFormatCacheEnabled = messageFormatCacheEnabled;
+        if (messageFormatCacheEnabled) {
+            LOGGER.info("MessageFormat cache enabled");
+        } else {
+            LOGGER.info("MessageFormat cache disabled");
+        }
     }
 
     @Override

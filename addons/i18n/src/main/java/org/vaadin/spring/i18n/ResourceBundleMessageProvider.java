@@ -15,19 +15,15 @@
  */
 package org.vaadin.spring.i18n;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link org.vaadin.spring.i18n.MessageProvider} that reads messages
@@ -69,9 +65,14 @@ public class ResourceBundleMessageProvider implements MessageProvider {
         return getMessageFormat(message, locale);
     }
 
+    @Override
+    public void clearCache() {
+        ResourceBundle.clearCache(this.getClass().getClassLoader());
+    }
+
     private ResourceBundle getResourceBundle(Locale locale) {
         try {
-            return ResourceBundle.getBundle(baseName, locale, new MessageControl());
+            return ResourceBundle.getBundle(baseName, locale, this.getClass().getClassLoader(), new MessageControl());
         } catch (MissingResourceException ex) {
             LOGGER.warn("No message bundle with basename [{}] found for locale [{}]", baseName, locale);
             return null;
@@ -98,24 +99,25 @@ public class ResourceBundleMessageProvider implements MessageProvider {
 
     private class MessageControl extends ResourceBundle.Control {
         @Override
-        public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException, InstantiationException, IOException {
+        public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader,
+            boolean reload) throws IllegalAccessException, InstantiationException, IOException {
             if ("java.properties".equals(format)) {
                 final String resourceName = toResourceName(toBundleName(baseName, locale), "properties");
                 final InputStream stream = loader.getResourceAsStream(resourceName);
                 if (stream == null) {
-                	return null; // Not found
+                    return null; // Not found
                 }
                 Reader reader = null;
                 try {
-                	reader = new InputStreamReader(stream, encoding);
-                	return new PropertyResourceBundle(reader);
+                    reader = new InputStreamReader(stream, encoding);
+                    return new PropertyResourceBundle(reader);
                 } catch (UnsupportedEncodingException ex) {
-                	stream.close();
-                	throw ex;
+                    stream.close();
+                    throw ex;
                 } finally {
-                	if (reader != null) {
-                		reader.close();
-                	}
+                    if (reader != null) {
+                        reader.close();
+                    }
                 }
             } else {
                 return super.newBundle(baseName, locale, format, loader, reload);
