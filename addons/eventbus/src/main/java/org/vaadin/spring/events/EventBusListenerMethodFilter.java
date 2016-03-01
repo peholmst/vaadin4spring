@@ -36,8 +36,8 @@ public interface EventBusListenerMethodFilter {
     /**
      * Criteria used to influence when an <code>@EventBusListenerMethod</code>
      * annotated method with this <code>filter</code> defined will execute
-     * @param payload any Object
+     * @param event EventBus event
      * @return true if filtering condition met; false otherwise
      */
-    boolean filter(Object payload);
+    boolean filter(Event<?> event);
 }
