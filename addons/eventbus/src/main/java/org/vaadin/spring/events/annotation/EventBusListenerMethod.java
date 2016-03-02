@@ -15,7 +15,11 @@
  */
 package org.vaadin.spring.events.annotation;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusListener;
@@ -48,4 +52,9 @@ public @interface EventBusListenerMethod {
     EventScope scope() default EventScope.UNDEFINED;
 
     Class<? extends EventBusListenerMethodFilter> filter() default NoEventBusListenerMethodFilter.class;
+    
+    /**
+     * Filter by source class 
+     */
+    Class<?>[] source() default {};
 }

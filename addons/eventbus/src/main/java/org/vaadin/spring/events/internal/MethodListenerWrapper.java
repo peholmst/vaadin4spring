@@ -119,7 +119,21 @@ class MethodListenerWrapper extends AbstractListenerWrapper {
             scope = event.getScope();
         }
         return filter.filter(event)
-                && event.getScope().equals(scope);
+                && event.getScope().equals(scope) && isFromSource(event, annotation.source());
+    }
+    
+    private boolean isFromSource(Event<?> event, Class<?>[] sources){
+        if (sources.length == 0){
+            return true;
+        }
+        
+        boolean result = false;
+        
+        for (int i = 0; i < sources.length && !result; i++) {
+            result |= sources[i].isAssignableFrom(event.getSource().getClass());
+        }
+
+        return result;
     }
     
     private boolean isInTopic(Event<?> event) throws InstantiationException, IllegalAccessException {
