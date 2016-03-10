@@ -15,20 +15,16 @@
  */
 package org.vaadin.spring.events.internal;
 
+import org.vaadin.spring.events.*;
+import org.vaadin.spring.events.annotation.EventBusListenerMethod;
+import org.vaadin.spring.events.annotation.EventBusListenerTopic;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-
-import org.vaadin.spring.events.Event;
-import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventBusListenerMethodFilter;
-import org.vaadin.spring.events.EventScope;
-import org.vaadin.spring.events.TopicFilter;
-import org.vaadin.spring.events.annotation.EventBusListenerMethod;
-import org.vaadin.spring.events.annotation.EventBusListenerTopic;
 
 /**
  * Implementation of {@link org.vaadin.spring.events.internal.AbstractListenerWrapper} that wraps an object
@@ -43,9 +39,11 @@ class MethodListenerWrapper extends AbstractListenerWrapper {
     private final Class<?> payloadType;
     private final boolean payloadMethod;
     private transient Method listenerMethod;
+    private final String topic;
 
-    public MethodListenerWrapper(EventBus owningEventBus, Object listenerTarget, boolean includingPropagatingEvents, Method listenerMethod) {
-        super(owningEventBus, listenerTarget, includingPropagatingEvents);
+    public MethodListenerWrapper(EventBus owningEventBus, Object listenerTarget, String topic, boolean includingPropagatingEvents, Method listenerMethod) {
+        super(owningEventBus, listenerTarget, topic, includingPropagatingEvents);
+        this.topic = topic;
         if (listenerMethod.getParameterTypes()[0] == Event.class) {
             ParameterizedType type = (ParameterizedType) listenerMethod.getGenericParameterTypes()[0];
             payloadType = (Class<?>) type.getActualTypeArguments()[0];
@@ -100,11 +98,16 @@ class MethodListenerWrapper extends AbstractListenerWrapper {
             if (listenerMethod.isAnnotationPresent(EventBusListenerMethod.class)) {
                 supports = supports && isInterestedListenerMethod(event);
             }
-        	if (listenerMethod.isAnnotationPresent(EventBusListenerTopic.class) && supports) {
-        		supports = isInTopic(event);
-        	} else if ( !event.getTopic().isEmpty()) {
-        		supports = false;
-        	}
+
+            if (topic != null) {
+                return supports;
+            }
+
+            if (listenerMethod.isAnnotationPresent(EventBusListenerTopic.class) && supports) {
+                supports = isInTopic(event);
+            } else if (!event.getTopic().isEmpty()) {
+                supports = false;
+            }
         } catch (Exception e) {
             throw new RuntimeException("A checked exception occurred while invoking listener method " + listenerMethod.getName(), e);
         }
@@ -121,25 +124,25 @@ class MethodListenerWrapper extends AbstractListenerWrapper {
         return filter.filter(event)
                 && event.getScope().equals(scope) && isFromSource(event, annotation.source());
     }
-    
-    private boolean isFromSource(Event<?> event, Class<?>[] sources){
-        if (sources.length == 0){
+
+    private boolean isFromSource(Event<?> event, Class<?>[] sources) {
+        if (sources.length == 0) {
             return true;
         }
-        
+
         boolean result = false;
-        
+
         for (int i = 0; i < sources.length && !result; i++) {
             result |= sources[i].isAssignableFrom(event.getSource().getClass());
         }
 
         return result;
     }
-    
+
     private boolean isInTopic(Event<?> event) throws InstantiationException, IllegalAccessException {
         EventBusListenerTopic annotation = listenerMethod.getAnnotation(EventBusListenerTopic.class);
         TopicFilter filter = annotation.filter().newInstance();
         return filter.validTopic(event.getTopic(), annotation.topic());
-    }    
+    }
 
 }

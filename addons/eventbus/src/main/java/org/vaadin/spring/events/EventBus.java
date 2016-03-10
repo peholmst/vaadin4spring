@@ -127,6 +127,23 @@ public interface EventBus {
     <T> void subscribeWithWeakReference(EventBusListener<T> listener);
 
     /**
+     * Subscribes the topic interested listener to the event bus, including propagated events from parent event buses.
+     * The event bus will analyse the payload type and topic of the listener to determine which events it is interested
+     * in receiving.
+     * @param listener the listener to subscribe, never {@code null}
+     * @param topic the topic of listener interest
+     *
+     * @param <T> the type of payload the listener is interested in
+     */
+    <T> void subscribe(EventBusListener<T> listener, String topic);
+
+    /**
+     * Same as {@link #subscribe(EventBusListener, String)}, but uses a weak reference to store the listener
+     * internally.
+     */
+    <T> void subscribeWithWeakReference(EventBusListener<T> listener, String topic);
+
+    /**
      * Subscribes the specified listener to the event bus. The event bus will analyse the
      * payload type of the listener to determine which events it is interested in receiving.
      *
@@ -165,6 +182,29 @@ public interface EventBus {
      * Same as {@link #subscribe(Object)}, but uses a weak reference to store the listener internally.
      */
     void subscribeWithWeakReference(Object listener);
+
+    /**
+     * Subscribes the topic interested listener to the event bus. The listener need not implement the
+     * {@link org.vaadin.spring.events.EventBusListener} interface,
+     * but must contain one or more methods that are annotated with the
+     * {@link org.vaadin.spring.events.annotation.EventBusListenerMethod} interface and conform to one of these method
+     * signatures: <code>myMethodName(Event&lt;MyPayloadType&gt;)</code> or <code>myMethodName(MyPayloadType)</code>.
+     * The event bus will analyse the payload type of the listener methods to determine
+     * which events the different methods are interested in receiving.
+     * <br></br>
+     * <br></br>
+     * Example:
+     * <code>subscribe(Listener.this, "/news");</code>
+     * @param listener the listener to subscribe, never {@code null}.
+     * @param topic the topic of listener interest
+     * @see #subscribeWithWeakReference(Object, String)
+     */
+    void subscribe(Object listener, String topic);
+
+    /**
+     * Same as {@link #subscribe(Object, String)}, but uses a weak reference to store the listener internally.
+     */
+    void subscribeWithWeakReference(Object listener, String topic);
 
     /**
      * Subscribes the specified listener to the event bus. The listener need not implement the

@@ -15,11 +15,6 @@
  */
 package org.vaadin.spring.events.internal;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
-import java.lang.ref.WeakReference;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +25,9 @@ import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.HierachyTopicFilter;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.events.annotation.EventBusListenerTopic;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Test case for {@link org.vaadin.spring.events.internal.ScopedEventBus}.
@@ -116,6 +114,54 @@ public class ScopedEventBusTest {
         }
     }
 
+    class TopicStringListener implements EventBusListener<String> {
+
+        Event<String> theStringEvent;
+
+        @Override
+        public void onEvent(Event<String> event) {
+            this.theStringEvent = event;
+        }
+    }
+
+    class TopicIntegerListener implements EventBusListener<Integer> {
+
+        Event<Integer> theIntegerEvent;
+
+        @Override
+        public void onEvent(Event<Integer> event) {
+            this.theIntegerEvent = event;
+        }
+    }
+
+    class TopicListeners {
+
+        String theStringPayload;
+        Integer theIntegerPayload;
+        Event<String> theStringEvent;
+        Event<Integer> theIntegerEvent;
+
+        @EventBusListenerMethod
+        void onStringEvent(String theStringPayload) {
+            this.theStringPayload = theStringPayload;
+        }
+
+        @EventBusListenerMethod
+        void onStringEvent(Event<String> theStringEvent) {
+            this.theStringEvent = theStringEvent;
+        }
+
+        @EventBusListenerMethod
+        void onIntegerEvent(Integer theIntegerPayload) {
+            this.theIntegerPayload = theIntegerPayload;
+        }
+
+        @EventBusListenerMethod
+        void onIntegerEvent(Event<Integer> theIntegerEvent) {
+            this.theIntegerEvent = theIntegerEvent;
+        }
+    }
+
     static class InvalidListener1 {
 
         @EventBusListenerMethod
@@ -143,7 +189,7 @@ public class ScopedEventBusTest {
     }
 
     @Test
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void testSubscribeAndPublish() {
         StringListener stringListener = mock(StringListener.class);
 
@@ -196,6 +242,169 @@ public class ScopedEventBusTest {
         assertEquals(10, listener.theIntegerPayloadWithTopic.intValue());
     }
 
+    @Test
+    public void testSubscribeToTopicAndPublishWithTopic() {
+        String topic = "/news";
+        String payload = "Hello World";
+
+        TopicListeners topicListener = new TopicListeners();
+        applicationEventBus.subscribe(topicListener, topic);
+
+        applicationEventBus.publish(topic, this, payload);
+        assertEquals(payload, topicListener.theStringPayload);
+        assertEquals(payload, topicListener.theStringEvent.getPayload());
+        assertNull(topicListener.theIntegerPayload);
+        assertNull(topicListener.theIntegerEvent);
+    }
+
+    @Test
+    public void testUnsubscribeFromTopicAndPublishWithTopic() {
+        String topic = "/news";
+        String payload = "Hello World";
+
+        TopicListeners topicListener = new TopicListeners();
+        applicationEventBus.subscribe(topicListener, topic);
+
+        applicationEventBus.publish(topic, this, payload);
+        assertEquals(payload, topicListener.theStringPayload);
+
+        topicListener.theStringPayload = null;
+        applicationEventBus.unsubscribe(topicListener);
+
+        applicationEventBus.publish(topic, this, payload);
+        assertNotEquals(payload, topicListener.theStringPayload);
+    }
+
+    @Test
+    public void testSubscribeToTopicAndPublishWithDifferentTopic() {
+        String topic = "/news";
+        String differentTopic = "/different";
+        String payload = "Hello World";
+
+        TopicListeners topicListener = new TopicListeners();
+        applicationEventBus.subscribe(topicListener, topic);
+
+        applicationEventBus.publish(differentTopic, this, payload);
+        assertNotEquals(payload, topicListener.theStringPayload);
+    }
+
+    @Test
+    public void testSubscribeTopicListenerForTwoTopicsAndPublishWithThoseTopics() {
+        String newsTopic = "/news";
+        String counterTopic = "/counter";
+        String newsPayload = "Hello World";
+        Integer counterPayload = 0;
+
+        TopicListeners topicListener = new TopicListeners();
+        applicationEventBus.subscribe(topicListener, newsTopic);
+        applicationEventBus.subscribe(topicListener, counterTopic);
+
+        applicationEventBus.publish(newsTopic, this, newsPayload);
+        assertEquals(newsPayload, topicListener.theStringPayload);
+        assertNotEquals(counterPayload, topicListener.theIntegerPayload);
+
+        applicationEventBus.publish(counterTopic, this, counterPayload);
+        assertEquals(counterPayload, topicListener.theIntegerPayload);
+    }
+
+    @Test
+    public void testTwoTopicListenersSubscribedForSameTopic() {
+        String topic = "/news";
+        String payload = "Hello World";
+
+        TopicListeners firstTopicListener = new TopicListeners();
+        TopicListeners secondTopicListener = new TopicListeners();
+
+        applicationEventBus.subscribe(firstTopicListener, topic);
+        applicationEventBus.subscribe(secondTopicListener, topic);
+
+        applicationEventBus.publish(topic, this, payload);
+        assertEquals(payload, firstTopicListener.theStringPayload);
+        assertEquals(payload, firstTopicListener.theStringEvent.getPayload());
+        assertEquals(payload, secondTopicListener.theStringPayload);
+        assertEquals(payload, secondTopicListener.theStringEvent.getPayload());
+    }
+
+    @Test
+    public void testTwoTopicListenersSubscribedForDifferentTopics() {
+        String firstTopic = "/first";
+        String secondTopic = "/second";
+        String firstPayload = "first";
+        String secondPayload = "second";
+
+        TopicListeners firstTopicListener = new TopicListeners();
+        TopicListeners secondTopicListener = new TopicListeners();
+
+        applicationEventBus.subscribe(firstTopicListener, firstTopic);
+        applicationEventBus.subscribe(secondTopicListener, secondTopic);
+
+        applicationEventBus.publish(firstTopic, this, firstPayload);
+        assertEquals(firstPayload, firstTopicListener.theStringPayload);
+        assertEquals(firstPayload, firstTopicListener.theStringEvent.getPayload());
+        assertNull(secondTopicListener.theStringPayload);
+        assertNull(secondTopicListener.theStringEvent);
+
+        applicationEventBus.publish(secondTopic, this, secondPayload);
+        assertEquals(secondPayload, secondTopicListener.theStringPayload);
+        assertEquals(secondPayload, secondTopicListener.theStringEvent.getPayload());
+        assertNotEquals(secondPayload, firstTopicListener.theStringPayload);
+        assertNotEquals(secondPayload, firstTopicListener.theStringEvent.getPayload());
+    }
+
+    @Test
+    public void testSubscribeAndPublishWithTopic() {
+        String topic = "/news";
+        String payload = "Hello World";
+        TopicStringListener stringListener = new TopicStringListener();
+
+        sessionEventBus.subscribe(stringListener, topic);
+        sessionEventBus.publish(topic, this, payload);
+        assertEquals(payload, stringListener.theStringEvent.getPayload());
+    }
+
+    @Test
+    public void testSubscribeAndPublishWithDifferentTopic() {
+        String topic = "/news";
+        String payload = "Hello World";
+        String differentTopic = payload + ".extension";
+        TopicStringListener stringListener = new TopicStringListener();
+
+        sessionEventBus.subscribe(stringListener, topic);
+        sessionEventBus.publish(differentTopic, this, payload);
+        assertNull(stringListener.theStringEvent);
+    }
+
+    @Test
+    public void testSubscribeAndPublishWithSameTopicButDifferentPayloadType() {
+        String topic = "/news";
+        Integer payload = 0;
+        TopicStringListener stringListener = new TopicStringListener();
+
+        sessionEventBus.subscribe(stringListener, topic);
+        sessionEventBus.publish(topic, this, payload);
+        assertNull(stringListener.theStringEvent);
+    }
+
+    @Test
+    public void testSubscribeTwoTopicListenersForSameTopicWithDifferentPayloadType() {
+        String topic = "/news";
+        String stringPayload = "Hello World";
+        Integer integerPayload = 0;
+        TopicStringListener stringListener = new TopicStringListener();
+        TopicIntegerListener integerListener = new TopicIntegerListener();
+
+        sessionEventBus.subscribe(stringListener, topic);
+        sessionEventBus.subscribe(integerListener, topic);
+
+        sessionEventBus.publish(topic, this, integerPayload);
+        assertNotNull(integerListener.theIntegerEvent);
+        assertNull(stringListener.theStringEvent);
+
+        sessionEventBus.publish(topic, this, stringPayload);
+        assertNotNull(integerListener.theIntegerEvent);
+        assertNotNull(stringListener.theStringEvent);
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testSubscribeAndPublishWithListenerMethodsAndTooFewParameters() {
         sessionEventBus.subscribe(new InvalidListener1());
@@ -212,7 +421,7 @@ public class ScopedEventBusTest {
     }
 
     @Test
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void testPublishToParentScope() {
         StringListener stringListener = mock(StringListener.class);
 
@@ -239,7 +448,7 @@ public class ScopedEventBusTest {
     }
 
     @Test
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void testPropagateToChild() {
         StringListener stringListener = mock(StringListener.class);
 
@@ -266,7 +475,7 @@ public class ScopedEventBusTest {
     }
 
     @Test
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void testNoPropagationToChild() {
         StringListener stringListener = mock(StringListener.class);
 
@@ -298,8 +507,10 @@ public class ScopedEventBusTest {
     @Test
     public void testSubscribeWithWeakReference() {
         StringListener listener = new StringListener() {
-            int cnt =0;
-            @Override public void onEvent(Event<String> event) {
+            int cnt = 0;
+
+            @Override
+            public void onEvent(Event<String> event) {
                 cnt++;
                 if (cnt > 1) {
                     fail("I should have been garbage collected by now");
