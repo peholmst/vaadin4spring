@@ -38,8 +38,11 @@ abstract class AbstractListenerWrapper implements ListenerCollection.Listener {
 
     private final boolean includingPropagatingEvents;
 
-    public AbstractListenerWrapper(EventBus owningEventBus, Object listenerTarget, boolean includingPropagatingEvents) {
+    private final String topic;
+
+    public AbstractListenerWrapper(EventBus owningEventBus, Object listenerTarget, String topic, boolean includingPropagatingEvents) {
         this.owningEventBus = owningEventBus;
+        this.topic = topic;
         this.listenerTarget = listenerTarget;
         this.includingPropagatingEvents = includingPropagatingEvents;
     }
@@ -59,7 +62,9 @@ abstract class AbstractListenerWrapper implements ListenerCollection.Listener {
     @Override
     public boolean supports(Event<?> event) {
         final Class<?> eventPayloadType = event.getPayload().getClass();
-        return getPayloadType().isAssignableFrom(eventPayloadType) && (includingPropagatingEvents || event.getEventBus().equals(owningEventBus));
+        return (event.getTopic().equals(topic) || topic == null) &&
+                getPayloadType().isAssignableFrom(eventPayloadType) &&
+                (includingPropagatingEvents || event.getEventBus().equals(owningEventBus));
     }
 
 }

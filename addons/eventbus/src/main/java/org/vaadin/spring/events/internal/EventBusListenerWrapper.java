@@ -32,8 +32,8 @@ class EventBusListenerWrapper extends AbstractListenerWrapper {
     private static final long serialVersionUID = 8964309195124823892L;
     private final Class<?> payloadType;
 
-    public EventBusListenerWrapper(EventBus owningEventBus, EventBusListener<?> listenerTarget, boolean includingPropagatingEvents) {
-        super(owningEventBus, listenerTarget, includingPropagatingEvents);
+    public EventBusListenerWrapper(EventBus owningEventBus, EventBusListener<?> listenerTarget, String topic, boolean includingPropagatingEvents) {
+        super(owningEventBus, listenerTarget, topic, includingPropagatingEvents);
         payloadType = GenericTypeResolver.resolveTypeArgument(listenerTarget.getClass(), EventBusListener.class);
         Assert.notNull(payloadType, "Could not resolve payload type");
     }
