@@ -36,6 +36,7 @@ public interface VaadinLogoutHandler {
 
         @Override
         public void onLogout() {
+            throw new UnsupportedOperationException();
         }
     }
 }

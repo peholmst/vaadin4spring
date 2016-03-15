@@ -84,6 +84,7 @@ public class AccessControlView extends VerticalLayout implements View, ViewAcces
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
