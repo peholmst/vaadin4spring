@@ -79,7 +79,7 @@ public class ResourceBundleMessageProvider implements MessageProvider {
         }
     }
 
-    private String getString(ResourceBundle bundle, String s) {
+    private static String getString(ResourceBundle bundle, String s) {
         if (bundle == null) {
             return null;
         }
@@ -90,7 +90,7 @@ public class ResourceBundleMessageProvider implements MessageProvider {
         }
     }
 
-    private MessageFormat getMessageFormat(String message, Locale locale) {
+    private static MessageFormat getMessageFormat(String message, Locale locale) {
         if (message == null) {
             return null;
         }
