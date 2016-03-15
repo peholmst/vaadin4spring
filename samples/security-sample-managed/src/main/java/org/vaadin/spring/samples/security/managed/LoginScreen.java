@@ -72,10 +72,12 @@ public class LoginScreen extends CustomComponent {
     private void initLayout() {
         FormLayout loginForm = new FormLayout();
         loginForm.setSizeUndefined();
-
-        loginForm.addComponent(userName = new TextField("Username"));
-        loginForm.addComponent(passwordField = new PasswordField("Password"));
-        loginForm.addComponent(login = new Button("Login"));
+        userName = new TextField("Username");
+        passwordField = new PasswordField("Password");
+        login = new Button("Login");
+        loginForm.addComponent(userName);
+        loginForm.addComponent(passwordField);
+        loginForm.addComponent(login);
         login.addStyleName(ValoTheme.BUTTON_PRIMARY);
         login.setDisableOnClick(true);
         login.setClickShortcut(ShortcutAction.KeyCode.ENTER);
@@ -88,14 +90,16 @@ public class LoginScreen extends CustomComponent {
 
         VerticalLayout loginLayout = new VerticalLayout();
         loginLayout.setSizeUndefined();
-
-        loginLayout.addComponent(loginFailedLabel = new Label());
+        
+        loginFailedLabel = new Label();
+        loginLayout.addComponent(loginFailedLabel);
         loginLayout.setComponentAlignment(loginFailedLabel, Alignment.BOTTOM_CENTER);
         loginFailedLabel.setSizeUndefined();
         loginFailedLabel.addStyleName(ValoTheme.LABEL_FAILURE);
         loginFailedLabel.setVisible(false);
 
-        loginLayout.addComponent(loggedOutLabel = new Label("Good bye!"));
+        loggedOutLabel = new Label("Good bye!");
+        loginLayout.addComponent(loggedOutLabel);
         loginLayout.setComponentAlignment(loggedOutLabel, Alignment.BOTTOM_CENTER);
         loggedOutLabel.setSizeUndefined();
         loggedOutLabel.addStyleName(ValoTheme.LABEL_SUCCESS);
