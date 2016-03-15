@@ -25,7 +25,8 @@ public class AccessDeniedView extends VerticalLayout implements View {
     @PostConstruct
     void init() {
         setMargin(true);
-        addComponent(message = new Label());
+        message = new Label();
+        addComponent(message);
         message.addStyleName(ValoTheme.LABEL_FAILURE);
         message.setContentMode(ContentMode.HTML);
     }

@@ -69,7 +69,8 @@ public abstract class AbstractSideBarUI extends UI {
 
         ErrorView() {
             setMargin(true);
-            addComponent(message = new Label());
+            message = new Label();
+            addComponent(message);
         }
 
         @Override

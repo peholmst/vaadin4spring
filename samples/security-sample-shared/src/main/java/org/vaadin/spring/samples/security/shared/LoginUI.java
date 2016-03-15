@@ -57,10 +57,14 @@ public class LoginUI extends UI {
         FormLayout loginForm = new FormLayout();
         loginForm.setSizeUndefined();
 
-        loginForm.addComponent(userName = new TextField("Username"));
-        loginForm.addComponent(passwordField = new PasswordField("Password"));
-        loginForm.addComponent(rememberMe = new CheckBox("Remember me"));
-        loginForm.addComponent(login = new Button("Login"));
+        userName = new TextField("Username");
+        passwordField = new PasswordField("Password");
+        rememberMe = new CheckBox("Remember me");
+        login = new Button("Login");
+        loginForm.addComponent(userName);
+        loginForm.addComponent(passwordField);
+        loginForm.addComponent(rememberMe);
+        loginForm.addComponent(login);
         login.addStyleName(ValoTheme.BUTTON_PRIMARY);
         login.setDisableOnClick(true);
         login.setClickShortcut(ShortcutAction.KeyCode.ENTER);

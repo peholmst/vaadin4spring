@@ -94,7 +94,8 @@ public class NavigationUI extends UI {
 
         ErrorView() {
             setMargin(true);
-            addComponent(message = new Label("Please click one of the buttons at the top of the screen."));
+            message = new Label("Please click one of the buttons at the top of the screen.");
+            addComponent(message);
             message.addStyleName(ValoTheme.LABEL_COLORED);
         }
 
