@@ -202,7 +202,7 @@ public class I18N {
      */
     public Locale getLocale() {
         UI currentUI = UI.getCurrent();
-        Locale locale = (currentUI == null ? null : currentUI.getLocale());
+        Locale locale = currentUI == null ? null : currentUI.getLocale();
         if (locale == null) {
             locale = Locale.getDefault();
         }

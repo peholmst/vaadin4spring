@@ -102,8 +102,7 @@ public class Application {
          */
         @Bean
         public RememberMeServices rememberMeServices() {
-            TokenBasedRememberMeServices services = new TokenBasedRememberMeServices("myAppKey", userDetailsService());
-            return services;
+            return new TokenBasedRememberMeServices("myAppKey", userDetailsService());
         }
 
         /**
