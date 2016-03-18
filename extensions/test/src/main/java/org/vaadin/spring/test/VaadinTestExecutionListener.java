@@ -51,7 +51,7 @@ public class VaadinTestExecutionListener extends AbstractTestExecutionListener {
         return AnnotationUtils.findAnnotation(testContext.getTestClass(), VaadinAppConfiguration.class) == null;
     }
 
-    private boolean alreadySetUpVaadinScopes(TestContext testContext) {
+    private static boolean alreadySetUpVaadinScopes(TestContext testContext) {
         return Boolean.TRUE.equals(testContext.getAttribute(SET_UP_SCOPES_ATTRIBUTE));
     }
 

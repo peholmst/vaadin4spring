@@ -199,7 +199,7 @@ public class DefaultVaadinSharedSecurity extends AbstractVaadinSecurity implemen
         return authentication;
     }
 
-    private WrappedSession getSession() {
+    private static WrappedSession getSession() {
         VaadinSession vaadinSession = VaadinSession.getCurrent();
         if (vaadinSession != null) {
             return vaadinSession.getSession();
