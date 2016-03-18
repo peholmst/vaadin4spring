@@ -55,12 +55,12 @@ class MethodListenerWrapper extends AbstractListenerWrapper {
         this.listenerMethod = listenerMethod;
     }
 
-    private static void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
         ois.defaultReadObject();
         // TODO Read listener method info and look up method
     }
 
-    private static void writeObject(ObjectOutputStream oos) throws IOException {
+    private void writeObject(ObjectOutputStream oos) throws IOException {
         oos.defaultWriteObject();
         // TODO Write listener method info
     }
