@@ -144,7 +144,7 @@ public abstract class AbstractSideBar<CR extends ComponentContainer> extends Cus
                     passedItems.add(candidate);
                 }
             }
-            if (passedItems.size() > 0) {
+            if (!passedItems.isEmpty()) {
                 getSectionComponentFactory().createSection(compositionRoot, section, passedItems);
             }
         }

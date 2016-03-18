@@ -45,9 +45,7 @@ public class AtmosphereAutoConfiguration {
 
         @Bean
         ServletListenerRegistrationBean<SessionSupport> atmosphereSessionSupport() {
-            ServletListenerRegistrationBean<SessionSupport> bean = new ServletListenerRegistrationBean<SessionSupport>(
-                new SessionSupport());
-            return bean;
+            return new ServletListenerRegistrationBean<SessionSupport>(new SessionSupport());
         }
     }
 }
