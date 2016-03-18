@@ -62,13 +62,13 @@ public class PushSecurityInterceptor extends AtmosphereInterceptorAdapter {
 
     @Override
     public Action inspect(AtmosphereResource r) {
-        final SecurityContextRepository securityContextRepositoryLocal = getSecurityContextRepository(
+        final SecurityContextRepository securityContextRepo = getSecurityContextRepository(
             r.getAtmosphereConfig().getServletContext());
-        if (securityContextRepositoryLocal.containsContext(r.getRequest())) {
+        if (securityContextRepo.containsContext(r.getRequest())) {
             LOGGER.trace("Loading the security context from the session");
             final HttpRequestResponseHolder requestResponse = new HttpRequestResponseHolder(r.getRequest(),
                 r.getResponse());
-            final SecurityContext securityContext = securityContextRepositoryLocal.loadContext(requestResponse);
+            final SecurityContext securityContext = securityContextRepo.loadContext(requestResponse);
             SecurityContextHolder.setContext(securityContext);
         }
         return Action.CONTINUE;
