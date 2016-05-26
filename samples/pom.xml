@@ -12,6 +12,16 @@
     <groupId>org.vaadin.spring.samples</groupId>
     <artifactId>samples-parent-pom</artifactId>
     <version>0.0.8-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-spring</artifactId>
+        </dependency>
+    </dependencies>
     <packaging>pom</packaging>
 
     <name>Vaadin4Spring Samples</name>
@@ -165,6 +175,7 @@
     <modules>
         <module>sidebar-sample</module>
         <module>eventbus-sample</module>
+        <module>expression-container-sample</module>
         <module>push-sample</module>
         <module>security-sample-managed</module>
         <module>security-sample-shared</module>
