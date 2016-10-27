@@ -19,7 +19,7 @@ import com.vaadin.server.VaadinServlet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.embedded.ServletRegistrationBean;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
@@ -59,7 +59,7 @@ public class CustomServletOverrideTest {
 
     @Test
     public void customServletIsInjected() throws Exception {
-        Method getServlet = servletRegistrationBean.getClass().getDeclaredMethod("getServlet");
+        Method getServlet = ServletRegistrationBean.class.getDeclaredMethod("getServlet");
         getServlet.setAccessible(true);
         Servlet servlet = (Servlet) getServlet.invoke(servletRegistrationBean);
         assertTrue("expected MyCustomVaadinServlet, was " + servlet.getClass().getSimpleName(), servlet instanceof MyCustomVaadinServlet);
