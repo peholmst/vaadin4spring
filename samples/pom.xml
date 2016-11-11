@@ -18,7 +18,7 @@
 
     <properties>
         <vaadin.version>7.7.3</vaadin.version>
-        <vaadin-spring.version>1.1-SNAPSHOT</vaadin-spring.version>
+        <vaadin-spring.version>1.1.0</vaadin-spring.version>
     </properties>
 
     <dependencyManagement>
@@ -31,6 +31,11 @@
             <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-spring-boot</artifactId>
+                <version>${vaadin-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-spring-boot-starter</artifactId>
                 <version>${vaadin-spring.version}</version>
             </dependency>
             <dependency>
