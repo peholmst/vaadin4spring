@@ -21,16 +21,8 @@
             <artifactId>vaadin-spring-addon-eventbus</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-themes</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-client-compiled</artifactId>
+            <artifactId>vaadin-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
