@@ -17,8 +17,8 @@
     <name>Vaadin4Spring Samples</name>
 
     <properties>
-        <vaadin.version>7.7.3</vaadin.version>
-        <vaadin-spring.version>1.1.0</vaadin-spring.version>
+        <vaadin.version>8.0.0</vaadin.version>
+        <vaadin-spring.version>2.0.0</vaadin-spring.version>
     </properties>
 
     <dependencyManagement>
