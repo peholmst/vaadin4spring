@@ -83,7 +83,7 @@
         <project.build.encoding>UTF-8</project.build.encoding>
         <project.build.target>1.8</project.build.target>
         <project.build.source>1.8</project.build.source>
-        <vaadin.version>8.0.0</vaadin.version>
+        <vaadin.version>8.0.1</vaadin.version>
         <vaadin-touchkit.version>4.0.0</vaadin-touchkit.version>
         <vaadin-spring.version>2.0.0</vaadin-spring.version>
         <spring.version>4.3.6.RELEASE</spring.version>
