@@ -28,6 +28,10 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-themes</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-compatibility-themes</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.vaadin</groupId>
@@ -35,13 +39,7 @@
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-compatibility-client</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.vaadin.icons</groupId>
-            <artifactId>vaadin-icons</artifactId>
-            <version>1.0.1</version>
+            <artifactId>vaadin-compatibility-client-compiled</artifactId>
         </dependency>
     </dependencies>
 

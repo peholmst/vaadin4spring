@@ -16,6 +16,7 @@
 package org.vaadin.spring.samples.sidebar;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Widgetset;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.v7.ui.themes.Reindeer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import org.vaadin.spring.sidebar.components.AccordionSideBar;
  */
 @SpringUI(path = "/accordion")
 @Theme(Reindeer.THEME_NAME)
+@Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class AccordionSideBarUI extends AbstractSideBarUI {
 
     private static final long serialVersionUID = -7747249047198990160L;

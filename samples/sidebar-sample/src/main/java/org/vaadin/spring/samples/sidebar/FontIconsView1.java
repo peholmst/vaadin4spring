@@ -15,6 +15,7 @@
  */
 package org.vaadin.spring.samples.sidebar;
 
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
@@ -25,7 +26,6 @@ import com.vaadin.ui.VerticalLayout;
 import org.vaadin.spring.sidebar.annotation.FontAwesomeIcon;
 import org.vaadin.spring.sidebar.annotation.SideBarItem;
 import org.vaadin.spring.sidebar.annotation.VaadinFontIcon;
-import org.vaadin.teemu.VaadinIcons;
 
 /**
  * Example view that demonstrates how to use a Vaadin Font Icon.

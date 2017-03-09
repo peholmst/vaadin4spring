@@ -17,6 +17,7 @@ package org.vaadin.spring.samples.sidebar;
 
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ContentMode;
@@ -24,7 +25,6 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
-import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.sidebar.components.AbstractSideBar;
 import org.vaadin.spring.sidebar.components.ValoSideBar;
@@ -36,6 +36,7 @@ import org.vaadin.spring.sidebar.components.ValoSideBar;
  */
 @SpringUI(path = "/valo")
 @Theme("sidebar") // A custom theme based on Valo
+@Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class ValoSideBarUI extends AbstractSideBarUI {
 
     @Autowired

@@ -35,12 +35,6 @@
             <version>${project.version}</version>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.vaadin.icons</groupId>
-            <artifactId>vaadin-icons</artifactId>
-            <version>1.0.1</version>
-            <optional>true</optional>
-        </dependency>
     </dependencies>
     <repositories>
         <repository>
