@@ -15,6 +15,7 @@
  */
 package org.vaadin.spring.samples.i18n;
 
+import com.vaadin.annotations.Widgetset;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
@@ -24,13 +25,13 @@ import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.spring.i18n.support.TranslatableUI;
 
-import com.vaadin.data.util.ObjectProperty;
-import com.vaadin.data.util.converter.StringToBigDecimalConverter;
+import com.vaadin.v7.data.util.ObjectProperty;
+import com.vaadin.v7.data.util.converter.StringToBigDecimalConverter;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.DateField;
-import com.vaadin.ui.TextField;
+import com.vaadin.v7.ui.DateField;
+import com.vaadin.v7.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 /**
@@ -39,6 +40,7 @@ import com.vaadin.ui.VerticalLayout;
  * @author Petter Holmström (petter@vaadin.com)
  */
 @SpringUI
+@Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class TranslatedUI extends TranslatableUI implements Translatable {
 
     @Autowired

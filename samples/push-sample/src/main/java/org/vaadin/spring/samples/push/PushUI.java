@@ -18,14 +18,13 @@ package org.vaadin.spring.samples.push;
 import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-import com.vaadin.data.Item;
-import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
+import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,9 +52,29 @@ public class PushUI extends UI {
     private static final Logger LOGGER = LoggerFactory.getLogger(PushUI.class);
 
     private Random rnd = new Random();
-    private Grid grid;
+    private Grid<DateIntTuple> grid;
     private ScheduledFuture<?> jobHandle;
-    private IndexedContainer measurements;
+    private ArrayList<DateIntTuple> measurements;
+    
+    public static class DateIntTuple {
+        private Date date;
+        private int integer;
+
+        public DateIntTuple(Date date, int integer) {
+            this.date = date;
+            this.integer = integer;
+        }
+
+        public Date getDate() {
+            return date;
+        }
+
+        public int getInteger() {
+            return integer;
+        }
+
+        
+    }
 
     private Runnable updateGraphJob = new Runnable() {
         public void run() {
@@ -64,9 +83,8 @@ public class PushUI extends UI {
                 @SuppressWarnings("unchecked")
                 public void run() {
                     LOGGER.info("Storing new measurement");
-                    Item item = measurements.getItem(measurements.addItem());
-                    item.getItemProperty("Timestamp").setValue(new Date());
-                    item.getItemProperty("Measurement").setValue(rnd.nextInt());
+                    measurements.add(new DateIntTuple(new Date(), rnd.nextInt()));
+                    grid.setItems(measurements);
                 }
             });
         }
@@ -74,11 +92,8 @@ public class PushUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        measurements = new IndexedContainer();
-        measurements.addContainerProperty("Timestamp", Date.class, null);
-        measurements.addContainerProperty("Measurement", Integer.class, null);
-
-        grid = new Grid(measurements);
+        measurements = new ArrayList<>();
+        grid = new Grid(DateIntTuple.class);
         grid.setSizeFull();
         setContent(grid);
 

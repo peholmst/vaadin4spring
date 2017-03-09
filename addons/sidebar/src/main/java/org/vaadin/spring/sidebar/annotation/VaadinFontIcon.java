@@ -15,8 +15,8 @@
  */
 package org.vaadin.spring.sidebar.annotation;
 
+import com.vaadin.icons.VaadinIcons;
 import org.vaadin.spring.sidebar.VaadinFontIconProvider;
-import org.vaadin.teemu.VaadinIcons;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
