@@ -15,7 +15,7 @@
  */
 package org.vaadin.spring.samples.navigation;
 
-import com.vaadin.data.Property;
+import com.vaadin.data.HasValue;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.spring.access.ViewAccessControl;
@@ -69,9 +69,9 @@ public class AccessControlView extends VerticalLayout implements View, ViewAcces
 
     private CheckBox createViewCheckbox(String caption, final String viewName) {
         final CheckBox checkBox = new CheckBox(caption, true);
-        checkBox.addValueChangeListener(new Property.ValueChangeListener() {
+        checkBox.addValueChangeListener(new HasValue.ValueChangeListener<Boolean>() {
             @Override
-            public void valueChange(Property.ValueChangeEvent event) {
+            public void valueChange(HasValue.ValueChangeEvent<Boolean> valueChangeEvent) {
                 if (checkBox.getValue()) {
                     allowedViews.add(viewName);
                 } else {

@@ -17,7 +17,7 @@ package org.vaadin.spring.samples.sidebar;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.spring.annotation.SpringUI;
-import com.vaadin.ui.themes.Reindeer;
+import com.vaadin.v7.ui.themes.Reindeer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.sidebar.components.AbstractSideBar;
 import org.vaadin.spring.sidebar.components.AccordionSideBar;
