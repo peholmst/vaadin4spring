@@ -15,6 +15,7 @@
  */
 package org.vaadin.spring.samples.i18n;
 
+import com.vaadin.annotations.Widgetset;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
@@ -39,6 +40,7 @@ import com.vaadin.ui.VerticalLayout;
  * @author Petter Holmström (petter@vaadin.com)
  */
 @SpringUI
+@Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class TranslatedUI extends TranslatableUI implements Translatable {
 
     @Autowired
