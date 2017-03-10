@@ -15,7 +15,8 @@
  */
 package org.vaadin.spring.samples.i18n;
 
-import com.vaadin.annotations.Widgetset;
+import com.vaadin.data.Binder;
+import com.vaadin.data.converter.StringToBigDecimalConverter;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
@@ -25,14 +26,13 @@ import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.spring.i18n.support.TranslatableUI;
 
-import com.vaadin.v7.data.util.ObjectProperty;
-import com.vaadin.v7.data.util.converter.StringToBigDecimalConverter;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.Button;
-import com.vaadin.v7.ui.DateField;
-import com.vaadin.v7.ui.TextField;
+import com.vaadin.ui.DateField;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import java.time.LocalDate;
 
 /**
  * Example of a translated UI.
@@ -40,7 +40,6 @@ import com.vaadin.ui.VerticalLayout;
  * @author Petter Holmström (petter@vaadin.com)
  */
 @SpringUI
-@Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class TranslatedUI extends TranslatableUI implements Translatable {
 
     @Autowired
@@ -49,9 +48,18 @@ public class TranslatedUI extends TranslatableUI implements Translatable {
     private Button english;
     private Button swedish;
 
-    private TextField bigDecimalTextField;
+    private TextField bigDecimalField;
     private DateField dateField;
-    private ObjectProperty<BigDecimal> bigDecimalObjectProperty = new ObjectProperty<>(new BigDecimal("1230500.25"));
+
+    private BigDecimal bigDecimal = new BigDecimal("1230500.25");
+
+    public void setBigDecimal(BigDecimal bigDecimal) {
+        this.bigDecimal = bigDecimal;
+    }
+
+    public BigDecimal getBigDecimal() {
+        return bigDecimal;
+    }
 
     @Override
     protected void initUI(VaadinRequest request) {
@@ -76,24 +84,34 @@ public class TranslatedUI extends TranslatableUI implements Translatable {
         });
         layout.addComponent(swedish);
 
-        bigDecimalTextField = new TextField();
-        bigDecimalTextField.setConverter(new StringToBigDecimalConverter());
-        bigDecimalTextField.setPropertyDataSource(bigDecimalObjectProperty);
-        bigDecimalTextField.setImmediate(true);
-        bigDecimalTextField.setNullSettingAllowed(false);
-        layout.addComponent(bigDecimalTextField);
+        bigDecimalField = new TextField();
+
+        StringToBigDecimalConverter converter = new StringToBigDecimalConverter("") {
+            @Override
+            protected String getErrorMessage() {
+                return i18n.get("demoapp.bigDecimalTextField.caption");
+            }
+        };
+
+        Binder<TranslatedUI> binder = new Binder<>(TranslatedUI.class);
+
+        binder.forField(bigDecimalField)
+                .withConverter(converter)
+                .bind("bigDecimal");
+        binder.setBean(this);
+
+        layout.addComponent(bigDecimalField);
 
         dateField = new DateField();
-        dateField.setValue(new Date());
+        dateField.setValue(LocalDate.now());
         layout.addComponent(dateField);
     }
 
     @Override
     public void updateMessageStrings(Locale locale) {
         getPage().setTitle(i18n.get("demoapp.title", locale, new Date()));
-        bigDecimalTextField.setCaption(i18n.get("demoapp.bigDecimalTextField.caption", locale));
-        bigDecimalTextField.setConversionError(i18n.get("demoapp.bigDecimalTextField.conversionError", locale));
-        bigDecimalTextField.setLocale(locale);
+        bigDecimalField.setCaption(i18n.get("demoapp.bigDecimalTextField.caption", locale));
+        bigDecimalField.setLocale(locale);
 
         // In this demo application, the 'locale' parameter is the same as the locale returned by the I18N instance,
         // so we don't actually have to pass it in
