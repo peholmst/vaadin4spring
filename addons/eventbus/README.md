@@ -116,7 +116,7 @@ to evaluate the topic matching.
  @EventBusListenerMethod()
  public void myListener(MyPayload payload) {...}
  ```
-or width a custom filter implementation 
+or with a custom filter implementation 
 
 ```java
  @EventBusListenerTopic(topic = "myTopic", filter = MyCustomTopicFilter.class)
