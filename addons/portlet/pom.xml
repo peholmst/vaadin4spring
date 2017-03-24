@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.vaadin.spring</groupId>
         <artifactId>parent-pom</artifactId>
-        <version>2.0.0.RELEASE</version>
+        <version>2.0.1-SNAPSHOT</version>
         <relativePath>../../</relativePath>
     </parent>
 

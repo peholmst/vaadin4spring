@@ -10,7 +10,7 @@
 
     <groupId>org.vaadin.spring.samples</groupId>
     <artifactId>samples-parent-pom</artifactId>
-    <version>2.0.0.RELEASE</version>
+    <version>2.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Vaadin4Spring Samples</name>
@@ -175,8 +175,4 @@
         <module>navigation-sample</module>
         <module>i18n-sample</module>
     </modules>
-
-  <scm>
-    <tag>v2.0.0.RELEASE</tag>
-  </scm>
 </project>
