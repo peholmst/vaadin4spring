@@ -46,6 +46,7 @@ public interface VaadinAuthenticationSuccessHandler {
 
         @Override
         public void onAuthenticationSuccess(Authentication authentication) throws Exception {
+            throw new UnsupportedOperationException();
         }
     }
 }

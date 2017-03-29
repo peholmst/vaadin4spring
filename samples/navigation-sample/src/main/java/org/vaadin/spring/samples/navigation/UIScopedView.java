@@ -72,5 +72,6 @@ public class UIScopedView extends VerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
+        throw new UnsupportedOperationException();
     }
 }

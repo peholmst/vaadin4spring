@@ -101,6 +101,7 @@ public class NavigationUI extends UI {
 
         @Override
         public void enter(ViewChangeListener.ViewChangeEvent event) {
+            throw new UnsupportedOperationException();
         }
     }
 

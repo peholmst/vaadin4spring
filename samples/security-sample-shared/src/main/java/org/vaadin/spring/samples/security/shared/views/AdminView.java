@@ -56,5 +56,6 @@ public class AdminView extends CustomComponent implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        throw new UnsupportedOperationException();
     }
 }

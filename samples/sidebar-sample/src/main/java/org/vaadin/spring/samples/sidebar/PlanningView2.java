@@ -49,5 +49,6 @@ public class PlanningView2 extends VerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
+        throw new UnsupportedOperationException();
     }
 }
