@@ -13,10 +13,13 @@ This project adds a base class and an annotation:
 
 Add the following Maven dependency to your Vaadin / Spring boot application's POM...
 
-    <dependency>
-        <groupId>org.vaadin.spring</groupId>
-        <artifactId>spring-vaadin-mvp</artifactId>
-    </dependency>
+````xml
+<dependency>
+    <groupId>org.vaadin.spring.addons</groupId>
+    <artifactId>vaadin-spring-addon-mvp</artifactId>
+    <version>${vaadin4spring.version}</version>
+</dependency>
+````
     
 
 Then for examples of `Presenter` implementation, have a look at those found in the `presenter` package of the [mvp-sample](https://github.com/fastnsilver/vaadin4spring/tree/master/samples/mvp-sample/src/main/java/org/vaadin/spring/samples/mvp/ui/presenter) application.
