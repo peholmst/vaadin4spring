@@ -15,7 +15,7 @@
  */
 package org.vaadin.spring.events.support;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationEvent;
 import org.vaadin.spring.events.EventBus;
 

@@ -53,14 +53,9 @@ public class VaadinEventBusAwareProcessor implements ApplicationContextAware, Be
         }
 
         if (acc != null) {
-            AccessController.doPrivileged(new PrivilegedAction<Object>() {
-
-                @Override
-                public Object run() {
-                    invokeAwareInterfaces(bean);
-                    return null;
-                }
-
+            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                invokeAwareInterfaces(bean);
+                return null;
             }, acc);
         } else {
             invokeAwareInterfaces(bean);
@@ -85,9 +80,6 @@ public class VaadinEventBusAwareProcessor implements ApplicationContextAware, Be
             }
             if (bean instanceof EventBusAware.UIEventBusAware) {
                 ((EventBusAware.UIEventBusAware) bean).setUIEventBus(this.applicationContext.getBean(EventBus.UIEventBus.class));
-            }
-            if (bean instanceof EventBusAware.ViewEventBusAware) {
-                ((EventBusAware.ViewEventBusAware) bean).setViewEventBus(this.applicationContext.getBean(EventBus.ViewEventBus.class));
             }
 
         }
