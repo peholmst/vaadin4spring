@@ -1,6 +1,8 @@
 Vaadin4Spring Extensions and Addons
 ===================================
 
+NOTE: Vaadin Flow version is under development in flow branch.
+
 This project started as a prototype of an official Vaadin Spring add-on. Now there is [one](http://github.com/vaadin/spring)
 and as of Vaadin4Spring 0.0.6, *this project is to be considered an add-on for the official Spring add-on*. This means that all the
 scopes, the UI provider, the navigator support etc. has been moved to the official add-on, and removed from this project.
