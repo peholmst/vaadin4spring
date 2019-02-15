@@ -15,9 +15,9 @@
  */
 package org.vaadin.spring.events.internal;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.vaadin.spring.events.Event;
 import org.vaadin.spring.events.EventBusListener;
@@ -26,7 +26,7 @@ import org.vaadin.spring.events.HierachyTopicFilter;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.events.annotation.EventBusListenerTopic;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -176,13 +176,13 @@ public class ScopedEventBusTest {
         }
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         applicationEventBus = new ScopedEventBus.DefaultApplicationEventBus();
         sessionEventBus = new ScopedEventBus.DefaultSessionEventBus(applicationEventBus);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         sessionEventBus.destroy();
         applicationEventBus.destroy();
@@ -405,19 +405,19 @@ public class ScopedEventBusTest {
         assertNotNull(stringListener.theStringEvent);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testSubscribeAndPublishWithListenerMethodsAndTooFewParameters() {
-        sessionEventBus.subscribe(new InvalidListener1());
+        assertThrows(IllegalArgumentException.class, () -> sessionEventBus.subscribe(new InvalidListener1()));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testSubscribeAndPublishWithListenerMethodsAndTooManyParameters() {
-        sessionEventBus.subscribe(new InvalidListener2());
+        assertThrows(IllegalArgumentException.class, () -> sessionEventBus.subscribe(new InvalidListener2()));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testPublishToInvalidScope() {
-        applicationEventBus.publish(EventScope.SESSION, this, "fail");
+        assertThrows(UnsupportedOperationException.class, () -> applicationEventBus.publish(EventScope.SESSION, this, "fail"));
     }
 
     @Test

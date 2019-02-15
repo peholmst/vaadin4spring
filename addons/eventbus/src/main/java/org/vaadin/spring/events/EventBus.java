@@ -23,19 +23,17 @@ package org.vaadin.spring.events;
  * <li>Events are scoped</li>
  * </ul>
  * <p>
- * There are four event scopes, and therefore four event bus types (each with their own sub interface):
+ * There are three event scopes, and therefore three event bus types (each with their own sub interface):
  * <ol>
  * <li>{@link EventScope#APPLICATION} events are published to the entire application.</li>
  * <li>{@link EventScope#SESSION} events are published to the current session.</li>
  * <li>{@link EventScope#UI} events are published to the current UI.</li>
- * <li>{@link EventScope#VIEW} events are published to the current view.</li>
  * </ol>
  * <p>
  * The event buses are chained in the following way:
  * <ul>
  * <li>Application events are propagated to the session event bus.</li>
  * <li>Session events are propagated to the UI event bus.</li>
- * <li>UI events are propagated to the view event bus.</li>
  * </ul>
  * Furthermore, {@link org.springframework.context.ApplicationEventPublisher} events can be propagated to any event bus
  * by using {@link org.vaadin.spring.events.support.ApplicationContextEventBroker}.
@@ -271,13 +269,5 @@ public interface EventBus {
      * @see org.vaadin.spring.events.EventScope#UI
      */
     interface UIEventBus extends EventBus {
-    }
-
-    /**
-     * Interface implemented by the view scoped event bus.
-     *
-     * @see org.vaadin.spring.events.EventScope#VIEW
-     */
-    interface ViewEventBus extends EventBus {
     }
 }

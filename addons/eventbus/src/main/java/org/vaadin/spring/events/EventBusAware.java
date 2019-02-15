@@ -56,15 +56,4 @@ public interface EventBusAware extends Aware {
          */
         void setUIEventBus(EventBus.UIEventBus uiEventBus);
     }
-
-    /**
-     * Interface to be implemented by beans that want to get notified of the
-     * view event bus.
-     */
-    interface ViewEventBusAware extends EventBusAware {
-        /**
-         * Sets the view scoped event bus.
-         */
-        void setViewEventBus(EventBus.ViewEventBus viewEventBus);
-    }
 }

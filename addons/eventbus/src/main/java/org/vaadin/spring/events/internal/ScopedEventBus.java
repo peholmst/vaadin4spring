@@ -40,7 +40,7 @@ import java.lang.reflect.Method;
  */
 public abstract class ScopedEventBus implements EventBus, Serializable {
 
-    private static final long serialVersionUID = 1637290543180920954L;
+    private static final long serialVersionUID = -582697574672947883L;
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final EventScope eventScope;
 
@@ -210,25 +210,22 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
                 listener, this, includingPropagatingEvents, weakReference);
 
         final int[] foundMethods = new int[1];
-        ClassUtils.visitClassHierarchy(new ClassUtils.ClassVisitor() {
-            @Override
-            public void visit(Class<?> clazz) {
-                for (Method m : clazz.getDeclaredMethods()) {
-                    if (m.isAnnotationPresent(EventBusListenerMethod.class)) {
-                        if (m.getParameterTypes().length == 1) {
-                            logger.trace("Found listener method [{}] in listener [{}]", m.getName(), listener);
-                            MethodListenerWrapper l = new MethodListenerWrapper(ScopedEventBus.this, listener, topic,
-                                    includingPropagatingEvents, m);
-                            if (weakReference) {
-                                listeners.addWithWeakReference(l);
-                            } else {
-                                listeners.add(l);
-                            }
-                            foundMethods[0]++;
+        ClassUtils.visitClassHierarchy(clazz -> {
+            for (Method m : clazz.getDeclaredMethods()) {
+                if (m.isAnnotationPresent(EventBusListenerMethod.class)) {
+                    if (m.getParameterTypes().length == 1) {
+                        logger.trace("Found listener method [{}] in listener [{}]", m.getName(), listener);
+                        MethodListenerWrapper l = new MethodListenerWrapper(ScopedEventBus.this, listener, topic,
+                                includingPropagatingEvents, m);
+                        if (weakReference) {
+                            listeners.addWithWeakReference(l);
                         } else {
-                            throw new IllegalArgumentException(
-                                    "Listener method " + m.getName() + " does not have the required signature");
+                            listeners.add(l);
                         }
+                        foundMethods[0]++;
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Listener method " + m.getName() + " does not have the required signature");
                     }
                 }
             }
@@ -247,13 +244,8 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
     @Override
     public void unsubscribe(final Object listener) {
         logger.trace("Unsubscribing listener [{}] from event bus [{}]", listener, this);
-        listeners.removeAll(new ListenerCollection.ListenerFilter() {
-            @Override
-            public boolean passes(ListenerCollection.Listener l) {
-                return (l instanceof AbstractListenerWrapper)
-                        && (((AbstractListenerWrapper) l).getListenerTarget() == listener);
-            }
-        });
+        listeners.removeAll(l -> (l instanceof AbstractListenerWrapper)
+                && (((AbstractListenerWrapper) l).getListenerTarget() == listener));
     }
 
     /**
@@ -299,16 +291,6 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
 
         public DefaultUIEventBus(SessionEventBus parentEventBus) {
             super(EventScope.UI, parentEventBus);
-        }
-    }
-
-    /**
-     * Default implementation of {@link org.vaadin.spring.events.EventBus.ViewEventBus}.
-     */
-    public static class DefualtViewEventBus extends ScopedEventBus implements ViewEventBus {
-
-        public DefualtViewEventBus(UIEventBus parentEventBus) {
-            super(EventScope.VIEW, parentEventBus);
         }
     }
 }
