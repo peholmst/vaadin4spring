@@ -35,6 +35,15 @@ creating a singleton instance of ```ApplicationContextEventBroker```:
      return new ApplicationContextEventBroker(eventBus);
  }
 ```    
+# Enable Event Bus
+
+On configuration class add annotation:
+```java
+ @EnableEventBus
+ @Configuration
+ public class MyConfiguration {...}
+```
+
 
 # Event Bus Topics
 Events can be published with an optional string based topic. This will distinguish which listener methods will be called. Therefore, when it's the intent to use topics, a topic must be provided when publishing events and at the listener methods.
