@@ -17,9 +17,8 @@ package org.vaadin.spring.i18n.support;
 
 import java.util.Locale;
 
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HasComponents;
-import com.vaadin.ui.UI;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 
 /**
  * Implementation of {@link Translatable} intended to be used as a delegate by an owning {@link UI}.
@@ -50,11 +49,7 @@ public class TranslatableSupport implements Translatable {
         if (component instanceof Translatable) {
             ((Translatable) component).updateMessageStrings(locale);
         }
-        if (component instanceof HasComponents) {
-            for (Component child : (HasComponents) component) {
-                updateMessageStrings(locale, child);
-            }
-        }
+        component.getChildren().forEach(child -> updateMessageStrings(locale, child));
     }
 
 }

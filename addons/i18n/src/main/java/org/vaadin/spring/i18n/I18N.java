@@ -23,7 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.NoSuchMessageException;
 
-import com.vaadin.ui.UI;
+import com.vaadin.flow.component.UI;
+
 
 /**
  * Helper class for resolving messages in a Vaadin UI. This is effectively a wrapper around

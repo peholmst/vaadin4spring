@@ -15,13 +15,14 @@
  */
 package org.vaadin.spring.i18n;
 
-import com.vaadin.ui.UI;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.NoSuchMessageException;
+
+import com.vaadin.flow.component.UI;
 
 import java.util.Locale;
 
