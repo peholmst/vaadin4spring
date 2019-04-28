@@ -15,8 +15,7 @@
  */
 package org.vaadin.spring.boot;
 
-import com.vaadin.server.VaadinServlet;
-import com.vaadin.spring.boot.VaadinAutoConfiguration;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -29,6 +28,7 @@ import org.vaadin.spring.annotation.EnableVaadinExtensions;
 import org.vaadin.spring.config.VaadinExtensionsConfiguration;
 import org.vaadin.spring.servlet.Vaadin4SpringServlet;
 
+import com.vaadin.flow.server.VaadinServlet;
 /**
  * Auto configuration for Vaadin4Spring core extensions.
  *

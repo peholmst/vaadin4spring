@@ -15,9 +15,9 @@
  */
 package org.vaadin.spring.security.navigation;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.navigator.View;
 import com.vaadin.spring.access.ViewInstanceAccessControl;
-import com.vaadin.ui.UI;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
