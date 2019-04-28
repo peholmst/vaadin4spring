@@ -34,8 +34,8 @@ import org.springframework.util.Assert;
 import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.security.AbstractVaadinSecurity;
 
-import com.vaadin.server.VaadinSession;
-import com.vaadin.server.WrappedSession;
+import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.server.WrappedSession;
 
 /**
  * Default implementation of {@link VaadinSharedSecurity}.

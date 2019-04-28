@@ -54,15 +54,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.4.0</version>
-            <scope>test</scope>
-        </dependency>
+	        <groupId>org.junit.jupiter</groupId>
+	        <artifactId>junit-jupiter-engine</artifactId>
+	        <version>5.4.0</version>
+	        <scope>test</scope>
+	    </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>5.1.5.RELEASE</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -71,4 +70,20 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    
+    <build>
+    	<plugins>
+    		<plugin>
+    			 <artifactId>maven-surefire-plugin</artifactId>
+	            <version>2.19.1</version>
+	            <dependencies>
+	                <dependency>
+	                    <groupId>org.junit.platform</groupId>
+	                    <artifactId>junit-platform-surefire-provider</artifactId>
+	                    <version>1.1.0</version>
+	                </dependency>
+	            </dependencies>
+    		</plugin>
+    	</plugins>
+    </build>
 </project>

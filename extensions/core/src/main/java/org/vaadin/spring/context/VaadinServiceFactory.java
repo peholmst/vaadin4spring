@@ -1,8 +1,9 @@
 package org.vaadin.spring.context;
 
-import com.vaadin.server.VaadinService;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.NamedBean;
+
+import com.vaadin.flow.server.VaadinService;
 
 /**
  * Factory bean that makes the current {@link com.vaadin.server.VaadinService} available

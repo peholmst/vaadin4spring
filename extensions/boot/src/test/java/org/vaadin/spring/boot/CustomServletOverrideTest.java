@@ -15,7 +15,6 @@
  */
 package org.vaadin.spring.boot;
 
-import com.vaadin.server.VaadinServlet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -25,6 +24,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import com.vaadin.flow.server.VaadinServlet;
 
 import javax.annotation.Resource;
 import javax.servlet.Servlet;

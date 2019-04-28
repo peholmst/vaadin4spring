@@ -15,9 +15,9 @@
  */
 package org.vaadin.spring.request;
 
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinResponse;
-import com.vaadin.server.VaadinSession;
+import com.vaadin.flow.server.VaadinRequest;
+import com.vaadin.flow.server.VaadinResponse;
+import com.vaadin.flow.server.VaadinSession;
 
 /**
  * Interface to be implemented by managed (singleton) beans that want to be notified when a Vaadin request ends.

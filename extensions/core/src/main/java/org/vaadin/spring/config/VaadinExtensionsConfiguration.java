@@ -15,7 +15,6 @@
  */
 package org.vaadin.spring.config;
 
-import com.vaadin.spring.annotation.EnableVaadin;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -29,6 +28,8 @@ import org.vaadin.spring.http.HttpResponseFactory;
 import org.vaadin.spring.http.HttpResponseFilter;
 import org.vaadin.spring.http.HttpService;
 import org.vaadin.spring.http.VaadinHttpService;
+
+import com.vaadin.flow.spring.annotation.EnableVaadin;
 
 import javax.servlet.ServletContext;
 

@@ -15,9 +15,10 @@
  */
 package org.vaadin.spring.context;
 
-import com.vaadin.server.VaadinSession;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.NamedBean;
+
+import com.vaadin.flow.server.VaadinSession;
 
 /**
  * Factory bean that makes the current {@link com.vaadin.server.VaadinSession} available

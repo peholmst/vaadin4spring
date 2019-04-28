@@ -18,13 +18,17 @@ package org.vaadin.spring.events.internal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.vaadin.spring.events.Event;
 import org.vaadin.spring.events.EventBusListener;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.HierachyTopicFilter;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.events.annotation.EventBusListenerTopic;
+import org.vaadin.spring.events.config.EventBusConfiguration;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -34,6 +38,8 @@ import static org.mockito.Mockito.*;
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = { EventBusConfiguration.class })
 public class ScopedEventBusTest {
 
     ScopedEventBus.DefaultApplicationEventBus applicationEventBus;
