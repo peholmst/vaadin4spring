@@ -17,8 +17,8 @@ package org.vaadin.spring.i18n.support;
 
 import java.util.Locale;
 
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.UI;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.server.VaadinRequest;
 
 /**
  * Base class intended to make it easier to write UIs that needs to support changing the locale on the fly.
