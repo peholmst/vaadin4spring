@@ -15,9 +15,10 @@
  */
 package org.vaadin.spring.security.util;
 
-import com.vaadin.ui.UI;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.security.core.Authentication;
+
+import com.vaadin.flow.component.UI;
 
 /**
  * Event that can be published using either the Spring event publisher or the Vaadin4Spring event bus when a user

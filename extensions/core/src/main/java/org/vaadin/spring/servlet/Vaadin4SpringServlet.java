@@ -27,11 +27,18 @@ import javax.servlet.ServletException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.vaadin.server.*;
-import com.vaadin.spring.server.SpringVaadinServlet;
+import com.vaadin.flow.function.DeploymentConfiguration;
+import com.vaadin.flow.server.ServiceDestroyListener;
+import com.vaadin.flow.server.ServiceException;
+import com.vaadin.flow.server.SessionDestroyListener;
+import com.vaadin.flow.server.SessionInitListener;
+import com.vaadin.flow.server.SystemMessagesProvider;
+import com.vaadin.flow.server.VaadinServletService;
+import com.vaadin.flow.spring.SpringServlet;
 
 /**
  * An extended version of {@link com.vaadin.spring.server.SpringVaadinServlet} that provides the following additional
@@ -53,11 +60,13 @@ import com.vaadin.spring.server.SpringVaadinServlet;
  * @author Petter Holmström (petter@vaadin.com)
  * @see org.vaadin.spring.servlet.Vaadin4SpringServletService
  */
-public class Vaadin4SpringServlet extends SpringVaadinServlet {
+public class Vaadin4SpringServlet extends SpringServlet {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Vaadin4SpringServlet.class);
 
-    public Vaadin4SpringServlet() {
+    public Vaadin4SpringServlet(ApplicationContext context,
+            boolean forwardingEnforced) {
+    	super(context, forwardingEnforced);
         LOGGER.info("Using custom Vaadin4Spring servlet");
     }
 
@@ -69,8 +78,7 @@ public class Vaadin4SpringServlet extends SpringVaadinServlet {
     @Override
     protected VaadinServletService createServletService(DeploymentConfiguration deploymentConfiguration)
         throws ServiceException {
-        final Vaadin4SpringServletService service = new Vaadin4SpringServletService(this, deploymentConfiguration,
-            getServiceUrlPath());
+        final Vaadin4SpringServletService service = new Vaadin4SpringServletService(this, deploymentConfiguration);
         service.init();
         return service;
     }

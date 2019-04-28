@@ -25,7 +25,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
-import com.vaadin.server.VaadinSession;
+import com.vaadin.flow.server.VaadinSession;
+
 
 /**
  * A {@link LogoutHandler} that closes all the Vaadin sessions in the current HTTP servlet session.

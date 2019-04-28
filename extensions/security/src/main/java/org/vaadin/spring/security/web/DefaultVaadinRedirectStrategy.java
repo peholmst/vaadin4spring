@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.util.UrlUtils;
 
-import com.vaadin.ui.UI;
+import com.vaadin.flow.component.UI;
 
 /**
  * Default implementation of {@link VaadinRedirectStrategy}. Based on
@@ -44,7 +44,8 @@ public class DefaultVaadinRedirectStrategy implements VaadinRedirectStrategy {
     public void sendRedirect(String url) {
         final String redirectUrl = calculateRedirectUrl(servletContext.getContextPath(), url);
         LOGGER.debug("Redirecting to [" + redirectUrl + "]");
-        UI.getCurrent().getPage().setLocation(redirectUrl);
+        // TODO check change from redirectUrl to url (relative path)
+        UI.getCurrent().navigate(redirectUrl);
     }
 
     private String calculateRedirectUrl(String contextPath, String url) {

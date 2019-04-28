@@ -15,13 +15,7 @@
  */
 package org.vaadin.spring.servlet;
 
-import com.vaadin.server.DeploymentConfiguration;
-import com.vaadin.server.ServiceException;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinResponse;
-import com.vaadin.server.VaadinServlet;
-import com.vaadin.server.VaadinSession;
-import com.vaadin.spring.server.SpringVaadinServletService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.WebApplicationContext;
@@ -29,9 +23,17 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.vaadin.spring.request.VaadinRequestEndListener;
 import org.vaadin.spring.request.VaadinRequestStartListener;
 
+import com.vaadin.flow.function.DeploymentConfiguration;
+import com.vaadin.flow.server.ServiceException;
+import com.vaadin.flow.server.VaadinRequest;
+import com.vaadin.flow.server.VaadinResponse;
+import com.vaadin.flow.server.VaadinServlet;
+import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.spring.SpringVaadinServletService;
+
 /**
- * Extended version of {@link com.vaadin.spring.server.SpringVaadinServletService} that adds support
- * for {@link org.vaadin.spring.request.VaadinRequestStartListener}s and {@link org.vaadin.spring.request.VaadinRequestEndListener}s.
+ * Extended version of {@link com.vaadin.flow.spring.SpringVaadinServletService} that adds support
+ * for {@link VaadinRequestStartListener}s and {@link org.vaadin.spring.request.VaadinRequestEndListener}s.
  *
  * @author Petter Holmström (petter@vaadin.com)
  */
@@ -50,10 +52,11 @@ public class Vaadin4SpringServletService extends SpringVaadinServletService {
      *                                with a slash) or null for default
      * @throws ServiceException
      */
-    public Vaadin4SpringServletService(VaadinServlet servlet, DeploymentConfiguration deploymentConfiguration, String serviceUrl) throws ServiceException {
-        super(servlet, deploymentConfiguration, serviceUrl);
+    public Vaadin4SpringServletService(VaadinServlet servlet, DeploymentConfiguration deploymentConfiguration) throws ServiceException {
+        super(servlet, deploymentConfiguration, WebApplicationContextUtils.getWebApplicationContext(servlet.getServletContext()));
+        this.applicationContext = WebApplicationContextUtils.getWebApplicationContext(servlet.getServletContext());
         logger.info("Using custom Vaadin4Spring servlet service");
-        applicationContext = WebApplicationContextUtils.getWebApplicationContext(servlet.getServletContext());
+//        applicationContext = WebApplicationContextUtils.getWebApplicationContext(servlet.getServletContext());
     }
 
     @Override
