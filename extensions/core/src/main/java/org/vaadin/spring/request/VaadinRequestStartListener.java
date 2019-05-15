@@ -15,8 +15,8 @@
  */
 package org.vaadin.spring.request;
 
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinResponse;
+import com.vaadin.flow.server.VaadinRequest;
+import com.vaadin.flow.server.VaadinResponse;
 
 /**
  * Interface to be implemented by managed (singleton) beans that want to be notified when a Vaadin request starts.
@@ -30,7 +30,7 @@ public interface VaadinRequestStartListener {
      *
      * @param request  The request
      * @param response The response
-     * @see com.vaadin.server.VaadinService#requestStart(com.vaadin.server.VaadinRequest, com.vaadin.server.VaadinResponse)
+     * @see com.vaadin.flow.server.VaadinService#requestStart(VaadinRequest, VaadinResponse)
      */
     void onRequestStart(VaadinRequest request, VaadinResponse response);
 }

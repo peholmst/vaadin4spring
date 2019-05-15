@@ -15,7 +15,7 @@
  */
 package org.vaadin.spring.config;
 
-import com.vaadin.spring.annotation.EnableVaadin;
+import com.vaadin.flow.spring.annotation.EnableVaadin;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -34,13 +34,13 @@ import javax.servlet.ServletContext;
 
 /**
  * Spring configuration that sets up the the extensions for Vaadin Spring.
- * This configuration also includes {@link com.vaadin.spring.annotation.EnableVaadin}.
+ * This configuration also includes {@link EnableVaadin}.
  *
  * @author Josh Long (josh@joshlong.com)
  * @author Petter Holmström (petter@vaadin.com)
  * @author Gert-Jan Timmer (gjr.timmer@gmail.com)
  * @see org.vaadin.spring.annotation.EnableVaadinExtensions
- * @see com.vaadin.spring.annotation.EnableVaadin
+ * @see EnableVaadin
  */
 @Configuration
 @EnableVaadin
@@ -88,7 +88,7 @@ public class VaadinExtensionsConfiguration {
     }
 
     /**
-     * Allows injection of the current {@link com.vaadin.server.VaadinService}.
+     * Allows injection of the current {@link com.vaadin.flow.server.VaadinService}.
      */
     @Bean
     VaadinServiceFactory vaadinServiceFactory() {
@@ -96,7 +96,7 @@ public class VaadinExtensionsConfiguration {
     }
 
     /**
-     * Allows injection of the current {@link com.vaadin.server.VaadinSession}.
+     * Allows injection of the current {@link com.vaadin.flow.server.VaadinSession}.
      */
     @Bean
     VaadinSessionFactory vaadinSessionFactory() {

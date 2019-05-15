@@ -15,9 +15,9 @@
  */
 package org.vaadin.spring.request;
 
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinResponse;
-import com.vaadin.server.VaadinSession;
+import com.vaadin.flow.server.VaadinRequest;
+import com.vaadin.flow.server.VaadinResponse;
+import com.vaadin.flow.server.VaadinSession;
 
 /**
  * Interface to be implemented by managed (singleton) beans that want to be notified when a Vaadin request ends.
@@ -34,7 +34,7 @@ public interface VaadinRequestEndListener {
      * @param response The response object
      * @param session  The session which was used during the request or null if the
      *                 request did not use a session
-     * @see com.vaadin.server.VaadinService#requestEnd(com.vaadin.server.VaadinRequest, com.vaadin.server.VaadinResponse, com.vaadin.server.VaadinSession)
+     * @see com.vaadin.flow.server.VaadinService#requestEnd(VaadinRequest, VaadinResponse, VaadinSession)
      */
     void onRequestEnd(VaadinRequest request, VaadinResponse response, VaadinSession session);
 }
