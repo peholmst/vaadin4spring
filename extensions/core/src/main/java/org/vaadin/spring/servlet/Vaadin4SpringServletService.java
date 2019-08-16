@@ -15,22 +15,20 @@
  */
 package org.vaadin.spring.servlet;
 
-import com.vaadin.server.DeploymentConfiguration;
-import com.vaadin.server.ServiceException;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinResponse;
-import com.vaadin.server.VaadinServlet;
-import com.vaadin.server.VaadinSession;
-import com.vaadin.spring.server.SpringVaadinServletService;
+import com.vaadin.flow.function.DeploymentConfiguration;
+import com.vaadin.flow.server.VaadinRequest;
+import com.vaadin.flow.server.VaadinResponse;
+import com.vaadin.flow.server.VaadinServlet;
+import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.spring.SpringVaadinServletService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.request.VaadinRequestEndListener;
 import org.vaadin.spring.request.VaadinRequestStartListener;
 
 /**
- * Extended version of {@link com.vaadin.spring.server.SpringVaadinServletService} that adds support
+ * Extended version of {@link SpringVaadinServletService} that adds support
  * for {@link org.vaadin.spring.request.VaadinRequestStartListener}s and {@link org.vaadin.spring.request.VaadinRequestEndListener}s.
  *
  * @author Petter Holmström (petter@vaadin.com)
@@ -38,29 +36,31 @@ import org.vaadin.spring.request.VaadinRequestStartListener;
 public class Vaadin4SpringServletService extends SpringVaadinServletService {
 
     private static final Logger logger = LoggerFactory.getLogger(Vaadin4SpringServletService.class);
-    private final WebApplicationContext applicationContext;
+
+    private final ApplicationContext context;
 
     /**
-     * Create a servlet service instance that allows the use of a custom service
-     * URL.
+     * Creates an instance connected to the given servlet and using the given
+     * configuration with provided application {@code context}.
      *
      * @param servlet
+     *         the servlet which receives requests
      * @param deploymentConfiguration
-     * @param serviceUrl              custom service URL to use (relative to context path, starting
-     *                                with a slash) or null for default
-     * @throws ServiceException
+     *         the configuration to use
+     * @param context
+     *         the Spring application context
      */
-    public Vaadin4SpringServletService(VaadinServlet servlet, DeploymentConfiguration deploymentConfiguration, String serviceUrl) throws ServiceException {
-        super(servlet, deploymentConfiguration, serviceUrl);
+    public Vaadin4SpringServletService(VaadinServlet servlet, DeploymentConfiguration deploymentConfiguration, ApplicationContext context) {
+        super(servlet, deploymentConfiguration, context);
+        this.context = context;
         logger.info("Using custom Vaadin4Spring servlet service");
-        applicationContext = WebApplicationContextUtils.getWebApplicationContext(servlet.getServletContext());
     }
 
     @Override
     public void requestStart(VaadinRequest request, VaadinResponse response) {
         super.requestStart(request, response);
         logger.trace("Invoking VaadinRequestStartListeners");
-        for (VaadinRequestStartListener listener : applicationContext.getBeansOfType(VaadinRequestStartListener.class).values()) {
+        for (VaadinRequestStartListener listener : context.getBeansOfType(VaadinRequestStartListener.class).values()) {
             try {
                 listener.onRequestStart(request, response);
             } catch (Exception ex) {
@@ -73,7 +73,7 @@ public class Vaadin4SpringServletService extends SpringVaadinServletService {
     @Override
     public void requestEnd(VaadinRequest request, VaadinResponse response, VaadinSession session) {
         logger.trace("Invoking VaadinRequestEndListeners");
-        for (VaadinRequestEndListener listener : applicationContext.getBeansOfType(VaadinRequestEndListener.class).values()) {
+        for (VaadinRequestEndListener listener : context.getBeansOfType(VaadinRequestEndListener.class).values()) {
             try {
                 listener.onRequestEnd(request, response, session);
             } catch (Exception ex) {

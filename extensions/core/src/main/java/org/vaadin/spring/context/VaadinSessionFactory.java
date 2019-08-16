@@ -15,13 +15,13 @@
  */
 package org.vaadin.spring.context;
 
-import com.vaadin.server.VaadinSession;
+import com.vaadin.flow.server.VaadinSession;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.NamedBean;
 
 /**
- * Factory bean that makes the current {@link com.vaadin.server.VaadinSession} available
- * for injection. Only works if {@link com.vaadin.server.VaadinSession#getCurrent()} does not
+ * Factory bean that makes the current {@link com.vaadin.flow.server.VaadinSession} available
+ * for injection. Only works if {@link com.vaadin.flow.server.VaadinSession#getCurrent()} does not
  * return {@code null}.
  *
  * @author Petter Holmström (petter@vaadin.com)
@@ -36,7 +36,7 @@ public class VaadinSessionFactory implements FactoryBean<VaadinSession>, NamedBe
     }
 
     @Override
-    public VaadinSession getObject() throws Exception {
+    public VaadinSession getObject() {
         final VaadinSession session = VaadinSession.getCurrent();
         if (session == null) {
             throw new IllegalStateException("No VaadinSession bound to current thread");

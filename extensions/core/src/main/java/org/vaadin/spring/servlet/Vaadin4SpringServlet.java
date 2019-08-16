@@ -24,26 +24,32 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
+import com.vaadin.flow.function.DeploymentConfiguration;
+import com.vaadin.flow.server.ServiceDestroyListener;
+import com.vaadin.flow.server.ServiceException;
+import com.vaadin.flow.server.SessionDestroyListener;
+import com.vaadin.flow.server.SessionInitListener;
+import com.vaadin.flow.server.SystemMessagesProvider;
+import com.vaadin.flow.server.VaadinServletService;
+import com.vaadin.flow.spring.SpringServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.vaadin.server.*;
-import com.vaadin.spring.server.SpringVaadinServlet;
-
 /**
- * An extended version of {@link com.vaadin.spring.server.SpringVaadinServlet} that provides the following additional
+ * An extended version of {@link SpringServlet} that provides the following additional
  * features:
  * <ul>
- * <li>Support for specifying a custom {@link com.vaadin.server.SystemMessagesProvider} by making it available as a
+ * <li>Support for specifying a custom {@link SystemMessagesProvider} by making it available as a
  * Spring managed bean</li>
- * <li>Support for adding {@link com.vaadin.server.SessionInitListener}s by making them available as Spring managed
+ * <li>Support for adding {@link SessionInitListener}s by making them available as Spring managed
  * beans</li>
- * <li>Support for adding {@link com.vaadin.server.SessionDestroyListener}s by making them available as Spring managed
+ * <li>Support for adding {@link SessionDestroyListener}s by making them available as Spring managed
  * beans</li>
- * <li>Support for adding {@link com.vaadin.server.ServiceDestroyListener}s by making them available as Spring managed
+ * <li>Support for adding {@link ServiceDestroyListener}s by making them available as Spring managed
  * beans</li>
  * <li>Support for {@link org.vaadin.spring.request.VaadinRequestStartListener}s and
  * {@link org.vaadin.spring.request.VaadinRequestEndListener}s</li>
@@ -53,11 +59,15 @@ import com.vaadin.spring.server.SpringVaadinServlet;
  * @author Petter Holmström (petter@vaadin.com)
  * @see org.vaadin.spring.servlet.Vaadin4SpringServletService
  */
-public class Vaadin4SpringServlet extends SpringVaadinServlet {
+public class Vaadin4SpringServlet extends SpringServlet {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Vaadin4SpringServlet.class);
 
-    public Vaadin4SpringServlet() {
+    private final ApplicationContext context;
+
+    public Vaadin4SpringServlet(ApplicationContext context, boolean forwardingEnforced) {
+        super(context, forwardingEnforced);
+        this.context = context;
         LOGGER.info("Using custom Vaadin4Spring servlet");
     }
 
@@ -67,10 +77,9 @@ public class Vaadin4SpringServlet extends SpringVaadinServlet {
     }
 
     @Override
-    protected VaadinServletService createServletService(DeploymentConfiguration deploymentConfiguration)
-        throws ServiceException {
+    protected VaadinServletService createServletService(DeploymentConfiguration deploymentConfiguration) throws ServiceException {
         final Vaadin4SpringServletService service = new Vaadin4SpringServletService(this, deploymentConfiguration,
-            getServiceUrlPath());
+            context);
         service.init();
         return service;
     }
@@ -115,7 +124,7 @@ public class Vaadin4SpringServlet extends SpringVaadinServlet {
             this.delegate = delegate;
             final WebApplicationContext applicationContext = WebApplicationContextUtils
                 .getWebApplicationContext(delegate.getServletContext());
-            customInitParameterProviders = new HashSet<CustomInitParameterProvider>(
+            customInitParameterProviders = new HashSet<>(
                 applicationContext.getBeansOfType(CustomInitParameterProvider.class).values());
             LOGGER.info("Found {} custom init parameter provider(s)", customInitParameterProviders.size());
         }
@@ -144,7 +153,7 @@ public class Vaadin4SpringServlet extends SpringVaadinServlet {
 
         @Override
         public Enumeration<String> getInitParameterNames() {
-            Set<String> initParameterNames = new HashSet<String>();
+            Set<String> initParameterNames = new HashSet<>();
             Enumeration<String> delegateInitParameterNames = delegate.getInitParameterNames();
             while (delegateInitParameterNames.hasMoreElements()) {
                 initParameterNames.add(delegateInitParameterNames.nextElement());
@@ -153,7 +162,7 @@ public class Vaadin4SpringServlet extends SpringVaadinServlet {
                 initParameterNames.addAll(provider.getInitParameterNames());
             }
             LOGGER.trace("Init parameter names are {}", initParameterNames);
-            return new Vector<String>(initParameterNames).elements();
+            return new Vector<>(initParameterNames).elements();
         }
     }
 }

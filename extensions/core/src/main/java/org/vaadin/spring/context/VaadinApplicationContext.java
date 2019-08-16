@@ -15,6 +15,8 @@
  */
 package org.vaadin.spring.context;
 
+import javax.annotation.Nonnull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -50,7 +52,7 @@ public class VaadinApplicationContext implements InitializingBean, ApplicationCo
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(@Nonnull ApplicationContext applicationContext) throws BeansException {
         synchronized (VaadinApplicationContext.class) {
             if (context != null) {
                 logger.warn("The application context has already been set. Do you have multiple instances of VaadinApplicationContext in your application?");
