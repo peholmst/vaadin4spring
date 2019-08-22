@@ -40,6 +40,11 @@
             <email>fastnsilver@gmail.com</email>
         </developer>
         <developer>
+            <name>Erik Lumme</name>
+            <organization>Vaadin</organization>
+            <email>erik@vaadin.com</email>
+        </developer>
+        <developer>
             <name>Gert-Jan Timmer</name>
             <email>gjr.timmer@gmail.com</email>
         </developer>
@@ -77,10 +82,6 @@
         <developer>
             <name>Tobias Placht</name>
             <email>dev@knacht.net</email>
-        </developer>
-        <developer>
-            <name>Erik Lumme</name>
-            <email>erik@vaadin.com</email>
         </developer>
     </developers>
 
@@ -365,10 +366,5 @@
 
     <modules>
         <module>addons/eventbus</module>
-        <module>addons/i18n</module>
-        <module>addons/mvp</module>
-        <module>addons/portlet</module>
-        <module>addons/sidebar</module>
-        <module>addons/simple-mvp</module>
     </modules>
 </project>
