@@ -370,6 +370,5 @@
         <module>addons/portlet</module>
         <module>addons/sidebar</module>
         <module>addons/simple-mvp</module>
-        <module>samples</module>
     </modules>
 </project>
