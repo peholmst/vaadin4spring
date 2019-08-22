@@ -365,6 +365,6 @@
     </repositories>
 
     <modules>
-        <module>addons/eventbus</module>
+        <module>eventbus</module>
     </modules>
 </project>
