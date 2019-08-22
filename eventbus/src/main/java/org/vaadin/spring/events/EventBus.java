@@ -189,8 +189,7 @@ public interface EventBus {
      * signatures: <code>myMethodName(Event&lt;MyPayloadType&gt;)</code> or <code>myMethodName(MyPayloadType)</code>.
      * The event bus will analyse the payload type of the listener methods to determine
      * which events the different methods are interested in receiving.
-     * <br></br>
-     * <br></br>
+     * <p>
      * Example:
      * <code>subscribe(Listener.this, "/news");</code>
      * @param listener the listener to subscribe, never {@code null}.

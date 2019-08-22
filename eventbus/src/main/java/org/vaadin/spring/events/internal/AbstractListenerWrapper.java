@@ -40,7 +40,7 @@ abstract class AbstractListenerWrapper implements ListenerCollection.Listener {
 
     private final String topic;
 
-    public AbstractListenerWrapper(EventBus owningEventBus, Object listenerTarget, String topic, boolean includingPropagatingEvents) {
+    AbstractListenerWrapper(EventBus owningEventBus, Object listenerTarget, String topic, boolean includingPropagatingEvents) {
         this.owningEventBus = owningEventBus;
         this.topic = topic;
         this.listenerTarget = listenerTarget;

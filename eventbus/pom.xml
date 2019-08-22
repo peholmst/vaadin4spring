@@ -5,47 +5,20 @@
     <parent>
         <groupId>org.vaadin.spring</groupId>
         <artifactId>parent-pom</artifactId>
-        <version>11.0.0-SNAPSHOT</version>
-        <relativePath>../../</relativePath>
+        <version>14.0.0</version>
+        <relativePath>../</relativePath>
     </parent>
 
     <groupId>org.vaadin.spring.addons</groupId>
     <artifactId>vaadin-spring-addon-eventbus</artifactId>
     <packaging>jar</packaging>
 
-    <name>Vaadin4Spring Add-ons - Event Bus</name>
-
-    <properties>
-        <spring.version>5.1.5.RELEASE</spring.version>
-    </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.vaadin</groupId>
-                <artifactId>vaadin-bom</artifactId>
-                <version>${vaadin.platform.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+    <name>Vaadin4Spring Event Bus</name>
 
     <dependencies>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-spring</artifactId>
-            <version>${vaadin.platform.spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.vaadin.spring.extensions</groupId>
-            <artifactId>vaadin-spring-ext-core</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -55,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
+            <artifactId>junit-jupiter-engine</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

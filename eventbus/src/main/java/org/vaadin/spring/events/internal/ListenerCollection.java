@@ -75,7 +75,7 @@ class ListenerCollection implements Serializable {
      * @param listener the listener to add, never {@code null}.
      * @see #remove(org.vaadin.spring.events.internal.ListenerCollection.Listener)
      */
-    public void add(Listener listener) {
+    void add(Listener listener) {
         logger.trace("Adding listener [{}]", listener);
         synchronized (listeners) {
             listeners.add(listener);
@@ -90,7 +90,7 @@ class ListenerCollection implements Serializable {
      *
      * @param listener the listener to add, never {@code null}.
      */
-    public void addWithWeakReference(Listener listener) {
+    void addWithWeakReference(Listener listener) {
         logger.trace("Adding listener [{}] using a weak reference", listener);
         synchronized (weakListeners) {
             weakListeners.add(listener);
@@ -105,7 +105,7 @@ class ListenerCollection implements Serializable {
      * @param listener the listener to remove, never {@code null}.
      * @see #add(org.vaadin.spring.events.internal.ListenerCollection.Listener)
      */
-    public void remove(Listener listener) {
+    void remove(Listener listener) {
         logger.trace("Removing listener [{}]", listener);
         synchronized (listeners) {
             listeners.remove(listener);
@@ -122,7 +122,7 @@ class ListenerCollection implements Serializable {
      *
      * @param filter the filter that specifies which listeners to remove, never {@code null}.
      */
-    public void removeAll(ListenerFilter filter) {
+    void removeAll(ListenerFilter filter) {
         synchronized (listeners) {
             removeFilteredListenersFromSet(filter, listeners);
         }
@@ -134,7 +134,7 @@ class ListenerCollection implements Serializable {
     /**
      * Removes all {@link org.vaadin.spring.events.internal.ListenerCollection.Listener}s from the collection.
      */
-    public void clear() {
+    void clear() {
         synchronized (listeners) {
             listeners.clear();
         }

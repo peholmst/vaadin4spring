@@ -41,7 +41,7 @@ class MethodListenerWrapper extends AbstractListenerWrapper {
     private transient Method listenerMethod;
     private final String topic;
 
-    public MethodListenerWrapper(EventBus owningEventBus, Object listenerTarget, String topic, boolean includingPropagatingEvents, Method listenerMethod) {
+    MethodListenerWrapper(EventBus owningEventBus, Object listenerTarget, String topic, boolean includingPropagatingEvents, Method listenerMethod) {
         super(owningEventBus, listenerTarget, topic, includingPropagatingEvents);
         this.topic = topic;
         if (listenerMethod.getParameterTypes()[0] == Event.class) {
