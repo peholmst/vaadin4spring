@@ -18,6 +18,7 @@ package org.vaadin.spring.events.internal;
 import org.vaadin.spring.events.*;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.events.annotation.EventBusListenerTopic;
+import org.vaadin.spring.util.ClassUtils;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -39,6 +40,7 @@ class MethodListenerWrapper extends AbstractListenerWrapper {
     private final Class<?> payloadType;
     private final boolean payloadMethod;
     private transient Method listenerMethod;
+    private final int methodHash; // TODO: better unique ID
     private final String topic;
 
     public MethodListenerWrapper(EventBus owningEventBus, Object listenerTarget, String topic, boolean includingPropagatingEvents, Method listenerMethod) {
@@ -53,11 +55,23 @@ class MethodListenerWrapper extends AbstractListenerWrapper {
             payloadMethod = true;
         }
         this.listenerMethod = listenerMethod;
+        this.methodHash = listenerMethod.hashCode();
     }
 
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
         ois.defaultReadObject();
         // TODO Read listener method info and look up method
+        ClassUtils.visitClassHierarchy(new ClassUtils.ClassVisitor() {
+            @Override
+            public void visit(Class<?> clazz) {
+                for (Method m : clazz.getDeclaredMethods()) {
+                    if (m.hashCode() == methodHash) {
+                        listenerMethod = m;
+                        return;
+                    }
+                }
+            }
+        }, getListenerTarget().getClass());
     }
 
     private void writeObject(ObjectOutputStream oos) throws IOException {

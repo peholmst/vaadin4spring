@@ -15,6 +15,9 @@
  */
 package org.vaadin.spring.events.internal;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.*;
 
@@ -30,9 +33,9 @@ import org.vaadin.spring.events.Event;
 class ListenerCollection implements Serializable {
 
     private static final long serialVersionUID = -6237902400879667320L;
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-    private final Set<Listener> listeners = new HashSet<Listener>();
-    private final Set<Listener> weakListeners = Collections.newSetFromMap(new WeakHashMap<Listener, Boolean>());
+    private Logger logger = LoggerFactory.getLogger(getClass());
+    private Set<Listener> listeners = new HashSet<Listener>();
+    private Set<Listener> weakListeners = Collections.newSetFromMap(new WeakHashMap<Listener, Boolean>());
 
     /**
      * Interface defining a listener.
@@ -187,5 +190,25 @@ class ListenerCollection implements Serializable {
                 it.remove();
             }
         }
+    }
+
+    private  void readObject(ObjectInputStream ois)
+            throws IOException, ClassNotFoundException {
+
+        this.listeners = (Set<Listener>) ois.readObject();
+        this.weakListeners = Collections.newSetFromMap(new WeakHashMap<Listener, Boolean>());
+        this.weakListeners.addAll( (Set<Listener>) ois.readObject() ) ;
+        this.logger = LoggerFactory.getLogger(getClass());
+        logger.debug("after readObject weakListeners = {}", Arrays.deepToString(weakListeners.toArray()));
+    }
+
+    private  void writeObject(ObjectOutputStream oos)
+            throws IOException {
+
+        oos.writeObject(listeners);
+        oos.writeObject(new HashSet<>(weakListeners));
+        logger.debug("writeObject weakListeners = {}", Arrays.deepToString(weakListeners.toArray()));
+
+        //oos.writeObject(logger);
     }
 }
