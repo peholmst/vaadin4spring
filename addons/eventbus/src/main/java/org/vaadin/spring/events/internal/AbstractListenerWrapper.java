@@ -18,6 +18,9 @@ package org.vaadin.spring.events.internal;
 import org.vaadin.spring.events.Event;
 import org.vaadin.spring.events.EventBus;
 
+import java.lang.ref.Reference;
+import java.lang.ref.SoftReference;
+
 /**
  * Base implementation of {@link org.vaadin.spring.events.internal.ListenerCollection.Listener} that implements
  * the {@link #supports(org.vaadin.spring.events.Event)}  method. An event is supported if:
@@ -56,7 +59,7 @@ abstract class AbstractListenerWrapper implements ListenerCollection.Listener {
      * Gets the target object that this listener is wrapping.
      */
     public Object getListenerTarget() {
-        return listenerTarget;
+        return listenerTarget instanceof Reference ? ((Reference) listenerTarget).get() : listenerTarget;
     }
 
     @Override

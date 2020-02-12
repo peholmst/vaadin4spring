@@ -28,6 +28,8 @@ import org.vaadin.spring.util.ClassUtils;
 
 import javax.annotation.PreDestroy;
 import java.io.Serializable;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 
 /**
@@ -60,6 +62,41 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
 
     };
 
+    private ReferenceQueue<Object> mlwWeakReferenceQueue = new ReferenceQueue<>();
+
+    private boolean cleanupThreadRun = true;
+    private Thread cleanupThread = new Thread() {
+
+        public void run() {
+            while(cleanupThreadRun) {
+                try {
+                    ReferenceWithCleanup ref = (ReferenceWithCleanup)mlwWeakReferenceQueue.remove();
+                    ref.cleanUp();
+                } catch (InterruptedException e) {
+                    logger.warn("cleanupThread interrupted: ",e);
+                }
+            }
+        }
+    };
+
+    class ReferenceWithCleanup extends WeakReference<Object> {
+        ListenerCollection.Listener mlwListener;
+        ReferenceWithCleanup(Object weakOriginalListener) {
+            super(weakOriginalListener, mlwWeakReferenceQueue);
+
+        }
+
+        public ReferenceWithCleanup withMlwListener(ListenerCollection.Listener mlwListener) {
+            this.mlwListener = mlwListener;
+            return this;
+        }
+
+        public void cleanUp() {
+            logger.trace("Clear reference to listener [{}]", mlwListener);
+            listeners.remove(mlwListener);
+        }
+    }
+
     /**
      * @param scope the scope of the events that this event bus handles.
      */
@@ -88,12 +125,14 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
             logger.debug("Using parent event bus [{}]", this.parentEventBus);
             this.parentEventBus.subscribe(parentListener);
         }
+        cleanupThread.start();
     }
 
     @PreDestroy
     void destroy() {
         logger.trace("Destroying event bus [{}] and removing all listeners", this);
         listeners.clear();
+        cleanupThreadRun = false;
         if (parentEventBus != null) {
             parentEventBus.unsubscribe(parentListener);
         }
@@ -217,13 +256,18 @@ public abstract class ScopedEventBus implements EventBus, Serializable {
                     if (m.isAnnotationPresent(EventBusListenerMethod.class)) {
                         if (m.getParameterTypes().length == 1) {
                             logger.trace("Found listener method [{}] in listener [{}]", m.getName(), listener);
-                            MethodListenerWrapper l = new MethodListenerWrapper(ScopedEventBus.this, listener, topic,
-                                    includingPropagatingEvents, m);
+
+                            MethodListenerWrapper l;
                             if (weakReference) {
-                                listeners.addWithWeakReference(l);
+                                ReferenceWithCleanup ref = new ReferenceWithCleanup(listener);
+                                l = new MethodListenerWrapper(ScopedEventBus.this, ref, topic,
+                                        includingPropagatingEvents, m);
+                                ref.withMlwListener(l);
                             } else {
-                                listeners.add(l);
+                                l = new MethodListenerWrapper(ScopedEventBus.this, listener, topic,
+                                        includingPropagatingEvents, m);
                             }
+                            listeners.add(l);
                             foundMethods[0]++;
                         } else {
                             throw new IllegalArgumentException(

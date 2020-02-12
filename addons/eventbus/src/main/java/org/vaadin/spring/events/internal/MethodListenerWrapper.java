@@ -109,6 +109,11 @@ class MethodListenerWrapper extends AbstractListenerWrapper {
     public boolean supports(Event<?> event) {
         boolean supports = super.supports(event);
         try {
+            // prevent GCed weak ref NPE
+            if (getListenerTarget() == null) {
+                return false;
+            }
+
             if (listenerMethod.isAnnotationPresent(EventBusListenerMethod.class)) {
                 supports = supports && isInterestedListenerMethod(event);
             }
