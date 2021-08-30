@@ -96,7 +96,7 @@
         <project.build.target>1.8</project.build.target>
         <project.build.source>1.8</project.build.source>
 
-        <vaadin.version>14.0.1</vaadin.version>
+        <vaadin.version>14.6.8</vaadin.version>
 
         <!-- Match version used by Vaadin Spring dependency -->
         <spring.version>5.1.2.RELEASE</spring.version>
